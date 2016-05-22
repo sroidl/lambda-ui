@@ -17,7 +17,7 @@ var BuildSummary = React.createClass({
         <h3 className="panel-title row">
           <span className="col-md-3 text-left">#{this.props.data.buildNumber}</span>
               <span className="col-md-5">
-                <ProgressBar progress={this.props.data.progress}/>
+                 <ProgressBar progress={this.props.data.progress}/>
               </span>
               <span className="col-md-4 text-right">
                   <i className="fa fa-stop" aria-hidden="true"></i>
@@ -51,7 +51,7 @@ var builds = [
     ],
 
     duration: {
-      started: "13.05.'16 -- 13:16:51"
+      started: moment().format("MM/DD/YYYY -- HH:mm:ss")
     },
     buildState: "RUNNING"
   },
@@ -171,3 +171,5 @@ ReactDOM.render(
   <BuildSummaries data={builds}/>,
   document.getElementById('build-summaries')
 );
+
+
