@@ -109,4 +109,14 @@ body {
     border-style: solid;
     border-width: 1px;
   }
+
+  .commit-hash {
+    color: grey;
+  }
+
+
+  .build-info:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
 }
