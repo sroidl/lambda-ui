@@ -1,6 +1,12 @@
-(ns lambdaui.core)
+(ns lambdaui.core
+  (:require [compojure.route :as route]
+            [compojure.core :refer [routes GET context]]
+            [lambdacd.ui.api :as api]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn ui-for
+  ([pipeline]
+   (routes
+     (context "/api" [] (api/rest-api pipeline))
+     (route/resources "/" {:root "public"})
+     ;(GET "/" [] (ui-page/ui-page pipeline))
+     )))
