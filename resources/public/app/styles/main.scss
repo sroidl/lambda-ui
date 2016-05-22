@@ -4,7 +4,6 @@ $icon-font-path: '../fonts/';
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-
 @import "sb-admin.scss";
 
 .browserupgrade {
@@ -95,28 +94,24 @@ body {
   }
 }
 
-.bigblank {
-  height: 800px;
-}
-
 .build-summary-container {
-    background-color: #fff
+  background-color: #fff
 }
 
-.side-nav {
-  .progress {
-    margin-bottom: 0;
-    border-style: solid;
-    border-width: 1px;
-  }
+.progress {
+  margin-bottom: 0;
+  border-style: solid;
+  border-width: 1px;
+}
 
-  .commit-hash {
-    color: grey;
-  }
+.commit-hash {
+  color: grey;
+}
 
+.build-info:not(:last-child) {
+  margin-bottom: 10px;
+}
 
-  .build-info:not(:last-child) {
-    margin-bottom: 10px;
-  }
-
+.padding-right {
+  margin-right: 10px;
 }

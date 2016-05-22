@@ -11,7 +11,7 @@
 
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css"/>
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -25,7 +25,8 @@
 </head>
 <body>
 <!--[if lt IE 10]>
-<p class="browserupgrade">You are using a <strong>long outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+<p class="browserupgrade">You are using a <strong>long outdated</strong> browser. Please <a
+  href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
 <![endif]-->
 
@@ -53,7 +54,9 @@
                   </div>
                 </div>
                               </span>
-              <span class="col-md-4 text-right">RUNNING</span>
+              <span class="col-md-4 text-right">
+                  <i class="fa fa-stop" aria-hidden="true"></i>
+              </span>
             </h3>
           </div>
 
@@ -110,8 +113,11 @@
           <div class="panel-heading container-fluid">
             <h3 class="panel-title row">
 
-              <span class="col-md-1 text-left">#3</span>
-              <span class="col-md-4 col-md-offset-7 text-right">FAILED</span>
+              <div class="col-md-6 text-left">#99999999</div>
+              <div class="col-md-6 text-right">
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+
+              </div>
 
             </h3></div>
 
@@ -169,8 +175,8 @@
           <div class="panel-heading container-fluid">
             <h3 class="panel-title row">
 
-              <span class="col-md-1 text-left">#3</span>
-              <span class="col-md-4 col-md-offset-7 text-right">SUCCESS</span>
+              <span class="col-md-6 text-left">#3</span>
+              <span class="col-md-6 text-right">RE-BUILD</span>
 
             </h3></div>
           <div class="panel-body">
@@ -308,8 +314,8 @@
           <div class="panel-heading container-fluid">
             <h3 class="panel-title row">
 
-              <span class="col-md-1 text-left">#3</span>
-              <span class="col-md-4 col-md-offset-7 text-right">SUCCESS</span>
+              <span class="col-md-6 text-left">#3</span>
+              <span class="col-md-6 text-right">SUCCESS</span>
 
             </h3></div>
           <div class="panel-body">
@@ -350,8 +356,86 @@
   <div id="page-wrapper">
 
     <div class="container-fluid">
+      <div class="col-md-3">
+        <div class="panel panel-green build-summary-container">
+          <div class="panel-heading container-fluid">
+            <h3 class="panel-title row">
+              <span class="col-md-12 text-left">Prepare Build</span>
+            </h3>
+          </div>
 
-      <div class="bigblank"></div>
+          <div class="panel-body">
+            <div class="build-info duration">
+              <div class="media">
+                <div class="media-left">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </div>
+                <div class="media-body">
+                  <div>Started: 13.05.'16 -- 13:16:51</div>
+                  <div>Duration: 5min 14sec</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="build-info current-steps">
+              <div class="media">
+                <div class="media-left">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                </div>
+                <div class="media-body">
+                  <div>Current Buildsteps</div>
+                  <ul>
+                    <li>deploy-qa</li>
+                    <li>deploy-ci</li>
+                    <li>deploy-fit</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="panel panel-primary build-summary-container">
+          <div class="panel-heading container-fluid">
+            <h3 class="panel-title row">
+              <span class="col-md-4 text-left">Build</span>
+                <span class="col-md-4 col-md-offset-1 text-right">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                 03:54
+                </span>
+
+              <div class="col-md-3 text-right">
+                  <i class="fa fa-tasks padding-right" aria-hidden="true"></i>
+                  <i class="fa fa-expand" aria-hidden="true"></i>
+              </div>
+            </h3>
+          </div>
+
+          <div class="panel-body">
+
+
+            <div class="build-info current-steps">
+              <div class="media">
+                <div class="media-left">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                </div>
+                <div class="media-body">
+                  <div>Current Buildsteps</div>
+                  <ul>
+                    <li>deploy-qa</li>
+                    <li>deploy-ci</li>
+                    <li>deploy-fit</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
     </div>
     <!-- /.container-fluid -->
@@ -365,6 +449,8 @@
 <!-- build:js scripts/vendor.js -->
 <!-- bower:js -->
 <script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/react/react.js"></script>
+<script src="/bower_components/react/react-dom.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
