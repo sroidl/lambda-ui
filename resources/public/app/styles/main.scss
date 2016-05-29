@@ -115,3 +115,14 @@ body {
 .padding-right {
   margin-right: 10px;
 }
+
+.horizontal-scroll-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.horizontal-scroll-wrapper [class*="col-md"] {
+  display: inline-block;
+  float: none;
+  vertical-align: middle;
+}
+
