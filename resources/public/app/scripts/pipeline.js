@@ -81,7 +81,13 @@
 
     }
 
-  })
+  });
+
+  var PipeIcon = React.createClass({
+    render: function() {
+      return (<div className="col-md-1 text-center"><i className="fa fa-database fa-rotate-270" aria-hidden="true"></i></div>);
+    }
+  });
 
   var TriggerStep = React.createClass({
     render: function () {
@@ -108,13 +114,20 @@
 
     componentDidMount: function(){
       setInterval(this.updateState, 1000);
-    }
-    ,
-
+    },
+    injectSeparatorElements: function (p, n) {
+      if (p.length > 0 && p[p.length-1].props.data.stepType != "trigger") {
+        var key = "after-"+p[p.length-1].props.data.stepId;
+        return p.concat([(<PipeIcon key={key}/>), n]);
+      } else {
+        return p.concat([n]);
+      }
+    },
     render: function () {
       var buildsteps = this.state.steps.map(function (buildstep) {
         return <BuildStep key={buildstep.stepId} data={buildstep}/>
-      });
+      }).reduce(this.injectSeparatorElements, []);
+
       return (
 
         <div id="build-steps" className="horizontal-scroll-wrapper">
