@@ -115,6 +115,7 @@
     componentDidMount: function(){
       setInterval(this.updateState, 1000);
     },
+
     injectSeparatorElements: function (p, n) {
       if (p.length > 0 && p[p.length-1].props.data.stepType != "trigger") {
         var key = "after-"+p[p.length-1].props.data.stepId;
@@ -123,6 +124,7 @@
         return p.concat([n]);
       }
     },
+    
     render: function () {
       var buildsteps = this.state.steps.map(function (buildstep) {
         return <BuildStep key={buildstep.stepId} data={buildstep}/>
@@ -137,6 +139,20 @@
 
     }
 
+  });
+
+  var Breadcrumb = React.createClass({
+    getInitialState: function(){
+
+    },
+
+    componentDidMount: function(){
+
+    },
+
+    render : function(){
+
+    }
   });
 
 

@@ -7,8 +7,15 @@ var PanelType = {
 
 var CurrentBuildSteps = React.createClass({
   render: function () {
+
+
     var runningBuildSteps = this.props.data.map(function (runningBuildStep) {
-      return (<li key={runningBuildStep.stepId}>{runningBuildStep.stepName}</li>)
+      return (<li key={runningBuildStep.stepId}>
+        <a href="#" onClick={function(){window.visiblePipeline = runningBuildStep.parent}}>
+        {runningBuildStep.stepName}
+        </a>
+
+      </li>)
     });
     return (<div className="build-info current-steps">
         <div className="media">

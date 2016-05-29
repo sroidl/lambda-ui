@@ -58,62 +58,19 @@ window.builds = [
 ];
 
 
-window.compile = {
-  stepName: "Compile-to-Jar",
-  stepState: "SUCCESS",
-  duration: "01:23",
-  stepId: "1"
-};
 
-window.deployCI = {
-  stepName: "Deploy CI",
-  stepState: "SUCCESS",
-  duration: "01:23",
-  stepId: "1-2"
-};
-window.deployQA = {
-  stepName: "Deploy QA",
-  stepState: "FAILED",
-  duration: "01:23",
-  stepId: "2-2"
-};
-
-window.test = {
-  stepName: "test",
-  stepState: "RUNNING",
-  duration: "01:23",
-  stepId: "3",
-  steps: [
-    {
-      stepName: "test-bar",
-      stepId: "2-3",
-      stepState: "RUNNING"
-    },
-    {
-      stepName: "test-foo",
-      stepId: "1-3",
-      stepState: "RUNNING"
-    },
-    {
-      stepName: "test-baz",
-      stepId: "3-3",
-      stepState: "FAILED"
-    }
-
-  ]
-};
-
-window.deploy = {
-  stepName: "Deploy",
-  stepState: "RUNNING",
-  duration: "01:23",
-  stepId: "2",
-  stepType: "in-parallel",
-  steps: [
-    deployCI,
-    deployQA
-  ]
-};
+// var build = function (buildNumber, gitInformation, pipeline, buildState, progress) {
+//   return {
+//     buildNumber: buildNumber,
+//     gitInformation: gitInformation,
+//     pipeline: pipeline,
+//     duration: {
+//       started: moment().format("MM/DD/YYYY -- HH:mm:ss")
+//     },
+//     buildState: buildState,
+//     progress: progress
+//   }
+// };
 
 var step = function (id, name, state, steps = []) {
   var newStep = {
@@ -129,7 +86,6 @@ var step = function (id, name, state, steps = []) {
         return steps.reduce(function (array, step) {
           if (step.steps && step.steps.length > 0) {
             var running = step.runningBuildSteps();
-            console.log(running);
             if (running.length > 0) {
               return array.concat(running);
             }
@@ -151,7 +107,6 @@ var step = function (id, name, state, steps = []) {
         return steps.reduce(function (array, step) {
           if (step.steps && step.steps.length > 0) {
             var running = step.failedBuildSteps();
-            console.log(running);
             if (running.length > 0) {
               return array.concat(running);
             }
@@ -217,6 +172,76 @@ window.testPipeline = {
 
 
 window.visiblePipeline = window.testPipeline;
+window.visibleBuild = undefined;
+
+
+
+var Build = function(build) {
+  build.runningBuildSteps = function () {
+    if (this.pipeline.steps.length > 0) {
+
+      return this.pipeline.steps.reduce(function (array, step) {
+        if (step.steps && step.steps.length > 0) {
+          var running = step.runningBuildSteps();
+          if (running.length > 0) {
+            return array.concat(running);
+          }
+        }
+        else if (step.stepState === "RUNNING") {
+          array.push(step);
+        }
+        return array;
+      }, []);
+
+    } else {
+      return [];
+    }
+  };
+
+  build.failedBuildSteps= function () {
+    if (this.pipeline.steps.length > 0) {
+      return this.pipeline.steps.reduce(function (array, step) {
+        if (step.steps && step.steps.length > 0) {
+          var running = step.failedBuildSteps();
+          if (running.length > 0) {
+            return array.concat(running);
+          }
+        }
+        else if (step.stepState === "FAILED") {
+          array.push(step);
+        }
+        return array;
+      }, []);
+
+    } else {
+      return [];
+    }
+  };
+
+  return build
+};
+
+
+
+
+window.builds = {
+  builds: [
+    Build({
+      buildNumber: 1,
+      gitInformation: {
+        author: "Florian Sellmayr",
+        message: "Add React infrastructure",
+        commitsSinceLastSuccess: 42
+      },
+      duration: {
+        started: moment().format("MM/DD/YYYY -- HH:mm:ss")
+      },
+      buildState: "FAILED",
+      pipeline: window.testPipeline
+    })
+  ]
+}
+
 
 
 ReactDOM.render(

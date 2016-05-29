@@ -1,26 +1,48 @@
 var BuildSummary = React.createClass({
 
-  render: function () {
-
-    var panelType = PanelType[this.props.data.buildState];
-    var progressbar, stopButton, rebuildButton, buildSteps;
-    if (panelType === PanelType.RUNNING) {
-      progressbar = <ProgressBar progress={this.props.data.progress}/>;
-      stopButton = <i className="fa fa-stop" aria-hidden="true"></i>;
-      buildSteps = <CurrentBuildSteps title="Current Buildsteps" data={this.props.data.runningBuildSteps}/>;
-    } else if (panelType === PanelType.FAILED) {
-      buildSteps = <CurrentBuildSteps title="Failed Buildsteps" data={this.props.data.failedBuildSteps}/>;
-    }
-
-    if (panelType !== PanelType.RUNNING) {
-      rebuildButton = <i className="fa fa-repeat" aria-hidden="true"></i>;
-    }
 
 
-    return (<div className={ "panel build-summary-container " + panelType }>
-      <div className="panel-heading container-fluid">
-        <h3 className="panel-title row">
-          <span className="col-md-3 text-left">#{this.props.data.buildNumber}</span>
+    render: function () {
+      var component = this;
+
+      var currentBuildSteps = function () {
+        if (component.props.data.runningBuildSteps && component.props.data.runningBuildSteps().length > 0) {
+          return (buildSteps = <CurrentBuildSteps title="Current Buildsteps" data={component.props.data.runningBuildSteps()}/>);
+        }
+      };
+
+      var failedBuildSteps = function () {
+        if (component.props.data.failedBuildSteps && component.props.data.failedBuildSteps().length > 0) {
+          return (buildSteps = <CurrentBuildSteps title="Failed Buildsteps" data={component.props.data.failedBuildSteps()}/>);
+        }
+      };
+
+
+
+
+      var panelType = PanelType[this.props.data.buildState];
+      var progressbar, stopButton, rebuildButton, buildSteps;
+      if (panelType === PanelType.RUNNING) {
+        progressbar = <ProgressBar progress={this.props.data.progress}/>;
+        stopButton = <i className="fa fa-stop" aria-hidden="true"></i>;
+
+      }
+
+      if (panelType !== PanelType.RUNNING) {
+        rebuildButton = <i className="fa fa-repeat" aria-hidden="true"></i>;
+      }
+
+
+      return (<div className={ "panel build-summary-container " + panelType }>
+        <div className="panel-heading container-fluid">
+          <h3 className="panel-title row">
+            <span className="col-md-3 text-left">
+            <a href="#" onClick={function() {
+              window.visiblePipeline = component.props.data.pipeline;
+            }}  >
+              #{this.props.data.buildNumber}
+            </a>
+            </span>
               <span className="col-md-5">
                  {progressbar}
               </span>
@@ -28,24 +50,26 @@ var BuildSummary = React.createClass({
                 {stopButton}
                 {rebuildButton}
               </span>
-        </h3>
-      </div>
+          </h3>
+        </div>
 
-      <div className="panel-body">
-        <GitInformation data={this.props.data.gitInformation}/>
-        <SummaryDuration data={this.props.data.duration}/>
-        {buildSteps}
-      </div>
-    </div>)
-  }
-});
+        <div className="panel-body">
+          <GitInformation data={this.props.data.gitInformation}/>
+          <SummaryDuration data={this.props.data.duration}/>
+          {currentBuildSteps()}
+          {failedBuildSteps()}
+        </div>
+      </div>)
+    }
+  })
+  ;
 
 var BuildSummaries = React.createClass({
   getInitialState: function () {
-    return {data: window.builds};
+    return {data: window.builds.builds};
   },
   updateState: function () {
-    this.setState({data: window.builds})
+    this.setState({data: window.builds.builds})
   },
   componentDidMount: function () {
     setInterval(this.updateState, 1000);
