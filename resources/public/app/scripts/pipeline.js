@@ -109,7 +109,7 @@ var Pipeline = React.createClass({
   },
 
   updateState: function () {
-    this.setState(window.visiblePipeline);
+    this.replaceState(window.visiblePipeline);
   },
 
   componentDidMount: function () {
@@ -148,26 +148,44 @@ var Pipeline = React.createClass({
 var Breadcrumb = React.createClass({
   render: function () {
 
+    var name = function(step) {
+      if (step.stepName) {
+        return step.stepName;
+      } else if (step.buildNumber){
+        return step.buildNumber;
+      }
+      else {
+        return "";
+      }
+    };
+
     var calculateSteps = function(step, list){
-      list.push(
-        step
-      );
-      if (step.parent) {
-        calculateSteps(step.parent, list);
+      while(step) {
+        list.push(step);
+        step = step.parent;
       }
       return list.reverse();
     };
 
+
+    var id = function(idProvider){
+      if (idProvider.stepId) {
+        return idProvider.stepId;
+      } else if (idProvider.buildNumber) {
+        return idProvider.buildNumber
+      }
+    };
+
     var renderSteps = function(steps) {
       var renderedSteps = steps.map(function(step){
-        return <span key={step.stepId} >&gt; {step.stepName}  </span>
+        return <span key={id(step)} >&gt; {name(step)}  </span>
       });
 
       return renderedSteps;
     };
 
-
-    return <span> {renderSteps(calculateSteps(this.props.data, []))} </span>
+    var names = calculateSteps(this.props.data, []).map(function(step) {return name(step);});
+      return (<div>{renderSteps(calculateSteps(this.props.data, []))}</div>);
   }
 });
 
