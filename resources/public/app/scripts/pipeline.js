@@ -29,6 +29,8 @@ var RegularBuildStep = React.createClass({
 
   render: function () {
 
+    var self = this;
+
     var panelType = PanelType[this.props.data.stepState];
 
 
@@ -53,11 +55,25 @@ var RegularBuildStep = React.createClass({
       window.visiblePipeline = props.data;
     };
 
+    var renderTitle = function(){
+        if (self.props.data.steps && self.props.data.steps.length > 0) {
+                    return (<a href="#" onClick={zoomIntoSubSteps}>
+                      {self.props.data.stepName}
+                    </a>);
+        } else {
+          return self.props.data.stepName;
+        }
+        }
+
+    ;
+
     return (
       <div className={"panel build-summary-container " + panelType}>
         <div className="panel-heading container-fluid">
           <h3 className="panel-title row">
-            <span className="col-md-6 text-left">{this.props.data.stepName}</span>
+            <span className="col-md-6 text-left">
+              {renderTitle()}
+            </span>
                 <span className="col-md-3 text-right">
                   <i className="fa fa-clock-o" aria-hidden="true"></i>
                   {this.props.data.duration}
@@ -66,9 +82,7 @@ var RegularBuildStep = React.createClass({
             <div className="col-md-3 text-right">
               <i className="fa fa-tasks padding-right" aria-hidden="true"></i>
 
-              <a href="#" onClick={zoomIntoSubSteps}>
-                <i className="fa fa-expand" aria-hidden="true"></i>
-              </a>
+
             </div>
           </h3>
         </div>
