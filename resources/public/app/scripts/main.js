@@ -36,7 +36,7 @@ var BuildSummary = React.createClass({
   }
 });
 
-var builds = [
+window.builds = [
   {
     buildNumber: 42,
     progress: 99,
@@ -76,8 +76,17 @@ var builds = [
 ];
 
 var BuildSummaries = React.createClass({
+  getInitialState: function() {
+    return {data: window.builds};
+  },
+  updateState: function () {
+    this.setState({data: window.builds})
+  },
+  componentDidMount: function() {
+    setInterval(this.updateState, 1000);
+  },
   render: function () {
-    var summaryNodes = this.props.data.map(function (summary) {
+    var summaryNodes = this.state.data.map(function (summary) {
       return (
         <BuildSummary data={summary} key={summary.buildNumber}/>
       );
@@ -150,7 +159,7 @@ var SummaryDuration = React.createClass({
       </div>
     )
   }
-})
+});
 
 var ProgressBar = React.createClass({
   render: function () {
@@ -168,7 +177,7 @@ var ProgressBar = React.createClass({
 
 
 ReactDOM.render(
-  <BuildSummaries data={builds}/>,
+  <BuildSummaries/>,
   document.getElementById('build-summaries')
 );
 
