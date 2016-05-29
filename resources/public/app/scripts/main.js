@@ -58,7 +58,6 @@ window.builds = [
 ];
 
 
-
 // var build = function (buildNumber, gitInformation, pipeline, buildState, progress) {
 //   return {
 //     buildNumber: buildNumber,
@@ -153,34 +152,11 @@ var running = function (id, name, steps = []) {
   return step(id, name, "RUNNING", steps);
 };
 
-window.testPipeline = {
-  steps: [
-    trigger("1"),
-    running("2", "Compile-To-Jar"),
-    parallel("3", [
-      success("3-1", "Deploy CI"),
-      failed("3-2", "Deploy QA", [failed("3-2-1", "docker-build")])
-    ]),
-    running("4", "Test", [
-      success("4-1", "Test Banana"),
-      success("4-2", "Test Apple"),
-      failed("4-3", "Test Pineapple"),
-      running("4-4", "Test Passionfruit", [running("4-4-1", "SuperCool")])
-    ])
-  ]
-};
-
-
-window.visiblePipeline = window.testPipeline;
-window.visibleBuild = undefined;
-
-
-
-var Build = function(build) {
+var Build = function (build) {
   build.runningBuildSteps = function () {
-    if (this.pipeline.steps.length > 0) {
+    if (this.steps.length > 0) {
 
-      return this.pipeline.steps.reduce(function (array, step) {
+      return this.steps.reduce(function (array, step) {
         if (step.steps && step.steps.length > 0) {
           var running = step.runningBuildSteps();
           if (running.length > 0) {
@@ -198,9 +174,9 @@ var Build = function(build) {
     }
   };
 
-  build.failedBuildSteps= function () {
-    if (this.pipeline.steps.length > 0) {
-      return this.pipeline.steps.reduce(function (array, step) {
+  build.failedBuildSteps = function () {
+    if (this.steps.length > 0) {
+      return this.steps.reduce(function (array, step) {
         if (step.steps && step.steps.length > 0) {
           var running = step.failedBuildSteps();
           if (running.length > 0) {
@@ -223,11 +199,28 @@ var Build = function(build) {
 
 
 
+window.testPipeline = [
+
+  trigger("1"),
+  running("2", "Compile-To-Jar"),
+  parallel("3", [
+    success("3-1", "Deploy CI"),
+    failed("3-2", "Deploy QA", [failed("3-2-1", "docker-build")])
+  ]),
+  running("4", "Test", [
+    success("4-1", "Test Banana"),
+    success("4-2", "Test Apple"),
+    failed("4-3", "Test Pineapple"),
+    running("4-4", "Test Passionfruit", [running("4-4-1", "SuperCool")]),
+  ]),
+  running("5", "Go to live")
+];
 
 window.builds = {
   builds: [
     Build({
       buildNumber: 1,
+      stepName: 1,
       gitInformation: {
         author: "Florian Sellmayr",
         message: "Add React infrastructure",
@@ -237,10 +230,61 @@ window.builds = {
         started: moment().format("MM/DD/YYYY -- HH:mm:ss")
       },
       buildState: "FAILED",
-      pipeline: window.testPipeline
+      steps: window.testPipeline
+    }),
+    Build({
+      buildNumber: 2,
+      stepName: 2,
+      progress: 99,
+      gitInformation: {
+        author: "Sebastian Roidl",
+        message: "LambdaUi Prototype",
+        commitsSinceLastSuccess: 1
+      },
+      duration: {
+        started: moment().format("MM/DD/YYYY -- HH:mm:ss")
+      },
+      buildState: "RUNNING",
+
+      steps: [
+        trigger(1, "trigger"),
+        success(2, "foo"),
+        success(3, "bar"),
+        running(4, "baz")
+      ]
+
+    }),
+    Build({
+      buildNumber: 3,
+      stepName: 3,
+      progress: 63,
+      gitInformation: {
+        author: "Martha Rohte",
+        message: "Add React infrastructure",
+        commitsSinceLastSuccess: 34
+      },
+
+      duration: {
+        started: moment().format("MM/DD/YYYY -- HH:mm:ss")
+      },
+      buildState: "SUCCESS",
+
+      steps: [
+        trigger(1, "trigger"),
+        success(2, "foo"),
+        success(3, "bar"),
+        success(4, "baz")
+      ]
+
     })
   ]
-}
+};
+
+
+
+window.visiblePipeline = window.builds.builds[0];
+window.visibleBuild = undefined;
+
 
 
 

@@ -38,7 +38,7 @@ var BuildSummary = React.createClass({
           <h3 className="panel-title row">
             <span className="col-md-3 text-left">
             <a href="#" onClick={function() {
-              window.visiblePipeline = component.props.data.pipeline;
+              window.visiblePipeline = component.props.data;
             }}  >
               #{this.props.data.buildNumber}
             </a>
