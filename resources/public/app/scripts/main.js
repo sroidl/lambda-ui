@@ -58,7 +58,6 @@ window.builds = [
 ];
 
 
-
 window.compile = {
   stepName: "Compile-to-Jar",
   stepState: "SUCCESS",
@@ -84,12 +83,23 @@ window.test = {
   stepState: "RUNNING",
   duration: "01:23",
   stepId: "3",
-  runningBuildSteps: [
-    {stepName: "test-foo", "stepId": "1-3"},
-    {stepName: "test-bar", "stepId": "2-3"}
-  ],
-  failedBuildSteps: [
-    {stepName: "test-baz", "stepId": "3-3"}
+  steps: [
+    {
+      stepName: "test-bar",
+      stepId: "2-3",
+      stepState: "RUNNING"
+    },
+    {
+      stepName: "test-foo",
+      stepId: "1-3",
+      stepState: "RUNNING"
+    },
+    {
+      stepName: "test-baz",
+      stepId: "3-3",
+      stepState: "FAILED"
+    }
+
   ]
 };
 
@@ -99,42 +109,85 @@ window.deploy = {
   duration: "01:23",
   stepId: "2",
   stepType: "in-parallel",
-  completedBuildSteps: [
+  steps: [
     deployCI,
     deployQA
   ]
 };
 
-var newTrigger = function(id) {
+var step = function (id, name, state, steps=[]) {
   return {
-    stepId: id,
-    stepType: "trigger",
-    stepState: "SUCCESS"
-  }
-}
-
-var newStep = function(id) {
-  return {
-    stepName: "Compile-to-Jar",
-    stepState: "SUCCESS",
+    stepName: name,
+    stepState: state,
     duration: "01:23",
-    stepId: id
-  };
-}
+    stepId: id,
+    steps: steps,
 
+    runningBuildSteps: function() {
+      return steps.filter(function (step) {
+        return step.stepState === "RUNNING"
+      })
+    },
+    failedBuildSteps: function() {
+      return steps.filter(function (step) {
+        return step.stepState === "FAILED"
+      })
+    }
+
+  };
+};
+
+var trigger = function (id, name) {
+  var step1 = step(id, name, "WAITING", []);
+  step1.stepType = "trigger";
+  return step1;
+};
+
+var parallel = function(id, steps=[]) {
+  var step1 = step(id, "", "", steps);
+  step1.stepType="in-parallel";
+  return step1;
+};
+
+var success = function(id, name, steps=[]){
+  return step(id, name, "SUCCESS", steps);
+};
+
+var failed = function(id, name, steps=[]){
+  return step(id, name, "FAILED", steps);
+};
+
+var running = function(id, name, steps=[]) {
+  return step(id, name, "RUNNING", steps);
+};
 
 window.testPipeline = {
   steps: [
-    newTrigger("22"),
-    window.compile,
-    window.deploy,
-    newTrigger("24"),
-    window.test,
-    newStep("5"),
-    newStep("6"),
-    newStep("9")
+    trigger("1"),
+    success("2", "Compile-To-Jar"),
+    parallel("3", [
+      success("3-1", "Deploy CI"),
+      failed("3-2", "Deploy QA", [failed("3-2-1", "docker-build")])
+    ]),
+    running("4", "Test", [
+      success("4-1", "Test Banana"),
+      success("4-2", "Test Apple"),
+      failed("4-3", "Test Pineapple"),
+      running("4-4", "Test Passionfruit")
+    ])
   ]
 };
 
 
+window.visiblePipeline = window.testPipeline;
 
+
+ReactDOM.render(
+  <Pipeline data={window.testPipeline}/>,
+  document.getElementById('build-steps')
+);
+
+ReactDOM.render(
+  <BuildSummaries/>,
+  document.getElementById('build-summaries')
+);

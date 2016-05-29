@@ -106,7 +106,3 @@ var SummaryDuration = React.createClass({
 });
 
 
-ReactDOM.render(
-  <BuildSummaries/>,
-  document.getElementById('build-summaries')
-);

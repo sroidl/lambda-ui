@@ -15,7 +15,7 @@
 
 
     render: function () {
-      var rows = this.props.data.completedBuildSteps.map(function (step) {
+      var rows = this.props.data.steps.map(function (step) {
         return (<div key={step.stepId} className="row"><RegularBuildStep data={step}/></div>)
 
       });
@@ -35,12 +35,12 @@
 
       var currentSteps;
       var steps = [];
-      if (this.props.data.runningBuildSteps) {
+      if (this.props.data.runningBuildSteps().length > 0) {
         steps.push(<CurrentBuildSteps key="current" title="Current Buildsteps"
-                                      data={this.props.data.runningBuildSteps}/>);
+                                      data={this.props.data.runningBuildSteps()}/>);
       }
-      if (this.props.data.failedBuildSteps) {
-        steps.push(<CurrentBuildSteps key="failed" title="Failed Buildsteps" data={this.props.data.failedBuildSteps}/>);
+      if (this.props.data.failedBuildSteps().length > 0) {
+        steps.push(<CurrentBuildSteps key="failed" title="Failed Buildsteps" data={this.props.data.failedBuildSteps()}/>);
       }
       if (steps.length > 0) {
         currentSteps = <div className="panel-body">
@@ -89,8 +89,21 @@
 
   var Pipeline = React.createClass({
 
+    getInitialState: function(){
+      return window.testPipeline;
+    },
+
+    updateState: function() {
+      this.setState(window.visiblePipeline);
+    },
+
+    componentDidMount: function(){
+      setInterval(this.updateState, 1000);
+    }
+    ,
+
     render: function () {
-      var buildsteps = this.props.data.steps.map(function (buildstep) {
+      var buildsteps = this.state.steps.map(function (buildstep) {
         return <BuildStep key={buildstep.stepId} data={buildstep}/>
       });
       return (
@@ -105,8 +118,4 @@
   });
 
 
-  ReactDOM.render(
-    <Pipeline data={window.testPipeline}/>,
-    document.getElementById('build-steps')
-  );
 
