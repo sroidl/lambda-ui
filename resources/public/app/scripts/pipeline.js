@@ -161,6 +161,7 @@ var Breadcrumb = React.createClass({
 
     var calculateSteps = function(step, list){
       while(step) {
+      if (!step.stepType || step.stepType !== "in-parallel" )
         list.push(step);
         step = step.parent;
       }
@@ -178,7 +179,9 @@ var Breadcrumb = React.createClass({
 
     var renderSteps = function(steps) {
       var renderedSteps = steps.map(function(step){
-        return <span key={id(step)} >&gt; {name(step)}  </span>
+        return <span key={id(step)} >&gt;
+         <a href="#" onClick={function(){window.visiblePipeline=step}}>{name(step)} </a>
+         </span>
       });
 
       return renderedSteps;
