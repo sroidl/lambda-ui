@@ -115,26 +115,63 @@ window.deploy = {
   ]
 };
 
-var step = function (id, name, state, steps=[]) {
-  return {
+var step = function (id, name, state, steps = []) {
+  var newStep = {
     stepName: name,
     stepState: state,
     duration: "01:23",
     stepId: id,
     steps: steps,
 
-    runningBuildSteps: function() {
-      return steps.filter(function (step) {
-        return step.stepState === "RUNNING"
-      })
-    },
-    failedBuildSteps: function() {
-      return steps.filter(function (step) {
-        return step.stepState === "FAILED"
-      })
-    }
+    runningBuildSteps: function () {
+      if (steps.length > 0) {
 
+        return steps.reduce(function (array, step) {
+          if (step.steps && step.steps.length > 0) {
+            var running = step.runningBuildSteps();
+            console.log(running);
+            if (running.length > 0) {
+              return array.concat(running);
+            }
+          }
+          else if (step.stepState === "RUNNING") {
+            array.push(step);
+          }
+          return array;
+        }, []);
+
+      } else {
+        return [];
+      }
+    },
+
+    failedBuildSteps: function () {
+      if (steps.length > 0) {
+
+        return steps.reduce(function (array, step) {
+          if (step.steps && step.steps.length > 0) {
+            var running = step.failedBuildSteps();
+            console.log(running);
+            if (running.length > 0) {
+              return array.concat(running);
+            }
+          }
+          else if (step.stepState === "FAILED") {
+            array.push(step);
+          }
+          return array;
+        }, []);
+
+      } else {
+        return [];
+      }
+    }
   };
+
+  steps.forEach(function (s) {
+    s.parent = newStep
+  });
+  return newStep;
 };
 
 var trigger = function (id, name) {
@@ -143,28 +180,28 @@ var trigger = function (id, name) {
   return step1;
 };
 
-var parallel = function(id, steps=[]) {
+var parallel = function (id, steps = []) {
   var step1 = step(id, "", "", steps);
-  step1.stepType="in-parallel";
+  step1.stepType = "in-parallel";
   return step1;
 };
 
-var success = function(id, name, steps=[]){
+var success = function (id, name, steps = []) {
   return step(id, name, "SUCCESS", steps);
 };
 
-var failed = function(id, name, steps=[]){
+var failed = function (id, name, steps = []) {
   return step(id, name, "FAILED", steps);
 };
 
-var running = function(id, name, steps=[]) {
+var running = function (id, name, steps = []) {
   return step(id, name, "RUNNING", steps);
 };
 
 window.testPipeline = {
   steps: [
     trigger("1"),
-    success("2", "Compile-To-Jar"),
+    running("2", "Compile-To-Jar"),
     parallel("3", [
       success("3-1", "Deploy CI"),
       failed("3-2", "Deploy QA", [failed("3-2-1", "docker-build")])
@@ -173,7 +210,7 @@ window.testPipeline = {
       success("4-1", "Test Banana"),
       success("4-2", "Test Apple"),
       failed("4-3", "Test Pineapple"),
-      running("4-4", "Test Passionfruit")
+      running("4-4", "Test Passionfruit", [running("4-4-1", "SuperCool")])
     ])
   ]
 };

@@ -48,6 +48,12 @@
         </div>;
       }
 
+      var props = this.props;
+
+      var zoomIntoSubSteps = function () {
+        window.visiblePipeline = props.data;
+      };
+
       return (
         <div className={"panel build-summary-container " + panelType}>
           <div className="panel-heading container-fluid">
@@ -60,7 +66,10 @@
 
               <div className="col-md-3 text-right">
                 <i className="fa fa-tasks padding-right" aria-hidden="true"></i>
+
+                <a href="#" onClick={zoomIntoSubSteps}>
                 <i className="fa fa-expand" aria-hidden="true"></i>
+                </a>
               </div>
             </h3>
           </div>
