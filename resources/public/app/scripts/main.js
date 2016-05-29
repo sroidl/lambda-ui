@@ -40,7 +40,7 @@ window.builds = [
     progress: 63,
     gitInformation: {
       author: "Florian Sellmayr",
-      message: "Add React infrastructure",
+      message: "Add React infrastructure with very long and hopefully linebreaking git commit message",
       commitsSinceLastSuccess: 42
     },
     failedBuildSteps: [
@@ -202,7 +202,7 @@ var Build = function (build) {
 window.testPipeline = [
 
   trigger("1"),
-  running("2", "Compile-To-Jar"),
+  running("2", "Compile-To-Jar", [running("2-1", "compile")]),
   parallel("3", [
     success("3-1", "Deploy CI"),
     failed("3-2", "Deploy QA", [failed("3-2-1", "docker-build")])
@@ -219,11 +219,10 @@ window.testPipeline = [
 window.builds = {
   builds: [
     Build({
-      buildNumber: 1,
-      stepName: 1,
+      buildNumber: "b1",
       gitInformation: {
         author: "Florian Sellmayr",
-        message: "Add React infrastructure",
+        message: "Add React infrastructure with very long and hopefully linebreaking git commit message",
         commitsSinceLastSuccess: 42
       },
       duration: {
@@ -233,8 +232,7 @@ window.builds = {
       steps: window.testPipeline
     }),
     Build({
-      buildNumber: 2,
-      stepName: 2,
+      buildNumber: "b2",
       progress: 99,
       gitInformation: {
         author: "Sebastian Roidl",
@@ -247,16 +245,15 @@ window.builds = {
       buildState: "RUNNING",
 
       steps: [
-        trigger(1, "trigger"),
-        success(2, "foo"),
-        success(3, "bar"),
-        running(4, "baz")
+        trigger(100, "trigger"),
+        success(200, "foo"),
+        success(300, "bar"),
+        running(400, "baz")
       ]
 
     }),
     Build({
-      buildNumber: 3,
-      stepName: 3,
+      buildNumber: "b3",
       progress: 63,
       gitInformation: {
         author: "Martha Rohte",
@@ -285,7 +282,13 @@ window.builds = {
 window.visiblePipeline = window.builds.builds[0];
 window.visibleBuild = undefined;
 
-
+window.builds.builds.forEach(function(build){
+  if (build.steps) {
+    build.steps.forEach(function(step) {
+      step.parent = build;
+    })
+  }
+})
 
 
 ReactDOM.render(
