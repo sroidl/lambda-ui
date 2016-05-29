@@ -103,3 +103,10 @@
     }
 
   });
+
+
+  ReactDOM.render(
+    <Pipeline data={window.testPipeline}/>,
+    document.getElementById('build-steps')
+  );
+

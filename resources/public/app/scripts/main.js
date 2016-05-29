@@ -24,26 +24,39 @@ window.builds = [
     buildNumber: 43,
     progress: 63,
     gitInformation: {
+      author: "Martha Rohte",
+      message: "Add React infrastructure",
+      commitsSinceLastSuccess: 42
+    },
+
+    duration: {
+      started: moment().format("MM/DD/YYYY -- HH:mm:ss")
+    },
+    buildState: "SUCCESS"
+
+  },
+  {
+    buildNumber: 46,
+    progress: 63,
+    gitInformation: {
       author: "Florian Sellmayr",
       message: "Add React infrastructure",
       commitsSinceLastSuccess: 42
     },
-    runningBuildSteps: [
+    failedBuildSteps: [
       {stepName: "deploy-ci", "stepId": "1-2"},
       {stepName: "deploy-qa", "stepId": "2-2"}
     ],
     duration: {
-      started: ""
+      started: moment().format("MM/DD/YYYY -- HH:mm:ss")
     },
-    buildState: "SUCCESS"
+    buildState: "FAILED"
 
   }
+
+
 ];
 
-ReactDOM.render(
-  <BuildSummaries/>,
-  document.getElementById('build-summaries')
-);
 
 
 window.compile = {
@@ -122,11 +135,6 @@ window.testPipeline = {
     newStep("9")
   ]
 };
-
-ReactDOM.render(
-  <Pipeline data={window.testPipeline}/>,
-  document.getElementById('build-steps')
-);
 
 
 

@@ -3,16 +3,30 @@ var BuildSummary = React.createClass({
   render: function () {
 
     var panelType = PanelType[this.props.data.buildState];
+    var progressbar, stopButton, rebuildButton, buildSteps;
+    if (panelType === PanelType.RUNNING) {
+      progressbar = <ProgressBar progress={this.props.data.progress}/>;
+      stopButton = <i className="fa fa-stop" aria-hidden="true"></i>;
+      buildSteps = <CurrentBuildSteps title="Current Buildsteps" data={this.props.data.runningBuildSteps}/>;
+    } else if (panelType === PanelType.FAILED) {
+      buildSteps = <CurrentBuildSteps title="Failed Buildsteps" data={this.props.data.failedBuildSteps}/>;
+    }
+
+    if (panelType !== PanelType.RUNNING) {
+      rebuildButton = <i className="fa fa-repeat" aria-hidden="true"></i>;
+    }
+
 
     return (<div className={ "panel build-summary-container " + panelType }>
       <div className="panel-heading container-fluid">
         <h3 className="panel-title row">
           <span className="col-md-3 text-left">#{this.props.data.buildNumber}</span>
               <span className="col-md-5">
-                 <ProgressBar progress={this.props.data.progress}/>
+                 {progressbar}
               </span>
               <span className="col-md-4 text-right">
-                  <i className="fa fa-stop" aria-hidden="true"></i>
+                {stopButton}
+                {rebuildButton}
               </span>
         </h3>
       </div>
@@ -20,9 +34,7 @@ var BuildSummary = React.createClass({
       <div className="panel-body">
         <GitInformation data={this.props.data.gitInformation}/>
         <SummaryDuration data={this.props.data.duration}/>
-
-
-        <CurrentBuildSteps title="Current Buildsteps" data={this.props.data.runningBuildSteps}/>
+        {buildSteps}
       </div>
     </div>)
   }
@@ -50,7 +62,6 @@ var BuildSummaries = React.createClass({
     </div>)
   }
 });
-
 
 
 var GitInformation = React.createClass({
@@ -86,10 +97,16 @@ var SummaryDuration = React.createClass({
           </div>
           <div className="media-body">
             <div>Started: {this.props.data.started}</div>
-            <div>Duration: 5min 14sec</div>
+
           </div>
         </div>
       </div>
     )
   }
 });
+
+
+ReactDOM.render(
+  <BuildSummaries/>,
+  document.getElementById('build-summaries')
+);
