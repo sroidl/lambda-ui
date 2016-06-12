@@ -246,8 +246,8 @@ window.builds = {
 
       steps: [
         trigger(100, "trigger"),
-        success(200, "foo"),
-        success(300, "bar"),
+        parallel(213, [success(200, "foo"),
+        success(300, "bar")]),
         running(400, "baz")
       ]
 
