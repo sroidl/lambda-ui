@@ -1,6 +1,6 @@
 Lambda UI
 ==========
-An alternative Graphical User Interface for LambdaCD.
+An alternative Graphical User Interface for [LambdaCD](https://github.com/flosell/lambdacd).
 
 ## Contribute
 
