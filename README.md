@@ -16,3 +16,4 @@ Use the _go_ script to run the necessary build steps:
 3. Open _resources/ui/index.html_ in Browser
 
 Also see `./go help` for further goals.
+You can also use the NPM targets when inside the _resources/ui_ folder.
