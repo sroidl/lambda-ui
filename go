@@ -28,16 +28,36 @@ goal_sass() {
   popd > /dev/null
 }
 
+goal_sass-once() {
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    npm run sass
+  popd > /dev/null
+
+}
+
+goal_clean() {
+  lein clean
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    npm run clean
+  popd > /dev/null
+}
+
 if type -t "goal_$1" &>/dev/null; then
   goal_$1 ${@:2}
 else
   echo "usage: $0 <goal>
 goal:
-    setup     -- set up environment
-    serve     -- serve the ui
-    test      -- run tests
+    All:
     push      -- run all tests and push current state
-    release   -- release current version
+    setup     -- set up environment
+    clean     -- clean all generated files
+
+    Frontend:
+    sass      -- watch sass folder and compile on demand
+    sass-once -- compile sass folder once
+
+    Backend:
+    test      -- run tests
     run       -- run example pipeline"
   exit 1
 fi
