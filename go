@@ -17,15 +17,14 @@ goal_push() {
 }
 
 goal_setup() {
-  pushd ${SCRIPT_DIR}/resources/public > /dev/null
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
     npm install
-    bower install
   popd > /dev/null
 }
 
-goal_serve() {
-  pushd ${SCRIPT_DIR}/resources/public > /dev/null
-    node_modules/gulp/bin/gulp.js serve
+goal_sass() {
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    npm run watch-sass
   popd > /dev/null
 }
 
