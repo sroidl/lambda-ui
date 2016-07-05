@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "sass": "node-sass --include-path sass --output public/css sass",
-    "watch-sass": "nodemon -e sass -x \"npm run sass\""
+    "watch-sass": "nodemon -e sass -x \"npm run sass\"",
+    "clean": "rm -rf public/css"
   },
   "repository": {
     "type": "git",
