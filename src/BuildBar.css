@@ -1,0 +1,26 @@
+.buildSummary {
+  width: 95%;
+  padding: 8px;
+  margin: 8px;
+  font-size: 2em;
+  text-align: left;
+}
+
+.inProgress {
+  background: #687fc2;
+  color: white;
+}
+
+.success {
+  background: #76bc73;
+  color: white;
+}
+
+.failure {
+  background: #92262b;
+  color: white;
+}
+
+.buildNumber {
+
+}
