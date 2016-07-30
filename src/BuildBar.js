@@ -6,7 +6,7 @@ class BuildBar extends Component {
     return (
       <div className="buildSummary">
         <div className="buildNumber">
-          # {this.props.buildNumber}: {this.props.state}
+          #{this.props.buildNumber}: {this.props.state}
         </div>
       </div>
     );
