@@ -8,9 +8,12 @@ class BuildBar extends Component {
 
     return (
       <div className={classes}>
-        <div className="buildNumber">
+        <span className="buildIcon">?</span>
+        <span className="buildNumber">
           #{this.props.buildNumber}: {this.props.state}
-        </div>
+        </span>
+        <span className="startTime">Started: an hour ago</span>
+        <span className="duration">Duration: 5min 46sec</span>
       </div>
     );
   }

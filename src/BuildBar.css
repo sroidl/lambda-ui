@@ -1,7 +1,6 @@
 .buildSummary {
   padding: 8px;
   margin: 8px;
-  font-size: 2em;
   text-align: left;
 }
 
@@ -20,6 +19,30 @@
   color: white;
 }
 
-.buildNumber {
+.buildIcon {
+  font-size: 2.5em;
+  margin: 8px;
+  padding: 8px;
+  vertical-align: middle;
+}
 
+.buildNumber {
+  font-size: 2em;
+  margin: 8px;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.startTime {
+  font-size: 1em;
+  margin: 8px;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.duration {
+  font-size: 1em;
+  margin: 8px;
+  padding: 8px;
+  vertical-align: middle;
 }
