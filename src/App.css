@@ -6,6 +6,7 @@
   height: 40px;
   vertical-align: middle;
   display: inline-block;
+  padding: 8px;
 }
 
 .App-header {
@@ -20,4 +21,5 @@
   display: inline-block;
   color: #76bc73;
   font-weight: 300;
+  font-size: 1.8em;
 }
