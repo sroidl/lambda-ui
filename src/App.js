@@ -14,12 +14,15 @@ class App extends Component {
     ];
 
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <span className="LogoText">LambdaCD</span>
+      <div className="app">
+        <div className="appHeader">
+          <div className="logo">
+            <img src={logo} className="logoImage" alt="logo" />
+            <span className="logoText">LAMBDA CD</span>
+          </div>
+          <span className="pipelineName">p13n-reco</span>
         </div>
-        <div className="App-intro">
+        <div>
           <BuildList data={data} />
         </div>
       </div>
