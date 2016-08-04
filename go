@@ -7,6 +7,13 @@ goal_test() {
   lein test
 }
 
+goal_serve-ui() {
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    python -m SimpleHTTPServer 8080
+  popd > /dev/null
+
+}
+
 goal_run() {
   NAMESPACE="lambdaui.example.simple-pipeline"
   lein run -m ${NAMESPACE}
