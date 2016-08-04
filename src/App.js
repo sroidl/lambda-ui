@@ -21,6 +21,7 @@ class App extends Component {
             <span className="logoText">LAMBDA CD</span>
           </div>
           <span className="pipelineName">p13n-reco</span>
+          <button className="runButton">Start Build</button>
         </div>
         <div>
           <BuildList data={data} />

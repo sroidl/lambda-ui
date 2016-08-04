@@ -31,4 +31,16 @@
 
 .pipelineName {
   vertical-align: middle;
+  margin: 0 24px 0 16px;
+}
+
+.runButton {
+  background: #687fc2;
+  color: white;
+  border: none;
+}
+
+.runButton:hover {
+  background: #546bae;
+  color: white;
 }
