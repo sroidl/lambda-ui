@@ -14,13 +14,22 @@ body
     background-color: $blue
     color: $lightGrey
 
+    & .buildDetails
+      border-color: $blue
+
   &.failed
     background-color: $red
     color: $lightGrey
 
+    & .buildDetails
+      border-color: $red
+
   &.success
     background-color: $green
     color: $black
+
+    & .buildDetails
+      border-color: $green
 
   .buildIcon
     display: inline-block
@@ -49,3 +58,10 @@ body
     padding: 10px 30px
     font-size: 2em
     font-weight: bold
+
+  .buildDetails
+    display: block
+    background-color: $lightGrey
+    border-width: 2px
+    border-style: solid
+    padding: 20px
