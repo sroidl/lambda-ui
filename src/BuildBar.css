@@ -4,6 +4,10 @@
   text-align: left;
 }
 
+.open {
+  border: 4px solid red;
+}
+
 .inProgress {
   background: #687fc2;
   color: white;
@@ -21,28 +25,21 @@
 
 .buildIcon {
   font-size: 2.5em;
-  margin: 8px;
-  padding: 8px;
   vertical-align: middle;
+  text-align: center;
 }
 
 .buildNumber {
   font-size: 2em;
-  margin: 8px;
-  padding: 8px;
   vertical-align: middle;
 }
 
 .startTime {
   font-size: 1em;
-  margin: 8px;
-  padding: 8px;
   vertical-align: middle;
 }
 
 .duration {
   font-size: 1em;
-  margin: 8px;
-  padding: 8px;
   vertical-align: middle;
 }
