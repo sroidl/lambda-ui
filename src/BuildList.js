@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import BuildBar from './BuildBar';
+import BuildSummary from './BuildSummary';
 
 class BuildList extends Component {
   render() {
     let builds = this.props.data.map((build) => {
       return (
-        <BuildBar buildNumber={build.id} state={build.state} key={build.id} />
+        <BuildSummary buildNumber={build.id} state={build.state} key={build.id} />
       );
     });
 
