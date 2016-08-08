@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './BuildSummary.css';
 import classNames from 'classnames';
 import BuildBar from './BuildBar';
+import BuildSummaryContent from './BuildSummaryContent';
 
 class BuildSummary extends Component {
 
@@ -24,7 +25,7 @@ class BuildSummary extends Component {
     return (
       <div className={classes} onClick={this.toggleBar}>
         <BuildBar buildNumber={this.props.buildNumber} state={this.props.state}/>
-
+        <BuildSummaryContent />
       </div>
     );
   }
