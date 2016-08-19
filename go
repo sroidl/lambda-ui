@@ -62,6 +62,7 @@ goal:
     Frontend:
     sass      -- watch sass folder and compile on demand
     sass-once -- compile sass folder once
+    serve-ui  -- starts a web server that serves the UI folder on port 8080. (Python required)
 
     Backend:
     test      -- run tests
