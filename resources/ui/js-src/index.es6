@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import BuildSummary from './buildSummary.js'
+import LambdaUI from './App.js'
 
-ReactDOM.render(<BuildSummary/>, document.getElementById('entryPoint'));
+new LambdaUI().startUp();
