@@ -5,10 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass": "node-sass --include-path sass --output public/css sass",
-    "watch-sass": "nodemon -e sass -x \"npm run sass\"",
-    "clean": "rm -rf public/css",
-    "cleanNode" : "rm -rf node_modules"
+    "sass-once": "node-sass --include-path sass --output public/css sass",
+    "sass-watch": "nodemon -e sass -x \"npm run sass-once\"",
+    "clean": "rm -rf public/css public/js",
+    "cleanNode": "rm -rf node_modules",
+    "babel-watch": "node_modules/babel-cli/bin/babel.js --watch js-src --out-dir public/js",
+    "babel-once": "node_modules/babel-cli/bin/babel.js  js-src --out-dir public/js",
+    "js-once": "npm run babel-once && node_modules/webpack/bin/webpack.js public/js/index.js public/js/bundle.js",
+    "js-watch": "nodemon -e jsx,es6 -x \"npm run js-once\""
+
   },
   "repository": {
     "type": "git",
@@ -32,7 +37,17 @@
   },
   "homepage": "https://github.com/sroidl/lambda-ui#readme",
   "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
     "node-sass": "^3.8.0",
-    "nodemon": "^1.9.2"
+    "nodemon": "^1.9.2",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   }
 }

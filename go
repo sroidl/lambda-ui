@@ -31,13 +31,26 @@ goal_setup() {
 
 goal_sass() {
   pushd ${SCRIPT_DIR}/resources/ui > /dev/null
-    npm run watch-sass
+    npm run sass-watch
   popd > /dev/null
 }
 
 goal_sass-once() {
   pushd ${SCRIPT_DIR}/resources/ui > /dev/null
-    npm run sass
+    npm run sass-once
+  popd > /dev/null
+
+}
+
+goal_js-once() {
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    npm run js-once
+  popd > /dev/null
+}
+
+goal_js() {
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    npm run js-watch
   popd > /dev/null
 
 }
@@ -62,6 +75,8 @@ goal:
     Frontend:
     sass      -- watch sass folder and compile on demand
     sass-once -- compile sass folder once
+    js        -- watch js-src folder and compile es6 & react files into plain old js.
+    js-once   -- compile js-src folder once.
     serve-ui  -- starts a web server that serves the UI folder on port 8080. (Python required)
 
     Backend:
