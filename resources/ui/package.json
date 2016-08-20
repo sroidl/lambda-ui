@@ -13,7 +13,6 @@
     "babel-once": "node_modules/babel-cli/bin/babel.js  js-src --out-dir public/js",
     "js-once": "npm run babel-once && node_modules/webpack/bin/webpack.js public/js/index.js public/js/bundle.js",
     "js-watch": "nodemon -e jsx,es6 -x \"npm run js-once\""
-
   },
   "repository": {
     "type": "git",
@@ -48,6 +47,8 @@
   },
   "dependencies": {
     "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "react-dom": "^15.3.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2"
   }
 }
