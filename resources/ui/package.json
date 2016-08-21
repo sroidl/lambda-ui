@@ -10,7 +10,7 @@
     "clean": "rm -rf public/css public/js",
     "cleanNode": "rm -rf node_modules",
     "babel-watch": "node_modules/babel-cli/bin/babel.js --watch js-src --out-dir public/js",
-    "babel-once": "node_modules/babel-cli/bin/babel.js  js-src --out-dir public/js",
+    "babel-once": "node_modules/babel-cli/bin/babel.js  js --out-dir public/js",
     "js-once": "npm run babel-once && node_modules/webpack/bin/webpack.js public/js/index.js public/js/bundle.js",
     "js-watch": "nodemon -e jsx,es6 -x \"npm run js-once\""
   },
