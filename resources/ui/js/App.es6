@@ -1,8 +1,8 @@
-import appState from './AppState.js'
+import appState from './AppState.es6'
 import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom';
 import React from 'react';
-import BuildSummaryList from './BuildSummaryList.js'
+import BuildSummaryList from './BuildSummaryList.es6'
 
 
 class LambdaUI {

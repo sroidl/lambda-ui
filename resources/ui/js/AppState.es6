@@ -5,8 +5,10 @@ const initialState = {
     { id: 1,
       state: "success"
     },
-    { id: 2,
-      state: "failed"}
+    { id: 2434,
+      state: "failed"
+    },
+
   ]
 }
 

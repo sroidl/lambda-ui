@@ -8,15 +8,12 @@ Thanks for your helping hand!
 
 ### Getting Started
 
-#### Compile & Run the Frontend
+#### Development
 Use the _go_ script to run the necessary build steps:
 
-1. `./go setup` -- Run to update npm dependencies
-2. `./go sass` -- Compiles all sass files to css in watchmode (use goal `sass-once` to compile the files only once.).
-3. `./go js`  -- Compile all ES6 & JSX files into plain old js files in watchmode. 
-3. a) `./go serve-ui` -- Serves the _resources/ui_ folder on port 8080 (Python2 required).
+1. `./go setup` -- Run to update npm dependencies. Only required once.
+2. `./go serve-ui` -- Runs a webserver thats serves the frontend on port 8080. Watches the frontend folder for changes and rebundles them on the fly.
 
-   b) Open _resources/ui/index.html_ in Browser
 
 Also see `./go help` for further goals.
 You can also use the NPM targets when inside the _resources/ui_ folder.

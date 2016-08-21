@@ -6,7 +6,8 @@ const BuildSummaryListPresentation = ({builds}) => (
     {builds.map(build =>
       <div key={build.id}>
         Build Id: {build.id} <br/>
-        Build State: {build.state}
+        Build State: {build.state}<br/>
+        Bla<br/>
       </div>
     )}
   </div>

@@ -5,14 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass-once": "node-sass --include-path sass --output public/css sass",
-    "sass-watch": "nodemon -e sass -x \"npm run sass-once\"",
-    "clean": "rm -rf public/css public/js",
+    "clean": "rm -rf public/css public/js build",
     "cleanNode": "rm -rf node_modules",
-    "babel-watch": "node_modules/babel-cli/bin/babel.js --watch js-src --out-dir public/js",
-    "babel-once": "node_modules/babel-cli/bin/babel.js  js --out-dir public/js",
-    "js-once": "npm run babel-once && node_modules/webpack/bin/webpack.js public/js/index.js public/js/bundle.js",
-    "js-watch": "nodemon -e jsx,es6 -x \"npm run js-once\""
+    "static-sass": "node-sass --include-path sass --output public/css sass",
+    "compile" : "node_modules/webpack/bin/webpack.js",
+    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline"
   },
   "repository": {
     "type": "git",
@@ -41,9 +38,13 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
+    "css-loader": "^0.23.1",
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",
-    "webpack": "^1.13.2"
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "react": "^15.3.0",
