@@ -1,4 +1,5 @@
 import { createStore } from 'redux'
+import ToggleBuildDetailsReducer from './reducers/ToggleBuildDetails.es6'
 
 const initialState = {
   builds: {
@@ -11,28 +12,11 @@ const initialState = {
 }
 
 const rootReducer = (oldState=initialState, action) => {
-  let newState = toggleBuildDetails(oldState, action);
+  let newState = ToggleBuildDetailsReducer(oldState, action);
   console.log("Received Action: ", action, newState);
   return newState;
 }
 
-const toggleBuild = (openedBuilds, id) => {
-  let oldState = openedBuilds[id] || false;
-  let newstate = {};
-  newstate[id] = !openedBuilds[id];
-  return Object.assign({}, openedBuilds, newstate)
-}
-
-const toggleBuildDetails = (oldState, action) => {
-  switch(action.type) {
-    case "toggleBuildDetails":
-      let openedBuilds = oldState.openedBuilds;
-      return Object.assign({}, oldState, {openedBuilds: toggleBuild(openedBuilds, action.buildId)})
-    break;
-
-    default: return oldState;
-  }
-}
 
 let appState = createStore(rootReducer);
 export default appState;
