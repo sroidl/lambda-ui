@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import BuildDetails from './BuildDetails.es6'
 
-class BuildSummaryPresentation extends Component {
-  render() {
-    return <span>
-            <h1>Hello World. Current Count is {this.props.currentCounter}</h1>
-            <button onClick={this.props.buttonClick}> Increment</button>
-           </span>
-  }
+const BuildSummaryPresentation = ({buildId, build, toggleBuildDetails}) =>{
+
+    let classesForState = "row buildSummary " + build.state;
+
+    return <div className={classesForState}>
+        <div className="one column buildIcon">?</div>
+        <div className="three columns buildNumber">Build #{build.buildNumber}</div>
+        <div className="three columns buildStartTime">Started: {build.startTime}</div>
+        <div className="three columns buildDuration">Duration: {build.duration}</div>
+        <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
+        <BuildDetails build={build}/>
+      </div>
+
 }
 
 const mapStateToProps = (state, ownProps) => {
+
+  let buildId = ownProps.buildId;
+  let build = state.builds[buildId];
+
   return {
-    currentCounter: state.counterValue
+      build: build,
+      buildId: buildId
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) =>  {
   return {
-    buttonClick: () => {
-      console.log("Clicked Button :) ");
-      dispatch({type: "INCREASE"});
+    toggleBuildDetails: () => {
+      dispatch({type: "toggleBuildDetails", buildId: ownProps.buildId})
     }
   }
 }
