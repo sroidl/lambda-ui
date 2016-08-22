@@ -7,7 +7,7 @@ module.exports = {
     "webpack-dev-server/client?http://localhost:8080",
     "webpack/hot/dev-server",
     // Main App.
-    "./js/index.es6"
+    "./src/js/index.es6"
   ],
 
   output: {
