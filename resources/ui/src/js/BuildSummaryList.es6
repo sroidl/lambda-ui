@@ -16,7 +16,7 @@ const BuildSummaryListPresentation = ({builds}) => {
   </div>
 };
 
-const mapStateToProps = (state) => {return {builds: state.builds}};
+const mapStateToProps = (state) => {return {builds: state.summaries}};
 const mapDispatchToProps = (state) => {return {}};
 const BuildSummaryList = connect(mapStateToProps, mapDispatchToProps)(BuildSummaryListPresentation);
 

@@ -20,7 +20,7 @@ const BuildSummaryPresentation = ({buildId, build, toggleBuildDetails}) =>{
 const mapStateToProps = (state, ownProps) => {
 
   let buildId = ownProps.buildId;
-  let build = state.builds[buildId];
+  let build = state.summaries[buildId];
 
   return {
       build: build,

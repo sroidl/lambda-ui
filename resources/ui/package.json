@@ -8,7 +8,7 @@
     "clean": "rm -rf public/css public/js build",
     "cleanNode": "rm -rf node_modules",
     "static-sass": "node-sass --output public/css src/sass",
-    "compile" : "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js",
+    "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --config webpack.config.dev.js"
   },
   "repository": {
@@ -50,6 +50,8 @@
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "whatwg-fetch": "^1.0.0",
+    "wu": "^2.1.0"
   }
 }
