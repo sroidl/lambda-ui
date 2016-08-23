@@ -7,6 +7,7 @@
                  [lambdacd "0.9.0"]
                  [compojure "1.5.0"]
                  [http-kit "2.1.18"]
+                 [org.clojure/data.json "0.2.6"]
                  ]
   :test-paths ["test" "example"]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
