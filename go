@@ -57,6 +57,7 @@ goal:
     Frontend:
     compile-ui -- Compiles UI into resources/ui/public
     serve-ui  -- Serves UI on port 8080. Watches frontend and recompiles with webpack if necessary.
+    serve-backend -- Serves the backend-for-frontend on port 4444
 
     Backend:
     test      -- run tests
