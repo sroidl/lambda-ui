@@ -7,6 +7,9 @@ goal_test() {
   lein test
 }
 
+goal_serve-backend() {
+  lein run
+}
 goal_serve-ui() {
   pushd ${SCRIPT_DIR}/resources/ui > /dev/null
     npm start

@@ -11,4 +11,6 @@
                  ]
   :test-paths ["test" "example"]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
-                                  [ring-server "0.4.0"]]}})
+                                  [ring-server "0.4.0"]]
+                   :main lambdaui.core
+                   }})
