@@ -2,3 +2,4 @@ node_modules/
 public/css
 public/js
 build/
+.DS_Store
