@@ -1,16 +1,25 @@
 import { newToggleBuildDetailsAction } from '../../Actions.es6'
 import ToggleBuildDetailsReducer from '../ToggleBuildDetails.es6'
 
+const subject = ToggleBuildDetailsReducer;
+const action = newToggleBuildDetailsAction;
+
 describe("toggleBuildDetailsAction", () =>
   it("should create a proper action", () =>
     expect(newToggleBuildDetailsAction(2)).toEqual({type:"toggleBuildDetails", buildId: 2})))
 
 describe("ToggleBuildDetailsReduce", () => {
   it("should return true for a new buildId if ToggleBuildDetailsAction received", () =>{
-    let action = newToggleBuildDetailsAction(3);
-    expect(ToggleBuildDetailsReducer({}, action)).toEqual({3: true})})
-  it("fd", () =>{
-    let action = newToggleBuildDetailsAction(3);
-    expect(ToggleBuildDetailsReducer({3: true}, action)).toEqual({3: false})
+    expect(subject({}, action(3))).toEqual({3: true})})
+  it("should return false for a build that was previously visible", () =>{
+    expect(subject({3: true}, action(3))).toEqual({3: false})
+  })
+  it("should not return the same Object if a ToggleBuildDetailsAction was received", () => {
+    let oldState = {};
+    expect(subject(oldState, action(3))).not.toBe(oldState);
+  })
+  it("should return the same object if no relevant action was received", () => {
+    let oldState = {};
+    expect(subject(oldState, {type: "unrelated"})).toBe(oldState);
   })
 })
