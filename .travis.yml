@@ -1,5 +1,3 @@
-before_script:
-- npm install -g npm@next
 language: nodejs
 nodejs: "6"
 script: ./go setup && ./go test
