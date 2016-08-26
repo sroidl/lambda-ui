@@ -47,6 +47,10 @@ goal_setup() {
   pushd ${SCRIPT_DIR}/resources/ui > /dev/null
     npm install lodash
     npm install
+    echo "Node version:"
+    node --version
+    echo "NPM version:"
+    npm --version
   popd > /dev/null
 }
 
