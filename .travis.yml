@@ -1,4 +1,5 @@
-language: clojure
+language: nodejs
+nodejs: "6"
 script: ./go setup && ./go test
 sudo: false
 cache:
