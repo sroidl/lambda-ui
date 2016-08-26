@@ -3,7 +3,7 @@ nodejs: "6"
 install:
   - npm install -g babel-cli
   - ./resources/ui/npm install lodash
-  - ./go setup
+  - travis_retry ./go setup
 script: ./go test
 sudo: false
 cache:
