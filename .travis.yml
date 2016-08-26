@@ -3,6 +3,9 @@ node_js:
   - "6"
 install:
   - travis_retry ./go setup
+  - curl -O https://raw.githubusercontent.com/technomancy/leiningen/2.7.0/bin/lein
+  - chmod +x ./lein
+  - export PATH=$PATH:.
 script: ./go test
 sudo: false
 cache:
