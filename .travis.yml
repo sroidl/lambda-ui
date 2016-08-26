@@ -5,6 +5,7 @@ sudo: false
 cache:
   directories:
   - $HOME/.m2
+  - ./resources/ui/node_modules
 # notifications:
 #   webhooks:
 #     urls:
