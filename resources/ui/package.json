@@ -10,9 +10,8 @@
     "static-sass": "node-sass --output public/css src/sass",
     "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --config webpack.config.dev.js",
-    "test": "node_modules/jest-cli/bin/jest.js --config jest-config.json"
-
-
+    "test": "node_modules/jest-cli/bin/jest.js --config jest-config.json",
+    "watch:test": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
