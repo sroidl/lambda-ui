@@ -1,3 +1,5 @@
 {
-  "testPathDirs": ["src/js"]
+  "testPathDirs": ["src/js"],
+  "moduleFileExtensions" : ["js", "json", "es6"],
+  "automock": false
 }

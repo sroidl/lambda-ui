@@ -8,12 +8,13 @@ const toggleBuild = (openedBuilds, id) => {
 const ToggleBuildDetailsReducer = (oldState={}, action) => {
   switch(action.type) {
     case "toggleBuildDetails":
-      let openedBuilds = oldState.openedBuilds;
+      let openedBuilds = oldState;
       return Object.assign({}, oldState, toggleBuild(openedBuilds, action.buildId))
     break;
 
     default: return oldState;
   }
 }
+
 
 export default ToggleBuildDetailsReducer;

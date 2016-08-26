@@ -13,14 +13,15 @@ const initialState = {
 }
 
 const LogReducer = (state={}, action) => {
-  console.log(action);
+  console.log('DEBUG. Received ', action);
   return state;
 }
 
 const rootReducer = combineReducers({
   LogReducer,
   openedBuilds: ToggleBuildDetailsReducer,
-  summaries:  BuildSummariesReducer})
+  summaries:  BuildSummariesReducer
+})
 
 
 const appState = createStore(rootReducer);
