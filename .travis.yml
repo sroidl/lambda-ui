@@ -1,8 +1,6 @@
 language: nodejs
 nodejs: "6"
 install:
-  - npm install -g babel-cli
-  - ./resources/ui/npm install lodash
   - travis_retry ./go setup
 script: ./go test
 sudo: false
