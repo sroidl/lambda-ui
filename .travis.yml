@@ -2,7 +2,7 @@ language: nodejs
 nodejs: "6"
 install:
   - npm install -g babel-cli
-  - npm install
+  - ./go setup
 script: ./go test
 sudo: false
 cache:
