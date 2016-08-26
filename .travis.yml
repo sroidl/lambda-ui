@@ -1,5 +1,5 @@
 language: nodejs
-nodejs: "6"
+nodejs: "5"
 install:
   - travis_retry ./go setup
 script: ./go test
