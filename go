@@ -3,8 +3,20 @@ SCRIPT_DIR=$(dirname $0)
 
 set -e
 
-goal_test() {
+goal_test-frontend() {
+  echo "Start frontend tests"
+  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+    npm test
+  popd > /dev/null
+}
+
+goal_test-backend() {
+  echo "Start backend tests"
   lein test
+}
+
+goal_test() {
+  goal_test-frontend && goal_test-backend
 }
 
 goal_serve-backend() {
@@ -60,7 +72,7 @@ goal:
     serve-backend -- Serves the backend-for-frontend on port 4444
 
     Backend:
-    test      -- run tests
+    test      -- run tests for backend and frontend
     run       -- run example pipeline"
   exit 1
 fi
