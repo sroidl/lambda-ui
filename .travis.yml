@@ -1,5 +1,5 @@
 language: nodejs
-nodejs: "5"
+nodejs: "6"
 script: ./go setup && ./go test
 sudo: false
 cache:
