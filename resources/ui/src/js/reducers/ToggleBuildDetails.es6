@@ -5,7 +5,7 @@ const toggleBuild = (openedBuilds, id) => {
   return Object.assign({}, openedBuilds, newstate)
 }
 
-const ToggleBuildDetailsReducer = (oldState={}, action) => {
+export const ToggleBuildDetailsReducer = (oldState={}, action) => {
   switch(action.type) {
     case "toggleBuildDetails":
       let openedBuilds = oldState;
@@ -15,6 +15,3 @@ const ToggleBuildDetailsReducer = (oldState={}, action) => {
     default: return oldState;
   }
 }
-
-
-export default ToggleBuildDetailsReducer;
