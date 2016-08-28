@@ -17,6 +17,12 @@ Use the _go_ script to run the necessary build steps:
 
 4. `./go push` -- runs `./go test` and `git push` if tests were successful.
 
+##### Directory Structure
+
+* `src/lambdaui` contains the backend code
+* `test/lambdaui` contains the backend test
+
+* `resources/ui` contains the frontend code
 
 ##### API for Frontend.
 To manipulate the dummy data of the backend, edit _dummy_data.clj_ and restart the backend server with `./go serve-backend`.
