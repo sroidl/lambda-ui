@@ -12,5 +12,3 @@ pom.xml.asc
 .idea/
 *.iml
 npm-debug.log
-node_modules
-resources/public/
