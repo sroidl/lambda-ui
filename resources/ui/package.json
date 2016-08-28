@@ -4,13 +4,12 @@
   "description": "Modern UI for LambdaCD",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/jest-cli/bin/jest.js --config jest-config.json",
     "clean": "rm -rf public/css public/js build",
     "cleanNode": "rm -rf node_modules",
     "static-sass": "node-sass --output public/css src/sass",
     "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --config webpack.config.dev.js",
-    "test": "node_modules/jest-cli/bin/jest.js --config jest-config.json",
     "watch:test": "npm run test -- --watch"
   },
   "repository": {
@@ -51,6 +50,7 @@
     "webpack-dev-server": "^1.15.0"
   },
   "dependencies": {
+    "ramda": "^0.22.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
