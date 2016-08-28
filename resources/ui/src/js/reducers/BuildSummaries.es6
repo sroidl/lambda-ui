@@ -7,7 +7,7 @@ const transformBuildSummary = (summary) => {
   return summaryAsMap;
 }
 
-const transformBuildSummaries = (summaries) => {
+const transformBuildSummaries = ([...summaries]) => {
   return R.compose(R.mergeAll, R.map(transformBuildSummary))(summaries);
 }
 

@@ -12,7 +12,7 @@ describe("BuildSummariesReducer", ()=> {
   it("should add a new build summary to the state", ()=>{
     const oldState = {};
 
-    const newState = subject(oldState, action({buildId: 1, test:"summary"}));
+    const newState = subject(oldState, action([{buildId: 1, test:"summary"}]));
 
     expect(newState).toEqual({1: {buildId: 1, test: "summary"}});
     expect(newState).not.toBe(oldState);
@@ -20,7 +20,7 @@ describe("BuildSummariesReducer", ()=> {
   it("should add two build summaries at the same time", () => {
     const oldState = {};
 
-    const newState = subject(oldState, action({buildId: 1, test:"summary"}, {buildId: 2, foo:'bar'}));
+    const newState = subject(oldState, action([{buildId: 1, test:"summary"}, {buildId: 2, foo:'bar'}]));
 
     expect(newState).toEqual({1: {buildId: 1, test: "summary"}, 2: {buildId: 2, foo:'bar'}});
     expect(newState).not.toBe(oldState);

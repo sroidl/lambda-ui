@@ -5,6 +5,6 @@ export const toggleBuildDetails = (id) => {
   return {type: TOGGLE_BUILD_DETAILS, buildId: id}
 }
 
-export const addBuildSummary = (...summary) => {
+export const addBuildSummary = (summary) => {
   return {type: ADD_SUMMARY, summaries: summary}
 }
