@@ -70,6 +70,7 @@ goal:
     push      -- run all tests and push current state
     setup     -- set up environment
     clean     -- clean all generated files
+    test      -- run tests for backend and frontend
 
     Frontend:
     compile-ui -- Compiles UI into resources/ui/public
@@ -77,7 +78,6 @@ goal:
     serve-backend -- Serves the backend-for-frontend on port 4444
 
     Backend:
-    test      -- run tests for backend and frontend
     run       -- run example pipeline"
   exit 1
 fi
