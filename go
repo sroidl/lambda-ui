@@ -5,14 +5,16 @@ set -e
 
 goal_test-frontend() {
   echo "Start frontend tests"
-  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+  pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm test
   popd > /dev/null
 }
 
 goal_test-backend() {
   echo "Start backend tests"
+  pushd ${SCRIPT_DIR}/backend > /dev/null
   lein test
+  popd > /dev/null
 }
 
 goal_test() {
@@ -20,23 +22,27 @@ goal_test() {
 }
 
 goal_serve-backend() {
+  pushd ${SCRIPT_DIR}/backend > /dev/null
   lein run
+  popd > /dev/null
 }
 goal_serve-ui() {
-  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+  pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm start
   popd > /dev/null
 }
 
 goal_compile-ui() {
-  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+  pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm run compile
   popd > /dev/null
 }
 
 goal_run() {
   NAMESPACE="lambdaui.example.simple-pipeline"
+  pushd ${SCRIPT_DIR}/backend > /dev/null
   lein run -m ${NAMESPACE}
+  popd > /dev/null
 }
 
 goal_push() {
@@ -44,7 +50,7 @@ goal_push() {
 }
 
 goal_setup() {
-  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+  pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm install lodash
     npm install
     echo "Node version:"
@@ -55,8 +61,10 @@ goal_setup() {
 }
 
 goal_clean() {
+  pushd ${SCRIPT_DIR}/backend > /dev/null
   lein clean
-  pushd ${SCRIPT_DIR}/resources/ui > /dev/null
+  popd > /dev/null
+  pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm run clean
   popd > /dev/null
 }
