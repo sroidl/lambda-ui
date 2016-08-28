@@ -4,9 +4,6 @@ import { BuildSummariesReducer, ADD_SUMMARY } from './reducers/BuildSummaries.es
 
 const initialState = {
   summaries: {
-    1: { buildId: 1, state: "success", buildNumber: 1, startTime: "1:12", duration: "2 minutes" },
-    2: { buildId: 2, buildNumber: 2, state: "failed" },
-    4: { buildId: 4, buildNumber: 4, state: "running"}
   },
 
   openedBuilds: {4:true}
