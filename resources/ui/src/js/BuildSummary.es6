@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BuildDetails from './BuildDetails.es6'
+import {toggleBuildDetails as toggleAction} from './Actions.es6'
+
 
 const BuildSummaryPresentation = ({buildId, build, toggleBuildDetails}) =>{
 
@@ -31,7 +33,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) =>  {
   return {
     toggleBuildDetails: () => {
-      dispatch({type: "toggleBuildDetails", buildId: ownProps.buildId})
+      dispatch(toggleAction(ownProps.buildId))
     }
   }
 }

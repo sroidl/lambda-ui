@@ -4,26 +4,20 @@ import { BuildSummariesReducer, ADD_SUMMARY } from './reducers/BuildSummaries.es
 
 const initialState = {
   summaries: {
-    1: { id: 1, state: "success", buildNumber: 1, startTime: "1:12", duration: "2 minutes" },
-    2: { id: 2, state: "failed" },
-    4: { id: 4, state: "running"}
+    1: { buildId: 1, state: "success", buildNumber: 1, startTime: "1:12", duration: "2 minutes" },
+    2: { buildId: 2, buildNumber: 2, state: "failed" },
+    4: { buildId: 4, buildNumber: 4, state: "running"}
   },
 
-  openedBuilds: {}
-}
-
-const LogReducer = (state={}, action) => {
-  console.log('DEBUG. Received ', action);
-  return state;
+  openedBuilds: {4:true}
 }
 
 const rootReducer = combineReducers({
-  LogReducer,
   openedBuilds: ToggleBuildDetailsReducer,
   summaries:  BuildSummariesReducer
 })
 
 
-const appState = createStore(rootReducer);
+const appState = createStore(rootReducer, initialState, window.devToolsExtension && window.devToolsExtension());
 
 export default appState;

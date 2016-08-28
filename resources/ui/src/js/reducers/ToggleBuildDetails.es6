@@ -1,15 +1,16 @@
+import {TOGGLE_BUILD_DETAILS} from '../Actions.es6'
+
 const toggleBuild = (openedBuilds, id) => {
   let oldState = openedBuilds[id] || false;
   let newstate = {};
   newstate[id] = !openedBuilds[id];
-  return Object.assign(...openedBuilds, newstate)
+  return newstate;
 }
 
 export const ToggleBuildDetailsReducer = (oldState={}, action) => {
   switch(action.type) {
-    case "toggleBuildDetails":
-      let openedBuilds = oldState;
-      return Object.assign(...oldState, toggleBuild(openedBuilds, action.buildId))
+    case TOGGLE_BUILD_DETAILS:
+      return Object.assign({}, oldState, toggleBuild(oldState, action.buildId))
     break;
 
     default: return oldState;

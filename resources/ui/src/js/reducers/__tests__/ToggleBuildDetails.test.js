@@ -1,4 +1,4 @@
-import { newToggleBuildDetailsAction as action } from '../../Actions.es6'
+import { toggleBuildDetails as action } from '../../Actions.es6'
 import { ToggleBuildDetailsReducer as subject } from '../ToggleBuildDetails.es6'
 
 describe("toggleBuildDetailsAction", () =>
@@ -10,6 +10,9 @@ describe("ToggleBuildDetailsReduce", () => {
     expect(subject({}, action(3))).toEqual({3: true})})
   it("should return false for a build that was previously visible", () =>{
     expect(subject({3: true}, action(3))).toEqual({3: false})
+  })
+  it("should not change state of other builds", () => {
+    expect(subject({1: true}, action(2))).toEqual({1:true, 2:true})
   })
   it("should not return the same Object if a ToggleBuildDetailsAction was received", () => {
     let oldState = {};

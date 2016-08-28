@@ -12,7 +12,7 @@ const BuilDetailsPresentation = ({build, open}) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  let buildId = ownProps.build.id;
+  let buildId = ownProps.build.buildId;
   let open = state.openedBuilds[buildId] || false;
   return {
     build: ownProps.build,
