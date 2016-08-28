@@ -1,5 +1,5 @@
-import wu from 'wu';
-import {ADD_SUMMARY} from '../Actions.es6'
+import {ADD_SUMMARY} from '../Actions.es6';
+import * as R from 'ramda';
 
 const transformBuildSummary = (summary) => {
   let summaryAsMap = {};
@@ -8,9 +8,7 @@ const transformBuildSummary = (summary) => {
 }
 
 const transformBuildSummaries = (summaries) => {
-  return wu(summaries)
-   .map(transformBuildSummary)
-   .reduce(Object.assign, {});
+  return R.compose(R.mergeAll, R.map(transformBuildSummary))(summaries);
 }
 
 export const BuildSummariesReducer = (oldState={}, action) => {
