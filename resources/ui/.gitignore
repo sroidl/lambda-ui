@@ -3,3 +3,4 @@ public/css
 public/js
 build/
 .DS_Store
+.tern-project
