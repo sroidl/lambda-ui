@@ -1,4 +1,4 @@
-Lambda UI
+Lambda UI [![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=master)](https://travis-ci.org/sroidl/lambda-ui)
 ==========
 An alternative Graphical User Interface for [LambdaCD](https://github.com/flosell/lambdacd).
 
