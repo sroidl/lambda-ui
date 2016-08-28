@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux'
-import ToggleBuildDetailsReducer from './reducers/ToggleBuildDetails.es6'
+import {ToggleBuildDetailsReducer} from './reducers/ToggleBuildDetails.es6'
 import { BuildSummariesReducer, ADD_SUMMARY } from './reducers/BuildSummaries.es6'
 
 const initialState = {
