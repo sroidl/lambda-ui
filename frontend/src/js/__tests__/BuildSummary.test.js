@@ -40,6 +40,5 @@ describe("BuildSummary Toggle", ()=>{
     component.find(".buildDetailsToggle").simulate('click');
 
     expect(toggleFnMock).toBeCalled();
-
   })
 });
