@@ -5,7 +5,7 @@ install:
   - travis_retry ./go setup
   - curl -O https://raw.githubusercontent.com/technomancy/leiningen/2.7.0/bin/lein
   - chmod +x ./lein
-  - export PATH=$PATH:.
+  - export PATH=$PATH:$HOME
 script: ./go test
 sudo: false
 cache:
@@ -13,6 +13,11 @@ cache:
   - $HOME/.m2
   - $HOME/.lein
   - ./resources/ui/node_modules
+
+after_failure:
+  - ls -la
+  - env
+
 # notifications:
 #   webhooks:
 #     urls:
