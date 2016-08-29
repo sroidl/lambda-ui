@@ -18,7 +18,8 @@ goal_test-backend() {
 }
 
 goal_test() {
-  goal_test-frontend && goal_test-backend
+  goal_test-frontend
+  goal_test-backend
 }
 
 goal_serve-backend() {
@@ -46,7 +47,8 @@ goal_run() {
 }
 
 goal_push() {
-  goal_test && git push
+  goal_test
+  git push
 }
 
 goal_setup() {
