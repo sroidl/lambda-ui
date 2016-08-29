@@ -1,15 +1,28 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import {connect} from 'react-redux';
 import BuildDetails from './BuildDetails.es6'
 import {toggleBuildDetails as toggleAction} from './Actions.es6'
 
+const SUCCESS_ICON = 'fa-check'
+const FAILURE_ICON = 'fa-times'
+const RUNNING_ICON = 'fa-cog'
 
-const BuildSummaryPresentation = ({buildId, build, toggleBuildDetails}) =>{
+const icon = (buildState) => {
+  switch (buildState) {
+    case "success" : return SUCCESS_ICON;
+    case "failed" : return FAILURE_ICON;
+    case "running" : return RUNNING_ICON;
+  }
+}
+
+export const BuildSummary = ({buildId, build, toggleBuildDetails}) =>{
 
     let classesForState = "row buildSummary " + build.state;
 
+    let iconClassName = "fa " + icon(build.state);
+
     return <div className={classesForState}>
-        <div className="one column buildIcon">?</div>
+        <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
         <div className="three columns buildNumber">Build #{build.buildNumber}</div>
         <div className="three columns buildStartTime">Started: {build.startTime}</div>
         <div className="three columns buildDuration">Duration: {build.duration}</div>
@@ -38,8 +51,4 @@ const mapDispatchToProps = (dispatch, ownProps) =>  {
   }
 }
 
-const BuildSummary = connect(
-  mapStateToProps,
-  mapDispatchToProps)(BuildSummaryPresentation);
-
-export default BuildSummary;
+export default connect(mapStateToProps,mapDispatchToProps)(BuildSummary);

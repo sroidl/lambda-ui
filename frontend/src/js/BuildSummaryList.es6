@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import BuildSummary from './BuildSummary.es6'
 
-const BuildSummaryListPresentation = ({builds}) => {
+export const BuildSummaryList = ({builds}) => {
 
   let result = [];
   for (let buildId in builds) {
@@ -11,13 +11,10 @@ const BuildSummaryListPresentation = ({builds}) => {
     <BuildSummary key={buildId} buildId={buildId} build={build}/>);
   }
 
-  return <div>
-    {result}
-  </div>
+  return <div>{result}</div>
 };
 
 const mapStateToProps = (state) => {return {builds: state.summaries}};
 const mapDispatchToProps = (state) => {return {}};
-const BuildSummaryList = connect(mapStateToProps, mapDispatchToProps)(BuildSummaryListPresentation);
 
-export default BuildSummaryList;
+export default connect(mapStateToProps, mapDispatchToProps)(BuildSummaryList);
