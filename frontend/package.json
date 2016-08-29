@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/jest-cli/bin/jest.js --config jest-config.json",
-    "clean": "rm -rf public/css public/js build",
+    "clean": "rm -rf target",
     "cleanNode": "rm -rf node_modules",
-    "static-sass": "node-sass --output public/css src/sass",
-    "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js",
+    "static-sass": "node-sass --output target/css src/sass",
+    "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js && cp public/index.html target",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --config webpack.config.dev.js",
     "watch:test": "npm run test -- --watch"
   },

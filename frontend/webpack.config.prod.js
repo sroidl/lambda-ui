@@ -9,12 +9,7 @@ module.exports = {
 
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "public/js"),
-    publicPath:"/js/"
-  },
-
-  devServer: {
-    contentBase: "./public",
+    path: path.resolve(__dirname, "target"),
   },
 
   module: {
