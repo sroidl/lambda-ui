@@ -7,11 +7,13 @@ const SUCCESS_ICON = 'fa-check'
 const FAILURE_ICON = 'fa-times'
 const RUNNING_ICON = 'fa-cog'
 
+
 const icon = (buildState) => {
   switch (buildState) {
     case "success" : return SUCCESS_ICON;
     case "failed" : return FAILURE_ICON;
     case "running" : return RUNNING_ICON;
+    default : return '';
   }
 }
 
