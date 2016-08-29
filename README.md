@@ -19,10 +19,8 @@ Use the _go_ script to run the necessary build steps:
 
 ##### Directory Structure
 
-* `src/lambdaui` contains the backend code
-* `test/lambdaui` contains the backend test
-
-* `resources/ui` contains the frontend code
+* `backend` contains the clojure project that's being published as a plugin to LambdaCD
+* `frontend` contains the JS based UI part of the Plugin.
 
 ##### API for Frontend.
 To manipulate the dummy data of the backend, edit _dummy_data.clj_ and restart the backend server with `./go serve-backend`.
