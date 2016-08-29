@@ -13,7 +13,7 @@ goal_test-frontend() {
 goal_test-backend() {
   echo "Start backend tests"
   pushd ${SCRIPT_DIR}/backend > /dev/null
-  lein test
+  ./lein test
   popd > /dev/null
 }
 
@@ -23,7 +23,7 @@ goal_test() {
 
 goal_serve-backend() {
   pushd ${SCRIPT_DIR}/backend > /dev/null
-  lein run
+  ./lein run
   popd > /dev/null
 }
 goal_serve-ui() {
@@ -41,7 +41,7 @@ goal_compile-ui() {
 goal_run() {
   NAMESPACE="lambdaui.example.simple-pipeline"
   pushd ${SCRIPT_DIR}/backend > /dev/null
-  lein run -m ${NAMESPACE}
+  ./lein run -m ${NAMESPACE}
   popd > /dev/null
 }
 
@@ -62,7 +62,7 @@ goal_setup() {
 
 goal_clean() {
   pushd ${SCRIPT_DIR}/backend > /dev/null
-  lein clean
+  ./lein clean
   popd > /dev/null
   pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm run clean
