@@ -1,4 +1,5 @@
-import {BuildSummary} from '../BuildSummary.es6';
+import ReduxBuildSummary, {BuildSummary} from '../BuildSummary.es6';
+import * as subject from '../BuildSummary.es6'
 import {shallow} from 'enzyme';
 
 function buildIcon(domElement){
@@ -7,7 +8,7 @@ function buildIcon(domElement){
 
 describe("BuildSummary BuildIcons", () =>{
   it("should show correct failed state icon", ()=>{
-    let inputProps = {buildId: 1, build: {state: 'failed'}, toggleBuildDetails: undefined};
+    let inputProps = {buildId: 1, state: 'failed', toggleBuildDetails: undefined};
 
     let component = shallow(BuildSummary(inputProps));
 
@@ -15,7 +16,7 @@ describe("BuildSummary BuildIcons", () =>{
   });
 
   it("should show correct success state icon", ()=>{
-    let inputProps = {buildId: 1, build: {state: 'success'}, toggleBuildDetails: undefined};
+    let inputProps = {buildId: 1, state: 'success', toggleBuildDetails: undefined};
 
     let component = shallow(BuildSummary(inputProps));
 
@@ -23,7 +24,7 @@ describe("BuildSummary BuildIcons", () =>{
   });
 
   it("should show correct running state icon", ()=>{
-    let inputProps = {buildId: 1, build: {state: 'running'}, toggleBuildDetails: undefined};
+    let inputProps = {buildId: 1, state: 'running', toggleBuildDetails: undefined};
 
     let component = shallow(BuildSummary(inputProps));
 
@@ -34,7 +35,7 @@ describe("BuildSummary BuildIcons", () =>{
 describe("BuildSummary Toggle", ()=>{
   it("should call the toggle details function on click", ()=>{
     let toggleFnMock = jest.fn();
-    let inputProps = {buildId: 1, build: {state: 'running'}, toggleBuildDetails: toggleFnMock};
+    let inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock};
 
     let component = shallow(BuildSummary(inputProps));
     component.find(".buildDetailsToggle").simulate('click');
@@ -42,3 +43,20 @@ describe("BuildSummary Toggle", ()=>{
     expect(toggleFnMock).toBeCalled();
   })
 });
+
+describe("BuildSummary redux mapping", ()=>{
+  it("should map to props properly", ()=>{
+    let state = {summaries: {1: {buildId: 1, buildNumber: 12, state:"running", duration:"10min", startTime:"12sec"}}}
+
+    let props = subject.mapStateToProps(state, {buildId: 1});
+
+    expect(props).toEqual({
+      buildId: 1,
+      buildNumber: 12,
+      state: "running",
+      duration: "10min",
+      startTime: "12sec"
+    });
+
+  })
+})

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes  } from 'react';
 import {connect} from 'react-redux';
 import BuildDetails from './BuildDetails.es6'
 import {toggleBuildDetails as toggleAction} from './Actions.es6'
@@ -17,35 +17,46 @@ const icon = (buildState) => {
   }
 }
 
-export const BuildSummary = ({buildId, build, toggleBuildDetails}) =>{
-
-    let classesForState = "row buildSummary " + build.state;
-
-    let iconClassName = "fa " + icon(build.state);
+export const BuildSummary = (props) =>{
+    let {buildId, build, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
+    let classesForState = "row buildSummary " + state;
+    let iconClassName = "fa " + icon(state);
 
     return <div className={classesForState}>
         <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
-        <div className="three columns buildNumber">Build #{build.buildNumber}</div>
-        <div className="three columns buildStartTime">Started: {build.startTime}</div>
-        <div className="three columns buildDuration">Duration: {build.duration}</div>
+        <div className="three columns buildNumber">Build #{buildNumber}</div>
+        <div className="three columns buildStartTime">Started: {startTime}</div>
+        <div className="three columns buildDuration">Duration: {duration}</div>
         <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
         <BuildDetails build={build}/>
       </div>
 
 }
 
-const mapStateToProps = (state, ownProps) => {
+BuildSummary.propTypes = {
+  buildId: PropTypes.number.isRequired,
+  buildNumber: PropTypes.number.isRequired,
+  state: PropTypes.string.isRequired,
+  startTime: PropTypes.string.isRequired,
+  duration: PropTypes.string.isRequired,
+  toggleBuildDetails: PropTypes.func.isRequired
+}
 
-  let buildId = ownProps.buildId;
+export const mapStateToProps = (state, props) => {
+
+  let buildId = props.buildId;
   let build = state.summaries[buildId];
 
   return {
-      build: build,
-      buildId: buildId
+    buildId: buildId,
+    buildNumber: build.buildNumber,
+    state: build.state,
+    startTime: build.startTime,
+    duration: build.duration
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) =>  {
+export const mapDispatchToProps = (dispatch, ownProps) =>  {
   return {
     toggleBuildDetails: () => {
       dispatch(toggleAction(ownProps.buildId))
