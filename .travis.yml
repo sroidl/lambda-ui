@@ -5,6 +5,7 @@ install:
   - travis_retry ./go setup
   - curl -O https://raw.githubusercontent.com/technomancy/leiningen/2.7.0/bin/lein
   - chmod +x ./lein
+  - ./lein --version
   - export PATH=$PATH:$HOME
 script: ./go test
 sudo: false
