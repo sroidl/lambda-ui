@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import BuildSummary from './BuildSummary.es6'
 
-export const BuildSummaryList = ({builds}) => {
 
+export const BuildSummaryList = ({builds}) => {
   let result = [];
   for (let buildId in builds) {
     let build = builds[buildId];
@@ -11,8 +11,10 @@ export const BuildSummaryList = ({builds}) => {
     <BuildSummary key={buildId} build={build}/>);
   }
 
-  return <div>{result}</div>
+  return <div className="buildSummaryList">{result}</div>
 };
+
+BuildSummaryList.propTypes = { builds: PropTypes.object.isRequired }
 
 const mapStateToProps = (state) => {return {builds: state.summaries}};
 const mapDispatchToProps = (state) => {return {}};
