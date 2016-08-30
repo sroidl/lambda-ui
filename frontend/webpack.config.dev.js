@@ -17,7 +17,7 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: "./public",
+    contentBase: "./src/html",
   },
 
   module: {
