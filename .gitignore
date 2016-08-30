@@ -13,3 +13,4 @@ backend/.lein-*
 *.iml
 npm-debug.log
 backend/resources/public/
+**/.DS_Store
