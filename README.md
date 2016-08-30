@@ -14,8 +14,9 @@ Use the _go_ script to run the necessary build steps:
 1. `./go setup` -- Run to update npm dependencies. Only required once.
 2. `./go serve-ui` -- Runs a webserver thats serves the frontend on port 8080. Watches the frontend folder for changes and rebundles them on the fly.
 3. `./go serve-backend` -- Runs a webserver that serves the backend-for-frontend with dummy data.
-
 4. `./go push` -- runs `./go test` and `git push` if tests were successful.
+
+5. `./go jar` -- Compiles the project and packs everything into the current jar of lambdaui. Those are located in `backend/target/lambdaui-{version}-[qualifier].jar` (e.g. _backend/target/lambdaui-0.1.0-SNAPSHOT_)
 
 ##### Directory Structure
 

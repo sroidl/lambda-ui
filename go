@@ -67,6 +67,21 @@ goal_clean() {
   popd > /dev/null
 }
 
+goal_jar() {
+  pushd ${SCRIPT_DIR}/frontend > /dev/null
+   npm run compile
+  popd > /dev/null
+  if [ ! -e ${SCRIPT_DIR}/backend/resources/public ]; then
+    mkdir ${SCRIPT_DIR}/backend/resources/public
+  fi
+
+  cp -R frontend/target/ backend/resources/public
+  pushd ${SCRIPT_DIR}/backend > /dev/null
+   ./lein jar
+
+
+}
+
 if type -t "goal_$1" &>/dev/null; then
   goal_$1 ${@:2}
 else
