@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
-const BuilDetailsPresentation = ({build, open}) => {
+export const BuilDetails = ({buildId, open}) => {
   if (!open) {
     return null;
   }
@@ -11,14 +11,21 @@ const BuilDetailsPresentation = ({build, open}) => {
          </div>
 };
 
+BuilDetails.propTypes = {
+  buildId: PropTypes.number.isRequired,
+  open: PropTypes.bool.isRequired
+};
+
 const mapStateToProps = (state, ownProps) => {
-  let buildId = ownProps.build.buildId;
+  let buildId = ownProps.buildId;
   let open = state.openedBuilds[buildId] || false;
+
   return {
-    build: ownProps.build,
+    buildId: ownProps.buildId,
     open: open
   }
 };
+
 const mapDispatchToProps = (dispatch, ownProps) => {return ownProps};
-const BuildDetails = connect(mapStateToProps, mapDispatchToProps)(BuilDetailsPresentation);
-export default BuildDetails;
+
+export default connect(mapStateToProps, mapDispatchToProps)(BuilDetails);

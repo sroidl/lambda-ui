@@ -6,6 +6,8 @@ function buildIcon(domElement){
   return domElement.find('.buildIcon').find('.fa');
 }
 
+
+
 describe("BuildSummary BuildIcons", () =>{
   it("should show correct failed state icon", ()=>{
     let inputProps = {buildId: 1, state: 'failed', toggleBuildDetails: undefined};
