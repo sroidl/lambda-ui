@@ -44,22 +44,22 @@ BuildSummary.propTypes = {
 
 export const mapStateToProps = (state, props) => {
 
-  let buildId = props.buildId;
-  let build = state.summaries[buildId];
+
+  let build = props.build;
 
   return {
-    buildId: buildId,
+    buildId: build.buildId,
     buildNumber: build.buildNumber,
     state: build.state,
     startTime: build.startTime,
-    duration: build.duration
-  }
+    duration: build.duration,
+    }
 }
 
 export const mapDispatchToProps = (dispatch, ownProps) =>  {
   return {
     toggleBuildDetails: () => {
-      dispatch(toggleAction(ownProps.buildId))
+      dispatch(toggleAction(ownProps.build.buildId))
     }
   }
 }

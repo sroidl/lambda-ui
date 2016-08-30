@@ -48,12 +48,12 @@ describe("BuildSummary redux mapping", ()=>{
   it("should map to props properly", ()=>{
     let state = {summaries: {1: {buildId: 1, buildNumber: 12, state:"running", duration:"10min", startTime:"12sec"}}}
 
-    let props = subject.mapStateToProps(state, {buildId: 1});
+    let props = subject.mapStateToProps(state, {build: {buildId: 1, buildNumber: 12, state:"success", duration:"10min", startTime:"12sec"}});
 
     expect(props).toEqual({
       buildId: 1,
       buildNumber: 12,
-      state: "running",
+      state: "success",
       duration: "10min",
       startTime: "12sec"
     });

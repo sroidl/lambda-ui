@@ -8,7 +8,7 @@ export const BuildSummaryList = ({builds}) => {
   for (let buildId in builds) {
     let build = builds[buildId];
     result.push(
-    <BuildSummary key={buildId} buildId={buildId} build={build}/>);
+    <BuildSummary key={buildId} build={build}/>);
   }
 
   return <div>{result}</div>
