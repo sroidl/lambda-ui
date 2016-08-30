@@ -2,7 +2,8 @@
   (:require [org.httpkit.server :as http :refer [with-channel on-close on-receive send!]]
             [compojure.core :refer [routes GET POST defroutes]]
             [lambdaui.dummy-data :as frontend-dummy]
-            [ring.middleware.json :as ring-json])
+            [ring.middleware.json :as ring-json]
+            [compojure.route :as route])
   )
 
 
@@ -18,7 +19,9 @@
 
 (defn backend-for-frontend []
   (ring-json/wrap-json-response
-    (routes (GET "/summaries" [] (frontend-dummy/build-summaries))))
+    (routes (GET "/summaries" [] (frontend-dummy/build-summaries))
+            (route/resources "/" {:root "public"})
+            ))
   )
 
 
