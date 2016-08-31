@@ -20,7 +20,8 @@
 (defn backend-for-frontend []
   (ring-json/wrap-json-response
     (routes (GET "/summaries" [] (frontend-dummy/build-summaries))
-            (route/resources "/" {:root "public"})
+            (GET "/" [] (ring.util.response/redirect "/ui/index.html"))
+            (route/resources "/ui" {:root "public"})
             ))
   )
 
@@ -28,5 +29,6 @@
 (defonce server (atom nil))
 
 (defn start-server []
+  (println "serving backend-for-frontend on port 4444")
   (reset! server (http/run-server (backend-for-frontend) {:port 4444})))
 

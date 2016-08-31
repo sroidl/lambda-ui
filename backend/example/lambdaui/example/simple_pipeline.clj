@@ -9,7 +9,9 @@
       [lambdacd.ui.ui-server :as ui]
       [lambdacd-git.core :as git]
       [lambdacd.runners :as runners]
-      [clojure.java.io :as io]))
+      [clojure.java.io :as io]
+              [lambdaui.api :as ]
+              ))
 
 (def repo "git@github.com:flosell/testrepo")
 

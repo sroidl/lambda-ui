@@ -68,6 +68,7 @@ goal_clean() {
 }
 
 goal_jar() {
+ echo 'Compiling frontend'
   pushd ${SCRIPT_DIR}/frontend > /dev/null
    npm run compile
   popd > /dev/null
@@ -75,9 +76,10 @@ goal_jar() {
     mkdir ${SCRIPT_DIR}/backend/resources/public
   fi
 
+ echo 'Compiling backend'
   cp -R frontend/target/ backend/resources/public
   pushd ${SCRIPT_DIR}/backend > /dev/null
-   ./lein jar
+   ./lein uberjar
 
 
 }
