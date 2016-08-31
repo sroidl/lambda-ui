@@ -1,12 +1,20 @@
 language: node_js
-node_js: 
-  - "6"
+node_js:
+- '6'
 install:
-  - travis_retry ./go setup
- 
-script: ./go test
+- travis_retry ./go setup
+script: "./go test"
 sudo: false
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.lein
+  - "$HOME/.m2"
+  - "$HOME/.lein"
+deploy:
+  api-token:
+    secure: pboS2xCL7MbGjzRDCmLwTsl8CXAjPhLmVLTKca/ulja+XYIMBead4oESLhsrpWU8M3a83JfoQ4/KsgdbGvgRnEvGtR9S/E01UtxriMcGEBehRa+QY4drjn3McuqHMd01zNQNVm7ivMGLQdpkrDISiLj44f5ozapyFf5bP2Coj0ypR4M9xbtn2RRMLHBEPCESDr5NR7RchFTCvwva1u93YPWycx6TbNejKIpunD/58O6gWu671wLUtUbTADdJw7JWj9+YFsdwZfZEivQ7Fzj7rRUZY8XnLuZghLEJmpExjMLgba5X2wSZbdfZOZxFGMJfa/NtJcS0d2fGzGxY7WP6taW7m/S3TuhS55Y8cI3bXierP97dl8ce0+zymcZu/dn8wUKP+7MLuPGvP80GHql11OVYCb5zCqTCHKw+epnYNJNStx+zURNe7cVJj6zbCubGyVOuyScg3gskbdRus2tHYVg8kFAr17asTRKog58ET6TVqfDVhPmTX/DHTeQguACAF4gvnAkTO6WfAdOkY9efxeRzlPSMQVd8+4oeLCor3QRtRIPAQ6s3kEv9XroOgClMMBeBKwwi5h5Ay4uGIRDHRApN3XSQRcpTVu6EdZI3AdK3FPfjGqRXk6SVIpvsrUY8KcOx8UjKDkMmNa7Nv+I5JO5YL+CYyWYuH7EkLVgl0Ok=
+  buildpack: clojure
+  provider: heroku
+  run:
+    - "cd backend"
+    - "lein run"
+  app: lambdaui-test-build
