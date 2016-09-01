@@ -2,12 +2,12 @@ language: node_js
 node_js:
 - '6'
 install:
-- travis_retry ~/go setup
+- travis_retry ~/sroidl/lambdaui/go setup
 script:
 - pwd
-- ~/go test
-- ~/go jar
-- ~/go deploy-clojars
+- ~/sroidl/lambdaui/go test
+- ~/sroidl/lambdaui/go jar
+- ~/sroidl/lambdaui/go deploy-clojars
 
 sudo: false
 cache:
@@ -16,7 +16,7 @@ cache:
   - "$HOME/.lein"
 
 before_deploy:
-  - cd example-pipeline
+  - cd ~/sroidl/lambdaui/example-pipeline
 
 deploy:
   api_key:
