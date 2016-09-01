@@ -10,7 +10,7 @@ function buildIcon(domElement){
 
 describe("BuildSummary BuildIcons", () =>{
   it("should show correct failed state icon", ()=>{
-    let inputProps = {buildId: 1, state: 'failed', toggleBuildDetails: undefined};
+    let inputProps = {buildId: 1, state: 'failed', startTime: {toISOString: jest.fn()}, toggleBuildDetails: undefined};
 
     let component = shallow(BuildSummary(inputProps));
 
@@ -18,7 +18,7 @@ describe("BuildSummary BuildIcons", () =>{
   });
 
   it("should show correct success state icon", ()=>{
-    let inputProps = {buildId: 1, state: 'success', toggleBuildDetails: undefined};
+    let inputProps = {buildId: 1, state: 'success', toggleBuildDetails: undefined, startTime: {toISOString: jest.fn()}};
 
     let component = shallow(BuildSummary(inputProps));
 
@@ -26,7 +26,7 @@ describe("BuildSummary BuildIcons", () =>{
   });
 
   it("should show correct running state icon", ()=>{
-    let inputProps = {buildId: 1, state: 'running', toggleBuildDetails: undefined};
+    let inputProps = {buildId: 1, state: 'running', toggleBuildDetails: undefined, startTime: {toISOString: jest.fn()}};
 
     let component = shallow(BuildSummary(inputProps));
 
@@ -37,7 +37,7 @@ describe("BuildSummary BuildIcons", () =>{
 describe("BuildSummary Toggle", ()=>{
   it("should call the toggle details function on click", ()=>{
     let toggleFnMock = jest.fn();
-    let inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock};
+    let inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock, startTime: {toISOString: jest.fn()}};
 
     let component = shallow(BuildSummary(inputProps));
     component.find(".buildDetailsToggle").simulate('click');

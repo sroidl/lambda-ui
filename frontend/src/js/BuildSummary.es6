@@ -25,7 +25,7 @@ export const BuildSummary = (props) =>{
     return <div className={classesForState}>
         <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
         <div className="three columns buildNumber">Build #{buildNumber}</div>
-        <div className="three columns buildStartTime">Started: {startTime}</div>
+        <div className="three columns buildStartTime">Started: {startTime.toISOString()}</div>
         <div className="three columns buildDuration">Duration: {duration}</div>
         <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
         <BuildDetails buildId={buildId}/>
@@ -37,8 +37,8 @@ BuildSummary.propTypes = {
   buildId: PropTypes.number.isRequired,
   buildNumber: PropTypes.number.isRequired,
   state: PropTypes.string.isRequired,
-  startTime: PropTypes.string.isRequired,
-  duration: PropTypes.string.isRequired,
+  startTime: PropTypes.object.isRequired,
+  duration: PropTypes.number.isRequired,
   toggleBuildDetails: PropTypes.func.isRequired
 }
 
