@@ -28,19 +28,21 @@ describe("BuildSummariesReducer", ()=> {
     expect(newState).not.toBe(oldState);
   })
 
+
+  const shouldReject = build =>{
+    const newState = subject({}, action([build]));
+    expect(newState).toEqual({});
+  }
+
   it("should reject build if buildId is NaN", ()=>{
-    const oldState ={};
-
-    const newState = subject(oldState, action([defaultBuild({buildId: "wrong"}), defaultBuild({buildId: 25})]));
-
-    expect(newState).toEqual({25: defaultBuild({buildId: 25})});
+      shouldReject(defaultBuild({buildId: "nan"}))
   })
 
   it("should reject if startTime is not an IsoDateString", ()=>{
-    const oldState = {};
-
-    const newState = subject(oldState, action([defaultBuild({buildId: 1, startTime:"wrong"})]));
-
-    expect(newState).toEqual(oldState);
+    shouldReject(defaultBuild({buildId: 1, startTime:"wrong"}));
   })
+  it("should reject if duration is set but not a number", ()=>{
+    shouldReject(defaultBuild({buildId: 1, duration: "string"}))
+  })
+
 });

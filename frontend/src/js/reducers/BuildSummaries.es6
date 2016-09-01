@@ -8,10 +8,18 @@ const transformBuildSummary = (summary) => {
 }
 
 const validateBuild = build =>{
-  const hasAllRequiredFields = build && build.buildId && build.buildNumber && build.startTime && build.state;
-  const buildIdIsNumber = build && Number.isInteger(build.buildId)
-  const startTimeIsIsoString = build && ! Number.isNaN(Date.parse(build.startTime));
-  return hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString;
+  if (! build) {
+    return false;
+  }
+  const hasAllRequiredFields = build.buildId && build.buildNumber && build.startTime && build.state;
+  const buildIdIsNumber = Number.isInteger(build.buildId)
+  const startTimeIsIsoString = !Number.isNaN(Date.parse(build.startTime));
+  const durationIsANumber = build.duration === undefined || Number.isInteger(build.duration)
+  const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber;
+  if (! keepBuild) {
+    console.log("BuildSummariesReducer: Reject ", build);
+  }
+  return keepBuild;
 }
 
 const transformBuildSummaries = ([...summaries]) => {
