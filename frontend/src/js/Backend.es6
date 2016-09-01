@@ -6,9 +6,9 @@ const receiveBuildSummaries = (dispatch) => {
   const endpoint = "/api/summaries";
 
   let dummy = [
-     { buildId: 1, state: "success", buildNumber: 1, startTime: "1:12", duration: "2 minutes" },
-     { buildId: 2, buildNumber: 2, state: "failed", duration: "3 min", startTime: "today" },
-     { buildId: 4, buildNumber: 4, state: "running", duration: "4min", startTime: "yesterday"}
+     { buildId: 1, buildNumber: 1, state: "success", startTime: "2016-08-29T14:54Z", duration: 360},
+     { buildId: 2, buildNumber: 2, state: "failed",  startTime: "2016-08-29T13:54Z", duration: 120},
+     { buildId: 4, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: 5466}
   ]
 
   fetch(endpoint).then(() => {})
