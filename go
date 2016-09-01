@@ -87,7 +87,7 @@ goal_jar() {
 goal_deploy-clojars(){
   echo "Deploying snapshot to clojars..."
   pushd ${SCRIPT_DIR}/backend > /dev/null
-  ./lein deploy snapshots
+  ./lein deploy clojars
   popd > /dev/null
 }
 

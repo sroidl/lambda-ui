@@ -13,9 +13,7 @@
   :plugins [[lein-environ "0.4.0"]]
   :test-paths ["test"]
   :deploy-repositories [["clojars" {:username [:env/clojars_username :gpg]
-                                    :password [:env/clojars_key :gpg]}]
-                        ["releases" :clojars]
-                        ["snapshots" :clojars]]
+                                    :password [:env/clojars_key :gpg]}]]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
                                   [ring-server "0.4.0"]]
 
