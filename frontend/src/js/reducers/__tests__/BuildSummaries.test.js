@@ -1,7 +1,7 @@
 import {BuildSummariesReducer as subject} from '../BuildSummaries.es6';
 import {addBuildSummary as action} from '../../Actions.es6'
 
-const defaultBuild = buildInfo => Object.assign({state: "myState", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
+const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
 
 describe("BuildSummariesReducer", ()=> {
   it("should reduce the old state if no summary action is given", ()=> {
@@ -34,15 +34,32 @@ describe("BuildSummariesReducer", ()=> {
     expect(newState).toEqual({});
   }
 
+  const shouldAccept = build =>{
+    const newState = subject({}, action([build]));
+    let b = {}
+    b[build.buildId] = build;
+    expect(newState).toEqual(b);
+  }
+
   it("should reject build if buildId is NaN", ()=>{
       shouldReject(defaultBuild({buildId: "nan"}))
   })
-
   it("should reject if startTime is not an IsoDateString", ()=>{
     shouldReject(defaultBuild({buildId: 1, startTime:"wrong"}));
   })
   it("should reject if duration is set but not a number", ()=>{
     shouldReject(defaultBuild({buildId: 1, duration: "string"}))
   })
-
+  it("should reject abritrary state", ()=>{
+    shouldReject(defaultBuild({buildId: 1, state: "wrong"}))
+  })
+  it("should accept state 'running'", ()=>{
+    shouldAccept(defaultBuild({buildId: 1, state: "running"}))
+  })
+  it("should accept state 'failed'", ()=>{
+    shouldAccept(defaultBuild({buildId: 1, state: "failed"}))
+  })
+  it("should accept state 'failed'", ()=>{
+    shouldAccept(defaultBuild({buildId: 1, state: "pending"}))
+  })
 });

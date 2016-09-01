@@ -15,7 +15,12 @@ const validateBuild = build =>{
   const buildIdIsNumber = Number.isInteger(build.buildId)
   const startTimeIsIsoString = !Number.isNaN(Date.parse(build.startTime));
   const durationIsANumber = build.duration === undefined || Number.isInteger(build.duration)
-  const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber;
+  const stateIsValid = build.state === 'running'
+      || build.state === 'failed'
+      || build.state === 'success'
+      || build.state === 'pending';
+
+  const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
   if (! keepBuild) {
     console.log("BuildSummariesReducer: Reject ", build);
   }
