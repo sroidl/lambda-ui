@@ -3,7 +3,8 @@ import * as R from 'ramda';
 
 const transformBuildSummary = (summary) => {
   let summaryAsMap = {};
-  summaryAsMap[summary.buildId] = summary;
+  let startTimeDateObj = new Date(Date.parse(summary.startTime));
+  summaryAsMap[summary.buildId] = Object.assign({}, summary, {startTime: startTimeDateObj})
   return summaryAsMap;
 }
 

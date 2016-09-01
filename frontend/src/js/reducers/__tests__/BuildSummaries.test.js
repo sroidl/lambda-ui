@@ -1,7 +1,8 @@
 import {BuildSummariesReducer as subject} from '../BuildSummaries.es6';
 import {addBuildSummary as action} from '../../Actions.es6'
 
-const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
+const defaultBuildInput = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
+const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: new Date(Date.parse("2015-01-25"))}, buildInfo);
 
 describe("BuildSummariesReducer", ()=> {
   it("should reduce the old state if no summary action is given", ()=> {
@@ -14,7 +15,7 @@ describe("BuildSummariesReducer", ()=> {
   it("should add a new build summary to the state", ()=>{
     const oldState = {};
 
-    const newState = subject(oldState, action([defaultBuild({buildId:1})]));
+    const newState = subject(oldState, action([defaultBuildInput({buildId:1})]));
 
     expect(newState).toEqual({1: defaultBuild({buildId:1})});
     expect(newState).not.toBe(oldState);
@@ -22,7 +23,7 @@ describe("BuildSummariesReducer", ()=> {
   it("should add build without changing existing builds", () => {
     const oldState = {1: defaultBuild({buildId: 1})};
 
-    const newState = subject(oldState, action([defaultBuild({buildId: 2})]));
+    const newState = subject(oldState, action([defaultBuildInput({buildId: 2})]));
 
     expect(newState).toEqual({1: defaultBuild({buildId: 1}), 2: defaultBuild({buildId: 2})});
     expect(newState).not.toBe(oldState);
