@@ -10,9 +10,10 @@
                  [org.clojure/data.json "0.2.6"]
                  ]
 
+  :plugins [[lein-environ "0.4.0"]]
   :test-paths ["test"]
-
-  :deploy-repositories [["clojars" {:creds :gpg}]
+  :deploy-repositories [["clojars" {:username [:env/clojars_username :gpg]
+                                    :password [:env/clojars_key :gpg]}]
                         ["releases" :clojars]
                         ["snapshots" :clojars]]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]

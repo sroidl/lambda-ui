@@ -80,11 +80,14 @@ goal_jar() {
   cp -R frontend/target/ backend/resources/public
   pushd ${SCRIPT_DIR}/backend > /dev/null
    ./lein uberjar
+  popd > /dev/null
 }
 
-goal_heroku() {
- cd backend
- ./lein run $PORT
+goal_deploy-clojars(){
+  echo "Deploying snapshot to clojars..."
+  pushd ${SCRIPT_DIR}/backend > /dev/null
+  ./lein deploy snapshots
+  popd > /dev/null
 }
 
 if type -t "goal_$1" &>/dev/null; then
