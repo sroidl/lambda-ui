@@ -5,9 +5,7 @@ install:
 - travis_retry $BUILD/go setup
 script:
 
-- $BUILD/go test
-- $BUILD/go jar
-- $BUILD/go deploy-clojars
+- $BUILD/go test && $BUILD/go jar && $BUILD/go deploy-clojars
 
 sudo: false
 cache:
