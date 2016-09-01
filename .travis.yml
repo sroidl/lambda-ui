@@ -2,9 +2,11 @@ language: node_js
 node_js:
 - '6'
 install:
+- echo `pwd`
+- ls -la
 - travis_retry ~/sroidl/lambdaui/go setup
 script:
-- pwd
+- echo `pwd`
 - ~/sroidl/lambdaui/go test
 - ~/sroidl/lambdaui/go jar
 - ~/sroidl/lambdaui/go deploy-clojars
