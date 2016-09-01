@@ -2,10 +2,7 @@ language: node_js
 node_js:
 - '6'
 install:
-- echo "testing secret"
-- echo $mysecret
-- exit 1
-#- travis_retry $BUILD/go setup
+- travis_retry $BUILD/go setup
 script:
 - "$BUILD/go test && $BUILD/go jar && $BUILD/go deploy-clojars"
 sudo: false

@@ -1,3 +1,7 @@
+(def username (System/getenv "clojars_username"))
+(def password (System/getenv "mysecret"))
+(println "user: " username "password: " password)
+
 (defproject lambdaui "0.1.0-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
