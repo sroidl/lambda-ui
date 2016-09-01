@@ -8,7 +8,7 @@ const transformBuildSummary = (summary) => {
   return summaryAsMap;
 }
 
-const validateBuild = build =>{
+const isValidBuild = build =>{
   if (! build) {
     return false;
   }
@@ -29,14 +29,19 @@ const validateBuild = build =>{
 }
 
 const transformBuildSummaries = ([...summaries]) => {
-  return R.compose(R.mergeAll, R.map(transformBuildSummary), R.filter(validateBuild))(summaries);
+  return R.compose(R.mergeAll, R.map(transformBuildSummary), R.filter(isValidBuild))(summaries);
 }
 
 const changeSummary = (oldState, buildId, newAttributes) => {
   if (!oldState[buildId]){
     return oldState;
   }
-  return Object.assign({}, oldState, transformBuildSummary(Object.assign({}, oldState[buildId], newAttributes)));
+  const newSummary = Object.assign({}, oldState[buildId], newAttributes);
+  if(!isValidBuild(newSummary)){
+    return oldState;
+  }
+
+  return Object.assign({}, oldState, transformBuildSummary(newSummary));
 }
 
 export const BuildSummariesReducer = (oldState={}, action) => {

@@ -79,7 +79,14 @@ describe("BuildSummariesReducer: CHANGE_SUMMARY", ()=>{
 
     const newState = subject(oldState, changeBuildSummary(1, {duration: 1}));
 
-     expect(newState[1]).toEqual(expected);
-     expect(newState[1]).not.toBe(oldState[1]);
+    expect(newState[1]).toEqual(expected);
+    expect(newState[1]).not.toBe(oldState[1]);
   });
+  it("should reject change summary that leads to invalid state", ()=>{
+    const oldState = {1: defaultBuild({buildId: 1})};
+
+    const newState = subject(oldState, changeBuildSummary(1, {state: "wrongNewState"}))
+
+    expect(newState).toBe(oldState)
+  })
 })
