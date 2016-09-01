@@ -17,7 +17,7 @@
 ;  )
 
 
-(defn backend-for-frontend []
+(defn ui-for-pipeline [pipeline]
   (ring-json/wrap-json-response
     (routes (GET "/api/summaries" [] (frontend-dummy/build-summaries))
             (GET "/" [] (ring.util.response/redirect "/ui/index.html"))
@@ -29,5 +29,5 @@
 (defonce server (atom nil))
 
 (defn start-server [port]
-  (reset! server (http/run-server (backend-for-frontend) {:port port})))
+  (reset! server (http/run-server (ui-for-pipeline nil) {:port port})))
 
