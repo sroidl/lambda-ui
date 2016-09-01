@@ -4,27 +4,22 @@ node_js:
 install:
 - travis_retry $BUILD/go setup
 script:
-
-- $BUILD/go test && $BUILD/go jar && $BUILD/go deploy-clojars
-
+- "$BUILD/go test && $BUILD/go jar && $BUILD/go deploy-clojars"
 sudo: false
 cache:
   directories:
   - "$HOME/.m2"
   - "$HOME/.lein"
-
 before_deploy:
-  - cd $BUILD/example-pipeline
-
+- cd $BUILD/example-pipeline
 deploy:
   api_key:
     secure: pboS2xCL7MbGjzRDCmLwTsl8CXAjPhLmVLTKca/ulja+XYIMBead4oESLhsrpWU8M3a83JfoQ4/KsgdbGvgRnEvGtR9S/E01UtxriMcGEBehRa+QY4drjn3McuqHMd01zNQNVm7ivMGLQdpkrDISiLj44f5ozapyFf5bP2Coj0ypR4M9xbtn2RRMLHBEPCESDr5NR7RchFTCvwva1u93YPWycx6TbNejKIpunD/58O6gWu671wLUtUbTADdJw7JWj9+YFsdwZfZEivQ7Fzj7rRUZY8XnLuZghLEJmpExjMLgba5X2wSZbdfZOZxFGMJfa/NtJcS0d2fGzGxY7WP6taW7m/S3TuhS55Y8cI3bXierP97dl8ce0+zymcZu/dn8wUKP+7MLuPGvP80GHql11OVYCb5zCqTCHKw+epnYNJNStx+zURNe7cVJj6zbCubGyVOuyScg3gskbdRus2tHYVg8kFAr17asTRKog58ET6TVqfDVhPmTX/DHTeQguACAF4gvnAkTO6WfAdOkY9efxeRzlPSMQVd8+4oeLCor3QRtRIPAQ6s3kEv9XroOgClMMBeBKwwi5h5Ay4uGIRDHRApN3XSQRcpTVu6EdZI3AdK3FPfjGqRXk6SVIpvsrUY8KcOx8UjKDkMmNa7Nv+I5JO5YL+CYyWYuH7EkLVgl0Ok=
   buildpack: clojure
   provider: heroku
   app: lambdaui-snapshot
-
 env:
   global:
-    - secure: rlco+K3vmx82O2w7jTbsY4EDUcNOnY9y/Mtk748Hr77WToRx+Wg4E8H90NY6HF2z/y/vHo1b7CG1kmNjw58KlChqE/oKfDUffWvrDpZ5LC4UPzvaEoLuuI0ctcBMmKpMCZFCvi2X40CCFTI9tFoy2MiBNJxztLxFkw4WCTlBFCGBpuY9bVS4dcISyLYzgfnO9LdwvJ8lNUMU6Jo7TODR4/YoOt3u++8Id9eF3Cyagd5gkk4UpnmoaAXosl8hHdgK/MMK8vwg/WPCWdfPVROCrCCNfU/mXTc+5yIzX+VaSqFb0D1kBz+8lt1g5KSiAMUEpsDLHE7k1xd6Tya03bFW7GeUurulweD0OvKD3ojYG5Jpbxh6mYm3i4gH2zUQyWozYKFnt+SizhQwXcnXqdJjAHghOMfNtdFeeFxEs/4Wko4zr65raBg4MgwVf3OZzZ0p/22Wq+1QYPTZiRGTBWnDGu5cewZw7G7hlUMTKtTaxTB7mzMpBc+avGBjtFa9OAZcUEm1er/zRMdFg9kydujoeK6bP9fvJiAARE0FxODljYB0QIs1eH+6FFobnJ2m4BgCD1npMaOd9FlqfuOXEEZUIPWrT7GueZW9GE4klPR7C4jWk3Tb0+DpCFWphXrY6Pwqo5f5SHjAdSiBXqJ2+TRu1kv+d7Pffj02O+PBUJ/RlMo=
-    - clojars_username=sroidl
-    - BUILD="/home/travis/build/sroidl/lambda-ui"
+  - clojars_username=sroidl
+  - BUILD="/home/travis/build/sroidl/lambda-ui"
+  - secure: qsi0ofHdD+Chij7Hd8yWrJ20zrikBrEz3wHm4GlcJt0zRuN9Y6TzOuROmf80z/rEQDp/XH+wVcF95P5MSJP0LlhrlYMgOuxqeqoVq2OXLXivOxW7lFX1X1husbRscXz++075Paq9ujn0hGq20iJWQvlwK5nU6N+ZvN728ZecFBiKYZnVdS8EWMw/apdauprUaLvMELC2xFrT+up1Z0Otp2KPYN76FhEsJpNZ6LGEM0qWlmRu5hrowmPZwDPZ4Jmr9Hz3uvS9tAuN4sRYLnQbq3d7aQ2Imt+5KsgD2LqZRzRzOLqVtp8SlEB7rZZli36Pr5HMBGxhWWYebXduI3lz+GGbQXxUDjOBxvQE2xgyKkofk1YHR+IGYstRM6KCFAwDrDS+2WWk0kQ8W4v67U3vu5+nxAnwGeLuVwHPnkpDGanN/FrBmngMFMPLgDRUOHCFFIaXugGyBrdzpZxzehaA/QrSryxu8y2T+xPXuzk5VomxLySXEYfjOyMidZpOb3VNYl7B8RxBsRisL8LYMOKBsNzK7EGkrSIRicP6SEuDtUz7zdZ50gEneTwXF6OSAdXtX9bZ0K3k9AO2b5fPowT1fz9o6egPZ83wSl+m02pLHZWv59fANTmjgMMSeXdjxzYeNk9eu/Ckk2JlQJbJ1s5WIOLVivkeyotvwpAkM6chfrc=
