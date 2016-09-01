@@ -7,8 +7,15 @@ const transformBuildSummary = (summary) => {
   return summaryAsMap;
 }
 
+const validateBuild = build =>{
+  const hasAllRequiredFields = build && build.buildId && build.buildNumber && build.startTime && build.state;
+  const buildIdIsNumber = build && Number.isInteger(build.buildId)
+  const startTimeIsIsoString = build && ! Number.isNaN(Date.parse(build.startTime));
+  return hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString;
+}
+
 const transformBuildSummaries = ([...summaries]) => {
-  return R.compose(R.mergeAll, R.map(transformBuildSummary))(summaries);
+  return R.compose(R.mergeAll, R.map(transformBuildSummary), R.filter(validateBuild))(summaries);
 }
 
 export const BuildSummariesReducer = (oldState={}, action) => {
