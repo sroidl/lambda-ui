@@ -4,6 +4,7 @@ node_js:
 install:
 - travis_retry ~/go setup
 script:
+- pwd
 - ~/go test
 - ~/go jar
 - ~/go deploy-clojars
