@@ -1,7 +1,3 @@
-(def username (System/getenv "clojars_username"))
-(def password (System/getenv "mysecret"))
-(println "user: " username "password: " password)
-
 (defproject lambdaui "0.1.0-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
@@ -16,11 +12,14 @@
 
   :plugins [[lein-environ "0.4.0"]]
   :test-paths ["test"]
-  :deploy-repositories [["clojars" {:username [:env/clojars_username :gpg]
-                                    :password [:env/clojars_key :gpg]}]]
+  :repositories [["clojars" {:username "sroidl"
+                             :password [:gpg :env]}]
+                 ["snapshots" :clojars]
+                 ["releases" :clojars]
+                 ]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
                                   [ring-server "0.4.0"]]
 
-                   :aot [lambdaui.core]
+                   :aot          [lambdaui.core]
                    :main         lambdaui.core
                    }})

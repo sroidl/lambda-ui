@@ -4,8 +4,7 @@ node_js:
 install:
 - travis_retry $TRAVIS_BUILD_DIR/go setup
 script:
-- "$TRAVIS_BUILD_DIR/go test 
-#&& $TRAVIS_BUILD_DIR/go jar && $TRAVIS_BUILD_DIR/go deploy-clojars"
+- $TRAVIS_BUILD_DIR/go test && $TRAVIS_BUILD_DIR/go jar && $TRAVIS_BUILD_DIR/go deploy-clojars
 sudo: false
 cache:
   directories:
