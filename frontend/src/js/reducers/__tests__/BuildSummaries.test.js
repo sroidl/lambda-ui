@@ -1,10 +1,10 @@
 import {BuildSummariesReducer as subject} from '../BuildSummaries.es6';
-import {addBuildSummary as action} from '../../Actions.es6'
+import {addBuildSummary as action, changeBuildSummary} from '../../Actions.es6'
 
 const defaultBuildInput = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
 const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: new Date(Date.parse("2015-01-25"))}, buildInfo);
 
-describe("BuildSummariesReducer", ()=> {
+describe("BuildSummariesReducer: ADD_SUMMARIES", ()=> {
   it("should reduce the old state if no summary action is given", ()=> {
     const oldState = {old: "state"};
 
@@ -64,3 +64,22 @@ describe("BuildSummariesReducer", ()=> {
     shouldAccept(defaultBuild({buildId: 1, state: "pending"}))
   })
 });
+
+describe("BuildSummariesReducer: CHANGE_SUMMARY", ()=>{
+  it("should return oldState if buildId does not exist", ()=>{
+    const oldState = {};
+
+    const newState = subject(oldState, changeBuildSummary(1, {}))
+
+    expect(newState).toBe(oldState)
+  });
+  it("should change existing summary, keeping attributes that are not in changeobject", ()=>{
+    const oldState = {1: defaultBuild({buildId: 1})};
+    let expected = defaultBuild({buildId:1, duration: 1})
+
+    const newState = subject(oldState, changeBuildSummary(1, {duration: 1}));
+
+     expect(newState[1]).toEqual(expected);
+     expect(newState[1]).not.toBe(oldState[1]);
+  });
+})
