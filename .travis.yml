@@ -2,13 +2,11 @@ language: node_js
 node_js:
 - '6'
 install:
-- travis_retry ./go setup
+- travis_retry ~/go setup
 script:
-- ./go test
-
-after_script:
-- ./go jar
-- ./go deploy-clojars
+- ~/go test
+- ~/go jar
+- ~/go deploy-clojars
 
 sudo: false
 cache:
@@ -17,8 +15,7 @@ cache:
   - "$HOME/.lein"
 
 before_deploy:
-
-- cd example-pipeline
+  - cd example-pipeline
 
 deploy:
   api_key:

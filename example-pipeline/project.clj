@@ -9,6 +9,7 @@
                  [lambdacd-git "0.1.6"]
                  [ring-server "0.4.0"]]
   :main ^:skip-aot lambdaui.example.simple-pipeline
+  :min-lein-version "2.0.0"
 
 
 
