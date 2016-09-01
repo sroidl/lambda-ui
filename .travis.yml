@@ -2,7 +2,10 @@ language: node_js
 node_js:
 - '6'
 install:
-- travis_retry $BUILD/go setup
+- echo "testing secret"
+- echo $mysecret
+- exit 1
+#- travis_retry $BUILD/go setup
 script:
 - "$BUILD/go test && $BUILD/go jar && $BUILD/go deploy-clojars"
 sudo: false
@@ -23,3 +26,4 @@ env:
   - clojars_username=sroidl
   - BUILD="/home/travis/build/sroidl/lambda-ui"
   - secure: qsi0ofHdD+Chij7Hd8yWrJ20zrikBrEz3wHm4GlcJt0zRuN9Y6TzOuROmf80z/rEQDp/XH+wVcF95P5MSJP0LlhrlYMgOuxqeqoVq2OXLXivOxW7lFX1X1husbRscXz++075Paq9ujn0hGq20iJWQvlwK5nU6N+ZvN728ZecFBiKYZnVdS8EWMw/apdauprUaLvMELC2xFrT+up1Z0Otp2KPYN76FhEsJpNZ6LGEM0qWlmRu5hrowmPZwDPZ4Jmr9Hz3uvS9tAuN4sRYLnQbq3d7aQ2Imt+5KsgD2LqZRzRzOLqVtp8SlEB7rZZli36Pr5HMBGxhWWYebXduI3lz+GGbQXxUDjOBxvQE2xgyKkofk1YHR+IGYstRM6KCFAwDrDS+2WWk0kQ8W4v67U3vu5+nxAnwGeLuVwHPnkpDGanN/FrBmngMFMPLgDRUOHCFFIaXugGyBrdzpZxzehaA/QrSryxu8y2T+xPXuzk5VomxLySXEYfjOyMidZpOb3VNYl7B8RxBsRisL8LYMOKBsNzK7EGkrSIRicP6SEuDtUz7zdZ50gEneTwXF6OSAdXtX9bZ0K3k9AO2b5fPowT1fz9o6egPZ83wSl+m02pLHZWv59fANTmjgMMSeXdjxzYeNk9eu/Ckk2JlQJbJ1s5WIOLVivkeyotvwpAkM6chfrc=
+  - secure: XtirB6OI/gmEvk+4O69u0VZR+apgfDJanX5zTGJ7krNWwR2hPfwJs+EMdQgU0pyWUxWDFWftV9mz5r47AAjgwOl0MJ5nW4er7EObNNTkeg8Lz5W0QhYamSH9mEBqrdAkGzny1eTQJ9RdHlEvSCbFPoUJ5jFlPOKD5EF8py0FJFxIul2a0oI+dJapsqqzCSxOP5CJKekebPv/b+frvIZnb4T/y8TWqgLDMzpr3JgC36S1tFHh4nzPJx/lsSb/4gxocKfr4RNETsS23bkMPDxSFJHiX/sOx/hCoLS2SVF8J4fYc6wTGGfOsZn/Su96IEcvknyqNvUVGalFvWmVnB3nLD8knuIvHka8QGhfYw5kR4o8cZCexUgo+ZBvhNv9CAtxWs/BzFHxfyULjCUFJGo3hHqnDaJOCdbaRqVtUJGqwN7RgiXN+HbWWVKW6ELpJ7SD9dC73P+IRx3Q7BsxioEyLjMwfqT+78N4QbIhpzHJSmh4JHJcSpSUznuwSTPpV0/uY2gVgHONnbV99GwTiPhc9nxku7gBHQf1YkUHTp8/vcpr7675HUxC7QlGlNdZtQSCBvkWnC6HqqYaL9JWZLuJfh9GWznJnNSH2fquYJ20Tq2o+fRjDWQpYSdzHctIVnbs21DQN4/r2EKAdacKzpDPLs97rhJMvTIcOUZWdoe92GE=
