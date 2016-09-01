@@ -1,4 +1,4 @@
-import {ADD_SUMMARY} from '../Actions.es6';
+import {ADD_SUMMARIES} from '../Actions.es6';
 import * as R from 'ramda';
 
 const transformBuildSummary = (summary) => {
@@ -33,7 +33,7 @@ const transformBuildSummaries = ([...summaries]) => {
 
 export const BuildSummariesReducer = (oldState={}, action) => {
   switch (action.type) {
-    case ADD_SUMMARY:
+    case ADD_SUMMARIES:
       return Object.assign({}, oldState, transformBuildSummaries(action.summaries)); // Does this replace or add summary?
     default:
       return oldState;
