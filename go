@@ -73,7 +73,8 @@ goal_jar() {
    npm run compile
   popd > /dev/null
   if [ ! -e ${SCRIPT_DIR}/backend/resources/public ]; then
-    mkdir -R ${SCRIPT_DIR}/backend/resources/public
+    mkdir -p ${SCRIPT_DIR}/backend/resources/public
+
   fi
 
  echo 'Compiling backend'
