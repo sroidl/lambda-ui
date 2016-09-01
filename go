@@ -80,8 +80,11 @@ goal_jar() {
   cp -R frontend/target/ backend/resources/public
   pushd ${SCRIPT_DIR}/backend > /dev/null
    ./lein uberjar
+}
 
-
+goal_heroku() {
+ cd backend
+ ./lein run $PORT
 }
 
 if type -t "goal_$1" &>/dev/null; then

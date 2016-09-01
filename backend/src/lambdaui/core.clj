@@ -18,8 +18,8 @@
   (try (Integer/parseInt port) (catch NumberFormatException e (default-fn e))))
 
 (defn -main [& [portArg]]
-  (let [port (try-parse-int portArg (fn [e] (when portArg (println "Port '" portArg "' is not a number. Using default port")) 80)) ]
+  (let [port (try-parse-int portArg (fn [e] (when portArg (println "Port '" portArg "' is not a number. Using default port")) 80))]
 
-    (println "Started Server on port " port ". CTRL+C to abort."))
-  (new-api/start-server)
+    (println "Started Server on port " port ". CTRL+C to abort.")
+    (new-api/start-server port))
   )

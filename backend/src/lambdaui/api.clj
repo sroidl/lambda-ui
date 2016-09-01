@@ -28,7 +28,6 @@
 
 (defonce server (atom nil))
 
-(defn start-server []
-  (println "serving backend-for-frontend on port 4444")
-  (reset! server (http/run-server (backend-for-frontend) {:port 4444})))
+(defn start-server [port]
+  (reset! server (http/run-server (backend-for-frontend) {:port port})))
 
