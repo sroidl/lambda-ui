@@ -19,7 +19,7 @@
 
 (defn backend-for-frontend []
   (ring-json/wrap-json-response
-    (routes (GET "/summaries" [] (frontend-dummy/build-summaries))
+    (routes (GET "/api/summaries" [] (frontend-dummy/build-summaries))
             (GET "/" [] (ring.util.response/redirect "/ui/index.html"))
             (route/resources "/ui" {:root "public"})
             ))
