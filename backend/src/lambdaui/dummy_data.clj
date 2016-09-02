@@ -4,15 +4,14 @@
 (def summaries {:summaries [{:buildId   1
                              :buildNumber 1                 ; TODO differentiate between build Number (alias) and id?
                              :state     :running
-                             :startTime "11pm"              ; TODO decide on format (ISO timestamp?)
-                             :duration  "30 seconds"        ; TODO decide on format (maybe seconds?)
-                             },
-                            {:corrupted :build}
+                             :startTime "2016-12-12T12:30Z"
+                             :duration  120
+                             }
+
                             ]
 
                 })
 
 
-(defn hello-response [] (response "haallo welt"))
 (defn build-summaries [] (header (response summaries) "Access-Control-Allow-Origin" "*"))
 

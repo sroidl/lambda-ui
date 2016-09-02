@@ -23,7 +23,7 @@ const isValidBuild = build =>{
 
   const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
   if (! keepBuild) {
-    // console.log("BuildSummariesReducer: Reject ", build);
+    console.log("BuildSummariesReducer: Reject ", build);
   }
   return keepBuild;
 }
