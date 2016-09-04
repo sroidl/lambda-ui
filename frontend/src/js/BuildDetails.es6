@@ -1,12 +1,16 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
-export const BuildDetails = ({buildId, open, details}) => {
+export const BuildDetails = ({buildId, open, details, requestDetailsFn}) => {
   if (!open) {
     return null;
   }
 
   if(details === undefined) {
+    console.log("Requesting build details for Build", buildId);
+    if (requestDetailsFn != undefined){
+      requestDetailsFn();
+    }
     return <div className="twelve columns buildDetails">
               <div className="row loadingMessage">Loading build details</div>
            </div>
@@ -24,17 +28,15 @@ BuildDetails.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   let buildId = ownProps.buildId;
-  let open = state.openedBuilds[buildId] || false;
-  let details = state.buildDetails[buildId];
-
-
-  return {
+    return {
     buildId: ownProps.buildId,
-    details: details,
-    open: open
+    details: state.buildDetails[buildId],
+    open: state.openedBuilds[buildId] || false
   }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {return ownProps};
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return ownProps
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildDetails);
