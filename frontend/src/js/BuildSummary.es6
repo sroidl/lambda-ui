@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import BuildDetails from './BuildDetails.es6'
 import {toggleBuildDetails as toggleAction} from './Actions.es6'
 import Moment, {now} from 'moment'
-import "moment-duration-format";
+
+import {FormattedDuration} from './DateAndTime.es6'
 
 const SUCCESS_ICON = 'fa-check'
 const FAILURE_ICON = 'fa-times'
@@ -19,66 +20,6 @@ const icon = (buildState) => {
   }
 }
 
-const formatSeconds = (input) => {
-  const duration = Moment.duration(input.seconds(), 'seconds');
-
-  if (duration.seconds() === 0) {
-    return "";
-  }
-  else if (duration.seconds() === 1) {
-    return "1 second";
-  }
-  else if (duration.seconds() < 10) {
-    return duration.format("s") + " seconds"
-  }
-  else {
-    return duration.format("ss") + " seconds";
-  }
-}
-
-const formatMinutes = (input) => {
-  const duration = Moment.duration(input.minutes(), 'minutes')
-
-  if (duration.minutes() === 0) {
-    return "";
-  }
-  else if (duration.minutes() === 1) {
-    return "1 minute";
-  }
-  else if (duration.minutes() < 10) {
-    return duration.format("m") + " minutes"
-  }
-  else {
-    return duration.format("mm") + " minutes";
-  }
-}
-
-const formatHours = (duration) => {
-  if (duration.hours() === 0) {
-    return "";
-  }
-  else if (duration.hours() === 1) {
-    return "1 hour";
-  }
-  else if (duration.hours() < 10) {
-    return duration.format("h") + " hours"
-  }
-  else {
-    return duration.format("hh") + " hours";
-  }
-}
-
-
-
-const formatDuration = seconds =>{
-  const duration = Moment.duration(seconds, 'seconds');
-  const minutes = duration.minutes();
-
-
-
-  const formatted = formatHours(duration) + " " + formatMinutes(duration) + " " + formatSeconds(duration)
-  return formatted.trim();
-}
 
 export const BuildSummary = (props) =>{
     let {buildId, build, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
@@ -88,14 +29,12 @@ export const BuildSummary = (props) =>{
     const startMoment = Moment(startTime);
     let time = startMoment.format("hh:mma");
     let date = startMoment.format("dd Mo MMM");
-    let duration_new = formatDuration(duration);
-
 
     return <div className={classesForState}>
         <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
         <div className="three columns buildNumber">Build #{buildNumber}</div>
         <div className="three columns buildStartTime">Started: {time} {date}</div>
-        <div className="three columns buildDuration">Duration: {duration_new}</div>
+        <div className="three columns buildDuration"><span>Duration:</span><FormattedDuration seconds={duration}/></div>
         <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
         <BuildDetails buildId={buildId}/>
       </div>
