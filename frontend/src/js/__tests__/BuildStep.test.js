@@ -1,11 +1,14 @@
+jest.mock('../Actions.es6');
+import {viewBuildStep} from '../Actions.es6'
 import React from 'react';
-import {shallow} from 'enzyme';
-import {BuildStep} from '../BuildStep.es6'
+import {shallow, mount} from 'enzyme';
+import BuildStepRedux, {BuildStep} from '../BuildStep.es6'
+import {MockStore} from './TestSupport.es6'
 
+
+const details = newAttributes => Object.assign({stepId: 1, state: 'success', name: 'fooStep'}, newAttributes)
 
 describe("BuildStep rendering", ()=>{
-
-  const details = newAttributes => Object.assign({stepId: 1, state: 'success', name: 'fooStep'}, newAttributes)
 
   it("should render all step information", ()=>{
     let input = details();
@@ -39,4 +42,18 @@ describe("BuildStep rendering", ()=>{
     expect(component.find('.goIntoStepLink').length).toBe(1);
   })
 
+})
+
+describe("BuildStep wiring", ()=> {
+  it("should dispatch go into step action on link click", () => {
+    let dispatchMock = jest.fn();
+    let storeMock = MockStore({}, dispatchMock);
+    let substeps = {steps: [{stepId: "1-1"}]}
+    viewBuildStep.mockReturnValue({type: "stepInto"});
+
+    let component = mount(<BuildStepRedux buildId={1} step={details(substeps)} store={storeMock}/>)
+    component.find('.goIntoStepLink').simulate('click');
+
+    expect(dispatchMock).toBeCalledWith({type: "stepInto"});
+  })
 })

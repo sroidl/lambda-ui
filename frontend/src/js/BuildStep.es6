@@ -1,9 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Moment from 'moment';
 import R from 'ramda';
 import Utils from './ComponentUtils.es6'
 import "moment-duration-format";
-
+import {viewBuildStep} from './Actions.es6';
 
 const duration = ({startTime, endTime}) => {
   let start = Moment(startTime);
@@ -30,3 +31,13 @@ export const BuildStep = props => {
            </a>
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return ownProps;
+}
+
+const mapDispatchToProps = (dispatch,ownProps) => {
+  return {goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.stepId))}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BuildStep);
