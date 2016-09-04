@@ -1,5 +1,3 @@
-(def secret (System/getenv "LEIN_PASSWORD"))
-(println "LEIN_PASSWORD" secret)
 (defproject lambdaui "0.1.0-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
@@ -12,12 +10,13 @@
                  [org.clojure/data.json "0.2.6"]
                  ]
 
-  :plugins [[lein-environ "0.4.0"]]
   :test-paths ["test"]
-  :repositories [["clojars" {:username "sroidl"
-                             :password [:gpg :env]}]
-                 ["snapshots" :clojars]
-                 ["releases" :clojars]
+  :repositories [["snapshots" { :url "https://clojars.org/repo"
+                                :username "sroidl"
+                                :password [:gpg :env]}]
+                 ["releases" { :url "https://clojars.org/repo"
+                                               :username "sroidl"
+                                               :password [:gpg :env]}]
                  ]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
                                   [ring-server "0.4.0"]]
