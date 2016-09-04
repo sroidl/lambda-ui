@@ -2,13 +2,13 @@ language: node_js
 node_js:
 - '6'
 install:
-- echo "install  My secret is $mysecret"
+- echo "install  My secret is $supersecret"
 - travis_retry $TRAVIS_BUILD_DIR/go setup
 script:
-- echo "script   My secret is $mysecret"
+- echo "script   My secret is $supersecret"
 - "$TRAVIS_BUILD_DIR/go test"
 after_success:
-- echo "after   My secret is: $mysecret"
+- echo "after   My secret is: $supersecret"
 - cd $TRAVIS_BUILD_DIR/backend
 - "./lein deploy clojars"
 sudo: false
@@ -18,5 +18,5 @@ cache:
   - "$HOME/.lein"
 env:
   global:
-    # mysecret env
+    # supersecret env
     secure: U7DSZgUeydydBNAxXOQJiwP6goigMbGu7prAQ9m0e6NJUAbar/A/8UIrAN7Pc8J7natmqghwVNmtleU2u2+3YvxgyGair+21zwnBWtC7UXoJLv7HF7k9dweuiYwvIgoz1jMZA+HIxwhEqdvBWQhv8AeN+r/8+jgFNxrC58WNjW4vYeZMabiG4ro1LD2132hSeNhVJ1Y6N9TeQulKa56MLH8hKlVtMN0999tnyHHn292Wta7Qv+8f/iNJuxu7/GdCKnZKCHvRwJs5lu2L9uOScHN3D8j+NiFWeYmwtXCtShtQ5U/VTatnT1Th2j1G0sAcUVgTFPEV2qfducTmdM1IdPiWiFhzeQ6tt27h9FXSSLvVjNtt6tVIOsNVVb3AQWiyXgBgMGjlsO1Sb9x84N0lU4+AOqujnOE1S86YImWuzclgxF6/jllPEZKR33IanVjHMD0SRZEj359q7RCdIxPJRWY9ZvT3EWOA1IAU884fGQIGHjPinwjj8e6VpfHgPIPKwrgOeuRL93nhZh9JSjVfBN5/VNCzao2gIxmIuI/mBfy2L8Mbt8CQr/NCdNYIMxQfFNLbbxJJXxG0DjNHojFI1G0WXNW9nfO0X8gFqClgeyiX/sKIf8BLAdCEb+F/VoCP2E2lpg4zKajTQpZFWpxxyxgX7/pih5aLkwEWjks7I1E=

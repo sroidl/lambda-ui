@@ -1,4 +1,4 @@
-(def secret (System/getenv "mysecret"))
+(def secret (System/getenv "supersecret"))
 (println "Lein: mysecret is " secret)
 (defproject lambdaui "0.1.0-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
