@@ -28,7 +28,7 @@ export const BuildSummary = (props) =>{
 
     const startMoment = Moment(startTime);
     let time = startMoment.format("hh:mma");
-    let date = startMoment.format("dd Mo MMM");
+    let date = startMoment.format("dd Do MMM");
 
     return <div className={classesForState}>
         <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
