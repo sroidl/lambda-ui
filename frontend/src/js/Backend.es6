@@ -62,7 +62,7 @@ export const requestBuildDetails = (dispatch, buildId) => {
   fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildDetails(body.details)))
   .catch(()=>{
     console.log("fallback to dummy details");
-    dispatch(dummyBuildDetails[buildId]);
+    dispatch(addBuildDetails(dummyBuildDetails[buildId]));
   })
 }
 
