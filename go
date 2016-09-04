@@ -80,7 +80,7 @@ goal_jar() {
  echo 'Compiling backend'
   cp -R frontend/target/ backend/resources/public
   pushd ${SCRIPT_DIR}/backend > /dev/null
-   ./lein uberjar
+   ./lein jar
   popd > /dev/null
 }
 
