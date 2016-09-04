@@ -1,9 +1,9 @@
 import React from 'react';
 import 'whatwg-fetch';
-import {addBuildSummary} from './Actions.es6'
+import {addBuildSummary, addBuildDetails} from './Actions.es6'
 
-const receiveBuildSummaries = (dispatch) => {
-  const endpoint = "http://localhost:4444/api/summaries";
+export const receiveBuildSummaries = (dispatch) => {
+  let endpoint = "http://localhost:4444/api/summaries";
 
   let dummySummaries = [
      { buildId: 1, buildNumber: 1, state: "success", startTime: "2016-08-29T14:54Z", duration: 360},
@@ -12,8 +12,16 @@ const receiveBuildSummaries = (dispatch) => {
      { buildId: 5, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: -2}
   ]
 
-  let dummyBuildDetails = [
-    {
+  fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildSummary(body.summaries)))
+  .catch(()=>{
+    console.log("fallback to dummy data");
+    dispatch(addBuildSummary(dummySummaries));
+  })
+}
+
+export const requestBuildDetails = (dispatch, buildId) => {
+  let dummyBuildDetails = {
+    1: {
       buildId: 1,
       commit: "git commit hash 1",
       steps: [
@@ -48,19 +56,14 @@ const receiveBuildSummaries = (dispatch) => {
         endTime: "2016-08-29T15:04Z"
       }
     ]}
-  ]
+  }
 
-  fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildSummary(body.summaries)))
+  let endpoint = "/api/details/" + buildId;
+  fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildDetails(body.details)))
   .catch(()=>{
-    console.log("fallback to dummy data");
-    dispatch(addBuildSummary(dummySummaries));
+    console.log("fallback to dummy details");
+    dispatch(dummyBuildDetails[buildId]);
   })
-  ;
-
-
-
-
-
 }
 
-export { receiveBuildSummaries };
+export default {receiveBuildSummaries, requestBuildDetails}

@@ -1,9 +1,16 @@
-import {BuildDetails as subject} from '../BuildDetails.es6'
-import {shallow} from 'enzyme'
+jest.mock("../Backend.es6");
+import BuildDetailsRedux, {BuildDetails as subject} from '../BuildDetails.es6'
+import {shallow, mount} from 'enzyme'
+import {requestBuildDetails as requestBuildDetailsMock} from '../Backend.es6'
+import {MockStore} from './TestSupport.es6'
+import React from 'react';
+import { Provider } from 'react-redux'
 
 
 
 describe("BuildDetails Component", ()=>{
+
+  const _it = () => {}
 
   const input = newAttributes => Object.assign({buildId: 1, open: true, details: undefined, requestDetailsFn: jest.fn()}, newAttributes)
 
@@ -19,5 +26,14 @@ describe("BuildDetails Component", ()=>{
     shallow(subject(input({requestDetailsFn: requestMockFn})));
 
     expect(requestMockFn).toBeCalled();
+  })
+
+  it("MapDispatchToProps should wire to backend.", ()=>{
+    let store = MockStore({buildDetails: {}, openedBuilds: {2: true}});
+
+    let provider = mount(<BuildDetailsRedux store={store} buildId="2"/>);
+    provider.html();
+
+    expect(requestBuildDetailsMock).toBeCalled();
   })
 })

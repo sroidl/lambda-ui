@@ -1,16 +1,15 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+import Backend from './Backend.es6';
 
-export const BuildDetails = ({buildId, open, details, requestDetailsFn}) => {
+export const BuildDetails = (props) => {
+  let {buildId, open, details, requestDetailsFn} = props
   if (!open) {
     return null;
   }
 
   if(details === undefined) {
-    console.log("Requesting build details for Build", buildId);
-    if (requestDetailsFn != undefined){
-      requestDetailsFn();
-    }
+    requestDetailsFn();
     return <div className="twelve columns buildDetails">
               <div className="row loadingMessage">Loading build details</div>
            </div>
@@ -27,16 +26,20 @@ BuildDetails.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  let buildId = ownProps.buildId;
+  let buildId = Number.parseInt(ownProps.buildId);
     return {
-    buildId: ownProps.buildId,
+    buildId: buildId,
     details: state.buildDetails[buildId],
     open: state.openedBuilds[buildId] || false
   }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return ownProps
+  return {
+      requestDetailsFn: ()=>{
+        Backend.requestBuildDetails(dispatch, ownProps.buildId);
+      }
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildDetails);
