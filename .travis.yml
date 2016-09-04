@@ -2,23 +2,21 @@ language: node_js
 node_js:
 - '6'
 install:
+- echo "My secret is: $mysecret"
 - travis_retry $TRAVIS_BUILD_DIR/go setup
 script:
-- $TRAVIS_BUILD_DIR/go test
-# && $TRAVIS_BUILD_DIR/go jar && $TRAVIS_BUILD_DIR/go deploy-clojars
+- echo "Script: My secret is: $mysecret"
+- "$TRAVIS_BUILD_DIR/go test"
 after_success:
-  - cd $TRAVIS_BUILD_DIR/backend
-  - ./lein deploy clojars
+- echo "Script: My secret is: $mysecret"
+- cd $TRAVIS_BUILD_DIR/backend
+- "./lein deploy clojars"
 sudo: false
 cache:
   directories:
   - "$HOME/.m2"
   - "$HOME/.lein"
-#before_deploy:
-#- cd $TRAVIS_BUILD_DIR/example-pipeline
-#deploy:
-#  api_key:
-#    secure: pboS2xCL7MbGjzRDCmLwTsl8CXAjPhLmVLTKca/ulja+XYIMBead4oESLhsrpWU8M3a83JfoQ4/KsgdbGvgRnEvGtR9S/E01UtxriMcGEBehRa+QY4drjn3McuqHMd01zNQNVm7ivMGLQdpkrDISiLj44f5ozapyFf5bP2Coj0ypR4M9xbtn2RRMLHBEPCESDr5NR7RchFTCvwva1u93YPWycx6TbNejKIpunD/58O6gWu671wLUtUbTADdJw7JWj9+YFsdwZfZEivQ7Fzj7rRUZY8XnLuZghLEJmpExjMLgba5X2wSZbdfZOZxFGMJfa/NtJcS0d2fGzGxY7WP6taW7m/S3TuhS55Y8cI3bXierP97dl8ce0+zymcZu/dn8wUKP+7MLuPGvP80GHql11OVYCb5zCqTCHKw+epnYNJNStx+zURNe7cVJj6zbCubGyVOuyScg3gskbdRus2tHYVg8kFAr17asTRKog58ET6TVqfDVhPmTX/DHTeQguACAF4gvnAkTO6WfAdOkY9efxeRzlPSMQVd8+4oeLCor3QRtRIPAQ6s3kEv9XroOgClMMBeBKwwi5h5Ay4uGIRDHRApN3XSQRcpTVu6EdZI3AdK3FPfjGqRXk6SVIpvsrUY8KcOx8UjKDkMmNa7Nv+I5JO5YL+CYyWYuH7EkLVgl0Ok=
-#  buildpack: clojure
-#  provider: heroku
-#  app: lambdaui-snapshot
+env:
+  global:
+    # mysecret env
+    secure: U7DSZgUeydydBNAxXOQJiwP6goigMbGu7prAQ9m0e6NJUAbar/A/8UIrAN7Pc8J7natmqghwVNmtleU2u2+3YvxgyGair+21zwnBWtC7UXoJLv7HF7k9dweuiYwvIgoz1jMZA+HIxwhEqdvBWQhv8AeN+r/8+jgFNxrC58WNjW4vYeZMabiG4ro1LD2132hSeNhVJ1Y6N9TeQulKa56MLH8hKlVtMN0999tnyHHn292Wta7Qv+8f/iNJuxu7/GdCKnZKCHvRwJs5lu2L9uOScHN3D8j+NiFWeYmwtXCtShtQ5U/VTatnT1Th2j1G0sAcUVgTFPEV2qfducTmdM1IdPiWiFhzeQ6tt27h9FXSSLvVjNtt6tVIOsNVVb3AQWiyXgBgMGjlsO1Sb9x84N0lU4+AOqujnOE1S86YImWuzclgxF6/jllPEZKR33IanVjHMD0SRZEj359q7RCdIxPJRWY9ZvT3EWOA1IAU884fGQIGHjPinwjj8e6VpfHgPIPKwrgOeuRL93nhZh9JSjVfBN5/VNCzao2gIxmIuI/mBfy2L8Mbt8CQr/NCdNYIMxQfFNLbbxJJXxG0DjNHojFI1G0WXNW9nfO0X8gFqClgeyiX/sKIf8BLAdCEb+F/VoCP2E2lpg4zKajTQpZFWpxxyxgX7/pih5aLkwEWjks7I1E=

@@ -1,3 +1,5 @@
+(def secret (System/getenv "mysecret"))
+(println "Lein: mysecret is " secret)
 (defproject lambdaui "0.1.0-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
