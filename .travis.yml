@@ -7,7 +7,7 @@ script:
 - "$TRAVIS_BUILD_DIR/go test"
 after_success:
 - cd $TRAVIS_BUILD_DIR/backend
-- "./lein deploy clojars"
+- "./lein deploy"
 sudo: false
 cache:
   directories:
