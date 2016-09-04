@@ -15,10 +15,18 @@ const duration = ({startTime, endTime}) => {
 }
 
 export const BuildStep = props => {
-  let {buildId, step} = props;
+  let {buildId, step, goIntoStepFn} = props;
 
-  return <span className={Utils.classes("buildStep", step.state)}>
-    <div className="stepName">{step.name}</div>
-    <div className="stepDuration">{duration(step)}</div>
-  </span>
+  let infos = <div><div className="stepName">{step.name}</div> <div className="stepDuration">{duration(step)}</div></div>
+
+  if (step.steps === undefined || step.steps.length === 0) {
+    return <span className={Utils.classes("buildStep", step.state)}>
+            {infos}
+           </span>
+  }
+  else {
+    return <a className={Utils.classes("buildStep", "goIntoStepLink", step.state)} href="#" onClick={goIntoStepFn}>
+            {infos}
+           </a>
+  }
 }

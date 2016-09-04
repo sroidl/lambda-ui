@@ -31,4 +31,12 @@ describe("BuildStep rendering", ()=>{
     expect(component.find('.buildStep').hasClass('pending')).toBe(true);
   });
 
+  it("should render link if step has substeps", ()=>{
+    let substeps = {steps: [{stepId: "1.1"}]}
+
+    let component = shallow(<BuildStep buildId={1} step={details(substeps)} />)
+
+    expect(component.find('.goIntoStepLink').length).toBe(1);
+  })
+
 })
