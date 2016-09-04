@@ -2,13 +2,13 @@ language: node_js
 node_js:
 - '6'
 install:
-- echo "My secret is: $mysecret"
+- echo "install  My secret is $mysecret"
 - travis_retry $TRAVIS_BUILD_DIR/go setup
 script:
-- echo "Script: My secret is: $mysecret"
+- echo "script   My secret is $mysecret"
 - "$TRAVIS_BUILD_DIR/go test"
 after_success:
-- echo "Script: My secret is: $mysecret"
+- echo "after   My secret is: $mysecret"
 - cd $TRAVIS_BUILD_DIR/backend
 - "./lein deploy clojars"
 sudo: false
