@@ -28,6 +28,14 @@ describe("BuildDetails Component", ()=>{
     expect(requestMockFn).toBeCalled();
   })
 
+  it("should render all buildSteps on first level", ()=>{
+    let steps = [{stepId: 1}, {stepId: 2}]
+
+    let component = shallow(subject(input({details: {steps: steps}})));
+
+    expect(component.find("BuildStep").length).toEqual(2)
+  })
+
   it("MapDispatchToProps should wire to backend.", ()=>{
     let store = MockStore({buildDetails: {}, openedBuilds: {2: true}});
 

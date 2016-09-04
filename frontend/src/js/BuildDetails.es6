@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Backend from './Backend.es6';
+import {BuildStep} from './BuildStep.es6'
+import R from 'ramda';
 
 export const BuildDetails = (props) => {
   let {buildId, open, details, requestDetailsFn} = props
@@ -15,8 +17,11 @@ export const BuildDetails = (props) => {
            </div>
   }
 
+
+  let steps = R.map(step=><BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps)
+
   return <div className="twelve columns buildDetails">
-            <div className="row ">Hier kommen die Details</div>
+            <div className="row ">{steps}</div>
          </div>
 };
 
