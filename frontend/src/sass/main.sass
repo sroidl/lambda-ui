@@ -24,6 +24,24 @@ body
   border-radius: 0.3em
   border-width: thin
   padding: 5px
+  display: inline-block
+
+  &.success
+    background-color: $green
+    color: $lightGrey
+
+  &.failed
+    background-color: $red
+    color: $lightGrey
+
+  &.running
+    background-color: $blue
+    color: $lightGrey
+
+  &.pending
+    background-color: $lightGrey
+    color: black
+
 
 .buildSummary
   margin-bottom: 10px
