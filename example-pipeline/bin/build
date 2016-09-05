@@ -1,0 +1,2 @@
+#!/bin/bash
+lein -U $LEIN_BUILD_TASK
