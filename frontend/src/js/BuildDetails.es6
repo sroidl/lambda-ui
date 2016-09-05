@@ -35,7 +35,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
     buildId: buildId,
     details: state.buildDetails[buildId],
-    open: state.openedBuilds[buildId] || true
+    open: state.openedBuilds[buildId] || false
   }
 };
 

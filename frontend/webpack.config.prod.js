@@ -31,6 +31,11 @@ module.exports = {
       {
         test: /\.css$/,
         loaders: ["style", "css"]
+      },
+      // Enables importing of images into the ES6 modules.
+      {
+        test: /\.png$/,
+        loader: "file"
       }
     ]
   }
