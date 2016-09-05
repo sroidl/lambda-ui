@@ -1,2 +1,4 @@
 #!/bin/bash
+lein -U deps
 lein -U with-profile production compile :all
+
