@@ -4,9 +4,8 @@ node_js:
 install:
 - travis_retry $TRAVIS_BUILD_DIR/go setup
 script:
-- "$TRAVIS_BUILD_DIR/go test"
-after_success:
-- $TRAVIS_BUILD/go jar && cd $TRAVIS_BUILD_DIR/backend && "./lein deploy"
+- "$TRAVIS_BUILD_DIR/go test && $TRAVIS_BUILD/go jar && cd $TRAVIS_BUILD_DIR/backend && ./lein deploy"
+
 sudo: false
 cache:
   directories:
