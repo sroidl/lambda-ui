@@ -1,2 +1,2 @@
 #!/bin/bash
-lein -U with_profile production compile :all
+lein -U with-profile production compile :all
