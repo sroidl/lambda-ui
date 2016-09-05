@@ -26,14 +26,16 @@ export const BuildSummary = (props) =>{
     let classesForState = "row buildSummary " + state;
     let iconClassName = "fa " + icon(state);
 
-    const startMoment = Moment(startTime);
-    let time = startMoment.format("hh:mma");
-    let date = startMoment.format("dd Do MMM");
+    let timeToNow = Moment(startTime).diff(Moment(now()))
+
+    const startMoment = Moment.duration(timeToNow).humanize('minutes');
+
+
 
     return <div className={classesForState}>
         <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
         <div className="three columns buildNumber">Build #{buildNumber}</div>
-        <div className="three columns buildStartTime">Started: {time} {date}</div>
+        <div className="three columns buildStartTime">Started: {startMoment}</div>
         <div className="three columns buildDuration"><span>Duration:</span><FormattedDuration seconds={duration}/></div>
         <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
         <BuildDetails buildId={buildId}/>

@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom';
 import React from 'react';
 import BuildSummaryList from './BuildSummaryList.es6'
-import 'whatwg-fetch'
+import {Header} from './Header.es6'
 import * as backend from './Backend.es6'
 
 
@@ -15,6 +15,7 @@ class LambdaUI {
     let rootElement = document.getElementById('entryPoint');
     ReactDOM.render(<Provider store={appState}>
                       <div>
+                      <Header />
                       <BuildSummaryList/>
                       </div>
                     </Provider>, rootElement);
