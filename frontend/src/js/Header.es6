@@ -8,7 +8,7 @@ return <div className="appHeader">
       <img src={logo} className="logoImage" alt="logo" />
       <span className="logoText">LAMBDA CD</span>
     </div>
-    <span className="pipelineName">p13n-reco</span>
+    <span className="pipelineName">simple-pipeline</span>
     <button className="runButton">Start Build</button>
 </div>
 }
