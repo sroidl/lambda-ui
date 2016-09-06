@@ -9,10 +9,10 @@
       (is (= {:summaries [{:state :waiting}]} (api/summaries simple-waiting-pipeline-state)))
       (is (= {:summaries [{:state :running}]} (api/summaries simple-running-pipeline-state)))))
   (testing "should extract pipeline status for more than one pipeline"
-    (let [simple-waiting-pipeline-state {1 {'(1) {:status :waiting}}}
-          simple-running-pipeline-state {1 {'(1) {:status :running}}}]
-      (is (= {:summaries [{:state :waiting}]} (api/summaries simple-waiting-pipeline-state)))
-      (is (= {:summaries [{:state :running}]} (api/summaries simple-running-pipeline-state))))))
+    (let [waiting-and-running-pipeline-state {1 {'(1) {:status :waiting}}
+                                              2 {'(1) {:status :running}}}]
+      (is (= {:summaries [{:state :waiting}
+                          {:state :running}]} (api/summaries waiting-and-running-pipeline-state))))))
 
 ;If one step is waiting, return waiting
 ;If one step is running, return running

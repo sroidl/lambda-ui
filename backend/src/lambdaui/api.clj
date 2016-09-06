@@ -17,8 +17,9 @@
 ;  )
 
 (defn summaries [pipeline-state]
-  (let [state (:status (first (vals (first (vals pipeline-state)))))]
-    {:summaries [{:state state}]}))
+  (let [extract-state (fn [pipeline-state-map] {:state (:status (first (vals pipeline-state-map)))})]
+    {:summaries
+     (map #(extract-state %) (vals pipeline-state))}))
 
 (defn ui-for-pipeline [pipeline]
   (ring-json/wrap-json-response
