@@ -1,0 +1,72 @@
+.buildSummaryList{
+	padding: 10px;
+}
+
+.buildSummary{
+	padding: 20px 20px 20px 20px;
+	border:2px solid #222;
+}
+
+.buildDetails{
+	position: relative;
+	vertical-align: top;
+}
+
+.buildstep{
+	position: relative;
+	display: inline-block;
+	border:1px solid #000;
+	border-radius: 3px;
+	padding:4px 8px 4px 16px;
+	margin: 0 20px 20px 0;
+	color:#FFF;
+	min-width: 80px;
+	max-width: 180px;
+	background-color: rgba(61,54,54,1)
+}
+
+.buildstep:after{
+  content:'';
+  width:2.5em;/* size of your margin */
+  border-bottom:2px solid #222;
+  position:absolute;
+  bottom:15px;
+  right: -2.5em;
+}
+
+/* ----------------- */
+
+.buildstep .icn{
+	position: absolute;
+	top:-12px;
+	left:-12px;
+	border: 2px solid #222;
+	border-radius: 50%;
+	min-width: 22px;
+	min-height: 22px;
+	text-align: center;
+}
+
+.buildstep .icn i{
+	position: relative;
+	top: 4px;
+}
+
+.buildstep .stepName, .buildstep .setpDuration{
+	font-size: 0.8em;
+}
+
+.buildstep.success .icn{background-color: #75BD70;}
+.buildstep.pending .icn{background-color: #867976;}
+.buildstep.failed .icn{background-color: #942629;}
+.buildstep.running .icn{background-color: #677DC4;}
+
+.buildstep.running .icn i, .buildstep.pending .icn i{
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

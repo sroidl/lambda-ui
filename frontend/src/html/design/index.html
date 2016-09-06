@@ -5,8 +5,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
-		<style type="text/css">
-		</style>
+		<link rel="stylesheet" href="css/styles.css">
 	</head>
 	<body>
 			<!--
@@ -15,22 +14,50 @@
 				- failed
 				- running
 			-->
-			<div class="builddeatails">
-				<div class="buildstep pending">
-					(<div class="icn"><i class="fa fa-camera-retro"></i></div>)
-					<span class="name">TEST</span><span class="time">(2:00)</span>
-				</div>
-				<div class="buildstep success">
-					(<div class="icn"><i class="fa fa-camera-retro"></i></div>)
-					<span class="name">TEST</span><span class="time">(2:00)</span>
-				</div>
-				<div class="buildstep failed">
-					(<div class="icn"><i class="fa fa-camera-retro"></i></div>)
-					<span class="name">TEST</span><span class="time">(2:00)</span>
-				</div>
-				<div class="buildstep running">
-					(<div class="icn"><i class="fa fa-camera-retro"></i></div>)
-					<span class="name">TEST</span><span class="time">(2:00)</span>
+			<div class="buildSummaryList">
+				<div class="buildSummary">
+					<div class="buildDetails">
+						<div class="buildstep success"
+							><div class="icn"><i class="fa fa-check" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep failed"
+							><div class="icn"><i class="fa fa-times" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep running"
+							><div class="icn"><i class="fa fa-cog" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep pending"
+							><div class="icn"><i class="fa fa-spinner" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep pending"
+							><div class="icn"><i class="fa fa-spinner" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev-deploy-to-dev-deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep pending"
+							><div class="icn"><i class="fa fa-spinner" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep pending"
+							><div class="icn"><i class="fa fa-spinner" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+						<div class="buildstep pending"
+							><div class="icn"><i class="fa fa-spinner" aria-hidden="true"></i></div
+							><div class="stepName">deploy-to-dev</div
+							><div class="setpDuration">(02:00)</div
+						></div>
+					</div>
 				</div>
 			</div>
 	</body>
