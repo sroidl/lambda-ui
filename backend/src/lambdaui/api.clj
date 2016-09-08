@@ -16,10 +16,14 @@
 ;                                                (send! channel data)))))
 ;  )
 
+(defn extract-state [build-steps]
+  (if (some #(= :waiting (:status %)) (vals build-steps))
+    :waiting
+    (:status (first (vals build-steps)))))
+
 (defn summaries [pipeline-state]
-  (let [extract-state (fn [pipeline-state-map] {:state (:status (first (vals pipeline-state-map)))})]
-    {:summaries
-     (map #(extract-state %) (vals pipeline-state))}))
+  {:summaries
+   (map (fn [one-build] {:state (extract-state one-build)}) (vals pipeline-state))})
 
 (defn ui-for-pipeline [pipeline]
   (ring-json/wrap-json-response

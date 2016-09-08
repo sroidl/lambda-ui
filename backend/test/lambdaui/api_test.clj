@@ -14,6 +14,17 @@
       (is (= {:summaries [{:state :waiting}
                           {:state :running}]} (api/summaries waiting-and-running-pipeline-state))))))
 
+(deftest extract-state-test
+  (testing "should be waiting if some step is waiting"
+    (let [multi-step-build1 {'(1) {:status :success}
+                             '(2) {:status :running}
+                             '(3) {:status :waiting}}
+          multi-step-build2 {'(1) {:status :success}
+                             '(2) {:status :waiting}
+                             '(3) {:status :running}}]
+      (is (= :waiting (api/extract-state multi-step-build1)))
+      (is (= :waiting (api/extract-state multi-step-build2))))))
+
 ;If one step is waiting, return waiting
 ;If one step is running, return running
 ;If last step failed, return failed (?)
