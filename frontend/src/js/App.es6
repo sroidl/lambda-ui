@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom';
 import React from 'react';
 import BuildSummaryList from './BuildSummaryList.es6'
-import {Header} from './Header.es6'
+import Header from './Header.es6'
 import * as backend from './Backend.es6'
 
 

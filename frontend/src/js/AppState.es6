@@ -10,7 +10,7 @@ const initialState = {
   summaries: {},
   openedBuilds: {},
   buildDetails: {},
-  config: {}
+  config: {name : "PIPELINE_NAME"}
 }
 
 const rootReducer = combineReducers({
