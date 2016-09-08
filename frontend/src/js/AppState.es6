@@ -3,25 +3,21 @@ import {ToggleBuildDetailsReducer} from './reducers/ToggleBuildDetails.es6'
 import {BuildSummariesReducer, ADD_SUMMARY} from './reducers/BuildSummaries.es6'
 import {changeBuildSummary} from './Actions.es6'
 import {BuildDetailsReducer} from './reducers/BuildDetails.es6'
+import {PipelineConfigurationReducer} from './reducers/PipelineConfiguration.es6'
 import R from 'ramda';
 
 const initialState = {
-  summaries: {
-  },
-
-  openedBuilds: {
-
-  },
-
-  buildDetails: {
-
-  }
+  summaries: {},
+  openedBuilds: {},
+  buildDetails: {},
+  config: {}
 }
 
 const rootReducer = combineReducers({
   openedBuilds: ToggleBuildDetailsReducer,
   summaries:  BuildSummariesReducer,
-  buildDetails: BuildDetailsReducer
+  buildDetails: BuildDetailsReducer,
+  config: PipelineConfigurationReducer
 })
 
 
