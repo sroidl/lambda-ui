@@ -32,7 +32,7 @@ BuildDetails.propTypes = {
   details: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
   const buildId = Number.parseInt(ownProps.buildId);
   const details = state.buildDetails[buildId] || {};
   const stepsToDisplay = details.steps;

@@ -1,5 +1,5 @@
 jest.mock("../Backend.es6");
-import BuildDetailsRedux, {BuildDetails as subject} from '../BuildDetails.es6'
+import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from '../BuildDetails.es6'
 import {shallow, mount} from 'enzyme'
 import {requestBuildDetails as requestBuildDetailsMock} from '../Backend.es6'
 import {MockStore} from './TestSupport.es6'
@@ -47,5 +47,15 @@ describe("BuildDetails Component", ()=>{
 })
 
 describe("View Build details", ()=>{
-  
+  it("should map root steps if no view build details is given", () => {
+    const state = {
+      buildDetails: {
+        1: {buildId: 1, steps: [{stepId: 1}, {stepId: 2}]}
+      },
+      openedBuilds: { 1: true}
+    };
+    const newProps = mapStateToProps(state, {buildId: 1});
+
+    expect(newProps.stepsToDisplay).toEqual([{stepId: 1}, {stepId: 2}]);
+  })
 })
