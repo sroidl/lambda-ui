@@ -1,10 +1,10 @@
-import appState from './AppState.es6'
-import { Provider } from 'react-redux'
+import appState from './AppState.es6';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import BuildSummaryList from './BuildSummaryList.es6'
-import Header from './Header.es6'
-import * as backend from './Backend.es6'
+import BuildSummaryList from './BuildSummaryList.es6';
+import Header from './Header.es6';
+import * as backend from './Backend.es6';
 
 
 class LambdaUI {
@@ -20,6 +20,6 @@ class LambdaUI {
                       </div>
                     </Provider>, rootElement);
   }
-}
+};
 
 export default LambdaUI;

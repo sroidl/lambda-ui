@@ -9,7 +9,7 @@ export const BuildDetailsReducer = (oldState={}, action) => {
     }
     default: return oldState;
   }
-}
+};
 
 export const ViewBuildStepReducer = (oldState={}, action) => {
   switch (action.type) {
@@ -20,4 +20,4 @@ export const ViewBuildStepReducer = (oldState={}, action) => {
     }
     default: return oldState;
   }
-}
+};

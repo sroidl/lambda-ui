@@ -4,18 +4,18 @@ import * as R from 'ramda';
 const transformBuildSummary = (summary) => {
   let summaryAsMap = {};
   let startTimeDateObj = new Date(Date.parse(summary.startTime));
-  summaryAsMap[summary.buildId] = Object.assign({}, summary, {startTime: startTimeDateObj})
+  summaryAsMap[summary.buildId] = Object.assign({}, summary, {startTime: startTimeDateObj});
   return summaryAsMap;
-}
+};
 
 const isValidBuild = build =>{
   if (! build) {
     return false;
   }
   const hasAllRequiredFields = build.buildId && build.buildNumber && build.startTime && build.state;
-  const buildIdIsNumber = Number.isInteger(build.buildId)
+  const buildIdIsNumber = Number.isInteger(build.buildId);
   const startTimeIsIsoString = !Number.isNaN(Date.parse(build.startTime));
-  const durationIsANumber = build.duration === undefined || Number.isInteger(build.duration)
+  const durationIsANumber = build.duration === undefined || Number.isInteger(build.duration);
   const stateIsValid = build.state === 'running'
       || build.state === 'failed'
       || build.state === 'success'
@@ -26,11 +26,11 @@ const isValidBuild = build =>{
     // console.log("BuildSummariesReducer: Reject ", build);
   }
   return keepBuild;
-}
+};
 
 const transformBuildSummaries = ([...summaries]) => {
   return R.compose(R.mergeAll, R.map(transformBuildSummary), R.filter(isValidBuild))(summaries);
-}
+};
 
 const changeSummary = (oldState, buildId, newAttributes) => {
   if (!oldState[buildId]){
@@ -42,7 +42,7 @@ const changeSummary = (oldState, buildId, newAttributes) => {
   }
 
   return Object.assign({}, oldState, transformBuildSummary(newSummary));
-}
+};
 
 export const BuildSummariesReducer = (oldState={}, action) => {
   switch (action.type) {
@@ -53,4 +53,4 @@ export const BuildSummariesReducer = (oldState={}, action) => {
     default:
       return oldState;
   }
-}
+};

@@ -12,21 +12,21 @@ return <div className="appHeader">
           </div>
           <span className="pipelineName">{pipelineName}</span>
           <button className="runButton">Start Build</button>
-        </div>
-}
+        </div>;
+};
 
 Header.propTypes = {
   pipelineName: PropTypes.string.isRequired
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
     return {
       pipelineName: state.config.name
-    }
+    };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return ownProps;
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

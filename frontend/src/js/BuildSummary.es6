@@ -1,14 +1,14 @@
 import React, {PropTypes  } from 'react';
 import {connect} from 'react-redux';
-import BuildDetails from './BuildDetails.es6'
-import {toggleBuildDetails as toggleAction} from './Actions.es6'
-import Moment, {now} from 'moment'
+import BuildDetails from './BuildDetails.es6';
+import {toggleBuildDetails as toggleAction} from './Actions.es6';
+import Moment, {now} from 'moment';
 
-import {FormattedDuration} from './DateAndTime.es6'
+import {FormattedDuration} from './DateAndTime.es6';
 
-const SUCCESS_ICON = 'fa-check'
-const FAILURE_ICON = 'fa-times'
-const RUNNING_ICON = 'fa-cog'
+const SUCCESS_ICON = 'fa-check';
+const FAILURE_ICON = 'fa-times';
+const RUNNING_ICON = 'fa-cog';
 
 
 const icon = (buildState) => {
@@ -18,7 +18,7 @@ const icon = (buildState) => {
     case "running" : return RUNNING_ICON;
     default : return '';
   }
-}
+};
 
 
 export const BuildSummary = (props) =>{
@@ -26,7 +26,7 @@ export const BuildSummary = (props) =>{
     let classesForState = "row buildSummary " + state;
     let iconClassName = "fa " + icon(state);
 
-    let timeToNow = Moment(startTime).diff(Moment(now()))
+    let timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize('minutes');
 
@@ -39,9 +39,9 @@ export const BuildSummary = (props) =>{
         <div className="three columns buildDuration"><span>Duration:</span><FormattedDuration seconds={duration}/></div>
         <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
         <BuildDetails buildId={buildId}/>
-      </div>
+      </div>;
 
-}
+};
 
 BuildSummary.propTypes = {
   buildId: PropTypes.number.isRequired,
@@ -50,7 +50,7 @@ BuildSummary.propTypes = {
   startTime: PropTypes.object.isRequired,
   duration: PropTypes.number.isRequired,
   toggleBuildDetails: PropTypes.func.isRequired
-}
+};
 
 export const mapStateToProps = (state, props) => {
 
@@ -63,15 +63,15 @@ export const mapStateToProps = (state, props) => {
     state: build.state,
     startTime: build.startTime,
     duration: build.duration,
-    }
-}
+  };
+};
 
 export const mapDispatchToProps = (dispatch, ownProps) =>  {
   return {
     toggleBuildDetails: () => {
-      dispatch(toggleAction(ownProps.build.buildId))
+      dispatch(toggleAction(ownProps.build.buildId));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps,mapDispatchToProps)(BuildSummary);

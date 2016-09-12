@@ -5,4 +5,4 @@ export const PipelineConfigurationReducer = (oldState={}, action) =>{
       case ADD_CONFIGURATION: return Object.assign({}, action.config);
       default: return oldState;
     }
-}
+};

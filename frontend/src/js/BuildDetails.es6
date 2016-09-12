@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Backend from './Backend.es6';
-import BuildStep from './BuildStep.es6'
+import BuildStep from './BuildStep.es6';
 import R from 'ramda';
 
 export const BuildDetails = (props) => {
-  let {buildId, open, details, requestDetailsFn} = props
+  let {buildId, open, details, requestDetailsFn} = props;
   if (!open) {
     return null;
   }
@@ -14,15 +14,15 @@ export const BuildDetails = (props) => {
     requestDetailsFn();
     return <div className="twelve columns buildDetails">
               <div className="row loadingMessage">Loading build details</div>
-           </div>
+           </div>;
   }
 
 
-  let steps = R.map(step=><BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps)
+  let steps = R.map(step=><BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps);
 
   return <div className="twelve columns buildDetails">
             <div className="row ">{steps}</div>
-         </div>
+         </div>;
 };
 
 BuildDetails.propTypes = {
@@ -36,7 +36,7 @@ const mapStateToProps = (state, ownProps) => {
     buildId: buildId,
     details: state.buildDetails[buildId],
     open: state.openedBuilds[buildId] || false
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       requestDetailsFn: ()=>{
         Backend.requestBuildDetails(dispatch, ownProps.buildId);
       }
-  }
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildDetails);

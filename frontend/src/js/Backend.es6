@@ -1,6 +1,6 @@
 import React from 'react';
 import 'whatwg-fetch';
-import {addBuildSummary, addBuildDetails} from './Actions.es6'
+import {addBuildSummary, addBuildDetails} from './Actions.es6';
 
 export const receiveBuildSummaries = (dispatch) => {
   let endpoint = "http://localhost:4444/api/summaries";
@@ -10,14 +10,14 @@ export const receiveBuildSummaries = (dispatch) => {
      { buildId: 2, buildNumber: 2, state: "failed",  startTime: "2016-08-29T13:54Z", duration: 120},
      { buildId: 4, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: 5466},
      { buildId: 5, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: -2}
-  ]
+  ];
 
   fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildSummary(body.summaries)))
   .catch(()=>{
     console.log("fallback to dummy data");
     dispatch(addBuildSummary(dummySummaries));
-  })
-}
+  });
+};
 
 export const requestBuildDetails = (dispatch, buildId) => {
   let dummyBuildDetails = {
@@ -56,14 +56,14 @@ export const requestBuildDetails = (dispatch, buildId) => {
         endTime: "2016-08-29T15:04Z"
       }
     ]}
-  }
+  };
 
   let endpoint = "/api/details/" + buildId;
   fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildDetails(body.details)))
   .catch(()=>{
     console.log("fallback to dummy details");
     dispatch(addBuildDetails(dummyBuildDetails[buildId]));
-  })
-}
+  });
+};
 
-export default {receiveBuildSummaries, requestBuildDetails}
+export default {receiveBuildSummaries, requestBuildDetails};
