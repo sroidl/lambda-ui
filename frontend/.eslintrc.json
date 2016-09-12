@@ -21,7 +21,11 @@
 				 "no-catch-shadow": "error",
 				 "no-undefined": "error",
 				 "no-use-before-define": "error",
+				 "no-duplicate-imports": "error",
+				 "no-var": "error",
 
+				 "prefer-arrow-callback": "warn",
+				 "no-useless-rename": "warn",
 				 "no-confusing-arrow": "warn",
 				 "arrow-spacing": "warn",
 				 "camelcase": "warn",
