@@ -23,7 +23,7 @@ export const addBuildDetails = buildDetails =>{
 }
 
 export const viewBuildStep = (buildId, step) => {
-  return {type: VIEW_BUILD_STEP, buildId: buildId, stepRoot: step}
+  return {type: VIEW_BUILD_STEP, buildId: buildId, stepId: step}
 }
 
 export const addConfiguration = config => {

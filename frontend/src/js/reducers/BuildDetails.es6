@@ -15,7 +15,7 @@ export const ViewBuildStepReducer = (oldState={}, action) => {
   switch (action.type) {
     case VIEW_BUILD_STEP: {
       let newObj = {};
-      newObj[action.buildId] = action.stepRoot;
+      newObj[action.buildId] = action.stepId;
       return Object.assign({}, oldState, newObj);
     }
     default: return oldState;

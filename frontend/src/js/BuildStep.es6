@@ -37,7 +37,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch,ownProps) => {
-  return {goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.step))}
+  return {goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.step.stepId))}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildStep);

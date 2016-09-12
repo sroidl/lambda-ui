@@ -29,8 +29,8 @@ describe("ViewBuildStepReducer", () =>{
   it("should add a new detail entry if ADD_BUILD_DETAILS was emitted", ()=>{
     let oldState = {1: {bar: "foo"}};
 
-    let newState = viewReducer(oldState, {type: VIEW_BUILD_STEP, buildId: 42, stepRoot: {new:"root"}})
+    let newState = viewReducer(oldState, {type: VIEW_BUILD_STEP, buildId: 42, stepId: 2})
 
-    expect(newState).toEqual({1: {bar: "foo"}, 42: {new: "root"}})
+    expect(newState).toEqual({1: {bar: "foo"}, 42: 2})
   })
 })
