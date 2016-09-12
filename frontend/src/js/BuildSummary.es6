@@ -22,7 +22,7 @@ const icon = (buildState) => {
 
 
 export const BuildSummary = (props) =>{
-    let {buildId, build, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
+    let {buildId, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
     let classesForState = "row buildSummary " + state;
     let iconClassName = "fa " + icon(state);
 

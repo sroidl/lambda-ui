@@ -1,6 +1,7 @@
+/* global Promise */
 import {createStore, combineReducers} from "redux";
 import {ToggleBuildDetailsReducer} from "./reducers/ToggleBuildDetails.es6";
-import {BuildSummariesReducer, ADD_SUMMARY} from "./reducers/BuildSummaries.es6";
+import {BuildSummariesReducer} from "./reducers/BuildSummaries.es6";
 import {changeBuildSummary} from "./Actions.es6";
 import {BuildDetailsReducer, ViewBuildStepReducer} from "./reducers/BuildDetails.es6";
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";

@@ -9,9 +9,10 @@
        "rules": {
   	     "semi": "error",
 				 "quotes" : ["error", "double"]
+
     	},
 			"env": {
 				"browser" : true
-			}
-
+			},
+			"extends": "eslint:recommended"
 }

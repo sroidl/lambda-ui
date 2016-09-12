@@ -19,7 +19,7 @@ Header.propTypes = {
   pipelineName: PropTypes.string.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
       pipelineName: state.config.name
     };

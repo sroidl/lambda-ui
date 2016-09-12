@@ -17,6 +17,6 @@ export const BuildSummaryList = ({builds}) => {
 BuildSummaryList.propTypes = { builds: PropTypes.object.isRequired };
 
 const mapStateToProps = (state) => {return {builds: state.summaries};};
-const mapDispatchToProps = (state) => {return {};};
+const mapDispatchToProps = () => {return {};};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildSummaryList);

@@ -20,6 +20,6 @@ class LambdaUI {
                       </div>
                     </Provider>, rootElement);
   }
-};
+}
 
 export default LambdaUI;

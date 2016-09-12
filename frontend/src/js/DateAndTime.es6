@@ -27,7 +27,6 @@ const formatHours = (duration) => {
 
 const formatDuration = seconds =>{
   const duration = Moment.duration(seconds, "seconds");
-  const minutes = duration.minutes();
   const formatted = formatHours(duration) + " " + formatMinutes(duration) + " " + formatSeconds(duration);
   return formatted.trim();
 };

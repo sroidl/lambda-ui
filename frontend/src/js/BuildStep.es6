@@ -1,7 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
 import Moment from "moment";
-import R from "ramda";
 import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
 import {viewBuildStep} from "./Actions.es6";
@@ -16,7 +15,7 @@ const duration = ({startTime, endTime}) => {
 };
 
 export const BuildStep = props => {
-  let {buildId, step, goIntoStepFn} = props;
+  let {step, goIntoStepFn} = props;
 
   let infos = <div><div className="stepName">{step.name}</div> <div className="stepDuration">{duration(step)}</div></div>;
 
