@@ -19,6 +19,7 @@
 				 "no-return-assign": "error",
 				 "no-unused-expressions": "error",
 				 "no-catch-shadow": "error",
+				 "no-undefined": "error",
 
 
 				 "no-useless-escape": "warn",

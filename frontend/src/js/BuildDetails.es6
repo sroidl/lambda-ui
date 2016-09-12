@@ -10,7 +10,7 @@ export const BuildDetails = (props) => {
     return null;
   }
 
-  if(details === undefined) {
+  if(!details) {
     requestDetailsFn();
     return <div className="twelve columns buildDetails">
               <div className="row loadingMessage">Loading build details</div>

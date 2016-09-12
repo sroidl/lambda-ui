@@ -15,7 +15,7 @@ const isValidBuild = build =>{
   const hasAllRequiredFields = build.buildId && build.buildNumber && build.startTime && build.state;
   const buildIdIsNumber = Number.isInteger(build.buildId);
   const startTimeIsIsoString = !Number.isNaN(Date.parse(build.startTime));
-  const durationIsANumber = build.duration === undefined || Number.isInteger(build.duration);
+  const durationIsANumber = !build.duration || Number.isInteger(build.duration);
   const stateIsValid = build.state === "running"
       || build.state === "failed"
       || build.state === "success"

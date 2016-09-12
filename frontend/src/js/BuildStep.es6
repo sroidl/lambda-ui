@@ -19,7 +19,7 @@ export const BuildStep = props => {
 
   let infos = <div><div className="stepName">{step.name}</div> <div className="stepDuration">{duration(step)}</div></div>;
 
-  if (step.steps === undefined || step.steps.length === 0) {
+  if (!step.steps || step.steps.length === 0) {
     return <span className={Utils.classes("buildStep", step.state)}>
             {infos}
            </span>;
