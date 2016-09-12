@@ -3,9 +3,9 @@ import "whatwg-fetch";
 import {addBuildSummary, addBuildDetails} from "./Actions.es6";
 
 export const receiveBuildSummaries = (dispatch) => {
-  let endpoint = "http://localhost:4444/api/summaries";
+  const endpoint = "http://localhost:4444/api/summaries";
 
-  let dummySummaries = [
+  const dummySummaries = [
      { buildId: 1, buildNumber: 1, state: "success", startTime: "2016-08-29T14:54Z", duration: 360},
      { buildId: 2, buildNumber: 2, state: "failed",  startTime: "2016-08-29T13:54Z", duration: 120},
      { buildId: 4, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: 5466},
@@ -21,7 +21,7 @@ export const receiveBuildSummaries = (dispatch) => {
 };
 
 export const requestBuildDetails = (dispatch, buildId) => {
-  let dummyBuildDetails = {
+  const dummyBuildDetails = {
     1: {
       buildId: 1,
       commit: "git commit hash 1",
@@ -59,7 +59,7 @@ export const requestBuildDetails = (dispatch, buildId) => {
     ]}
   };
 
-  let endpoint = "/api/details/" + buildId;
+  const endpoint = "/api/details/" + buildId;
   fetch(endpoint)
     .then(response => response.json())
     .then(body => dispatch(addBuildDetails(body.details)))

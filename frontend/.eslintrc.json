@@ -25,6 +25,7 @@
 				 "no-var": "error",
 
 				 "prefer-arrow-callback": "warn",
+				 "prefer-const": "warn",
 				 "no-useless-rename": "warn",
 				 "no-confusing-arrow": "warn",
 				 "arrow-spacing": "warn",

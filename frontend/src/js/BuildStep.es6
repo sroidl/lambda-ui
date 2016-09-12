@@ -6,18 +6,18 @@ import "moment-duration-format";
 import {viewBuildStep} from "./Actions.es6";
 
 const duration = ({startTime, endTime}) => {
-  let start = Moment(startTime);
-  let end = Moment(endTime);
+  const start = Moment(startTime);
+  const end = Moment(endTime);
 
-  let duration = Moment.duration(end.diff(start), "milliseconds");
+  const duration = Moment.duration(end.diff(start), "milliseconds");
 
   return duration.format("hh:mm:ss");
 };
 
 export const BuildStep = props => {
-  let {step, goIntoStepFn} = props;
+  const {step, goIntoStepFn} = props;
 
-  let infos = <div><div className="stepName">{step.name}</div> <div className="stepDuration">{duration(step)}</div></div>;
+  const infos = <div><div className="stepName">{step.name}</div> <div className="stepDuration">{duration(step)}</div></div>;
 
   if (!step.steps || step.steps.length === 0) {
     return <span className={Utils.classes("buildStep", step.state)}>

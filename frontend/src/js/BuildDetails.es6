@@ -5,7 +5,7 @@ import BuildStep from "./BuildStep.es6";
 import R from "ramda";
 
 export const BuildDetails = (props) => {
-  let {buildId, open, details, requestDetailsFn} = props;
+  const {buildId, open, details, requestDetailsFn} = props;
   if (!open) {
     return null;
   }
@@ -18,7 +18,7 @@ export const BuildDetails = (props) => {
   }
 
 
-  let steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps);
+  const steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps);
 
   return <div className="twelve columns buildDetails">
             <div className="row ">{steps}</div>
@@ -31,7 +31,7 @@ BuildDetails.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  let buildId = Number.parseInt(ownProps.buildId);
+  const buildId = Number.parseInt(ownProps.buildId);
     return {
     buildId: buildId,
     details: state.buildDetails[buildId],

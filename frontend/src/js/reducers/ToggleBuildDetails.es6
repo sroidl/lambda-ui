@@ -1,7 +1,7 @@
 import {TOGGLE_BUILD_DETAILS} from "../Actions.es6";
 
 const toggleBuild = (openedBuilds, id) => {
-  let newstate = {};
+  const newstate = {};
   newstate[id] = !openedBuilds[id];
   return newstate;
 };

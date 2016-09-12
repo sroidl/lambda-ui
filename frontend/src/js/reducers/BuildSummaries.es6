@@ -2,8 +2,8 @@ import {ADD_SUMMARIES, CHANGE_SUMMARY} from "../Actions.es6";
 import * as R from "ramda";
 
 const transformBuildSummary = (summary) => {
-  let summaryAsMap = {};
-  let startTimeDateObj = new Date(Date.parse(summary.startTime));
+  const summaryAsMap = {};
+  const startTimeDateObj = new Date(Date.parse(summary.startTime));
   summaryAsMap[summary.buildId] = Object.assign({}, summary, {startTime: startTimeDateObj});
   return summaryAsMap;
 };

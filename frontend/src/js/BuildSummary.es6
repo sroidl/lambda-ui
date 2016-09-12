@@ -22,11 +22,11 @@ const icon = (buildState) => {
 
 
 export const BuildSummary = (props) => {
-    let {buildId, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
-    let classesForState = "row buildSummary " + state;
-    let iconClassName = "fa " + icon(state);
+    const {buildId, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
+    const classesForState = "row buildSummary " + state;
+    const iconClassName = "fa " + icon(state);
 
-    let timeToNow = Moment(startTime).diff(Moment(now()));
+    const timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
 
@@ -55,7 +55,7 @@ BuildSummary.propTypes = {
 export const mapStateToProps = (state, props) => {
 
 
-  let build = props.build;
+  const build = props.build;
 
   return {
     buildId: build.buildId,

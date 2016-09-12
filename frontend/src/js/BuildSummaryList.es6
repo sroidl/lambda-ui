@@ -4,9 +4,9 @@ import BuildSummary from "./BuildSummary.es6";
 
 
 export const BuildSummaryList = ({builds}) => {
-  let result = [];
-  for (let buildId in builds) {
-    let build = builds[buildId];
+  const result = [];
+  for (const buildId in builds) {
+    const build = builds[buildId];
     result.push(
     <BuildSummary key={buildId} build={build}/>);
   }

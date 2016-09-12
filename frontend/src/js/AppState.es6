@@ -30,7 +30,7 @@ export default appState;
 const sleep = time => new Promise(resolve => setTimeout(resolve, time));
 
 const runningBuildsDurationCounter = () => {
-  let dispatch = () => {};
+  const dispatch = () => {};
 
   const summaries = appState.getState().summaries;
   sleep(1000).then(() => {

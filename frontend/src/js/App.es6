@@ -12,7 +12,7 @@ class LambdaUI {
 
     backend.receiveBuildSummaries(appState.dispatch);
 
-    let rootElement = document.getElementById("entryPoint");
+    const rootElement = document.getElementById("entryPoint");
     ReactDOM.render(<Provider store={appState}>
                       <div>
                       <Header />
