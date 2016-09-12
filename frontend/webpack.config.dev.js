@@ -24,11 +24,9 @@ module.exports = {
     // Transpiles ECMA6 into ECMA5 with babel, enables importing of ES6 and React modules.
     loaders: [
       {
-        loader: "babel",
+        //loaders: ["babel?presets[]=es2015&presets[]=react", "eslint-loader"],
+        loaders: ["babel?presets[]=es2015&presets[]=react"],
         test: /\.es6$/,
-        query: {
-          presets: ["es2015", "react"]
-        }
       },
       // Enables importing of sass files into the ES6 modules.
       {
