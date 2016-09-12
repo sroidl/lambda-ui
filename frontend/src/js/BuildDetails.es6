@@ -27,7 +27,9 @@ export const BuildDetails = (props) => {
 
 BuildDetails.propTypes = {
   buildId: PropTypes.number.isRequired,
-  open: PropTypes.bool.isRequired
+  open: PropTypes.bool.isRequired,
+  requestDetailsFn: PropTypes.func.isRequired,
+  details: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
