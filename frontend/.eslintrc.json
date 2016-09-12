@@ -7,6 +7,11 @@
         	}
     	},
        "rules": {
-  	     "semi": 2
-    	}
+  	     "semi": "error",
+				 "quotes" : ["error", "double"]
+    	},
+			"env": {
+				"browser" : true
+			}
+
 }

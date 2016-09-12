@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
-import { connect } from 'react-redux';
-import BuildSummary from './BuildSummary.es6';
+import React, {PropTypes} from "react";
+import { connect } from "react-redux";
+import BuildSummary from "./BuildSummary.es6";
 
 
 export const BuildSummaryList = ({builds}) => {

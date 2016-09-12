@@ -1,4 +1,4 @@
-import {TOGGLE_BUILD_DETAILS} from '../Actions.es6';
+import {TOGGLE_BUILD_DETAILS} from "../Actions.es6";
 
 const toggleBuild = (openedBuilds, id) => {
   let oldState = openedBuilds[id] || false;

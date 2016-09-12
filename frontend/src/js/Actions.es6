@@ -1,4 +1,4 @@
-export const TOGGLE_BUILD_DETAILS = 'toggleBuildDetails';
+export const TOGGLE_BUILD_DETAILS = "toggleBuildDetails";
 export const ADD_SUMMARIES = "addBuildSummaries";
 export const CHANGE_SUMMARY = "changeBuildSummary";
 export const ADD_BUILD_DETAILS = "addBuildDetails";

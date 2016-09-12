@@ -1,10 +1,10 @@
-import {createStore, combineReducers} from 'redux';
-import {ToggleBuildDetailsReducer} from './reducers/ToggleBuildDetails.es6';
-import {BuildSummariesReducer, ADD_SUMMARY} from './reducers/BuildSummaries.es6';
-import {changeBuildSummary} from './Actions.es6';
-import {BuildDetailsReducer, ViewBuildStepReducer} from './reducers/BuildDetails.es6';
-import {PipelineConfigurationReducer} from './reducers/PipelineConfiguration.es6';
-import R from 'ramda';
+import {createStore, combineReducers} from "redux";
+import {ToggleBuildDetailsReducer} from "./reducers/ToggleBuildDetails.es6";
+import {BuildSummariesReducer, ADD_SUMMARY} from "./reducers/BuildSummaries.es6";
+import {changeBuildSummary} from "./Actions.es6";
+import {BuildDetailsReducer, ViewBuildStepReducer} from "./reducers/BuildDetails.es6";
+import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
+import R from "ramda";
 
 const initialState = {
   summaries: {},
@@ -33,7 +33,7 @@ const runningBuildsDurationCounter = () => {
 
   const summaries = appState.getState().summaries;
   sleep(1000).then(()=>{
-    R.compose(R.forEach(action => dispatch(action)), R.map(summary=>changeBuildSummary(summary.buildId, {duration: summary.duration+1})),R.filter(summary=>summary.state ==='running'))(R.values(summaries));
+    R.compose(R.forEach(action => dispatch(action)), R.map(summary=>changeBuildSummary(summary.buildId, {duration: summary.duration+1})),R.filter(summary=>summary.state ==="running"))(R.values(summaries));
     runningBuildsDurationCounter(dispatch);
   });
 };

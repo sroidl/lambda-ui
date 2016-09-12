@@ -1,14 +1,14 @@
-import React, {PropTypes  } from 'react';
-import {connect} from 'react-redux';
-import BuildDetails from './BuildDetails.es6';
-import {toggleBuildDetails as toggleAction} from './Actions.es6';
-import Moment, {now} from 'moment';
+import React, {PropTypes  } from "react";
+import {connect} from "react-redux";
+import BuildDetails from "./BuildDetails.es6";
+import {toggleBuildDetails as toggleAction} from "./Actions.es6";
+import Moment, {now} from "moment";
 
-import {FormattedDuration} from './DateAndTime.es6';
+import {FormattedDuration} from "./DateAndTime.es6";
 
-const SUCCESS_ICON = 'fa-check';
-const FAILURE_ICON = 'fa-times';
-const RUNNING_ICON = 'fa-cog';
+const SUCCESS_ICON = "fa-check";
+const FAILURE_ICON = "fa-times";
+const RUNNING_ICON = "fa-cog";
 
 
 const icon = (buildState) => {
@@ -16,7 +16,7 @@ const icon = (buildState) => {
     case "success" : return SUCCESS_ICON;
     case "failed" : return FAILURE_ICON;
     case "running" : return RUNNING_ICON;
-    default : return '';
+    default : return "";
   }
 };
 
@@ -28,7 +28,7 @@ export const BuildSummary = (props) =>{
 
     let timeToNow = Moment(startTime).diff(Moment(now()));
 
-    const startMoment = Moment.duration(timeToNow).humanize('minutes');
+    const startMoment = Moment.duration(timeToNow).humanize("minutes");
 
 
 

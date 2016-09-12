@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import logo from '../img/logo.png';
-import '../sass/header.sass';
+import React, {PropTypes} from "react";
+import {connect} from "react-redux";
+import logo from "../img/logo.png";
+import "../sass/header.sass";
 
 export const Header = ({pipelineName}) => {
 

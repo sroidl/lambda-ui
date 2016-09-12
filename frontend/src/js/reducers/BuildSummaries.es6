@@ -1,5 +1,5 @@
-import {ADD_SUMMARIES, CHANGE_SUMMARY} from '../Actions.es6';
-import * as R from 'ramda';
+import {ADD_SUMMARIES, CHANGE_SUMMARY} from "../Actions.es6";
+import * as R from "ramda";
 
 const transformBuildSummary = (summary) => {
   let summaryAsMap = {};
@@ -16,10 +16,10 @@ const isValidBuild = build =>{
   const buildIdIsNumber = Number.isInteger(build.buildId);
   const startTimeIsIsoString = !Number.isNaN(Date.parse(build.startTime));
   const durationIsANumber = build.duration === undefined || Number.isInteger(build.duration);
-  const stateIsValid = build.state === 'running'
-      || build.state === 'failed'
-      || build.state === 'success'
-      || build.state === 'pending';
+  const stateIsValid = build.state === "running"
+      || build.state === "failed"
+      || build.state === "success"
+      || build.state === "pending";
 
   const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
   if (! keepBuild) {

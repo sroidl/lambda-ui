@@ -1,6 +1,6 @@
-import React from 'react';
-import 'whatwg-fetch';
-import {addBuildSummary, addBuildDetails} from './Actions.es6';
+import React from "react";
+import "whatwg-fetch";
+import {addBuildSummary, addBuildDetails} from "./Actions.es6";
 
 export const receiveBuildSummaries = (dispatch) => {
   let endpoint = "http://localhost:4444/api/summaries";

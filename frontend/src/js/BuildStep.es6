@@ -1,10 +1,10 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import Moment from 'moment';
-import R from 'ramda';
-import Utils from './ComponentUtils.es6';
+import React from "react";
+import {connect} from "react-redux";
+import Moment from "moment";
+import R from "ramda";
+import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
-import {viewBuildStep} from './Actions.es6';
+import {viewBuildStep} from "./Actions.es6";
 
 const duration = ({startTime, endTime}) => {
   let start = Moment(startTime);
