@@ -20,8 +20,11 @@
 				 "no-unused-expressions": "error",
 				 "no-catch-shadow": "error",
 				 "no-undefined": "error",
+				 "no-use-before-define": "error",
 
-
+				 "no-confusing-arrow": "warn",
+				 "arrow-spacing": "warn",
+				 "camelcase": "warn",
 				 "no-useless-escape": "warn",
 				 "no-else-return": "warn",
 				 "no-alert": "warn",

@@ -8,7 +8,7 @@ const transformBuildSummary = (summary) => {
   return summaryAsMap;
 };
 
-const isValidBuild = build =>{
+const isValidBuild = build => {
   if (! build) {
     return false;
   }

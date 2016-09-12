@@ -18,7 +18,7 @@ export const BuildDetails = (props) => {
   }
 
 
-  let steps = R.map(step=><BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps);
+  let steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(details.steps);
 
   return <div className="twelve columns buildDetails">
             <div className="row ">{steps}</div>
@@ -41,7 +41,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-      requestDetailsFn: ()=>{
+      requestDetailsFn: () => {
         Backend.requestBuildDetails(dispatch, ownProps.buildId);
       }
   };

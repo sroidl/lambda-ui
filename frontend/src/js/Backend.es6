@@ -14,8 +14,8 @@ export const receiveBuildSummaries = (dispatch) => {
 
   fetch(endpoint)
     .then(response => response.json())
-    .then(body=>dispatch(addBuildSummary(body.summaries)))
-    .catch(()=>{
+    .then(body => dispatch(addBuildSummary(body.summaries)))
+    .catch(() => {
       dispatch(addBuildSummary(dummySummaries));
     });
 };
@@ -62,8 +62,8 @@ export const requestBuildDetails = (dispatch, buildId) => {
   let endpoint = "/api/details/" + buildId;
   fetch(endpoint)
     .then(response => response.json())
-    .then(body=>dispatch(addBuildDetails(body.details)))
-    .catch(()=>{
+    .then(body => dispatch(addBuildDetails(body.details)))
+    .catch(() => {
       dispatch(addBuildDetails(dummyBuildDetails[buildId]));
     });
 };

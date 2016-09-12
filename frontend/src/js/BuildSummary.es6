@@ -21,7 +21,7 @@ const icon = (buildState) => {
 };
 
 
-export const BuildSummary = (props) =>{
+export const BuildSummary = (props) => {
     let {buildId, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
     let classesForState = "row buildSummary " + state;
     let iconClassName = "fa " + icon(state);

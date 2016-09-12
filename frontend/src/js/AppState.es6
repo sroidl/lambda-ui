@@ -33,8 +33,8 @@ const runningBuildsDurationCounter = () => {
   let dispatch = () => {};
 
   const summaries = appState.getState().summaries;
-  sleep(1000).then(()=>{
-    R.compose(R.forEach(action => dispatch(action)), R.map(summary=>changeBuildSummary(summary.buildId, {duration: summary.duration+1})),R.filter(summary=>summary.state ==="running"))(R.values(summaries));
+  sleep(1000).then(() => {
+    R.compose(R.forEach(action => dispatch(action)), R.map(summary => changeBuildSummary(summary.buildId, {duration: summary.duration+1})),R.filter(summary => summary.state ==="running"))(R.values(summaries));
     runningBuildsDurationCounter(dispatch);
   });
 };
