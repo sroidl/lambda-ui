@@ -14,13 +14,13 @@ describe("BuildDetails Component", ()=>{
 
   const input = newAttributes => Object.assign({buildId: 1, open: true, details: undefined, requestDetailsFn: jest.fn()}, newAttributes)
 
-  it("Should display loading message if no details are in state", ()=>{
+  it("should display loading message if no details are in state", ()=>{
     const component = shallow(subject(input()));
 
     expect(component.text()).toEqual("Loading build details");
   });
 
-  it("Should request build details if no details are in the state", ()=> {
+  it("should request build details if no details are in the state", ()=> {
     const requestMockFn = jest.fn();
 
     shallow(subject(input({requestDetailsFn: requestMockFn})));
@@ -29,9 +29,10 @@ describe("BuildDetails Component", ()=>{
   })
 
   it("should render all buildSteps on first level", ()=>{
-    let steps = [{stepId: 1}, {stepId: 2}]
+    let steps = [{stepId: 1}, {stepId: 2}];
+    let storeMock = MockStore({buildDetails: {1: {buildId: 1, steps: steps}}, openedBuilds: {1: true}})
 
-    let component = shallow(subject(input({details: {steps: steps}})));
+    let component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
 
     expect(component.find("BuildStep").length).toEqual(2)
   })
@@ -40,8 +41,11 @@ describe("BuildDetails Component", ()=>{
     let store = MockStore({buildDetails: {}, openedBuilds: {2: true}});
 
     let provider = mount(<BuildDetailsRedux store={store} buildId="2"/>);
-    provider.html();
 
     expect(requestBuildDetailsMock).toBeCalled();
   })
+})
+
+describe("View Build details", ()=>{
+  
 })
