@@ -7,7 +7,7 @@ const formatSeconds = (input) => {
   if (duration.seconds() === 0) { return ""; }
   else if (duration.seconds() === 1) { return "1 second"; }
   else if (duration.seconds() < 10) { return duration.format("s") + " seconds"; }
-  else { return duration.format("ss") + " seconds"; }
+ return duration.format("ss") + " seconds";
 };
 
 const formatMinutes = (input) => {
@@ -15,14 +15,14 @@ const formatMinutes = (input) => {
   if (duration.minutes() === 0) { return ""; }
   else if (duration.minutes() === 1) { return "1 minute"; }
   else if (duration.minutes() < 10) { return duration.format("m") + " minutes"; }
-  else { return duration.format("mm") + " minutes"; }
+ return duration.format("mm") + " minutes";
 };
 
 const formatHours = (duration) => {
   if (duration.hours() === 0) { return ""; }
   else if (duration.hours() === 1) { return "1 hour"; }
   else if (duration.hours() < 10) { return duration.format("h") + " hours"; }
-  else { return duration.format("hh") + " hours"; }
+  return duration.format("hh") + " hours";
 };
 
 const formatDuration = seconds =>{

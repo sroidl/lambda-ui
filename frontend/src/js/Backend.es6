@@ -12,10 +12,12 @@ export const receiveBuildSummaries = (dispatch) => {
      { buildId: 5, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: -2}
   ];
 
-  fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildSummary(body.summaries)))
-  .catch(()=>{
-    dispatch(addBuildSummary(dummySummaries));
-  });
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(body=>dispatch(addBuildSummary(body.summaries)))
+    .catch(()=>{
+      dispatch(addBuildSummary(dummySummaries));
+    });
 };
 
 export const requestBuildDetails = (dispatch, buildId) => {
@@ -58,10 +60,12 @@ export const requestBuildDetails = (dispatch, buildId) => {
   };
 
   let endpoint = "/api/details/" + buildId;
-  fetch(endpoint).then(response => response.json()).then(body=>dispatch(addBuildDetails(body.details)))
-  .catch(()=>{
-    dispatch(addBuildDetails(dummyBuildDetails[buildId]));
-  });
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(body=>dispatch(addBuildDetails(body.details)))
+    .catch(()=>{
+      dispatch(addBuildDetails(dummyBuildDetails[buildId]));
+    });
 };
 
 export default {receiveBuildSummaries, requestBuildDetails};

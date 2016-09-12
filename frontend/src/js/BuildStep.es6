@@ -24,11 +24,11 @@ export const BuildStep = props => {
             {infos}
            </span>;
   }
-  else {
-    return <a className={Utils.classes("buildStep", "goIntoStepLink", step.state)} href="#" onClick={goIntoStepFn}>
+
+  return <a className={Utils.classes("buildStep", "goIntoStepLink", step.state)} href="#" onClick={goIntoStepFn}>
             {infos}
            </a>;
-  }
+
 };
 
 const mapStateToProps = (state, ownProps) => {

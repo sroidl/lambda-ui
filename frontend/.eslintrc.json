@@ -8,7 +8,25 @@
     	},
        "rules": {
   	     "semi": "error",
-				 "quotes" : ["error", "double"]
+				 "quotes" : ["error", "double"],
+				 "no-unused-vars" : "off",
+				 "consistent-return": "error",
+				 "curly": "error",
+				 "default-case": "error",
+				 "eqeqeq": "error",
+				 "no-global-assign": "error",
+				 "no-invalid-this": "error",
+				 "no-return-assign": "error",
+				 "no-unused-expressions": "error",
+				 "no-catch-shadow": "error",
+
+
+				 "no-useless-escape": "warn",
+				 "no-else-return": "warn",
+				 "no-alert": "warn",
+				 "dot-notation": "warn",
+				 "dot-location": ["warn", "property"]
+
 
     	},
 			"env": {
