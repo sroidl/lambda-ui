@@ -4,7 +4,7 @@
             [lambdaui.dummy-data :as frontend-dummy]
             [ring.middleware.json :as ring-json]
             [compojure.route :as route])
-  )
+  (:import (org.joda.time DateTime)))
 
 
 ;spike websocket -- example code.
@@ -16,26 +16,32 @@
 ;                                                (send! channel data)))))
 ;  )
 
-(defn extract-state [build-steps]
+(defn extract-state
+  "If one step is waiting, return waiting
+   If one step is running, return running
+   If last step failed, return failed
+   If all steps are successful, return success"
+  [build-steps]
   (cond
     (some #(= :waiting (:status %)) (vals build-steps)) :waiting
     (some #(= :running (:status %)) (vals build-steps)) :running
     (= :failure (:status (last (vals build-steps)))) :failure
     :default (:status (first (vals build-steps)))))
 
-(defn extract-start-time [build]
-  )
+(defn extract-start-time [build-steps]
+  (when-let [^DateTime joda-start-time (:first-updated-at (first (vals build-steps)))]
+    (str joda-start-time)))
 
 (defn extract-end-time [build]
   )
 
 (defn summaries [pipeline-state]
   {:summaries
-   (map (fn [[build-number build]] {:buildNumber build-number
-                                    :buildId     build-number
-                                    :state       (extract-state build)
-                                    :startTime   (extract-start-time build)
-                                    :endTime     (extract-end-time build)
+   (map (fn [[build-number build-steps]] {:buildNumber build-number
+                                    :buildId           build-number
+                                          :state       (extract-state build-steps)
+                                          :startTime   (extract-start-time build-steps)
+                                          :endTime     (extract-end-time build-steps)
                                     })
         pipeline-state)})
 

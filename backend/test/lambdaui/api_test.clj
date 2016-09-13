@@ -1,6 +1,7 @@
 (ns lambdaui.api-test
   (:require [clojure.test :refer :all]
-            [lambdaui.api :as api]))
+            [lambdaui.api :as api])
+  (:import (org.joda.time DateTime DateTimeZone)))
 
 (deftest summaries-test
   (testing "should extract pipeline summary for one single step pipeline"
@@ -76,9 +77,23 @@
       (is (= :success (api/extract-state multi-step-build2)))
       (is (= :running (api/extract-state multi-step-build3))))))
 
-;If one step is waiting, return waiting
-;If one step is running, return running
-;If last step failed, return failed (?)
-;If all steps are successful, return success?
-
-
+(deftest extract-start-time-test
+  (testing "should extract time from single step build"
+    (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
+          joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
+          single-step-build {'(1) {:first-updated-at      joda-date-12
+                                   :most-recent-update-at joda-date-14}}]
+      (is (= "2016-01-01T12:00:00.000Z" (api/extract-start-time single-step-build)))))
+  (testing "should take time of first step from multi step build"
+    (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
+          joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
+          joda-date-15 (DateTime. 2016 01 01 15 00 (DateTimeZone/UTC))
+          joda-date-16 (DateTime. 2016 01 01 16 00 (DateTimeZone/UTC))
+          multi-step-build {'(1)   {:first-updated-at      joda-date-12
+                                    :most-recent-update-at joda-date-14}
+                            '(1 1) {:first-updated-at      joda-date-15
+                                    :most-recent-update-at joda-date-16}}]
+      (is (= "2016-01-01T12:00:00.000Z" (api/extract-start-time multi-step-build)))))
+  (testing "should return nil if no time found"
+    (let [single-empty-step {'(1) {}}]
+      (is (= nil (api/extract-start-time single-empty-step))))))
