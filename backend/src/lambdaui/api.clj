@@ -32,8 +32,10 @@
   (when-let [^DateTime joda-start-time (:first-updated-at (first (vals build-steps)))]
     (str joda-start-time)))
 
-(defn extract-end-time [build]
-  )
+(defn extract-end-time [build-steps]
+  (let [all-times (map :most-recent-update-at (vals build-steps))]
+    (when-let [joda-end-time (last (sort all-times))]
+      (str joda-end-time))))
 
 (defn summaries [pipeline-state]
   {:summaries

@@ -97,3 +97,27 @@
   (testing "should return nil if no time found"
     (let [single-empty-step {'(1) {}}]
       (is (= nil (api/extract-start-time single-empty-step))))))
+
+(deftest extract-end-time-test
+  (testing "should extract time from single step build"
+    (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
+          joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
+          single-step-build {'(1) {:first-updated-at      joda-date-12
+                                   :most-recent-update-at joda-date-14}}]
+      (is (= "2016-01-01T14:00:00.000Z" (api/extract-end-time single-step-build)))))
+  (testing "should take latest available time from multi-step build"
+    (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
+          joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
+          joda-date-15 (DateTime. 2016 01 01 15 00 (DateTimeZone/UTC))
+          joda-date-16 (DateTime. 2016 01 01 16 00 (DateTimeZone/UTC))
+          multi-step-build {'(1)   {:first-updated-at      joda-date-12
+                                    :most-recent-update-at joda-date-14}
+                            '(1 1) {:first-updated-at      joda-date-15
+                                    :most-recent-update-at joda-date-16}
+                            '(2)   {:first-updated-at      joda-date-12
+                                    :most-recent-update-at joda-date-14}
+                            }]
+      (is (= "2016-01-01T16:00:00.000Z" (api/extract-end-time multi-step-build)))))
+  (testing "should return nil if no time found"
+    (let [single-empty-step {'(1) {}}]
+      (is (= nil (api/extract-end-time single-empty-step))))))
