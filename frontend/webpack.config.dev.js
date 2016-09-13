@@ -1,3 +1,4 @@
+/* eslint-disable */
 var path = require('path');
 var webpack = require('webpack');
 
@@ -19,6 +20,10 @@ module.exports = {
   devServer: {
     contentBase: "./src/html",
   },
+
+  eslint: {
+     failOnError: true
+   },
 
   module: {
     // Transpiles ECMA6 into ECMA5 with babel, enables importing of ES6 and React modules.
