@@ -25,9 +25,10 @@
 
 (defn summaries [pipeline-state]
   {:summaries
-   (map (fn [[build-number build]] {:build-number build-number
-                                    :state        (extract-state build)
-                                    }) pipeline-state)})
+   (map (fn [[build-number build]] {:buildNumber build-number
+                                    :buildId     build-number
+                                    :state       (extract-state build)})
+        pipeline-state)})
 
 (defn ui-for-pipeline [pipeline]
   (ring-json/wrap-json-response

@@ -3,22 +3,26 @@
             [lambdaui.api :as api]))
 
 (deftest summaries-test
-  (testing "should extract pipeline status and build number for one single step pipeline"
+  (testing "should extract pipeline summary for one single step pipeline"
     (let [simple-waiting-pipeline-state {1 {'(1) {:status :waiting}}}
           simple-running-pipeline-state {1 {'(1) {:status :running}}}]
-      (is (= {:summaries [{:build-number 1
-                           :state        :waiting}]}
+      (is (= {:summaries [{:buildNumber 1
+                           :buildId     1
+                           :state       :waiting}]}
              (api/summaries simple-waiting-pipeline-state)))
-      (is (= {:summaries [{:build-number 1
-                           :state        :running}]}
+      (is (= {:summaries [{:buildNumber 1
+                           :buildId     1
+                           :state       :running}]}
              (api/summaries simple-running-pipeline-state)))))
-  (testing "should extract pipeline status and build number for more than one pipeline"
+  (testing "should extract pipeline summaries for more than one pipeline"
     (let [waiting-and-running-pipeline-state {1 {'(1) {:status :waiting}}
                                               2 {'(1) {:status :running}}}]
-      (is (= {:summaries [{:build-number 1
-                           :state        :waiting}
-                          {:build-number 2
-                           :state        :running}]}
+      (is (= {:summaries [{:buildNumber 1
+                           :buildId     1
+                           :state       :waiting}
+                          {:buildNumber 2
+                           :buildId     2
+                           :state       :running}]}
              (api/summaries waiting-and-running-pipeline-state))))))
 
 (deftest extract-state-test
