@@ -17,9 +17,11 @@
 ;  )
 
 (defn extract-state [build-steps]
-  (if (some #(= :waiting (:status %)) (vals build-steps))
-    :waiting
-    (:status (first (vals build-steps)))))
+  (cond
+    (some #(= :waiting (:status %)) (vals build-steps)) :waiting
+    (some #(= :running (:status %)) (vals build-steps)) :running
+    (= :failure (:status (last (vals build-steps)))) :failure
+    :default (:status (first (vals build-steps)))))
 
 (defn summaries [pipeline-state]
   {:summaries
