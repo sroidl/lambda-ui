@@ -29,13 +29,30 @@ BuildDetails.propTypes = {
   buildId: PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
   requestDetailsFn: PropTypes.func.isRequired,
-  details: PropTypes.object.isRequired
+  stepsToDisplay: PropTypes.array
 };
+
+const resolveStepsToDisplay = (buildDetails, stepIdToShow) => {
+  if (!buildDetails.steps) {
+    return null;
+  }
+
+  let resolvedSteps = R.pipe(R.filter(step => step.stepId === stepIdToShow), R.map(step => step.steps), R.flatten)(buildDetails.steps);
+
+  if(resolvedSteps.length === 0){
+    resolvedSteps = buildDetails.steps;
+  }
+
+  return resolvedSteps;
+};
+
 
 export const mapStateToProps = (state, ownProps) => {
   const buildId = Number.parseInt(ownProps.buildId);
   const details = state.buildDetails[buildId] || {};
-  const stepsToDisplay = details.steps;
+  const viewBuildSteps = state.viewBuildSteps  || {};
+  const stepIdToShow = viewBuildSteps[buildId];
+  const stepsToDisplay = resolveStepsToDisplay(details, stepIdToShow);
 
     return {
     buildId: buildId,
