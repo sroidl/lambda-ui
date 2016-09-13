@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import Moment from "moment";
 import "moment-duration-format";
 
@@ -34,4 +34,8 @@ const formatDuration = seconds => {
 export const FormattedDuration = ({seconds}) => {
   const duration = Moment.duration(seconds, "seconds");
   return <span className="formattedDuration">{formatDuration(duration)}</span>;
+};
+
+FormattedDuration.propTypes = {
+  seconds: PropTypes.number.isRequired
 };

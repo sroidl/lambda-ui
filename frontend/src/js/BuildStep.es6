@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import Moment from "moment";
 import Utils from "./ComponentUtils.es6";
@@ -29,6 +29,11 @@ export const BuildStep = props => {
             {infos}
            </a>;
 
+};
+
+BuildStep.propTypes = {
+  step: PropTypes.object.isRequired,
+  goIntoStepFn: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
