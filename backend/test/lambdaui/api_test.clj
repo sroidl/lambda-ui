@@ -8,21 +8,30 @@
           simple-running-pipeline-state {1 {'(1) {:status :running}}}]
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
-                           :state       :waiting}]}
+                           :state       :waiting
+                           :startTime   nil
+                           :endTime     nil
+                           }]}
              (api/summaries simple-waiting-pipeline-state)))
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
-                           :state       :running}]}
+                           :state       :running
+                           :startTime   nil
+                           :endTime     nil}]}
              (api/summaries simple-running-pipeline-state)))))
   (testing "should extract pipeline summaries for more than one pipeline"
     (let [waiting-and-running-pipeline-state {1 {'(1) {:status :waiting}}
                                               2 {'(1) {:status :running}}}]
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
-                           :state       :waiting}
+                           :state       :waiting
+                           :startTime   nil
+                           :endTime     nil}
                           {:buildNumber 2
                            :buildId     2
-                           :state       :running}]}
+                           :state       :running
+                           :startTime   nil
+                           :endTime     nil}]}
              (api/summaries waiting-and-running-pipeline-state))))))
 
 (deftest extract-state-test

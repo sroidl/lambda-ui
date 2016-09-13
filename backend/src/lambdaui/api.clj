@@ -23,11 +23,20 @@
     (= :failure (:status (last (vals build-steps)))) :failure
     :default (:status (first (vals build-steps)))))
 
+(defn extract-start-time [build]
+  )
+
+(defn extract-end-time [build]
+  )
+
 (defn summaries [pipeline-state]
   {:summaries
    (map (fn [[build-number build]] {:buildNumber build-number
                                     :buildId     build-number
-                                    :state       (extract-state build)})
+                                    :state       (extract-state build)
+                                    :startTime   (extract-start-time build)
+                                    :endTime     (extract-end-time build)
+                                    })
         pipeline-state)})
 
 (defn ui-for-pipeline [pipeline]
