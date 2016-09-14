@@ -1,4 +1,4 @@
-Lambda UI [![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=master)](https://travis-ci.org/sroidl/lambda-ui)
+Lambda UI [![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=master)](https://travis-ci.org/sroidl/lambda-ui)[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)]
 ==========
 An alternative Graphical User Interface for [LambdaCD](https://github.com/flosell/lambdacd).
 
