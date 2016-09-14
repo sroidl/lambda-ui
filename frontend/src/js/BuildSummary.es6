@@ -37,7 +37,7 @@ export const BuildSummary = (props) => {
         <div className="three columns buildNumber">Build #{buildNumber}</div>
         <div className="three columns buildStartTime">Started: {startMoment}</div>
         <div className="three columns buildDuration"><span>Duration:</span><FormattedDuration seconds={duration}/></div>
-        <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}>v</a>
+        <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}><i className="fa fa-caret-down" aria-hidden="true"></i></a>
         <BuildDetails buildId={buildId}/>
       </div>;
 
