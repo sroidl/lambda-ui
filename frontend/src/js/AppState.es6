@@ -9,7 +9,7 @@ import R from "ramda";
 
 const initialState = {
   summaries: {},
-  openedBuilds: {},
+  openedBuilds: {1 : true},
   buildDetails: {},
   config: {name : "PIPELINE_NAME"},
 };
