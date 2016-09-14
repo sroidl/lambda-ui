@@ -1,4 +1,3 @@
-import React from "react";
 import "whatwg-fetch";
 import {addBuildSummary, addBuildDetails} from "./Actions.es6";
 

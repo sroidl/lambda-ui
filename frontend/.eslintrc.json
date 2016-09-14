@@ -9,7 +9,7 @@
        "rules": {
   	     "semi": "error",
 				 "quotes" : ["error", "double"],
-				 "no-unused-vars" : "off",
+				 "no-unused-vars" : "error",
 				 "consistent-return": "error",
 				 "curly": "error",
 				 "default-case": "error",
