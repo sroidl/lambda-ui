@@ -1,67 +1,194 @@
+
+*{
+	box-sizing: border-box;
+}
+
+body{
+	background-color: #3D3636;
+}
+
 .buildSummaryList{
-	padding: 10px;
+	padding: 8px;
 }
 
 .buildSummary{
-	padding: 20px 20px 20px 20px;
-	border:2px solid #222;
+	width: 100%;
+	position: relative;
+	background-color: #FFF;
+	border-radius: 3px;
+	margin-bottom: 8px;
+	padding: 0px 0px 0px 26px;
+	transition: padding 0.1s ease-in-out;
 }
 
-.buildDetails{
-	position: relative;
+.open .buildInfo{
+	border-bottom: 2px solid #F2F0EB;
+}
+
+.open .buildDetails{
+}
+
+.buildIcon{
+	position: absolute;
+	top: 12px;
+	left: 12px;
+}
+
+.open .buildIcon{
+	left: 6px;
+	color: #FFF;
+	transition: left 0.1s ease-in-out;
+}
+
+.buildSummary:before{
+	position: absolute;
+	top:0px;
+	left:0px;
+	height: 100%;
+	display: inline-block;
+	content: '';
+	width: 4px;
+	background-color: #FFF;
+	border-radius: 3px 0 0 3px; 
+	transition: width 0.1s ease-in-out;
+	transition: padding 0.1s ease-in-out;
+
+}
+.buildSummary.success:before{background-color: #75BD70}
+.buildSummary.open:before{width: 26px;}
+
+.buildSummary.success .buildNumber, .buildSummary.success .buildIcon{color: #75BD70;}
+.buildSummary.open .buildIcon{color: #FFFFFF;}
+
+.buildSummary .buildNumber{
 	vertical-align: top;
+	font-size: 1em;
+}
+
+.infoRow{
+	display: inline-block;
+	vertical-align: top;
+	padding: 8px;
+}
+
+.infoRow > div{
+	font-size: 0.8em;
+	color: #867976;
+}
+
+.buildSummary.success .buildDetailsToggle{
+	display: inline-block;
+	font-size: 0.8em;
+}
+
+.infoRow.overview{
+	width: 180px;
+	max-width: 180px;
+}
+
+.infoRow.toggle{
+	text-align: right;
+	float: right;
+}
+
+.buildSummary .infoRow .fa{
+	padding-right: 4px;
+}
+
+.buildSummary .buildDetails{display: none;}
+.buildSummary.open .buildDetails{display: block;}
+
+.buildDetails{
+	padding: 20px 5px 10px 50px;
+	background-color: #ECE9E2;
 }
 
 .buildstep{
 	position: relative;
 	display: inline-block;
-	border:1px solid #000;
+	border:0px solid #867976;
 	border-radius: 3px;
-	padding:4px 8px 4px 16px;
-	margin: 0 20px 20px 0;
-	color:#FFF;
+	padding:16px 8px 4px 8px;
+	margin: 0 30px 20px 0;
+	color:#3D3636;
 	min-width: 80px;
 	max-width: 180px;
-	background-color: rgba(61,54,54,1)
+	background-color: #FFF;
+	vertical-align: top;
+}
+
+.buildstep:first-of-type{
+	margin-left: -30px;
+}
+
+.buildstep:before, .buildstep:after{
+  content: '';
+  position: absolute;
+  top: 3px;
+  height: 2px;
+}
+
+.buildstep:before{
+	width: 16px;
+	left: -18px;
+	background-color: #867976;
+	/*background-image: -webkit-gradient(linear, 0 0, 20% 0, from(rgba(0,0,0,0)), to(rgba(0,0,0,1)));
+	background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
+	background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
+	background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));*/
 }
 
 .buildstep:after{
-  content:'';
-  width:2.5em;/* size of your margin */
-  border-bottom:2px solid #222;
-  position:absolute;
-  bottom:15px;
-  right: -2.5em;
+	width: 13px;
+	right: -15px;
+	background-color: #867976;
+	/*background-image: -webkit-gradient(linear, 0 0, 20% 0, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+	background-image: -webkit-linear-gradient(left, rgba(0,0,0,1), rgba(0,0,0,0));
+	background-image: -moz-linear-gradient(left, rgba(0,0,0,1), rgba(0,0,0,0));
+	background-image: -o-linear-gradient(left, rgba(0,0,0,1), rgba(0,0,0,0));*/
+}
+
+.buildstep:first-of-type:before,
+.buildstep:last-of-type:after {
+  display:none;
 }
 
 /* ----------------- */
-
 .buildstep .icn{
 	position: absolute;
+	color: #FFF;
 	top:-12px;
 	left:-12px;
-	border: 2px solid #222;
+	border: 0px solid #3D3636;
 	border-radius: 50%;
-	min-width: 22px;
-	min-height: 22px;
+	width: 28px;
+	height: 28px;
 	text-align: center;
 }
 
 .buildstep .icn i{
-	position: relative;
-	top: 4px;
+	line-height: 28px;
+	height: 28px;
 }
 
-.buildstep .stepName, .buildstep .setpDuration{
+.buildstep .stepName{
 	font-size: 0.8em;
 }
 
-.buildstep.success .icn{background-color: #75BD70;}
-.buildstep.pending .icn{background-color: #867976;}
-.buildstep.failed .icn{background-color: #942629;}
-.buildstep.running .icn{background-color: #677DC4;}
+.buildstep .setpDuration{
+	position: absolute;
+	font-size: 0.7em;
+	font-weight: 100;
+	right:4px;
+	top:2px;
+}
 
-.buildstep.running .icn i, .buildstep.pending .icn i{
+.buildOverviewStep.success, .buildstep.success .icn{background-color: #75BD70;}
+.buildOverviewStep.pending, .buildstep.pending .icn{background-color: #867976;}
+.buildOverviewStep.failed, .buildstep.failed .icn{background-color: #942629;}
+.buildOverviewStep.running, .buildstep.running .icn{background-color: #677DC4;}
+
+.buildstep.running .icn i{
     -webkit-animation:spin 4s linear infinite;
     -moz-animation:spin 4s linear infinite;
     animation:spin 4s linear infinite;
@@ -70,3 +197,33 @@
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+
+.buildOverview{
+
+}
+
+.buildOverviewStep{
+	display: inline-block;
+	position: relative;
+	border: 0px solid #FFFFFF;
+	border-radius: 50%;
+	width: 12px;
+	height: 12px;
+	margin-right:12px; 
+}
+
+.buildOverviewStep:after{
+	position: absolute;
+	display: inline-block;
+	content: '';
+	height: 2px;
+	background-color: #867976;
+	width: 8px;
+	right: -10px;
+	top: 5px;
+}
+
+.buildOverviewStep:last-of-type:after {
+  display:none;
+}
