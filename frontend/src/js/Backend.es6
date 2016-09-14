@@ -45,7 +45,33 @@ export const requestBuildDetails = (dispatch, buildId) => {
             name: "test",
             state: "success",
             startTime: "2016-08-29T15:02Z",
-            endTime: "2016-08-29T15:04Z"
+            endTime: "2016-08-29T15:04Z",
+            steps: [
+              {
+                stepId: "1.2.1",
+                name: "test-unit",
+                state: "success",
+                startTime: "2016-08-29T15:02Z",
+                endTime: "2016-08-29T15:04Z"
+              },
+
+              {
+                stepId: "1.2.2",
+                name: "test-integration",
+                state: "success",
+                startTime: "2016-08-29T15:02Z",
+                endTime: "2016-08-29T15:04Z"
+              },
+
+              {
+                stepId: "1.2.3",
+                name: "test-acceptance",
+                state: "failed",
+                startTime: "2016-08-29T15:02Z",
+                endTime: "2016-08-29T15:04Z"
+              }
+            ]
+
           }
         ]
       },

@@ -37,7 +37,17 @@ const resolveStepsToDisplay = (buildDetails, stepIdToShow) => {
     return null;
   }
 
-  let resolvedSteps = R.pipe(R.filter(step => step.stepId === stepIdToShow), R.map(step => step.steps), R.flatten)(buildDetails.steps);
+  const flatSteps = step => {
+      if (!step.steps || step.steps.length === 0) {
+        return step;
+      }
+        const subs = R.map(flatSteps)(step.steps);
+        return [step, subs];
+    };
+
+  const resolvedStepsFn = R.pipe(R.filter(step => step.stepId === stepIdToShow), R.map(step => step.steps), R.flatten);
+
+  let resolvedSteps = R.pipe(R.chain(flatSteps), R.flatten, resolvedStepsFn)(buildDetails.steps);
 
   if(resolvedSteps.length === 0){
     resolvedSteps = buildDetails.steps;

@@ -75,5 +75,29 @@ describe("View Build details", ()=>{
     expect(newProps.stepsToDisplay).toEqual([{stepId: "1.1"}, {stepId: "1.2"}]);
   });
 
+  it("should display substep of substep", () => {
+    const state = {
+      buildDetails: {
+        1: { buildId: 1,
+          steps: [
+                  { stepId: "1",
+                    steps: [
+                            { stepId: "1.1", steps: [
+                                  {stepId: "substepLevel2"},
+                                  {stepId: "substepLevel2-2"}
+                                ]
+                            }
+                            ]
+                  }
+                ]
+              }
+            },
+            openedBuilds: {1: true},
+            viewBuildSteps: {1: "1.1"}
+    }
 
+    const newProps = mapStateToProps(state, {buildId: 1});
+
+    expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}])
+  })
 })
