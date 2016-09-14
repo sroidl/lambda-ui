@@ -1,14 +1,15 @@
 import React, {PropTypes} from "react";
+import "../sass/buildDetails.sass";
 
 export const BuildDetailBreadcrumb = ({steps}) => {
   if (!steps || steps.length === 0) {
-    return <span>&gt;</span>;
+    return <div className="buildDetailBreadcrumb">&gt;</div>;
   }
 
   return null;
 };
 
 BuildDetailBreadcrumb.propTypes = {
-  steps: PropTypes.array.isRequired,
-  buildId: PropTypes.string.isRequired
+  steps: PropTypes.array,
+  buildId: PropTypes.number.isRequired
 };

@@ -5,7 +5,7 @@ import {shallow} from "enzyme";
 describe("Breadcrumb presentation", () => {
   it("should show only root if no step is given", () => {
 
-    expect(shallow(subject([])).text()).toEqual(">");
+    expect(shallow(subject([])).find(".buildDetailBreadcrumb").text()).toEqual(">");
 
   });
 });

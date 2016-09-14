@@ -2,6 +2,7 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import Backend from "./Backend.es6";
 import BuildStep from "./BuildStep.es6";
+import {BuildDetailBreadcrumb} from "./BuildDetailBreadcrumb.es6";
 import R from "ramda";
 
 export const BuildDetails = (props) => {
@@ -21,6 +22,7 @@ export const BuildDetails = (props) => {
   const steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(stepsToDisplay);
 
   return <div className="twelve columns buildDetails">
+            <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
             <div className="row ">{steps}</div>
          </div>;
 };
