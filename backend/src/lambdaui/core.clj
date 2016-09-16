@@ -35,6 +35,6 @@
     (reset! server (http/run-server (pipeline-routes pipeline) {:port port}))))
 
 (defn -main [& [portArg]]
-  (let [port (try-parse-int portArg (fn [] (when portArg (println "Port '" portArg "' is not a number. Using default port")) 8081))]
+  (let [port (try-parse-int portArg (fn [_] (when portArg (println "Port '" portArg "' is not a number. Using default port")) 8081))]
     (println "Started Server on port " port ". CTRL+C to abort.")
     (start-server port)))
