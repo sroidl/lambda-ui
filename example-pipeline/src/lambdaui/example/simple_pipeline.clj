@@ -9,7 +9,7 @@
             [lambdacd-git.core :as git]
             [lambdacd.runners :as runners]
             [clojure.java.io :as io]
-            [lambdaui.api :as ui]))
+            [lambdaui.core :as ui]))
 
 (def repo "git@github.com:flosell/testrepo")
 
@@ -55,6 +55,6 @@
     (git/init-ssh!)
     (runners/start-one-run-after-another pipeline)
     (ring-server/serve (routes
-                         (ui/ui-for-pipeline pipeline))
+                         (ui/pipeline-routes pipeline))
                        {:open-browser? false
                         :port          port})))
