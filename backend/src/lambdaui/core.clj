@@ -25,6 +25,7 @@
             (context "/api" [] (old-api/rest-api pipeline))
             (GET "/old" [] (old-ui/ui-page pipeline))
             (route/resources "/" {:root "public"})
+            (GET "/" [] (ring.util.response/redirect "/ui/index.html"))
             (route/resources "/ui" {:root "public/target"})
             )))
 
