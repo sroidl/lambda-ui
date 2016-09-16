@@ -24,7 +24,9 @@
     (routes (context "/lambdaui/api" [] (new-api/api-routes pipeline))
             (context "/api" [] (old-api/rest-api pipeline))
             (GET "/old" [] (old-ui/ui-page pipeline))
-            (route/resources "/" {:root "public"}))))
+            (route/resources "/" {:root "public"})
+            (route/resources "/ui" {:root "public/target"})
+            )))
 
 (defn start-server [port]
   (git/init-ssh!)
