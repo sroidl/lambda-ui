@@ -2,7 +2,7 @@ import "whatwg-fetch";
 import {addBuildSummary, addBuildDetails} from "./Actions.es6";
 
 export const receiveBuildSummaries = (dispatch) => {
-  const endpoint = "http://localhost:4444/api/summaries";
+  const endpoint = "http://localhost:8081/lambdaui/api/summaries";
 
   const dummySummaries = [
      { buildId: 1, buildNumber: 1, state: "success", startTime: "2016-08-29T14:54Z", duration: 360},

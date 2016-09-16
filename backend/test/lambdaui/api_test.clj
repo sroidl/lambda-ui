@@ -61,7 +61,7 @@
           multi-step-build2 {'(1) {:status :success}
                              '(2) {:status :failure}
                              '(3) {:status :running}}]
-      (is (= :failure (api/extract-state multi-step-build1)))
+      (is (= :failed (api/extract-state multi-step-build1)))
       (is (= :running (api/extract-state multi-step-build2)))))
   (testing "should be success if last step is success and no step is running or waiting"
     (let [multi-step-build1 {'(1) {:status :success}
