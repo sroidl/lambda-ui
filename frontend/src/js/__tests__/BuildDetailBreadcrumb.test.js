@@ -6,16 +6,13 @@ import * as R from "ramda";
 
 describe("Breadcrumb presentation", () => {
   it("should show only root if no step is given", () => {
-
     expect(shallow(subject.BuildDetailBreadcrumb([])).find(".buildDetailBreadcrumb").text()).toEqual(">");
-
   });
 
   it("should show breadcrumb of steps in order of list", () => {
-    const steps = [{stepName: "first"}, {stepName: "Second"}];
+    const steps = [{name: "first"}, {name: "Second"}];
     expect(shallow(subject.BuildDetailBreadcrumb({steps: steps})).find(".buildDetailBreadcrumb").text()).toEqual(" > first > Second");
   });
-
 });
 
 describe("Breadcrumb calculation", () => {
@@ -41,21 +38,38 @@ describe("Breadcrumb calculation", () => {
   });
 
   it("should calculate current breadcrumb when input is root", () => {
-    const input = {stepId: "root", stepName: "root"};
+    const input = {stepId: "root", name: "root"};
 
     const actual = subject.calculateBreadcrumb(input, "root");
 
-    expect(actual).toEqual([{stepName: "root", stepId: "root"}]);
+    expect(actual).toEqual([{name: "root", stepId: "root"}]);
 
   });
 
   it("should calculate current breadcrumb when input is step", () => {
-    const input = {stepId: "root", stepName: "root", steps: [{stepId: "1", stepName: "substep"}]};
+    const input = {stepId: "root", name: "root", steps: [{stepId: "1", name: "substep"}]};
 
     const actual = subject.calculateBreadcrumb(input, "1");
 
-    expect(actual).toEqual([{stepName: "root", stepId: "root"}, {stepId: "1", stepName: "substep"}]);
+    expect(actual).toEqual([{name: "root", stepId: "root"}, {stepId: "1", name: "substep"}]);
 
-  })
+  });
+});
 
+describe("Breadcrumb redux component", () => {
+  it("should show root component if no viewBuildStep is set", () => {
+    const state = {buildDetails: {1: {}}, viewBuildSteps: {}};
+
+    const actual = subject.mapStateToProps(state, {buildId: 1});
+
+    expect(actual).toEqual({buildId: 1, steps: [{stepId: "root", name: "root"}]});
+  });
+
+  it("should show inner step breadcrumb if it was chosen", () => {
+    const state = {buildDetails: {1: {steps: [{stepId: "1", name: "innerStep"}]}}, viewBuildSteps: {1: "1"}};
+
+    const actual = subject.mapStateToProps(state, {buildId: 1});
+
+    expect(actual).toEqual({buildId: 1, steps: [{stepId: "root", name: "root"}, {stepId: "1", name: "innerStep"}]});
+  });
 });

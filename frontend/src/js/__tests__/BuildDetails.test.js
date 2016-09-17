@@ -29,7 +29,7 @@ describe("BuildDetails Component", ()=>{
 
   it("should render all buildSteps on first level", ()=>{
     let steps = [{stepId: 1}, {stepId: 2}];
-    let storeMock = MockStore({buildDetails: {1: {buildId: 1, steps: steps}}, openedBuilds: {1: true}})
+    let storeMock = MockStore({buildDetails: {1: {buildId: 1, steps: steps}}, openedBuilds: {1: true}, viewBuildSteps: {}})
 
     let component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
 

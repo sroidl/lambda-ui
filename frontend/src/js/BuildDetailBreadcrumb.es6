@@ -1,4 +1,5 @@
 import React, {PropTypes} from "react";
+import {connect} from "react-redux";
 import * as R from "ramda";
 import "../sass/buildDetails.sass";
 
@@ -8,7 +9,7 @@ export const BuildDetailBreadcrumb = ({steps}) => {
   }
 
   const stepsHtml = R.map(step => {
-    return <span key={step.stepName}> &gt; {step.stepName}</span>;
+    return <span key={step.name}> &gt; {step.name}</span>;
   })(steps);
 
   return <div className="buildDetailBreadcrumb">
@@ -36,7 +37,23 @@ export const calculateBreadcrumb = (buildDetails, currentViewStepId) => {
     return R.chain(id => id, result);
   };
 
-  const objects = R.project(["stepName", "stepId"])(expandBreadcrumb(currentViewStepId, allSteps(buildDetails)));
+  const objects = R.project(["name", "stepId"])(expandBreadcrumb(currentViewStepId, allSteps(buildDetails)));
 
   return objects;
 };
+
+export const mapStateToProps = (state, {buildId}) => {
+  const buildDetails = Object.assign({},state.buildDetails[buildId]);
+  buildDetails.stepId = "root";
+  buildDetails.name = "root";
+  let currentViewStepId = state.viewBuildSteps[buildId];
+  currentViewStepId = currentViewStepId? currentViewStepId : "root";
+
+  return {
+    buildId: buildId,
+    steps: calculateBreadcrumb(buildDetails, currentViewStepId)
+  };
+};
+
+
+export default connect(mapStateToProps)(BuildDetailBreadcrumb);
