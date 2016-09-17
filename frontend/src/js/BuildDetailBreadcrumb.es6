@@ -9,9 +9,10 @@ export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
   }
 
   const GT = ">";
+  const clickFn = step => () => viewStepFn({buildId: buildId, stepId: step.stepId});
   const stepHtmlId = step => "bcrumb-" + buildId + "-" + step.stepId;
   const stepHtml = (step) =>
-   <a href="#" className="breadCrumbLink" id={stepHtmlId(step)} onClick={viewStepFn(step.stepId)}>{step.name}</a>;
+   <a href="#" className="breadCrumbLink" id={stepHtmlId(step)} onClick={clickFn(step)}>{step.name}</a>;
 
   const stepsHtml = R.map(step => {
     return <span key={step.name}> {GT} {stepHtml(step)}</span>;

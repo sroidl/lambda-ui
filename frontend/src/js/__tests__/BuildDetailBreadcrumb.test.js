@@ -1,8 +1,12 @@
 /* globals describe, it, expect */
 /* eslint-disable */
+import React from "react";
 import * as subject from "../BuildDetailBreadcrumb.es6";
+import {BuildDetailBreadcrumb} from "../BuildDetailBreadcrumb.es6";
 import {shallow} from "enzyme";
 import * as R from "ramda";
+
+const emptyFn = () => {};
 
 describe("Breadcrumb presentation", () => {
   it("should show no breadcrumb if no step is given", () => {
@@ -13,6 +17,28 @@ describe("Breadcrumb presentation", () => {
     const steps = [{name: "first"}, {name: "Second"}];
     const input = {steps: steps, viewStepFn: () => {}}
     expect(shallow(subject.BuildDetailBreadcrumb(input)).find(".buildDetailBreadcrumb").text()).toEqual(" > first > Second");
+  });
+
+  it("should show link for each step in breadcrumb", () => {
+    const steps = [{name: "stepName", stepId: "stepId"}];
+    const buildId = 1;
+
+    const component = shallow(<BuildDetailBreadcrumb buildId={buildId} steps={steps} viewStepFn={emptyFn}/>);
+
+    expect(component.find("#bcrumb-1-stepId").length).toBe(1);
+  });
+
+  it("should link to the viewBuildStep function", () => {
+    const steps = [{name: "stepName", stepId: "stepId"}];
+    const clickFn = jest.fn();
+    const buildId = 1;
+
+    const component = shallow(<BuildDetailBreadcrumb buildId={buildId} steps={steps} viewStepFn={clickFn}/>);
+
+    component.find("#bcrumb-1-stepId").simulate("click");
+
+
+    expect(clickFn).toBeCalledWith({buildId: 1, stepId: "stepId"});
   });
 });
 
