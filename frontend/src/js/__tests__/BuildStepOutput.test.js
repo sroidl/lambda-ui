@@ -29,12 +29,11 @@ describe("Output redux", () => {
   it("should get output from buildstep", () => {
     const state = {
       buildDetails: {1: {steps: [{stepId: "1", name: "myStep", output:["line1"]}]}},
-      output: {showOutput:true}
+      output: {showOutput:true, buildId: 1, stepId: "1"}
     };
-    const props = {buildId: 1, stepId: "1"};
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true};
 
-    expect(subject.mapStateToProps(state, props)).toEqual(expected);
+    expect(subject.mapStateToProps(state)).toEqual(expected);
   });
 
 });
