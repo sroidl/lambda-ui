@@ -1,5 +1,6 @@
 /* global Promise */
-import {createStore, combineReducers} from "redux";
+import {createStore, combineReducers, compose, applyMiddleware} from "redux";
+import ReduxThunk from "redux-thunk";
 import {ToggleBuildDetailsReducer} from "./reducers/ToggleBuildDetails.es6";
 import {BuildSummariesReducer} from "./reducers/BuildSummaries.es6";
 import {changeBuildSummary} from "./Actions.es6";
@@ -25,8 +26,12 @@ const rootReducer = combineReducers({
   output: OutputReducer
 });
 
+const middleware = compose(
+    applyMiddleware(ReduxThunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  );
 
-const appState = createStore(rootReducer, initialState, window.devToolsExtension && window.devToolsExtension());
+const appState = createStore(rootReducer, initialState,  middleware);
 
 export default appState;
 
