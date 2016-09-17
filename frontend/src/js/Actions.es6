@@ -4,7 +4,7 @@ export const CHANGE_SUMMARY = "changeBuildSummary";
 export const ADD_BUILD_DETAILS = "addBuildDetails";
 export const VIEW_BUILD_STEP = "viewBuildStep";
 export const ADD_CONFIGURATION = "addConfiguration";
-
+export const SHOW_BUILD_OUTPUT = "showOutput";
 
 export const toggleBuildDetails = (id) => {
   return {type: TOGGLE_BUILD_DETAILS, buildId: id};
@@ -28,4 +28,8 @@ export const viewBuildStep = (buildId, stepId) => {
 
 export const addConfiguration = config => {
   return {type: ADD_CONFIGURATION, config: config};
+};
+
+export const showBuildOutput = (buildId, stepId) => {
+  return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
 };
