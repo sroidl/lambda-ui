@@ -13,8 +13,14 @@ export const BuildStepOutput = (props) => {
   }
   if(!output) {
     requestFn(buildId, stepId);
-    output = <span>Requesting Output from Server</span>;
+    output = ["Requesting Output from Server"];
   }
+
+
+  const lineKey = index => "line-" + index;
+
+  const mapIndexed = R.addIndex(R.map);
+  const outputLines = mapIndexed((line, index) => <div key={lineKey(index)} className="outputLine">{line}</div>)(output);
 
   return <div className="buildStepOutput">
   <div id="outputHeader">
@@ -23,7 +29,7 @@ export const BuildStepOutput = (props) => {
     <span> Step </span>
     <span id="outputHeader__stepName">{stepName}</span>
   </div>
-  <div id="outputContent">{output}</div>
+  <div id="outputContent">{outputLines}</div>
   </div>;
 };
 
