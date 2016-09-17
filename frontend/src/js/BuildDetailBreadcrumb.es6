@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import * as R from "ramda";
 import {viewBuildStep} from "./Actions.es6";
 import "../sass/buildDetails.sass";
+import {flatTree} from "./FunctionalUtils.es6";
 
 export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
   const clickFn = stepId => () => viewStepFn(buildId, stepId);
@@ -32,9 +33,7 @@ BuildDetailBreadcrumb.propTypes = {
   viewStepFn: PropTypes.func.isRequired
 };
 
-const conmap = fn => (acc, child) => R.concat(acc, fn(child));
-const flatTree = stepDownFn =>
-      input => { return stepDownFn(input) ? R.reduce(conmap(flatTree(stepDownFn)),[input], stepDownFn(input)) : [input]; };
+
 const safeSteps = input => {return input ? input : [];};
 export const expandParents = flatTree(parent => R.map(step => Object.assign(step, {parentId: parent.stepId}), safeSteps(parent.steps)));
 
