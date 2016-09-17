@@ -42,7 +42,7 @@ describe("Breadcrumb calculation", () => {
 
     const actual = subject.calculateBreadcrumb(input, "root");
 
-    expect(actual).toEqual([{name: "root", stepId: "root"}]);
+    expect(actual).toEqual([]);
 
   });
 
@@ -51,7 +51,7 @@ describe("Breadcrumb calculation", () => {
 
     const actual = subject.calculateBreadcrumb(input, "1");
 
-    expect(actual).toEqual([{name: "root", stepId: "root"}, {stepId: "1", name: "substep"}]);
+    expect(actual).toEqual([{stepId: "1", name: "substep"}]);
 
   });
 });
@@ -62,7 +62,7 @@ describe("Breadcrumb redux component", () => {
 
     const actual = subject.mapStateToProps(state, {buildId: 1});
 
-    expect(actual).toEqual({buildId: 1, steps: [{stepId: "root", name: "root"}]});
+    expect(actual).toEqual({buildId: 1, steps: []});
   });
 
   it("should show inner step breadcrumb if it was chosen", () => {
@@ -70,6 +70,6 @@ describe("Breadcrumb redux component", () => {
 
     const actual = subject.mapStateToProps(state, {buildId: 1});
 
-    expect(actual).toEqual({buildId: 1, steps: [{stepId: "root", name: "root"}, {stepId: "1", name: "innerStep"}]});
+    expect(actual).toEqual({buildId: 1, steps: [{stepId: "1", name: "innerStep"}]});
   });
 });
