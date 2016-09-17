@@ -3,9 +3,16 @@ import {connect} from "react-redux";
 import * as R from "ramda";
 import {flatTree} from "./FunctionalUtils.es6";
 
-export const BuildStepOutput = ({buildId, stepName, output, showOutput}) => {
+export const BuildStepOutput = (props) => {
+  const {buildId, stepName, showOutput, requestFn} = props;
+  let {output} = props;
+
   if (!showOutput) {
     return null;
+  }
+  if(!output) {
+    requestFn();
+    output = <span>Requesting Output from Server</span>;
   }
 
   return <div className="buildStepOutput">
@@ -23,7 +30,8 @@ BuildStepOutput.propTypes = {
   buildId: PropTypes.number,
   stepName: PropTypes.string,
   output: PropTypes.array,
-  showOutput: PropTypes.bool
+  showOutput: PropTypes.bool,
+  requestFn: PropTypes.func
 };
 
 const outputHiddenProps = {showOutput: false};
@@ -51,4 +59,8 @@ export const mapStateToProps = (state) => {
   return outputHiddenProps;
 };
 
-export default connect(mapStateToProps)(BuildStepOutput);
+export const mapDispatchToProps = () => {
+  return {requestFn: () => {}};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BuildStepOutput);

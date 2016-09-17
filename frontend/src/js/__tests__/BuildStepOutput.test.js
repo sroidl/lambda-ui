@@ -1,4 +1,4 @@
-/* globals describe it expect */
+/* globals describe it expect jest */
 import * as subject from "../BuildStepOutput.es6";
 import {shallow} from "enzyme";
 
@@ -19,6 +19,16 @@ describe("Output presentation", () => {
     expect(component.find("#outputContent").text()).toBe("hierTestOutput");
 
   });
+
+  it("should request output if no output exists in build step", () => {
+    const requestFnMock = jest.fn();
+    const input = {showOutput: true, buildId: 1, stepName: "meinStep", requestFn: requestFnMock};
+
+    shallow(subject.BuildStepOutput(input));
+
+    expect(requestFnMock).toBeCalled();
+  });
+
 });
 
 describe("Output redux", () => {
