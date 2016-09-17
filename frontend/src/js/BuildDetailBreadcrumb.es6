@@ -3,15 +3,18 @@ import {connect} from "react-redux";
 import * as R from "ramda";
 import "../sass/buildDetails.sass";
 
-export const BuildDetailBreadcrumb = ({steps}) => {
+export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
   if (!steps || steps.length === 0) {
-    return <div className="buildDetailBreadcrumb">&gt;</div>;
+    return null;
   }
 
   const GT = ">";
+  const stepHtmlId = step => "bcrumb-" + buildId + "-" + step.stepId;
+  const stepHtml = (step) =>
+   <a href="#" className="breadCrumbLink" id={stepHtmlId(step)} onClick={viewStepFn(step.stepId)}>{step.name}</a>;
 
   const stepsHtml = R.map(step => {
-    return <span key={step.name}> {GT} {step.name}</span>;
+    return <span key={step.name}> {GT} {stepHtml(step)}</span>;
   })(steps);
 
   return <div className="buildDetailBreadcrumb">
@@ -21,7 +24,8 @@ export const BuildDetailBreadcrumb = ({steps}) => {
 
 BuildDetailBreadcrumb.propTypes = {
   steps: PropTypes.array,
-  buildId: PropTypes.number.isRequired
+  buildId: PropTypes.number.isRequired,
+  viewStepFn: PropTypes.func.isRequired
 };
 
 const conmap = fn => (acc, child) => R.concat(acc, fn(child));
@@ -58,5 +62,9 @@ export const mapStateToProps = (state, {buildId}) => {
   };
 };
 
+export const mapDispatchToProps = () => {
+  return { viewStepFn : () => {}};
+};
 
-export default connect(mapStateToProps)(BuildDetailBreadcrumb);
+
+export default connect(mapStateToProps, mapDispatchToProps)(BuildDetailBreadcrumb);

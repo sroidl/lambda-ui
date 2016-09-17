@@ -5,13 +5,14 @@ import {shallow} from "enzyme";
 import * as R from "ramda";
 
 describe("Breadcrumb presentation", () => {
-  it("should show only root if no step is given", () => {
-    expect(shallow(subject.BuildDetailBreadcrumb([])).find(".buildDetailBreadcrumb").text()).toEqual(">");
+  it("should show no breadcrumb if no step is given", () => {
+    expect(subject.BuildDetailBreadcrumb({steps: []})).toEqual(null);
   });
 
   it("should show breadcrumb of steps in order of list", () => {
     const steps = [{name: "first"}, {name: "Second"}];
-    expect(shallow(subject.BuildDetailBreadcrumb({steps: steps})).find(".buildDetailBreadcrumb").text()).toEqual(" > first > Second");
+    const input = {steps: steps, viewStepFn: () => {}}
+    expect(shallow(subject.BuildDetailBreadcrumb(input)).find(".buildDetailBreadcrumb").text()).toEqual(" > first > Second");
   });
 });
 
