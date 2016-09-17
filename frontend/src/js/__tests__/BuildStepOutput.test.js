@@ -36,4 +36,14 @@ describe("Output redux", () => {
     expect(subject.mapStateToProps(state)).toEqual(expected);
   });
 
+  it("should get undefined from buildstep if no output exists", () => {
+    const state = {
+      buildDetails: {1: {steps: [{stepId: "1", name: "myStep"}]}},
+      output: {showOutput:true, buildId: 1, stepId: "1"}
+    };
+    const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true};
+
+    expect(subject.mapStateToProps(state)).toEqual(expected);
+  });
+
 });
