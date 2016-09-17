@@ -5,6 +5,7 @@ import * as subject from "../BuildDetailBreadcrumb.es6";
 import {BuildDetailBreadcrumb} from "../BuildDetailBreadcrumb.es6";
 import {shallow} from "enzyme";
 import * as R from "ramda";
+import {viewBuildStep} from "../Actions.es6";
 
 const emptyFn = () => {};
 
@@ -38,7 +39,7 @@ describe("Breadcrumb presentation", () => {
     component.find("#bcrumb-1-stepId").simulate("click");
 
 
-    expect(clickFn).toBeCalledWith({buildId: 1, stepId: "stepId"});
+    expect(clickFn).toBeCalledWith(1, "stepId");
   });
 });
 
@@ -98,5 +99,14 @@ describe("Breadcrumb redux component", () => {
     const actual = subject.mapStateToProps(state, {buildId: 1});
 
     expect(actual).toEqual({buildId: 1, steps: [{stepId: "1", name: "innerStep"}]});
+  });
+
+  it("should dispatch a view build step action", () => {
+    const input = {buildId: 1, stepId: 42};
+    const dispatchMock = jest.fn();
+
+    subject.mapDispatchToProps(dispatchMock).viewStepFn(input.buildId, input.stepId);
+
+    expect(dispatchMock).toBeCalledWith(viewBuildStep(input.buildId, input.stepId));
   });
 });

@@ -1,6 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
+import {viewBuildStep} from "./Actions.es6";
 import "../sass/buildDetails.sass";
 
 export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
@@ -9,7 +10,7 @@ export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
   }
 
   const GT = ">";
-  const clickFn = step => () => viewStepFn({buildId: buildId, stepId: step.stepId});
+  const clickFn = step => () => viewStepFn(buildId, step.stepId);
   const stepHtmlId = step => "bcrumb-" + buildId + "-" + step.stepId;
   const stepHtml = (step) =>
    <a href="#" className="breadCrumbLink" id={stepHtmlId(step)} onClick={clickFn(step)}>{step.name}</a>;
@@ -63,8 +64,10 @@ export const mapStateToProps = (state, {buildId}) => {
   };
 };
 
-export const mapDispatchToProps = () => {
-  return { viewStepFn : () => {}};
+export const mapDispatchToProps = (dispatch) => {
+  return {
+     viewStepFn : (buildId, stepId) => dispatch(viewBuildStep(buildId,stepId))
+  };
 };
 
 
