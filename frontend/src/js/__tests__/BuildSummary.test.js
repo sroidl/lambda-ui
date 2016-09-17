@@ -1,18 +1,21 @@
-/* globals  describe it expect jest */
+/* eslint-disable */
 import {BuildSummary} from "../BuildSummary.es6";
 import * as subject from "../BuildSummary.es6";
 import {shallow} from "enzyme";
+import React from "react";
 
 function buildIcon(domElement){
   return domElement.find(".buildIcon").find(".fa");
 }
+
+const buildSummary = ({buildId, state, startTime, toggleBuildDetails}) => <BuildSummary buildId={buildId} state={state} startTime={startTime} toggleBuildDetails={toggleBuildDetails}/>;
 
 describe("BuildSummary Display", () => {
 describe("BuildIcons", () => {
     it("should show correct failed state icon", () => {
     const inputProps = {buildId: 1, state: "failed", startTime: {toISOString: jest.fn()}};
 
-    const component = shallow(BuildSummary(inputProps));
+    const component = shallow(buildSummary(inputProps));
 
     expect(buildIcon(component).hasClass("fa-times")).toBe(true);
   });
@@ -20,7 +23,7 @@ describe("BuildIcons", () => {
     it("should show correct success state icon", () => {
     const inputProps = {buildId: 1, state: "success", startTime: {toISOString: jest.fn()}};
 
-    const component = shallow(BuildSummary(inputProps));
+    const component = shallow(buildSummary(inputProps));
 
     expect(buildIcon(component).hasClass("fa-check")).toBe(true);
   });
@@ -28,7 +31,7 @@ describe("BuildIcons", () => {
     it("should show correct running state icon", () => {
     const inputProps = {buildId: 1, state: "running", startTime: {toISOString: jest.fn()}};
 
-    const component = shallow(BuildSummary(inputProps));
+    const component = shallow(buildSummary(inputProps));
 
     expect(buildIcon(component).hasClass("fa-cog")).toBe(true);
   });
@@ -40,7 +43,7 @@ describe("BuildSummary Toggle", () => {
     const toggleFnMock = jest.fn();
     const inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock, startTime: {toISOString: jest.fn()}};
 
-    const component = shallow(BuildSummary(inputProps));
+    const component = shallow(buildSummary(inputProps));
     component.find(".buildDetailsToggle").simulate("click");
 
     expect(toggleFnMock).toBeCalled();

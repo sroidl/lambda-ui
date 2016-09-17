@@ -21,11 +21,11 @@ const icon = (buildState) => {
 };
 
 
-export const BuildSummary = (props) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails} = props;
+export const renderSummary = (properties) => {
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails} = properties;
     const classesForState = "row buildSummary " + state;
     const iconClassName = "fa " + icon(state);
-    let {endTime} = props;
+    let {endTime} = properties;
     if (!endTime ){
       endTime = now();
     }
@@ -49,12 +49,26 @@ export const BuildSummary = (props) => {
 
 };
 
+export class BuildSummary extends React.Component {
+  constructor(props) {
+      super(props);
+    }
+
+  render() {
+    if (this.props.state === "running") {
+      setTimeout(() => this.forceUpdate(), 1000);
+    }
+
+    return renderSummary(this.props);
+  }
+}
+
+
 BuildSummary.propTypes = {
   buildId: PropTypes.number.isRequired,
   buildNumber: PropTypes.number.isRequired,
   state: PropTypes.string.isRequired,
   startTime: PropTypes.object.isRequired,
-  duration: PropTypes.number.isRequired,
   toggleBuildDetails: PropTypes.func.isRequired,
   endTime: PropTypes.object
 };

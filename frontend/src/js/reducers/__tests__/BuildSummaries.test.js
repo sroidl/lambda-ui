@@ -1,8 +1,9 @@
+/* eslint-disable */
 import {BuildSummariesReducer as subject} from '../BuildSummaries.es6';
 import {addBuildSummary as action, changeBuildSummary} from '../../Actions.es6'
 
 const defaultBuildInput = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
-const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: new Date(Date.parse("2015-01-25"))}, buildInfo);
+const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
 
 describe("BuildSummariesReducer: ADD_SUMMARIES", ()=> {
   it("should reduce the old state if no summary action is given", ()=> {
