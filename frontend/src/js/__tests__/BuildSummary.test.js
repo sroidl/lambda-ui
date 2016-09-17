@@ -1,64 +1,65 @@
-import ReduxBuildSummary, {BuildSummary} from '../BuildSummary.es6';
-import * as subject from '../BuildSummary.es6'
-import {shallow} from 'enzyme';
-import {now} from 'moment';
+/* globals  describe it expect jest */
+import {BuildSummary} from "../BuildSummary.es6";
+import * as subject from "../BuildSummary.es6";
+import {shallow} from "enzyme";
 
 function buildIcon(domElement){
-  return domElement.find('.buildIcon').find('.fa');
+  return domElement.find(".buildIcon").find(".fa");
 }
 
-describe("BuildSummary Display", ()=>{
-describe("BuildIcons", () =>{
-    it("should show correct failed state icon", ()=>{
-    let inputProps = {buildId: 1, state: 'failed', startTime: {toISOString: jest.fn()}, toggleBuildDetails: undefined};
+describe("BuildSummary Display", () => {
+describe("BuildIcons", () => {
+    it("should show correct failed state icon", () => {
+    const inputProps = {buildId: 1, state: "failed", startTime: {toISOString: jest.fn()}};
 
-    let component = shallow(BuildSummary(inputProps));
+    const component = shallow(BuildSummary(inputProps));
 
-    expect(buildIcon(component).hasClass('fa-times')).toBe(true);
+    expect(buildIcon(component).hasClass("fa-times")).toBe(true);
   });
 
-    it("should show correct success state icon", ()=>{
-    let inputProps = {buildId: 1, state: 'success', toggleBuildDetails: undefined, startTime: {toISOString: jest.fn()}};
+    it("should show correct success state icon", () => {
+    const inputProps = {buildId: 1, state: "success", startTime: {toISOString: jest.fn()}};
 
-    let component = shallow(BuildSummary(inputProps));
+    const component = shallow(BuildSummary(inputProps));
 
-    expect(buildIcon(component).hasClass('fa-check')).toBe(true);
+    expect(buildIcon(component).hasClass("fa-check")).toBe(true);
   });
 
-    it("should show correct running state icon", ()=>{
-    let inputProps = {buildId: 1, state: 'running', toggleBuildDetails: undefined, startTime: {toISOString: jest.fn()}};
+    it("should show correct running state icon", () => {
+    const inputProps = {buildId: 1, state: "running", startTime: {toISOString: jest.fn()}};
 
-    let component = shallow(BuildSummary(inputProps));
+    const component = shallow(BuildSummary(inputProps));
 
-    expect(buildIcon(component).hasClass('fa-cog')).toBe(true);
+    expect(buildIcon(component).hasClass("fa-cog")).toBe(true);
   });
   });
-})
-describe("BuildSummary Toggle", ()=>{
-  it("should call the toggle details function on click", ()=>{
-    let toggleFnMock = jest.fn();
-    let inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock, startTime: {toISOString: jest.fn()}};
-
-    let component = shallow(BuildSummary(inputProps));
-    component.find(".buildDetailsToggle").simulate('click');
-
-    expect(toggleFnMock).toBeCalled();
-  })
 });
 
-describe("BuildSummary redux mapping", ()=>{
-  it("should map to props properly", ()=>{
-    let state = {summaries: {1: {buildId: 1, buildNumber: 12, state:"running", duration:"10min", startTime:"12sec"}}}
+describe("BuildSummary Toggle", () => {
+  it("should call the toggle details function on click", () => {
+    const toggleFnMock = jest.fn();
+    const inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock, startTime: {toISOString: jest.fn()}};
 
-    let props = subject.mapStateToProps(state, {build: {buildId: 1, buildNumber: 12, state:"success", duration:"10min", startTime:"12sec"}});
+    const component = shallow(BuildSummary(inputProps));
+    component.find(".buildDetailsToggle").simulate("click");
+
+    expect(toggleFnMock).toBeCalled();
+  });
+});
+
+describe("BuildSummary redux mapping", () => {
+  it("should map to props properly", () => {
+    const state = {summaries: {1: {buildId: 1, buildNumber: 12, state:"running", endTime:"10min", startTime:"12sec"}}};
+
+    const props = subject.mapStateToProps(state, {build: {buildId: 1, buildNumber: 12, state:"success", endTime:"10min", startTime:"12sec"}});
 
     expect(props).toEqual({
       buildId: 1,
       buildNumber: 12,
       state: "success",
-      duration: "10min",
+      endTime: "10min",
       startTime: "12sec"
     });
 
-  })
-})
+  });
+});

@@ -22,13 +22,19 @@ const icon = (buildState) => {
 
 
 export const BuildSummary = (props) => {
-    const {buildId, buildNumber, startTime, state, duration, toggleBuildDetails} = props;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails} = props;
     const classesForState = "row buildSummary " + state;
     const iconClassName = "fa " + icon(state);
+    let {endTime} = props;
+    if (!endTime ){
+      endTime = now();
+    }
+
 
     const timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
+    const duration = Moment.duration(Moment(endTime).diff(Moment(startTime)));
 
 
 
@@ -49,20 +55,21 @@ BuildSummary.propTypes = {
   state: PropTypes.string.isRequired,
   startTime: PropTypes.object.isRequired,
   duration: PropTypes.number.isRequired,
-  toggleBuildDetails: PropTypes.func.isRequired
+  toggleBuildDetails: PropTypes.func.isRequired,
+  endTime: PropTypes.object
 };
 
-export const mapStateToProps = (state, props) => {
+export const mapStateToProps = (_, props) => {
 
 
-  const build = props.build;
+  const {buildId, buildNumber, state, startTime, endTime} = props.build;
 
   return {
-    buildId: build.buildId,
-    buildNumber: build.buildNumber,
-    state: build.state,
-    startTime: build.startTime,
-    duration: build.duration,
+    buildId: buildId,
+    buildNumber: buildNumber,
+    state: state,
+    startTime: startTime,
+    endTime: endTime
   };
 };
 
