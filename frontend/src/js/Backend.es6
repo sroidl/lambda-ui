@@ -1,5 +1,5 @@
 import "whatwg-fetch";
-import {addBuildSummary, addBuildDetails} from "./Actions.es6";
+import {addBuildSummary, addBuildDetails, addBuildstepOutput} from "./Actions.es6";
 
 export const receiveBuildSummaries = (dispatch) => {
   const endpoint = "http://localhost:8081/lambdaui/api/summaries";
@@ -93,4 +93,16 @@ export const requestBuildDetails = (dispatch, buildId) => {
     });
 };
 
-export default {receiveBuildSummaries, requestBuildDetails};
+export const requestOutput = dispatch => (buildId, stepId) => {
+  /* eslint-disable */
+  const endpoint = "/api/output/" + buildId + "/" + stepId;
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(body => dispatch(addBuildstepOutput(buildId, stepId, body.output)))
+    .catch(() => {
+      console.log("Dispatching error message");
+      dispatch(addBuildstepOutput(buildId,stepId, ["Connection failed while requesting output."]));
+    });
+};
+
+export default {receiveBuildSummaries, requestBuildDetails, requestOutput};

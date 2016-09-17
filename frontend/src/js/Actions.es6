@@ -1,3 +1,5 @@
+import * as backend from "./Backend.es6";
+
 export const TOGGLE_BUILD_DETAILS = "toggleBuildDetails";
 export const ADD_SUMMARIES = "addBuildSummaries";
 export const CHANGE_SUMMARY = "changeBuildSummary";
@@ -5,6 +7,8 @@ export const ADD_BUILD_DETAILS = "addBuildDetails";
 export const VIEW_BUILD_STEP = "viewBuildStep";
 export const ADD_CONFIGURATION = "addConfiguration";
 export const SHOW_BUILD_OUTPUT = "showOutput";
+export const REQUEST_OUTPUT = "requestOutput";
+export const ADD_BUILDSTEP_OUTPUT = "addBuildstepOutput";
 
 export const toggleBuildDetails = (id) => {
   return {type: TOGGLE_BUILD_DETAILS, buildId: id};
@@ -30,6 +34,16 @@ export const addConfiguration = config => {
   return {type: ADD_CONFIGURATION, config: config};
 };
 
+export const addBuildstepOutput = (buildId, stepId, output) => {
+  return {type: ADD_BUILDSTEP_OUTPUT, buildId: buildId, stepId: stepId, output: output};
+};
+
 export const showBuildOutput = (buildId, stepId) => {
   return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
+};
+
+export const requestOutput = (buildId, stepId) => {
+  return (dispatch) => {
+    backend.requestOutput(dispatch)(buildId, stepId);
+  };
 };

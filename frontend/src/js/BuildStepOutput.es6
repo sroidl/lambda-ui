@@ -2,16 +2,17 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
 import {flatTree} from "./FunctionalUtils.es6";
+import {requestOutput} from "./Actions.es6";
 
 export const BuildStepOutput = (props) => {
-  const {buildId, stepName, showOutput, requestFn} = props;
+  const {buildId, stepName, showOutput, requestFn, stepId} = props;
   let {output} = props;
 
   if (!showOutput) {
     return null;
   }
   if(!output) {
-    requestFn();
+    requestFn(buildId, stepId);
     output = <span>Requesting Output from Server</span>;
   }
 
@@ -31,7 +32,8 @@ BuildStepOutput.propTypes = {
   stepName: PropTypes.string,
   output: PropTypes.array,
   showOutput: PropTypes.bool,
-  requestFn: PropTypes.func
+  requestFn: PropTypes.func,
+  stepId: PropTypes.string
 };
 
 const outputHiddenProps = {showOutput: false};
@@ -59,8 +61,8 @@ export const mapStateToProps = (state) => {
   return outputHiddenProps;
 };
 
-export const mapDispatchToProps = () => {
-  return {requestFn: () => {}};
+export const mapDispatchToProps = (dispatch) => {
+  return {requestFn: (buildId, stepId) => dispatch(requestOutput(buildId,stepId))};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildStepOutput);
