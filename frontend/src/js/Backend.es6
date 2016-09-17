@@ -5,10 +5,10 @@ export const receiveBuildSummaries = (dispatch) => {
   const endpoint = "http://localhost:8081/lambdaui/api/summaries";
 
   const dummySummaries = [
-     { buildId: 1, buildNumber: 1, state: "success", startTime: "2016-08-29T14:54Z", duration: 360},
-     { buildId: 2, buildNumber: 2, state: "failed",  startTime: "2016-08-29T13:54Z", duration: 120},
-     { buildId: 4, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: 5466},
-     { buildId: 5, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z", duration: -2}
+     { buildId: 1, buildNumber: 1, state: "success", startTime: "2016-08-29T14:54Z", endTime: "2016-08-29T14:58Z"},
+     { buildId: 2, buildNumber: 2, state: "failed",  startTime: "2016-08-29T13:54Z", endTime: "2016-08-29T14:54Z"},
+     { buildId: 4, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z"},
+     { buildId: 5, buildNumber: 4, state: "running", startTime: "2016-08-31T12:54Z"}
   ];
 
   fetch(endpoint)
