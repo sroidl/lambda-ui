@@ -1,4 +1,6 @@
 import React, {PropTypes} from "react";
+import * as R from "ramda";
+import {flatTree} from "./FunctionalUtils.es6";
 
 export const BuildStepOutput = ({buildId, stepName, output, showOutput}) => {
   if (!showOutput) {
@@ -17,8 +19,31 @@ export const BuildStepOutput = ({buildId, stepName, output, showOutput}) => {
 };
 
 BuildStepOutput.propTypes = {
-  buildId: PropTypes.number.isRequired,
-  stepName: PropTypes.string.isRequired,
-  output: PropTypes.string,
+  buildId: PropTypes.number,
+  stepName: PropTypes.string,
+  output: PropTypes.array,
   showOutput: PropTypes.bool.isRequired
+};
+
+const outputHiddenProps = {showOutput: false};
+
+const outputVisibleProps = (state, {buildId, stepId}) => {
+  const buildDetails = state.buildDetails[buildId] || {};
+  const step = flatTree(R.prop("steps"))(buildDetails)[stepId] || {};
+
+  return {
+    buildId: buildId,
+    stepId: stepId,
+    showOutput: true,
+    stepName: step.name,
+    output: step.output
+  };
+};
+
+export const mapStateToProps = (state, props) => {
+  const {showOutput} = state.output;
+  if(showOutput) {
+    return outputVisibleProps(state, props);
+  }
+  return outputHiddenProps;
 };

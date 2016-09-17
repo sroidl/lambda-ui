@@ -22,5 +22,19 @@ describe("Output presentation", () => {
 });
 
 describe("Output redux", () => {
+  it("should not output render props if hidden", () => {
+    expect(subject.mapStateToProps({output: {showOutput: false}},{})).toEqual({showOutput:false});
+  });
+
+  it("should get output from buildstep", () => {
+    const state = {
+      buildDetails: {1: {steps: [{stepId: "1", name: "myStep", output:["line1"]}]}},
+      output: {showOutput:true}
+    };
+    const props = {buildId: 1, stepId: "1"};
+    const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true};
+
+    expect(subject.mapStateToProps(state, props)).toEqual(expected);
+  });
 
 });
