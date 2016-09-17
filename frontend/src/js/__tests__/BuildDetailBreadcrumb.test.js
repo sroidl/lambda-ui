@@ -11,13 +11,13 @@ const emptyFn = () => {};
 
 describe("Breadcrumb presentation", () => {
   it("should show no breadcrumb if no step is given", () => {
-    expect(subject.BuildDetailBreadcrumb({steps: []})).toEqual(null);
+    expect(shallow(subject.BuildDetailBreadcrumb({steps: [], buildId: 1})).text()).toEqual("Build 1");
   });
 
   it("should show breadcrumb of steps in order of list", () => {
     const steps = [{name: "first"}, {name: "Second"}];
-    const input = {steps: steps, viewStepFn: () => {}}
-    expect(shallow(subject.BuildDetailBreadcrumb(input)).find(".buildDetailBreadcrumb").text()).toEqual(" > first > Second");
+    const input = {steps: steps, viewStepFn: () => {}, buildId: 1}
+    expect(shallow(subject.BuildDetailBreadcrumb(input)).find(".buildDetailBreadcrumb").text()).toEqual("Build 1 > first > Second");
   });
 
   it("should show link for each step in breadcrumb", () => {

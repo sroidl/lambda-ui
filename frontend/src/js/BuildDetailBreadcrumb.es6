@@ -5,22 +5,24 @@ import {viewBuildStep} from "./Actions.es6";
 import "../sass/buildDetails.sass";
 
 export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
+  const clickFn = stepId => () => viewStepFn(buildId, stepId);
+  const rootLink = <a href="#" onClick={clickFn("root")}>Build {buildId}</a>;
+
   if (!steps || steps.length === 0) {
-    return null;
+    return <div className="buildDetailBreadcrumb">{rootLink}</div>;
   }
 
   const GT = ">";
-  const clickFn = step => () => viewStepFn(buildId, step.stepId);
   const stepHtmlId = step => "bcrumb-" + buildId + "-" + step.stepId;
   const stepHtml = (step) =>
-   <a href="#" className="breadCrumbLink" id={stepHtmlId(step)} onClick={clickFn(step)}>{step.name}</a>;
+   <a href="#" className="breadCrumbLink" id={stepHtmlId(step)} onClick={clickFn(step.stepId)}>{step.name}</a>;
 
   const stepsHtml = R.map(step => {
     return <span key={step.name}> {GT} {stepHtml(step)}</span>;
   })(steps);
 
   return <div className="buildDetailBreadcrumb">
-    {stepsHtml}
+    {rootLink}{stepsHtml}
    </div>;
 };
 
