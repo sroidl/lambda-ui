@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import React from "react";
 import BuildSummaryList from "./BuildSummaryList.es6";
 import Header from "./Header.es6";
+import BuildStepOutput from "./BuildStepOutput.es6";
 import * as backend from "./Backend.es6";
 
 
@@ -17,6 +18,7 @@ class LambdaUI {
                       <div>
                       <Header />
                       <BuildSummaryList/>
+                      <BuildStepOutput/>
                       </div>
                     </Provider>, rootElement);
   }

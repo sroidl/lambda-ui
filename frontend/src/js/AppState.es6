@@ -5,6 +5,7 @@ import {BuildSummariesReducer} from "./reducers/BuildSummaries.es6";
 import {changeBuildSummary} from "./Actions.es6";
 import {BuildDetailsReducer, ViewBuildStepReducer} from "./reducers/BuildDetails.es6";
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
+import {OutputReducer} from "./reducers/Output.es6";
 import R from "ramda";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   openedBuilds: {1 : true},
   buildDetails: {},
   config: {name : "PIPELINE_NAME"},
+  output: {showOutput: true, buildId: 1, stepId: 1}
 };
 
 const rootReducer = combineReducers({
@@ -19,7 +21,8 @@ const rootReducer = combineReducers({
   summaries:  BuildSummariesReducer,
   buildDetails: BuildDetailsReducer,
   config: PipelineConfigurationReducer,
-  viewBuildSteps: ViewBuildStepReducer
+  viewBuildSteps: ViewBuildStepReducer,
+  output: OutputReducer
 });
 
 
