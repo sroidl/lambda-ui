@@ -30,7 +30,7 @@ body
     background-color: $green
     color: $lightGrey
 
-  &.failed
+  &.failure
     background-color: $red
     color: $lightGrey
 
@@ -42,6 +42,15 @@ body
     background-color: $lightGrey
     color: black
 
+  &.killed
+    background-color: $lightGrey
+    color: black
+
+  &.waiting
+    background-color: $peru
+    color: black
+
+
 
 .buildSummary
   margin-bottom: 10px
@@ -52,6 +61,13 @@ body
 
     & .buildDetails
       border-color: $blue
+
+  &.waiting
+    background-color: $peru
+    color: $lightGrey
+
+    & .buildDetails
+      border-color: $peru
 
   &.failed
     background-color: $red
