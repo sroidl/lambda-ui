@@ -17,13 +17,14 @@ describe("Async actions", () => {
 
   it("should call backend on request output", () => {
     const dispatchMock = jest.fn();
+    const getStateMock = jest.fn();
     const buildId = 1, stepId = 2;
     const requestOutputMock = jest.fn();
     Backend.requestOutput.mockReturnValue(requestOutputMock);
 
-    Actions.requestOutput(buildId, stepId)(dispatchMock);
+    Actions.requestOutput(buildId, stepId)(dispatchMock, getStateMock);
 
-    expect(Backend.requestOutput).toBeCalledWith(dispatchMock);
+    expect(Backend.requestOutput).toBeCalledWith(dispatchMock, "");
     expect(requestOutputMock).toBeCalledWith(buildId, stepId);
   });
 });

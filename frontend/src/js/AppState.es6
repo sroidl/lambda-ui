@@ -10,7 +10,7 @@ const initialState = {
   summaries: {},
   openedBuilds: {},
   buildDetails: {},
-  config: {name : "PIPELINE_NAME"},
+  config: {name : "PIPELINE_NAME", baseUrl: "localhost:8081"},
   output: {showOutput: false}
 };
 

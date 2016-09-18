@@ -1,4 +1,5 @@
 import * as backend from "./Backend.es6";
+import * as R from "ramda";
 
 export const TOGGLE_BUILD_DETAILS = "toggleBuildDetails";
 export const ADD_SUMMARIES = "addBuildSummaries";
@@ -44,8 +45,9 @@ export const showBuildOutput = (buildId, stepId) => {
 };
 
 export const requestOutput = (buildId, stepId) => {
-  return (dispatch) => {
-    backend.requestOutput(dispatch)(buildId, stepId);
+  return (dispatch, getState) => {
+    const baseUrl = R.view(R.lensPath(["config", "baseUrl"]))(getState()) || "";
+    backend.requestOutput(dispatch, baseUrl)(buildId, stepId);
   };
 };
 
