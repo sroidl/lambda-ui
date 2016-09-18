@@ -8,10 +8,10 @@ import {OutputReducer} from "./reducers/Output.es6";
 
 const initialState = {
   summaries: {},
-  openedBuilds: {1 : true},
+  openedBuilds: {},
   buildDetails: {},
   config: {name : "PIPELINE_NAME"},
-  output: {showOutput: true, buildId: 1, stepId: 1}
+  output: {showOutput: false}
 };
 
 const rootReducer = combineReducers({
@@ -31,6 +31,3 @@ const middleware = compose(
 const appState = createStore(rootReducer, initialState,  middleware);
 
 export default appState;
-
-// TODO  use this in buildsummary
-//const sleep = time => new Promise(resolve => setTimeout(resolve, time));
