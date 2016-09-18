@@ -10,6 +10,7 @@
     [ring.middleware.json :as ring-json]
     [lambdacd.ui.api :as old-api]
     [lambdacd.ui.ui-page :as old-ui]
+    [lambdacd.steps.manualtrigger :as manualtrigger]
     [compojure.route :as route])
   (:gen-class)
   )
@@ -29,9 +30,12 @@
             (route/resources "/ui" {:root "public/target"})
             )))
 
+(defonce pipe (atom nil))
+
 (defn start-server [port]
   (git/init-ssh!)
   (let [pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir "tmp/foo"})]
+    (reset! pipe pipeline)
     (runners/start-one-run-after-another pipeline)
     (reset! server (http/run-server (pipeline-routes pipeline) {:port port}))))
 
@@ -39,3 +43,11 @@
   (let [port (try-parse-int portArg (fn [_] (when portArg (println "Port '" portArg "' is not a number. Using default port")) 8081))]
     (println "Started Server on port " port ". CTRL+C to abort.")
     (start-server port)))
+
+(defn get-trigger-id []
+  (((val (last (lambdacd.internal.pipeline-state/get-all (get-in @pipe [:context :pipeline-state-component])))) '(1 1)) :trigger-id)
+  )
+
+(defn trigger-new []
+  (let [ctx (:context @pipe)]
+    (manualtrigger/post-id ctx (get-trigger-id) {})))

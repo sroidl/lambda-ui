@@ -1,6 +1,9 @@
 (ns lambdaui.api-test
   (:require [clojure.test :refer :all]
-            [lambdaui.api :as api])
+            [lambdaui.api :as api]
+            [lambdacd.steps.control-flow :as ctrl-flow]
+            )
+
   (:import (org.joda.time DateTime DateTimeZone)))
 
 (deftest summaries-test
@@ -121,3 +124,71 @@
   (testing "should return nil if no time found"
     (let [single-empty-step {'(1) {}}]
       (is (= nil (api/extract-end-time single-empty-step))))))
+
+
+
+(defn do-stuff [] {})
+(defn do-other-stuff [] {})
+
+(def foo-pipeline
+  `(do-stuff))
+
+(def pipeline-with-substeps
+  `((ctrl-flow/in-parallel do-stuff do-stuff))
+  )
+
+(def pipeline-with-substeps-state
+  (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
+        joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))]
+    {'(1)   {:status                :running
+             :first-updated-at      joda-date-12
+             :most-recent-update-at joda-date-14
+             }
+     '(1 1) {:status                :running
+             :first-updated-at      joda-date-12
+             :most-recent-update-at joda-date-14
+             }
+     '(2 1) {:status                :running
+             :first-updated-at      joda-date-12
+             :most-recent-update-at joda-date-14
+             }
+     }))
+
+(def foo-pipeline-build-state
+  (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
+        joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))]
+    {'(1) {:status                :running
+           :first-updated-at      joda-date-12
+           :most-recent-update-at joda-date-14
+           }}))
+
+
+(deftest build-details-from-pipeline-test
+  (testing "that it returns build details"
+    (let [buildId 1]
+      (is (= {:buildId 1
+              :steps   [{
+                         :stepId    "1"
+                         :state     :running
+                         :name      "do-stuff"
+                         :startTime "2016-01-01T12:00:00.000Z"}]} (api/build-details-from-pipeline foo-pipeline foo-pipeline-build-state buildId)))))
+
+  (testing "that it returns build details"
+    (let [buildId 1]
+      (is (= {:buildId 1
+              :steps   [{
+                         :stepId    "1"
+                         :state     :running
+                         :name      "in-parallel"
+                         :startTime "2016-01-01T12:00:00.000Z"
+                         :steps     [{
+                                      :stepId    "1-1"
+                                      :state     :running
+                                      :name      "do-stuff"
+                                      :startTime "2016-01-01T12:00:00.000Z"}
+                                     {
+                                      :stepId    "2-1"
+                                      :state     :running
+                                      :name      "do-stuff"
+                                      :startTime "2016-01-01T12:00:00.000Z"}]}]} (api/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId)))))
+  )

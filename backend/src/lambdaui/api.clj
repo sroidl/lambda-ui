@@ -2,6 +2,7 @@
   (:require [org.httpkit.server :refer [with-channel on-close on-receive send!]]
             [compojure.core :refer [routes GET POST defroutes context]]
             [ring.util.response :refer [response header]]
+            [lambdacd.presentation.unified]
             [lambdacd.internal.pipeline-state :as state])
   (:import (org.joda.time DateTime)))
 
@@ -42,7 +43,7 @@
                                           :state       (extract-state build-steps)
                                           :startTime   (extract-start-time build-steps)
                                           :endTime     (extract-end-time build-steps)
-                                    })
+                                          })
         pipeline-state)})
 
 (defn state-from-pipeline [pipeline]
@@ -55,3 +56,23 @@
   (routes (GET "/summaries" [] (summaries-response pipeline))))
 
 
+(defn map-step [step]
+  (let [base {:stepId    (clojure.string/join "-" (:step-id step))
+              :name      (:name step)
+              :state     (:status (:result step))
+              :startTime (str (:first-updated-at (:result step)))
+              }
+        children (:children step)
+        ]
+    (if (and children (not (empty? children))) (assoc base :steps (map map-step (:children step))) base)
+    )
+  )
+
+
+(defn build-details-from-pipeline [pipeline-def pipeline-state buildId]
+
+  {:buildId buildId
+   :steps   (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
+                 (map map-step)
+                 )}
+  )
