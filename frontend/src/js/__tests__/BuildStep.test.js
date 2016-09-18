@@ -1,6 +1,6 @@
 /* globals jest describe expect it */
 jest.mock("../Actions.es6");
-import {viewBuildStep} from "../Actions.es6";
+import {viewBuildStep, showBuildOutput} from "../Actions.es6";
 import React from "react";
 import {shallow, mount} from "enzyme";
 import BuildStepRedux, {BuildStep} from "../BuildStep.es6";
@@ -60,5 +60,16 @@ describe("BuildStep wiring", () => {
     component.find(".goIntoStepLink").simulate("click");
 
     expect(dispatchMock).toBeCalledWith({type: "stepInto"});
+  });
+
+  it("should dispatch show output action on link click", () => {
+    const dispatchMock = jest.fn();
+    const storeMock = MockStore({}, dispatchMock);
+    showBuildOutput.mockReturnValue({type: "showOutput"});
+
+    const component = mount(<BuildStepRedux buildId={1} step={details()} store={storeMock}/>);
+    component.find(".showOutputLink").simulate("click");
+
+    expect(dispatchMock).toBeCalledWith({type: "showOutput"});
   });
 });
