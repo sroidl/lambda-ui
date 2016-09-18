@@ -1,7 +1,6 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
-import {flatTree} from "./FunctionalUtils.es6";
 import {requestOutput} from "./Actions.es6";
 
 export const BuildStepOutput = (props) => {
@@ -27,7 +26,7 @@ export const BuildStepOutput = (props) => {
     <span>Output of Build </span>
     <span id="outputHeader__buildId">{buildId}</span>
     <span> Step </span>
-    <span id="outputHeader__stepName">{stepName}</span>
+    <span id="outputHeader__stepName">{stepName} ({stepId})</span>
   </div>
   <div id="outputContent">{outputLines}</div>
   </div>;
@@ -47,15 +46,15 @@ const outputHiddenProps = {showOutput: false};
 const outputVisibleProps = (state) => {
   const buildId = state.output.buildId;
   const stepId = state.output.stepId;
-  const buildDetails = state.buildDetails[buildId] || {};
-  const step = flatTree(R.prop("steps"))(buildDetails)[stepId] || {};
+  const stepNameLens = R.lensPath(["buildDetails", buildId, stepId, "name"]);
+  const outputLens = R.lensPath(["output", "content", buildId, stepId]);
 
   return {
     buildId: buildId,
     stepId: stepId,
     showOutput: true,
-    stepName: step.name,
-    output: step.output
+    stepName: R.view(stepNameLens, state),
+    output: R.view(outputLens, state)
   };
 };
 

@@ -38,8 +38,8 @@ describe("Output redux", () => {
 
   it("should get output from buildstep", () => {
     const state = {
-      buildDetails: {1: {steps: [{stepId: "1", name: "myStep", output:["line1"]}]}},
-      output: {showOutput:true, buildId: 1, stepId: "1"}
+      buildDetails: {1: {"1": {name: "myStep"}}},
+      output: {showOutput:true, buildId: 1, stepId: "1", content: {1: {"1" : ["line1"]}}}
     };
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true};
 
@@ -48,8 +48,8 @@ describe("Output redux", () => {
 
   it("should get undefined from buildstep if no output exists", () => {
     const state = {
-      buildDetails: {1: {steps: [{stepId: "1", name: "myStep"}]}},
-      output: {showOutput:true, buildId: 1, stepId: "1"}
+      buildDetails: {1: {"1": {name: "myStep"}}},
+      output: {showOutput:true, buildId: 1, stepId: "1", content: {}}
     };
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true};
 
