@@ -41,6 +41,12 @@ describe("BuildStep rendering", () => {
 
     expect(component.find(".goIntoStepLink").length).toBe(1);
   });
+
+  it("should render output link", () => {
+    const component = shallow(<BuildStep buildId={1} step={details()}/>);
+
+    expect(component.find(".showOutputLink").length).toBe(1);
+  });
 });
 
 describe("BuildStep wiring", () => {

@@ -19,15 +19,21 @@ export const BuildStep = props => {
 
   const infos = <div><div className="stepName">{step.name}</div> <div className="stepDuration">{duration(step)}</div></div>;
 
-  if (!step.steps || step.steps.length === 0) {
+
+  const goIntoStepLink = <a className="goIntoStepLink" href="#" onClick={goIntoStepFn}>
+   Substeps</a>;
+  const showOutputLink = <a className="showOutputLink" href="#">Show Output</a>;
+
+  const hasSubsteps = step.steps && step.steps.length !== 0;
+
     return <span className={Utils.classes("buildStep", step.state)}>
             {infos}
+            {showOutputLink}
+            <br/>&nbsp;
+            {hasSubsteps ? goIntoStepLink : ""}
            </span>;
-  }
 
-  return <a className={Utils.classes("buildStep", "goIntoStepLink", step.state)} href="#" onClick={goIntoStepFn}>
-            {infos}
-           </a>;
+
 
 };
 
