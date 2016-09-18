@@ -9,6 +9,7 @@ export const ADD_CONFIGURATION = "addConfiguration";
 export const SHOW_BUILD_OUTPUT = "showOutput";
 export const REQUEST_OUTPUT = "requestOutput";
 export const ADD_BUILDSTEP_OUTPUT = "addBuildstepOutput";
+export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 
 export const toggleBuildDetails = (id) => {
   return {type: TOGGLE_BUILD_DETAILS, buildId: id};
@@ -46,4 +47,8 @@ export const requestOutput = (buildId, stepId) => {
   return (dispatch) => {
     backend.requestOutput(dispatch)(buildId, stepId);
   };
+};
+
+export const outputConnectionState = (connectionState) => {
+  return {type: OUTPUT_CONNECTION_STATE, state: connectionState};
 };

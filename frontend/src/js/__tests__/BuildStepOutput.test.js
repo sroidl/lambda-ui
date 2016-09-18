@@ -10,12 +10,12 @@ describe("Output presentation", () => {
   });
 
   it("should display output of step if not hidden", () => {
-    const input = {showOutput: true, buildId: 1, stepName: "meinStep", output: "hierTestOutput"};
+    const input = {showOutput: true, buildId: 1, stepName: "meinStep", stepId: "stepId", output: "hierTestOutput"};
 
     const component = shallow(subject.BuildStepOutput(input));
 
     expect(component.find("#outputHeader__buildId").text()).toBe("1");
-    expect(component.find("#outputHeader__stepName").text()).toBe("meinStep");
+    expect(component.find("#outputHeader__stepName").text()).toBe("meinStep (stepId)");
     expect(component.find("#outputContent").text()).toBe("hierTestOutput");
 
   });

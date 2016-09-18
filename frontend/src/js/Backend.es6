@@ -1,3 +1,4 @@
+/* eslint-disable */
 import "whatwg-fetch";
 import {addBuildSummary, addBuildDetails, addBuildstepOutput} from "./Actions.es6";
 
@@ -84,25 +85,29 @@ export const requestBuildDetails = (dispatch, buildId) => {
     ]}
   };
 
-  const endpoint = "/api/details/" + buildId;
+  const endpoint = "http://localhost:8081/lambdaui/api/builds/" + buildId;
   fetch(endpoint)
     .then(response => response.json())
-    .then(body => dispatch(addBuildDetails(body.details)))
+    .then(body => dispatch(addBuildDetails(body)))
     .catch(() => {
       dispatch(addBuildDetails(dummyBuildDetails[buildId]));
     });
 };
 
 export const requestOutput = dispatch => (buildId, stepId) => {
-  /* eslint-disable */
-  const endpoint = "/api/output/" + buildId + "/" + stepId;
-  fetch(endpoint)
-    .then(response => response.json())
-    .then(body => dispatch(addBuildstepOutput(buildId, stepId, body.output)))
-    .catch(() => {
-      console.log("Dispatching error message");
-      dispatch(addBuildstepOutput(buildId,stepId, ["Connection failed while requesting output."]));
-    });
+
+  const endpoint = "ws://localhost:8081/lambdaui/api/builds/" + buildId + "/" + stepId;
+
+  const ws = new WebSocket(endpoint);
+  ws.onopen = () => dispatch({type: "outputConnectionState", state: "open"});
+  ws.onclose = () => dispatch({type: "outputConnectionState", state: "closed"});
+  ws.onerror = () => dispatch({type: "outputConnectionState", state: "error"});
+  ws.onmessage = body => {
+    const data = JSON.parse(body.data)
+    if(data.stepResult !== null && data.stepResult.out) {
+      dispatch(addBuildstepOutput(buildId, stepId, data.stepResult.out))
+    }
+  };
 };
 
 export default {receiveBuildSummaries, requestBuildDetails, requestOutput};
