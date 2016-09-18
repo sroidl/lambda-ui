@@ -113,7 +113,7 @@
         payloads     (event-bus/only-payload subscription)
         filtered     (only-matching-step payloads build-id step-id)]
     (on-close ws-ch (fn [_] (event-bus/unsubscribe ctx :step-result-updated subscription)))
-    (println "initializing" build-id step-id)
+    (println "Output-Websocket: Initializing for " build-id step-id)
     (send! ws-ch (lambdacd.util/to-json {:stepResult (-> (state-from-pipeline pipeline)
                                                    (get build-id)
                                                    (get (to-step-id step-id)))
@@ -122,7 +122,6 @@
     (async/go-loop []
       (if-let [event (async/<! filtered)]
         (do
-          (println "oh hai" event)
           (send! ws-ch (json/write-str event))
           (recur))))))
 

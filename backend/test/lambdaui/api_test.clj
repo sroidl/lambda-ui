@@ -3,6 +3,7 @@
             [lambdaui.api :as api]
             [lambdacd.steps.control-flow :as ctrl-flow]
             [lambdacd.event-bus :as event-bus]
+            [lambdacd.internal.pipeline-state :as state]
             [org.httpkit.server :as httpkit-server]
             [shrubbery.core :refer :all]
             [clojure.core.async :as async]
@@ -206,11 +207,13 @@
           sent-channel  (async/chan 1)
           ws-ch         (reify httpkit-server/Channel
                           (on-close [& _])
-                          (send! [ws-ch data] (println "sending") (async/>!! sent-channel data)))]
+                          (send! [ws-ch data] (async/>!! sent-channel data)))]
       (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
-                    event-bus/only-payload (fn [subscription] event-channel)]
+                    event-bus/only-payload (fn [subscription] event-channel)
+                    state/get-all (fn [_] {})]
         (api/build-step-events-to-ws nil ws-ch 1 "2-1")
         (async/>!! event-channel {:build-number 1 :step-id [2 1] :step-result {:foo :bar}})
+        (async/<!! sent-channel) ;ignore first msg. not part of test
         (is (= (json/write-str {:stepId "2-1" :buildId 1 :stepResult {:foo :bar}}) (async/<!! sent-channel)))))))
 
 (deftest only-matching-step-test
