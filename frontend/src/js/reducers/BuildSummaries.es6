@@ -19,7 +19,8 @@ const isValidBuild = build => {
   const stateIsValid = build.state === "running"
       || build.state === "failed"
       || build.state === "success"
-      || build.state === "pending";
+      || build.state === "pending"
+      || build.state === "waiting";
 
   const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
   if (! keepBuild) {
