@@ -7,20 +7,16 @@
                  [lambdacd "0.9.0"]
                  [compojure "1.5.0"]
                  [http-kit "2.1.18"]
-                 [org.clojure/data.json "0.2.6"]
-                 ]
-
+                 [org.clojure/data.json "0.2.6"]]
   :test-paths ["test"]
   :repositories [["snapshots" { :url "https://clojars.org/repo"
                                 :username "sroidl"
                                 :password [:gpg :env]}]
                  ["releases" { :url "https://clojars.org/repo"
                                                :username "sroidl"
-                                               :password [:gpg :env]}]
-                 ]
+                                               :password [:gpg :env]}]]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
+                                  [com.gearswithingears/shrubbery "0.4.1"]
                                   [ring-server "0.4.0"]]
-
                    :aot          [lambdaui.core]
-                   :main         lambdaui.core
-                   }})
+                   :main         lambdaui.core}})
