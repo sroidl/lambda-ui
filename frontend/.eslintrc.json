@@ -29,7 +29,6 @@
 				 "no-useless-rename": "warn",
 				 "no-confusing-arrow": "warn",
 				 "arrow-spacing": "warn",
-				 "camelcase": "warn",
 				 "no-useless-escape": "warn",
 				 "no-else-return": "warn",
 				 "no-alert": "warn",
