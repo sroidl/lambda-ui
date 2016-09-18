@@ -44,12 +44,12 @@ export const BuildStepOutput = (props) => {
 };
 
 BuildStepOutput.propTypes = {
-  buildId: PropTypes.number,
+  buildId: PropTypes.any,
   stepName: PropTypes.string,
   output: PropTypes.array,
   showOutput: PropTypes.bool,
   requestFn: PropTypes.func,
-  stepId: PropTypes.string,
+  stepId: PropTypes.any,
 };
 
 const outputHiddenProps = {showOutput: false};

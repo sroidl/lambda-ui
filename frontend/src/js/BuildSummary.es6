@@ -34,15 +34,15 @@ export const renderSummary = (properties) => {
     const timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
-    const duration = Moment.duration(Moment(endTime).diff(Moment(startTime)));
-
-
+    const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).seconds();
+    const durationHtml = <div className="three columns buildDuration">
+    <span>Duration:</span><FormattedDuration seconds={duration}/></div>;
 
     return <div className={classesForState}>
         <div className="one column buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
         <div className="three columns buildNumber">Build #{buildNumber}</div>
         <div className="three columns buildStartTime">Started: {startMoment}</div>
-        <div className="three columns buildDuration"><span>Duration:</span><FormattedDuration seconds={duration}/></div>
+        {durationHtml}
         <a href="#" className="one column buildDetailsToggle" onClick={toggleBuildDetails}><i className="fa fa-caret-down" aria-hidden="true"></i></a>
         <BuildDetails buildId={buildId}/>
       </div>;
@@ -68,9 +68,9 @@ BuildSummary.propTypes = {
   buildId: PropTypes.number.isRequired,
   buildNumber: PropTypes.number.isRequired,
   state: PropTypes.string.isRequired,
-  startTime: PropTypes.object.isRequired,
+  startTime: PropTypes.string.isRequired,
   toggleBuildDetails: PropTypes.func.isRequired,
-  endTime: PropTypes.object
+  endTime: PropTypes.string
 };
 
 export const mapStateToProps = (_, props) => {
