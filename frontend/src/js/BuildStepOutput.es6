@@ -5,6 +5,7 @@ import {requestOutput} from "./Actions.es6";
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
+
 const ConnectionState_stateMapping = state => {
     return {
       connection: R.view(R.lensPath(["output", "connectionState"]))(state)

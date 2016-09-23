@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {PipelineConfigurationReducer as subject} from '../PipelineConfiguration.es6';
 
 describe("PipelineConfigurationReducer", () =>{

@@ -1,4 +1,4 @@
-import * as backend from "./Backend.es6";
+import {outputConnection} from "./Backend.es6";
 import * as R from "ramda";
 
 export const TOGGLE_BUILD_DETAILS = "toggleBuildDetails";
@@ -12,44 +12,44 @@ export const ADD_BUILDSTEP_OUTPUT = "addBuildstepOutput";
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 
 export const toggleBuildDetails = (id) => {
-  return {type: TOGGLE_BUILD_DETAILS, buildId: id};
+    return {type: TOGGLE_BUILD_DETAILS, buildId: id};
 };
 
 export const addBuildSummary = (summary) => {
-  return {type: ADD_SUMMARIES, summaries: summary};
+    return {type: ADD_SUMMARIES, summaries: summary};
 };
 
 export const changeBuildSummary = (buildId, newAttributes) => {
-  return {type: CHANGE_SUMMARY, buildId: buildId, newAttributes: newAttributes};
+    return {type: CHANGE_SUMMARY, buildId: buildId, newAttributes: newAttributes};
 };
 
 export const addBuildDetails = buildDetails => {
-  return {type: ADD_BUILD_DETAILS, buildId: buildDetails.buildId, buildDetails: buildDetails};
+    return {type: ADD_BUILD_DETAILS, buildId: buildDetails.buildId, buildDetails: buildDetails};
 };
 
 export const viewBuildStep = (buildId, stepId) => {
-  return {type: VIEW_BUILD_STEP, buildId: buildId, stepId: stepId};
+    return {type: VIEW_BUILD_STEP, buildId: buildId, stepId: stepId};
 };
 
 export const addConfiguration = config => {
-  return {type: ADD_CONFIGURATION, config: config};
+    return {type: ADD_CONFIGURATION, config: config};
 };
 
 export const addBuildstepOutput = (buildId, stepId, output) => {
-  return {type: ADD_BUILDSTEP_OUTPUT, buildId: buildId, stepId: stepId, output: output};
+    return {type: ADD_BUILDSTEP_OUTPUT, buildId: buildId, stepId: stepId, output: output};
 };
 
 export const showBuildOutput = (buildId, stepId) => {
-  return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
+    return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
 };
 
 export const requestOutput = (buildId, stepId) => {
-  return (dispatch, getState) => {
-    const baseUrl = R.view(R.lensPath(["config", "baseUrl"]))(getState()) || "";
-    backend.requestOutput(dispatch, baseUrl)(buildId, stepId);
-  };
+    return (dispatch, getState) => {
+        const baseUrl = R.view(R.lensPath(["config", "baseUrl"]))(getState()) || "";
+        outputConnection.requestOutput(dispatch, baseUrl)(buildId, stepId);
+    };
 };
 
 export const outputConnectionState = (connectionState) => {
-  return {type: OUTPUT_CONNECTION_STATE, state: connectionState};
+    return {type: OUTPUT_CONNECTION_STATE, state: connectionState};
 };
