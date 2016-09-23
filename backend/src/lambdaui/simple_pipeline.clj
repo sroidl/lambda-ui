@@ -5,7 +5,7 @@
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
             [lambdacd-git.core :as git]))
 
-(def repo "git@github.com:flosell/testrepo")
+(def repo "https://github.com/flosell/testrepo.git")
 
 (defn wait-for-git [args ctx] `(git/wait-for-git ctx repo
                                                  :ref "refs/heads/master"
