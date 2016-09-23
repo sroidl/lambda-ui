@@ -1,5 +1,5 @@
 (ns lambdaui.api
-  (:require [org.httpkit.server :refer [with-channel on-close on-receive send!]]
+  (:require [org.httpkit.server :refer [with-channel on-close on-receive send! close]]
             [compojure.core :refer [routes GET POST defroutes context]]
             [ring.util.response :refer [response header]]
             [lambdacd.presentation.unified]
@@ -57,7 +57,7 @@
   (when timestamp
     (str timestamp)))
 
-(defn- is-finished [status]
+(defn- finished? [status]
   (contains? #{:success :failure :killed} status))
 
 (defn- step-id-str [step-id]
@@ -69,7 +69,7 @@
                   :name      (:name step)
                   :state     (or status :pending)
                   :startTime (to-iso-string (:first-updated-at (:result step)))
-                  :endTime   (when (is-finished status) (to-iso-string (:most-recent-update-at (:result step))))}
+                  :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
         children (:children step)]
     (if (and children
              (not (empty? children)))
@@ -107,23 +107,34 @@
   (println x)
   x)
 
+(defn finished-step? [pipeline build-id step-id]
+   (finished? (:status
+                       (-> (state-from-pipeline pipeline)
+                           (get build-id)
+                           (get (to-step-id step-id))
+                           )))
+  )
+
 (defn build-step-events-to-ws [pipeline ws-ch build-id step-id]
   (let [ctx        (:context pipeline)
         subscription (event-bus/subscribe ctx :step-result-updated)
         payloads     (event-bus/only-payload subscription)
         filtered     (only-matching-step payloads build-id step-id)]
-    (on-close ws-ch (fn [_] (event-bus/unsubscribe ctx :step-result-updated subscription)))
+    (on-close ws-ch (fn [_] (do (println "Closing Websocket for " build-id " " step-id) (event-bus/unsubscribe ctx :step-result-updated subscription))))
     (println "Output-Websocket: Initializing for " build-id step-id)
     (send! ws-ch (lambdacd.util/to-json {:stepResult (-> (state-from-pipeline pipeline)
                                                    (get build-id)
                                                    (get (to-step-id step-id)))
                                          :buildId build-id
                                          :stepId step-id}))
-    (async/go-loop []
-      (if-let [event (async/<! filtered)]
-        (do
-          (send! ws-ch (json/write-str event))
-          (recur))))))
+    (if (not (finished-step? pipeline build-id step-id))
+      (async/go-loop []
+        (if-let [event (async/<! filtered)]
+          (do
+            (send! ws-ch (json/write-str event))
+            (recur))))
+      (close ws-ch)
+      )))
 
 (defn- subscribe-to-step-result-update [pipeline req build-id step-id]
   (with-channel req ws-ch
