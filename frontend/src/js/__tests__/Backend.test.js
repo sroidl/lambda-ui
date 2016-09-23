@@ -26,5 +26,9 @@ describe("New Backend: Configuration", () => {
 
         expect(subject.baseUrl).toBe("baseUrl");
     });
+
+    it("should request output", () => {
+
+    });
 });
 
