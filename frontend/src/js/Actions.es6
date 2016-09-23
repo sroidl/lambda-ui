@@ -8,7 +8,6 @@ export const ADD_BUILD_DETAILS = "addBuildDetails";
 export const VIEW_BUILD_STEP = "viewBuildStep";
 export const ADD_CONFIGURATION = "addConfiguration";
 export const SHOW_BUILD_OUTPUT = "showOutput";
-export const REQUEST_OUTPUT = "requestOutput";
 export const ADD_BUILDSTEP_OUTPUT = "addBuildstepOutput";
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 
