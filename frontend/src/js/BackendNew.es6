@@ -20,7 +20,8 @@ export class Backend {
     requestOutput(dispatch, buildId, stepId) {
       this._closeConnection(this.outputConnection);
       this.outputConnection = webSocket(this.outputUrl(buildId, stepId));
-
+      const connection = this.outputConnection;
+      
     };
 
 }

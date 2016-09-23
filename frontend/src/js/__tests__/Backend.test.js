@@ -19,7 +19,7 @@ describe("Backend: output connection", () => {
 });
 
 
-describe("New Backend: Configuration", () => {
+describe("New Backend", () => {
     let subject;
     let dispatchMock;
     let websocketMock;
@@ -35,9 +35,24 @@ describe("New Backend: Configuration", () => {
         expect(subject.baseUrl).toBe("baseUrl");
     });
 
+    describe("OutputConnection", () => {
+    const OPEN_STATE = 1;
+
     it("should request output", () => {
         subject.requestOutput(dispatchMock, 1, 2);
 
         expect(webSocket).toBeCalledWith("ws://baseUrl/builds/1/2");
     });
+
+    it("should close old websocket if new is requested", () => {
+      websocketMock.readystate = OPEN_STATE;
+      subject.outputConnection = websocketMock;
+
+      subject.requestOutput(dispatchMock, 1, 2);
+
+      expect(websocketMock.close).toBeCalled();
+    });
+
+  });
+
 });
