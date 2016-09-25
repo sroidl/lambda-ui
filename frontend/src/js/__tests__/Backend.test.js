@@ -36,54 +36,54 @@ describe("New Backend", () => {
     });
 
     describe("OutputConnection", () => {
-    const OPEN_STATE = 1;
+      const OPEN_STATE = 1;
 
-    it("should request output", () => {
+      it("should request output", () => {
+          subject.requestOutput(dispatchMock, 1, 2);
+
+          expect(webSocket).toBeCalledWith("ws://baseUrl/builds/1/2");
+      });
+
+      it("should close old websocket if new is requested", () => {
+        websocketMock.readystate = OPEN_STATE;
+        subject.outputConnection = websocketMock;
+
         subject.requestOutput(dispatchMock, 1, 2);
 
-        expect(webSocket).toBeCalledWith("ws://baseUrl/builds/1/2");
-    });
+        expect(websocketMock.close).toBeCalled();
+      });
 
-    it("should close old websocket if new is requested", () => {
-      websocketMock.readystate = OPEN_STATE;
-      subject.outputConnection = websocketMock;
+      it("should dispatch new messages to the store", () => {
+        subject.requestOutput(dispatchMock, 1, 2);
 
-      subject.requestOutput(dispatchMock, 1, 2);
+        websocketMock.onmessage("{\"first\": \"key\"}");
 
-      expect(websocketMock.close).toBeCalled();
-    });
+        expect(dispatchMock).toBeCalledWith({type: "addBuildstepOutput", buildId: 1, stepId: 2, output: {first: "key"}});
+      });
 
-    it("should dispatch new messages to the store", () => {
-      subject.requestOutput(dispatchMock, 1, 2);
+      it("should dispatch connection state on close", () => {
+        subject.requestOutput(dispatchMock, 1, 2);
 
-      websocketMock.onmessage("{\"first\": \"key\"}");
+        websocketMock.onclose();
 
-      expect(dispatchMock).toBeCalledWith({type: "addBuildstepOutput", buildId: 1, stepId: 2, output: {first: "key"}});
-    });
+        expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "closed"});
+      });
 
-    it("should dispatch connection state on close", () => {
-      subject.requestOutput(dispatchMock, 1, 2);
+      it("should dispatch connection state on open", () => {
+        subject.requestOutput(dispatchMock, 1, 2);
 
-      websocketMock.onclose();
+        websocketMock.onopen();
 
-      expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "closed"});
-    });
+        expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "open"});
+      });
 
-    it("should dispatch connection state on open", () => {
-      subject.requestOutput(dispatchMock, 1, 2);
+      it("should dispatch connection state on error", () => {
+        subject.requestOutput(dispatchMock, 1, 2);
 
-      websocketMock.onopen();
+        websocketMock.onerror();
 
-      expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "open"});
-    });
-
-    it("should dispatch connection state on error", () => {
-      subject.requestOutput(dispatchMock, 1, 2);
-
-      websocketMock.onerror();
-
-      expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "error"});
-    });
+        expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "error"});
+      });
 
   });
 
