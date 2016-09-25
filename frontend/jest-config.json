@@ -5,7 +5,7 @@
 
   "moduleNameMapper": {
       "^.+\\.(css|less|sass)$": "<rootDir>/src/js/__tests__/testsupport/styleMock.es6",
-      "^.+\\.(gif|ttf|eot|svg)$": "<rootDir>/src/js/__tests__/testsupport/fileMock.es6"
+      "^.+\\.(gif|ttf|eot|svg|png)$": "<rootDir>/src/js/__tests__/testsupport/fileMock.es6"
     }
 
 }

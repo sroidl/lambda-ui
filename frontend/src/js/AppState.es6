@@ -28,6 +28,4 @@ const middleware = compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
   );
 
-const appState = createStore(rootReducer, initialState,  middleware);
-
-export default appState;
+export const createLambdaUiStore = () => createStore(rootReducer, initialState,  middleware);
