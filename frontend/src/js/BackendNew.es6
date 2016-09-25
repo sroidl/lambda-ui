@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* globals Map */
 import * as R from "ramda";
 import {webSocket} from "./WebSocketFactory.es6";
 import {addBuildstepOutput, outputConnectionState, addBuildDetails} from "./Actions.es6";
@@ -30,16 +30,17 @@ export class Backend {
       connection.onclose = () => dispatch(outputConnectionState("closed"));
       connection.onopen = () => dispatch(outputConnectionState("open"));
       connection.onerror = () => dispatch(outputConnectionState("error"));
-    };
+    }
 
     requestDetails(dispatch, buildId) {
-      this.detailsConnection = webSocket(this.detailsUrl(buildId));
-      const connection = this.detailsConnection;
+      const connection = webSocket(this.detailsUrl(buildId));
+      this.detailsConnections.set(buildId, connection);
+
       connection.onmessage = body => dispatch(addBuildDetails(buildId, JSON.parse(body)));
     }
 
-    closeDetailsConnection() {
-      this._closeConnection(this.detailsConnection);
+    closeDetailsConnection(buildId) {
+      this._closeConnection(this.detailsConnections.get(buildId));
     }
 
 }

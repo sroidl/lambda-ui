@@ -110,6 +110,37 @@ describe("New Backend", () => {
 
         expect(dispatchMock).toBeCalledWith({type: "addBuildDetails", buildId: 1, buildDetails: {incoming: "message"}});
       });
+
+      it("should handle multiple connections", () => {
+        const websocket1 = {};
+        const websocket2 = {};
+        webSocket.mockReturnValue(websocket1);
+        subject.requestDetails(dispatchMock, 1);
+        webSocket.mockReturnValue(websocket2);
+        subject.requestDetails(dispatchMock, 2);
+
+        websocket1.onmessage(JSON.stringify(["hello"]));
+        expect(dispatchMock).toBeCalledWith({type: "addBuildDetails", buildId: 1, buildDetails: ["hello"]});
+
+        websocket2.onmessage(JSON.stringify(["world"]));
+        expect(dispatchMock).toBeCalledWith({type: "addBuildDetails", buildId: 2, buildDetails: ["world"]});
+      });
+
+      it("should close multiple connections", () => {
+        const websocket1 = {close: jest.fn()};
+        const websocket2 = {close: jest.fn()};
+        webSocket.mockReturnValue(websocket1);
+        subject.requestDetails(dispatchMock, 1);
+        webSocket.mockReturnValue(websocket2);
+        subject.requestDetails(dispatchMock, 2);
+
+        subject.closeDetailsConnection(1);
+        subject.closeDetailsConnection(2);
+
+        expect(websocket1.close).toBeCalled();
+        expect(websocket2.close).toBeCalled();
+      });
+
     });
   });
 
