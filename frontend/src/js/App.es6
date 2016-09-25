@@ -5,8 +5,8 @@ import React from "react";
 import BuildSummaryList from "./BuildSummaryList.es6";
 import Header from "./Header.es6";
 import BuildStepOutput from "./BuildStepOutput.es6";
-// import * as backend from "./Backend.es6";
 import {Backend} from "./BackendNew.es6";
+
 
 
 let backend;
@@ -26,7 +26,7 @@ export class LambdaUI {
     appStore = createStore();
     backend = new Backend("localhost:8081");
 
-    // backend.receiveBuildSummaries(appState.dispatch);
+    backend.requestSummaries(appStore.dispatch);
 
     const rootElement = document.getElementById("entryPoint");
     ReactDOM.render(<Provider store={this.appStore()}>

@@ -3,23 +3,7 @@ jest.mock("../WebSocketFactory.es6");
 import {Backend} from "../BackendNew.es6";
 import {webSocket} from "../WebSocketFactory.es6";
 
-const _it = () => {};
-
-describe("Backend: output connection", () => {
-    _it("should close websocket if output view changes", () => {
-        // const webSocketMock = {readystate: 3, close: jest.fn()};
-        // webSocket.mockReturnValue(webSocketMock);
-        // const requestOutput = subject.outputConnection.requestOutput(jest.fn(), "url");
-        //
-        // requestOutput(1, 1);
-        // requestOutput(1, 2);
-        //
-        // expect(webSocketMock.close).toBeCalled();
-    });
-});
-
-
-describe("New Backend", () => {
+describe("Backend", () => {
     let subject;
     let dispatchMock;
     let websocketMock;
@@ -27,7 +11,7 @@ describe("New Backend", () => {
     const OPEN_STATE = 1;
 
     beforeEach(() => {
-      subject = new Backend({baseUrl: "baseUrl"});
+      subject = new Backend("baseUrl");
       dispatchMock = jest.fn();
       websocketMock = {close : jest.fn(), readystate: OPEN_STATE};
       webSocket.mockClear();
@@ -146,6 +130,31 @@ describe("New Backend", () => {
         subject.requestDetails(dispatchMock, 1);
 
         expect(webSocket.mock.calls.length).toBe(1);
+      });
+    });
+
+    describe("build summaries connection", () => {
+      it("should request summaries endpoint", () => {
+        subject.requestSummaries(dispatchMock);
+
+        expect(webSocket).toBeCalledWith("ws://baseUrl/lambdaui/api/builds");
+      });
+
+      it("should dispatch incoming message to the store", () => {
+        const jsonBody = JSON.stringify({summaries: {buildId: 1, status: "finished"}});
+        subject.requestSummaries(dispatchMock);
+
+        websocketMock.onmessage({data: jsonBody});
+
+        expect(dispatchMock).toBeCalledWith({type: "addBuildSummaries", summaries: {buildId: 1, status: "finished"}});
+      });
+
+      it("should dispatch connection state of summaries connection", () => {
+        subject.requestSummaries(dispatchMock);
+
+        websocketMock.onclose();
+
+        expect(dispatchMock).toBeCalledWith({type: "summariesConnectionState", state: "closed"});
       });
     });
   });

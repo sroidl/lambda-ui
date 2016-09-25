@@ -50,6 +50,7 @@
   )
 
 (defn summaries-response [pipeline]
+  (println "Incoming request for summaries")
   (cross-origin-response (summaries (state-from-pipeline pipeline))))
 
 
@@ -140,8 +141,20 @@
   (with-channel req ws-ch
                 (build-step-events-to-ws pipeline ws-ch (Integer/parseInt build-id) step-id)))
 
+(defonce summaries-websocket (atom nil))
+
+(defn- subscribe-to-summary-update [request pipeline]
+  (with-channel request websocket-channel
+                (println "New Connection. Websocket " (:websocket? request))
+                (reset! summaries-websocket websocket-channel)
+                (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
+                ))
+
+(defn- subscribe-to-details-update [request pipeline buildId]
+  )
+
 (defn api-routes [pipeline]
   (routes
-    (GET "/summaries" [] (summaries-response pipeline))
+    (GET "/builds" [:as request] (subscribe-to-summary-update request pipeline))
     (GET "/builds/:build-id" [build-id] (build-details-response pipeline build-id))
     (GET "/builds/:build-id/:step-id" [build-id step-id :as req] (subscribe-to-step-result-update pipeline req build-id step-id))))

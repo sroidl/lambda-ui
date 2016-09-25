@@ -1,20 +1,23 @@
 /* globals Map */
 import * as R from "ramda";
 import {webSocket} from "./WebSocketFactory.es6";
-import {addBuildstepOutput, outputConnectionState, addBuildDetails} from "./Actions.es6";
+import {addBuildstepOutput, outputConnectionState, addBuildDetails, addBuildSummary} from "./Actions.es6";
+import {summariesConnectionState} from "./actions/BackendActions.es6";
 
 const CLOSED = 3;
 const OPEN = 1;
 
 const outputUrl = (baseUrl, buildId, stepId) => "ws://" + baseUrl + "/lambdaui/api/builds/" + buildId + "/" + stepId;
 const detailsUrl = (baseUrl, buildId) => "ws://" +baseUrl + "/lambdaui/api/builds/" + buildId;
+const summariesUrl = baseUrl => "ws://" + baseUrl + "/lambdaui/api/builds";
 
 export class Backend {
-    constructor({baseUrl}) {
+    constructor(baseUrl) {
         this.baseUrl = baseUrl;
         this.outputUrl = R.curry(outputUrl)(baseUrl);
         this.detailsUrl = R.curry(detailsUrl)(baseUrl);
         this.detailsConnections = new Map();
+        this.summariesUrl = summariesUrl(baseUrl);
     }
 
     _closeConnection(websocket) {
@@ -52,6 +55,22 @@ export class Backend {
 
     closeDetailsConnection(buildId) {
       this._closeConnection(this.detailsConnections.get(buildId));
+    }
+
+    /* eslint-disable */
+    requestSummaries(dispatch) {
+      const connection = webSocket(this.summariesUrl);
+      connection.onclose = () => {
+         console.log("Summaries connection closed!");
+         dispatch(summariesConnectionState("closed"));
+       }
+
+      connection.onmessage = body =>
+      {
+         const summaries = JSON.parse(body.data).summaries;
+         dispatch(addBuildSummary(summaries));
+      };
+
     }
 
 }
