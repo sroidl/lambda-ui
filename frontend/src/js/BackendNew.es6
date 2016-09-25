@@ -3,6 +3,8 @@ import * as R from "ramda";
 import {webSocket} from "./WebSocketFactory.es6";
 import {addBuildstepOutput, outputConnectionState, addBuildDetails} from "./Actions.es6";
 
+const CLOSED = 3;
+const OPEN = 1;
 
 const outputUrl = (baseUrl, buildId, stepId) => "ws://" + baseUrl + "/lambdaui/api/builds/" + buildId + "/" + stepId;
 const detailsUrl = (baseUrl, buildId) => "ws://" +baseUrl + "/lambdaui/api/builds/" + buildId;
@@ -16,10 +18,15 @@ export class Backend {
     }
 
     _closeConnection(websocket) {
-      const CLOSED = 3;
+
       if (websocket && websocket.readystate !== CLOSED) {
         websocket.close();
       }
+    }
+
+    _hasOpenDetailsConnection(buildId) {
+      const connection = this.detailsConnections.get(buildId);
+      return connection && connection.readystate === OPEN;
     }
 
     requestOutput(dispatch, buildId, stepId) {
@@ -33,6 +40,10 @@ export class Backend {
     }
 
     requestDetails(dispatch, buildId) {
+      if(this._hasOpenDetailsConnection(buildId)) {
+        return;
+      }
+
       const connection = webSocket(this.detailsUrl(buildId));
       this.detailsConnections.set(buildId, connection);
 

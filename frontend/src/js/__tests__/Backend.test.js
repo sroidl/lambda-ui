@@ -29,7 +29,7 @@ describe("New Backend", () => {
     beforeEach(() => {
       subject = new Backend({baseUrl: "baseUrl"});
       dispatchMock = jest.fn();
-      websocketMock = {close : jest.fn()};
+      websocketMock = {close : jest.fn(), readystate: OPEN_STATE};
       webSocket.mockClear();
       webSocket.mockReturnValue(websocketMock);
     });
@@ -141,6 +141,12 @@ describe("New Backend", () => {
         expect(websocket2.close).toBeCalled();
       });
 
+      it("should not open multiple connections for the same buildId", () => {
+        subject.requestDetails(dispatchMock, 1);
+        subject.requestDetails(dispatchMock, 1);
+
+        expect(webSocket.mock.calls.length).toBe(1);
+      });
     });
   });
 
