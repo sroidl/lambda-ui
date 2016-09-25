@@ -28,7 +28,7 @@ describe("New Backend", () => {
       subject = new Backend({baseUrl: "baseUrl"});
       dispatchMock = jest.fn();
       websocketMock = {close : jest.fn()};
-      webSocket.mockReturnValue = websocketMock;
+      webSocket.mockReturnValue(websocketMock);
     });
 
     it("should extract baseUrl", () => {
@@ -53,6 +53,13 @@ describe("New Backend", () => {
       expect(websocketMock.close).toBeCalled();
     });
 
+    it("should dispatch new messages to the store", () => {
+      subject.requestOutput(dispatchMock, 1, 2);
+
+      websocketMock.onmessage("{\"first\": \"key\"}");
+
+      expect(dispatchMock).toBeCalledWith({type: "addBuildstepOutput", buildId: 1, stepId: 2, output: {first: "key"}});
+    });
   });
 
 });
