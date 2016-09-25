@@ -23,5 +23,11 @@ describe("OutputConnection", () => {
 
         expect(backendMock.requestOutput).toBeCalledWith(dispatchMock, 1, 2);
       });
+
+      it("should call backend requestDetails" , () => {
+        subject.requestDetails(1)(dispatchMock);
+
+        expect(backendMock.requestDetails).toBeCalledWith(dispatchMock, 1);
+      });
   });
 });

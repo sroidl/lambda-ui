@@ -8,6 +8,12 @@ export const requestOutput = (buildId, stepId) =>
     return backend.requestOutput(dispatch, buildId, stepId);
    };
 
+export const requestDetails = buildId =>
+  dispatch => {
+    const backend = LambdaUI.backend();
+    return backend.requestDetails(dispatch, buildId);
+  };
+
 export const outputConnectionInfo = (state) => {
   return {type: OUTPUT_CONNECTION_STATE, state: state};
 };
