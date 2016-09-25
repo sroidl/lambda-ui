@@ -24,10 +24,13 @@ describe("New Backend", () => {
     let dispatchMock;
     let websocketMock;
 
+    const OPEN_STATE = 1;
+
     beforeEach(() => {
       subject = new Backend({baseUrl: "baseUrl"});
       dispatchMock = jest.fn();
       websocketMock = {close : jest.fn()};
+      webSocket.mockClear();
       webSocket.mockReturnValue(websocketMock);
     });
 
@@ -35,13 +38,11 @@ describe("New Backend", () => {
         expect(subject.baseUrl).toBe("baseUrl");
     });
 
-    describe("OutputConnection", () => {
-      const OPEN_STATE = 1;
-
+    describe("outputConnection", () => {
       it("should request output", () => {
           subject.requestOutput(dispatchMock, 1, 2);
 
-          expect(webSocket).toBeCalledWith("ws://baseUrl/builds/1/2");
+          expect(webSocket).toBeCalledWith("ws://baseUrl/lambdaui/api/builds/1/2");
       });
 
       it("should close old websocket if new is requested", () => {
@@ -85,6 +86,31 @@ describe("New Backend", () => {
         expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "error"});
       });
 
+    describe("buildDetails connection", () => {
+      it("should request build details from backend", () => {
+        subject.requestDetails(dispatchMock, 42);
+
+        expect(webSocket).toBeCalledWith("ws://baseUrl/lambdaui/api/builds/42");
+      });
+
+      it("should close the build details conneciton if requested", () => {
+        websocketMock.readystate = OPEN_STATE;
+
+        subject.requestDetails(dispatchMock, 42);
+        subject.closeDetailsConnection(42);
+
+        expect(websocketMock.close).toBeCalled();
+      });
+
+      it("should dispatch incoming details update", () => {
+        const body = "{ \"incoming\": \"message\"}";
+        subject.requestDetails(dispatchMock, 1);
+
+        websocketMock.onmessage(body);
+
+        expect(dispatchMock).toBeCalledWith({type: "addBuildDetails", buildId: 1, buildDetails: {incoming: "message"}});
+      });
+    });
   });
 
 });
