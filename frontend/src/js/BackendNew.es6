@@ -1,7 +1,8 @@
 /* eslint-disable */
 import * as R from "ramda";
 import {webSocket} from "./WebSocketFactory.es6";
-import {addBuildstepOutput} from "./Actions.es6";
+import {addBuildstepOutput, outputConnectionState} from "./Actions.es6";
+
 
 const outputUrl = (baseUrl, buildId, stepId) => "ws://" + baseUrl + "/builds/" + buildId + "/" + stepId;
 
@@ -23,6 +24,9 @@ export class Backend {
       this.outputConnection = webSocket(this.outputUrl(buildId, stepId));
       const connection = this.outputConnection;
       connection.onmessage = body => dispatch(addBuildstepOutput(buildId, stepId, JSON.parse(body)));
+      connection.onclose = () => dispatch(outputConnectionState("closed"));
+      connection.onopen = () => dispatch(outputConnectionState("open"));
+      connection.onerror = () => dispatch(outputConnectionState("error"));
     };
 
 }

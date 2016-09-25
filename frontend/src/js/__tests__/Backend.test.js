@@ -60,6 +60,31 @@ describe("New Backend", () => {
 
       expect(dispatchMock).toBeCalledWith({type: "addBuildstepOutput", buildId: 1, stepId: 2, output: {first: "key"}});
     });
+
+    it("should dispatch connection state on close", () => {
+      subject.requestOutput(dispatchMock, 1, 2);
+
+      websocketMock.onclose();
+
+      expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "closed"});
+    });
+
+    it("should dispatch connection state on open", () => {
+      subject.requestOutput(dispatchMock, 1, 2);
+
+      websocketMock.onopen();
+
+      expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "open"});
+    });
+
+    it("should dispatch connection state on error", () => {
+      subject.requestOutput(dispatchMock, 1, 2);
+
+      websocketMock.onerror();
+
+      expect(dispatchMock).toBeCalledWith({type: "outputConnectionState", state: "error"});
+    });
+
   });
 
 });
