@@ -44,9 +44,9 @@ export class Backend {
 
 /* eslint-disable */
     requestDetails(dispatch, buildId) {
-      // if(this._hasOpenDetailsConnection(buildId)) {
-      //   return;
-      // }
+      if(this._hasOpenDetailsConnection(buildId)) {
+        return;
+      }
 
       const connection = webSocket(this.detailsUrl(buildId));
       this.detailsConnections.set(buildId, connection);
