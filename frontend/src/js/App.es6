@@ -6,6 +6,7 @@ import BuildSummaryList from "./BuildSummaryList.es6";
 import Header from "./Header.es6";
 import BuildStepOutput from "./BuildStepOutput.es6";
 import {Backend} from "./BackendNew.es6";
+import {requestSummariesPolling} from "./actions/BackendActions.es6";
 
 
 
@@ -26,7 +27,7 @@ export class LambdaUI {
     appStore = createStore();
     backend = new Backend("localhost:8081");
 
-    backend.requestSummaries(appStore.dispatch);
+    appStore.dispatch(requestSummariesPolling());
 
     const rootElement = document.getElementById("entryPoint");
     ReactDOM.render(<Provider store={this.appStore()}>

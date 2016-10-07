@@ -12,12 +12,21 @@ export const requestOutput = (buildId, stepId) =>
 export const requestDetails = buildId =>
   dispatch => {
     const backend = LambdaUI.backend();
-    return backend.requestDetails(dispatch, buildId);
+    backend.requestDetails(dispatch, buildId);
   };
+
+export const requestSummariesPolling = () =>
+  dispatch => {
+    const backend = LambdaUI.backend();
+    backend.requestSummaries(dispatch);
+    setTimeout(() => dispatch(requestSummariesPolling()), 1000);
+};
 
 export const outputConnectionInfo = (state) => {
   return {type: OUTPUT_CONNECTION_STATE, state: state};
 };
+
+
 
 
 export const summariesConnectionState = state => {

@@ -42,33 +42,37 @@ export class Backend {
       connection.onerror = () => dispatch(outputConnectionState("error"));
     }
 
+/* eslint-disable */
     requestDetails(dispatch, buildId) {
-      if(this._hasOpenDetailsConnection(buildId)) {
-        return;
-      }
+      // if(this._hasOpenDetailsConnection(buildId)) {
+      //   return;
+      // }
 
       const connection = webSocket(this.detailsUrl(buildId));
       this.detailsConnections.set(buildId, connection);
 
-      connection.onmessage = body => dispatch(addBuildDetails(buildId, JSON.parse(body)));
+      connection.onmessage = body => {
+        const parsed = JSON.parse(body);
+        console.log("Parsed Body ", body);
+        dispatch(addBuildDetails(buildId, JSON.parse(body)));
+      };
     }
 
     closeDetailsConnection(buildId) {
       this._closeConnection(this.detailsConnections.get(buildId));
     }
 
-    /* eslint-disable */
+
     requestSummaries(dispatch) {
       const connection = webSocket(this.summariesUrl);
       connection.onclose = () => {
-         console.log("Summaries connection closed!");
          dispatch(summariesConnectionState("closed"));
        }
 
       connection.onmessage = body =>
       {
-         const summaries = JSON.parse(body.data).summaries;
-         dispatch(addBuildSummary(summaries));
+         const data = JSON.parse(body.data);
+         dispatch(addBuildSummary(data.summaries));
       };
 
     }

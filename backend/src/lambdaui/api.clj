@@ -86,6 +86,7 @@
 (defn- build-details-response [pipeline build-id]
   (let [build-state  (get (state-from-pipeline pipeline) (Integer/parseInt build-id))
         pipeline-def (:pipeline-def pipeline)]
+    (println "Details request for build id " build-id)
     (cross-origin-response
       (build-details-from-pipeline pipeline-def build-state build-id))))
 
@@ -141,14 +142,28 @@
   (with-channel req ws-ch
                 (build-step-events-to-ws pipeline ws-ch (Integer/parseInt build-id) step-id)))
 
-(defonce summaries-websocket (atom nil))
-
 (defn- subscribe-to-summary-update [request pipeline]
   (with-channel request websocket-channel
-                (println "New Connection. Websocket " (:websocket? request))
-                (reset! summaries-websocket websocket-channel)
-                (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
-                ))
+
+                (let [ctx          (:context pipeline)
+                      ;subscription (event-bus/subscribe ctx :step-result-updated)
+                      ;payloads     (event-bus/only-payload subscription)
+                      ]
+
+                  ;  (println "New Connection. Websocket " (:websocket? request))
+                  (reset! summaries-websocket websocket-channel)
+                  (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
+                  ;(on-close websocket-channel (println "Connection closed"))
+                  (close websocket-channel)
+
+                  ;(async/go-loop []
+                  ;  (if-let [event (async/<! payloads)]
+                  ;    (do
+                  ;      (println @current-count " -- " event)
+                  ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
+                  ;      (swap! current-count inc)
+                  ;      (recur))))
+                )))
 
 (defn- subscribe-to-details-update [request pipeline buildId]
   )
