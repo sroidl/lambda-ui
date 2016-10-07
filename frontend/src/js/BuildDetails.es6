@@ -1,8 +1,8 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import Backend from "./Backend.es6";
 import BuildStep from "./BuildStep.es6";
 import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
+import {requestDetails} from "./actions/BackendActions.es6";
 import R from "ramda";
 
 export const BuildDetails = (props) => {
@@ -76,9 +76,7 @@ export const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-      requestDetailsFn: () => {
-        Backend.requestBuildDetails(dispatch, ownProps.buildId);
-      }
+      requestDetailsFn: () => dispatch(requestDetails(ownProps.buildId))
   };
 };
 

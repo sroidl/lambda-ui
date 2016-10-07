@@ -87,7 +87,7 @@ describe("Backend", () => {
       });
 
       it("should dispatch incoming details update", () => {
-        const body = "{ \"incoming\": \"message\"}";
+        const body = {data : "{ \"incoming\": \"message\"}"};
         subject.requestDetails(dispatchMock, 1);
 
         websocketMock.onmessage(body);
@@ -103,10 +103,10 @@ describe("Backend", () => {
         webSocket.mockReturnValue(websocket2);
         subject.requestDetails(dispatchMock, 2);
 
-        websocket1.onmessage(JSON.stringify(["hello"]));
+        websocket1.onmessage({data : JSON.stringify(["hello"])});
         expect(dispatchMock).toBeCalledWith({type: "addBuildDetails", buildId: 1, buildDetails: ["hello"]});
 
-        websocket2.onmessage(JSON.stringify(["world"]));
+        websocket2.onmessage({data: JSON.stringify(["world"])});
         expect(dispatchMock).toBeCalledWith({type: "addBuildDetails", buildId: 2, buildDetails: ["world"]});
       });
 

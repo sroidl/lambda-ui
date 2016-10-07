@@ -42,7 +42,6 @@ export class Backend {
       connection.onerror = () => dispatch(outputConnectionState("error"));
     }
 
-/* eslint-disable */
     requestDetails(dispatch, buildId) {
       if(this._hasOpenDetailsConnection(buildId)) {
         return;
@@ -52,9 +51,7 @@ export class Backend {
       this.detailsConnections.set(buildId, connection);
 
       connection.onmessage = body => {
-        const parsed = JSON.parse(body);
-        console.log("Parsed Body ", body);
-        dispatch(addBuildDetails(buildId, JSON.parse(body)));
+        dispatch(addBuildDetails(buildId, JSON.parse(body.data)));
       };
     }
 
@@ -67,7 +64,7 @@ export class Backend {
       const connection = webSocket(this.summariesUrl);
       connection.onclose = () => {
          dispatch(summariesConnectionState("closed"));
-       }
+       };
 
       connection.onmessage = body =>
       {

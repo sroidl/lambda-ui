@@ -1,51 +1,54 @@
-/* eslint-disable */
-jest.mock("../Backend.es6");
-import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from '../BuildDetails.es6'
-import {shallow, mount} from 'enzyme'
-import {requestBuildDetails as requestBuildDetailsMock} from '../Backend.es6'
-import {MockStore} from './TestSupport.es6'
-import React from 'react';
-import { Provider } from 'react-redux'
+/* globals jest describe it expect */
+jest.mock("../BackendNew.es6");
+jest.mock("../actions/BackendActions.es6");
+import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from "../BuildDetails.es6";
+import {shallow, mount} from "enzyme";
+import {MockStore} from "./TestSupport.es6";
+import React from "react";
+import { Provider } from "react-redux";
+import {requestDetails as requestDetailsAction} from "../actions/BackendActions.es6";
 
 
 export const _it = () => {};
 
-describe("BuildDetails Component", ()=>{
-  const input = newAttributes => Object.assign({buildId: 1, open: true, details: undefined, requestDetailsFn: jest.fn()}, newAttributes)
+describe("BuildDetails Component", () => {
+  const input = newAttributes => Object.assign({buildId: 1, open: true, requestDetailsFn: jest.fn()}, newAttributes);
 
-  it("should display loading message if no details are in state", ()=>{
+  it("should display loading message if no details are in state", () => {
     const component = shallow(subject(input()));
 
     expect(component.text()).toEqual("Loading build details");
   });
 
-  it("should request build details if no details are in the state", ()=> {
+  it("should request build details if no details are in the state", () => {
     const requestMockFn = jest.fn();
 
     shallow(subject(input({requestDetailsFn: requestMockFn})));
 
     expect(requestMockFn).toBeCalled();
-  })
+  });
 
-  it("should render all buildSteps on first level", ()=>{
-    let steps = [{stepId: 1}, {stepId: 2}];
-    let storeMock = MockStore({buildDetails: {1: {buildId: 1, steps: steps}}, openedBuilds: {1: true}, viewBuildSteps: {}})
+  it("should render all buildSteps on first level", () => {
+    const steps = [{stepId: 1}, {stepId: 2}];
+    const storeMock = MockStore({buildDetails: {1: {buildId: 1, steps: steps}}, openedBuilds: {1: true}, viewBuildSteps: {}});
 
-    let component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
+    const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
 
-    expect(component.find("BuildStep").length).toEqual(2)
-  })
+    expect(component.find("BuildStep").length).toEqual(2);
+  });
 
-  it("MapDispatchToProps should wire to backend.", ()=>{
-    let store = MockStore({buildDetails: {}, openedBuilds: {2: true}});
+  it("MapDispatchToProps should wire to backend.", () => {
+    const dispatchMock = jest.fn();
+    const store = MockStore({buildDetails: {}, openedBuilds: {2: true}}, dispatchMock);
 
-    let provider = mount(<BuildDetailsRedux store={store} buildId="2"/>);
+    mount(<BuildDetailsRedux store={store} buildId="2"/>);
 
-    expect(requestBuildDetailsMock).toBeCalled();
-  })
-})
+    expect(dispatchMock).toBeCalled();
+    expect(requestDetailsAction).toBeCalledWith("2");
+  });
+});
 
-describe("View Build details", ()=>{
+describe("View Build details", () => {
   it("should map root steps if no view build details is given", () => {
     const state = {
       buildDetails: {
@@ -68,7 +71,7 @@ describe("View Build details", ()=>{
       ]}},
       openedBuilds: {1: true},
       viewBuildSteps: {1: "1"}
-    }
+    };
 
     const newProps = mapStateToProps(state, {buildId: 1});
 
@@ -94,10 +97,10 @@ describe("View Build details", ()=>{
             },
             openedBuilds: {1: true},
             viewBuildSteps: {1: "1.1"}
-    }
+    };
 
     const newProps = mapStateToProps(state, {buildId: 1});
 
-    expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}])
-  })
-})
+    expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}]);
+  });
+});
