@@ -12,7 +12,7 @@
   (:import (org.joda.time DateTime)))
 
 (defn debug [x]
-  (println x)
+  ;(println x)
   x)
 
 (defn extract-state
@@ -49,14 +49,13 @@
 (defonce state-debug (atom nil))
 
 (defn state-from-pipeline [pipeline]
-  (reset! state-debug (debug (state/get-all (:pipeline-state-component (:context pipeline))))))
+   (state/get-all (:pipeline-state-component (:context pipeline))))
 
 (defn- cross-origin-response [data]
   (header (response data) "Access-Control-Allow-Origin" "*")
   )
 
 (defn summaries-response [pipeline]
-  (println "Incoming request for summaries")
   (cross-origin-response (summaries (state-from-pipeline pipeline))))
 
 
@@ -85,9 +84,6 @@
 
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id]
-  (println "Def " pipeline-def)
-  (println "State " pipeline-state)
-
   {:buildId build-id
    :steps   (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
                  (map to-output-format))})
@@ -127,8 +123,7 @@
         subscription (event-bus/subscribe ctx :step-result-updated)
         payloads     (event-bus/only-payload subscription)
         filtered     (only-matching-step payloads build-id step-id)]
-    (on-close ws-ch (fn [_] (do (println "Closing Websocket for " build-id " " step-id) (event-bus/unsubscribe ctx :step-result-updated subscription))))
-    (println "Output-Websocket: Initializing for " build-id step-id)
+    (on-close ws-ch (fn [_] (do  (event-bus/unsubscribe ctx :step-result-updated subscription))))
     (send! ws-ch (lambdacd.util/to-json {:stepResult (-> (state-from-pipeline pipeline)
                                                    (get build-id)
                                                    (get (to-step-id step-id)))
@@ -155,9 +150,7 @@
                       ;payloads     (event-bus/only-payload subscription)
                       ]
 
-                  ;  (println "New Connection. Websocket " (:websocket? request))
                   (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
-                  ;(on-close websocket-channel (println "Connection closed"))
                   (close websocket-channel)
 
                   ;(async/go-loop []
@@ -170,7 +163,8 @@
                 )))
 
 (defn websocket-connection-for-details [pipeline build-id websocket-channel]
-  (send! websocket-channel (json/write-str (build-details-response pipeline build-id))))
+  (send! websocket-channel (json/write-str (build-details-response pipeline build-id)))
+  (close websocket-channel))
 
 (defn wrap-websocket [request handler]
                 (with-channel request channel
@@ -179,5 +173,5 @@
 (defn api-routes [pipeline]
   (routes
     (GET "/builds" [:as request] (subscribe-to-summary-update request pipeline))
-    (GET "/builds/:build-id" [build-id] (build-details-response pipeline build-id))
+    (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
     (GET "/builds/:build-id/:step-id" [build-id step-id :as req] (subscribe-to-step-result-update pipeline req build-id step-id))))

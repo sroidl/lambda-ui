@@ -229,7 +229,8 @@
 (defn wrap-websocket-channel [sent-channel]
   (reify httpkit-server/Channel
     (on-close [& _])
-    (send! [_ data] (println "sending " data) (async/>!! sent-channel data)))
+    (send! [_ data] (println "sending " data) (async/>!! sent-channel data))
+    (close [_] nil))
   )
 
 
