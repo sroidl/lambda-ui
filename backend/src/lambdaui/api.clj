@@ -11,6 +11,10 @@
             [lambdacd.internal.pipeline-state :as state])
   (:import (org.joda.time DateTime)))
 
+(defn debug [x]
+  (println x)
+  x)
+
 (defn extract-state
   "If one step is waiting, return waiting
    If one step is running, return running
@@ -42,8 +46,10 @@
                                           })
         pipeline-state)})
 
+(defonce state-debug (atom nil))
+
 (defn state-from-pipeline [pipeline]
-  (state/get-all (:pipeline-state-component (:context pipeline))))
+  (reset! state-debug (debug (state/get-all (:pipeline-state-component (:context pipeline))))))
 
 (defn- cross-origin-response [data]
   (header (response data) "Access-Control-Allow-Origin" "*")
@@ -79,6 +85,9 @@
 
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id]
+  (println "Def " pipeline-def)
+  (println "State " pipeline-state)
+
   {:buildId build-id
    :steps   (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
                  (map to-output-format))})
@@ -86,9 +95,7 @@
 (defn- build-details-response [pipeline build-id]
   (let [build-state  (get (state-from-pipeline pipeline) (Integer/parseInt build-id))
         pipeline-def (:pipeline-def pipeline)]
-    (println "Details request for build id " build-id)
-    (cross-origin-response
-      (build-details-from-pipeline pipeline-def build-state build-id))))
+    (build-details-from-pipeline pipeline-def build-state build-id)))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
   (let [result     (async/chan)
@@ -105,9 +112,7 @@
 (defn- to-step-id [step-id-s]
   (map #(Integer/parseInt %) (s/split step-id-s #"-")))
 
-(defn debug [x]
-  (println x)
-  x)
+
 
 (defn finished-step? [pipeline build-id step-id]
    (finished? (:status
@@ -151,7 +156,6 @@
                       ]
 
                   ;  (println "New Connection. Websocket " (:websocket? request))
-                  (reset! summaries-websocket websocket-channel)
                   (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
                   ;(on-close websocket-channel (println "Connection closed"))
                   (close websocket-channel)
@@ -165,8 +169,12 @@
                   ;      (recur))))
                 )))
 
-(defn- subscribe-to-details-update [request pipeline buildId]
-  )
+(defn websocket-connection-for-details [pipeline build-id websocket-channel]
+  (send! websocket-channel (json/write-str (build-details-response pipeline build-id))))
+
+(defn wrap-websocket [request handler]
+                (with-channel request channel
+                              (handler channel)))
 
 (defn api-routes [pipeline]
   (routes
