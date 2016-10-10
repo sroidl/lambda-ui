@@ -11,7 +11,7 @@ export const BuildSummaryList = ({builds}) => {
     <BuildSummary key={buildId} build={build}/>);
   }
 
-  return <div className="buildSummaryList">{result}</div>;
+  return <div className="buildSummaryList">{result.reverse()}</div>;
 };
 
 BuildSummaryList.propTypes = { builds: PropTypes.object.isRequired };
