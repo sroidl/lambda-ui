@@ -1,0 +1,34 @@
+.buildStep
+  margin-left: 10px
+  border-style: solid
+  border-color: black
+  border-radius: 0.3em
+  border-width: thin
+  padding: 5px
+  display: inline-block
+
+  &.success
+    background-color: $green
+    color: $lightGrey
+
+  &.failure
+    background-color: $red
+    color: $lightGrey
+
+  &.running
+    background-color: $blue
+    color: $lightGrey
+
+  &.pending
+    background-color: $lightGrey
+    color: black
+
+  &.killed
+    background-color: $lightGrey
+    color: black
+
+  &.waiting
+    background-color: $peru
+    color: black
+
+  .showOutputLink

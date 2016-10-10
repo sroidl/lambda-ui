@@ -1,12 +1,10 @@
 @import 'colors'
-@import 'steps'
+@import 'buildStep'
+@import 'buildSummary'
 
 body
   margin: 10px
   background-color: $lightGrey
-
-.marker
-  background-color: transparentize(black, 0.8)
 
 .placeholder
   visibility: hidden
@@ -16,110 +14,3 @@ body
 
 .loadingMessage
   color: black
-
-.buildStep
-  margin-left: 10px
-  border-style: solid
-  border-color: black
-  border-radius: 0.3em
-  border-width: thin
-  padding: 5px
-  display: inline-block
-
-  &.success
-    background-color: $green
-    color: $lightGrey
-
-  &.failure
-    background-color: $red
-    color: $lightGrey
-
-  &.running
-    background-color: $blue
-    color: $lightGrey
-
-  &.pending
-    background-color: $lightGrey
-    color: black
-
-  &.killed
-    background-color: $lightGrey
-    color: black
-
-  &.waiting
-    background-color: $peru
-    color: black
-
-  .showOutputLink
-
-
-
-.buildSummary
-  margin-bottom: 10px
-
-  &.running
-    background-color: $blue
-    color: $lightGrey
-
-    & .buildDetails
-      border-color: $blue
-
-  &.waiting
-    background-color: $peru
-    color: $lightGrey
-
-    & .buildDetails
-      border-color: $peru
-
-  &.failed
-    background-color: $red
-    color: $lightGrey
-
-    & .buildDetails
-      border-color: $red
-
-  &.success
-    background-color: $green
-    color: $black
-
-    & .buildDetails
-      border-color: $green
-
-  .buildIcon
-    display: inline-block
-    padding: 10px 30px
-    font-size: 2em
-    font-weight: bold
-
-  .buildNumber
-    display: inline-block
-    padding-top: 10px
-    font-size: 2em
-    font-weight: bold
-
-  .buildStartTime
-    display: inline-block
-    padding-top: 15px
-    font-size: 1.5em
-
-  .buildDuration
-    display: inline-block
-    padding-top: 15px
-    font-size: 1.5em
-
-  .buildDetailsToggle
-    display: inline-block
-    padding: 10px 30px
-    font-size: 2em
-    font-weight: bold
-    color: $lightGrey
-
-    &:hover
-      color: lighten($lightGrey, 20%)
-
-  .buildDetails
-    display: block
-    background-color: $lightGrey
-    border-width: 2px
-    border-style: solid
-    padding: 20px
