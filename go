@@ -68,7 +68,7 @@ goal_clean() {
 }
 
 goal_jar() {
- echo 'Compiling frontend'
+  echo 'Compiling frontend'
   pushd ${SCRIPT_DIR}/frontend > /dev/null
    npm run compile
   popd > /dev/null
@@ -77,8 +77,9 @@ goal_jar() {
 
   fi
 
- echo 'Compiling backend'
+  echo 'Copying frontend assets to backend'
   cp -R frontend/target/ backend/resources/public
+  echo 'Compiling backend'
   pushd ${SCRIPT_DIR}/backend > /dev/null
    ./lein jar
   popd > /dev/null
