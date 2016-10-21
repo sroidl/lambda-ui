@@ -114,10 +114,80 @@
 					>--></div>
 				</div>
 			</div>
+			<div id="layerShadow" class="layerShadow"></div>
+			<div id="consolOutput" class="layer open">
+				<div class="layerClose" onClick="toggleLayer(this)"><i class="fa fa-times" aria-hidden="true"></i></div>
+				<!--<div class="layerTitle">Überschrift</div>-->
+				<div class="layerText"><p>{<br />
+ &quot;:name&quot;: &quot;either&quot;,<br />
+ &quot;:type&quot;: &quot;parallel&quot;,<br />
+ &quot;:step-id&quot;: [<br />
+ 6<br />
+ ],<br />
+ &quot;:has-dependencies&quot;: false,<br />
+ &quot;:children&quot;: [<br />
+ {<br />
+ &quot;:name&quot;: &quot;is-master-branch?&quot;,<br />
+ &quot;:type&quot;: &quot;step&quot;,<br />
+ &quot;:has-dependencies&quot;: false,<br />
+ &quot;:step-id&quot;: [<br />
+ 1,<br />
+ 6<br />
+ ],<br />
+ &quot;:result&quot;: {<br />
+ &quot;:most-recent-update-at&quot;: &quot;2016-10-19T07:18:39.580Z&quot;,<br />
+ &quot;:first-updated-at&quot;: &quot;2016-10-19T07:18:39.503Z&quot;,<br />
+ &quot;:status&quot;: &quot;success&quot;,<br />
+ &quot;:details&quot;: null<br />
+ },<br />
+ &quot;:children&quot;: []<br />
+ },<br />
+ {<br />
+ &quot;:name&quot;: &quot;set-description&quot;,<br />
+ &quot;:type&quot;: &quot;step&quot;,<br />
+ &quot;:has-dependencies&quot;: false,<br />
+ &quot;:step-id&quot;: [<br />
+ 2,<br />
+ 6<br />
+ ],<br />
+ &quot;:result&quot;: {<br />
+ &quot;:out&quot;: &quot;Waiting for trigger...&quot;,<br />
+ &quot;:trigger-id&quot;: &quot;96bcd88e-a76b-49f0-ae6c-64c5f7ec1dd3&quot;,<br />
+ &quot;:parameters&quot;: {<br />
+ &quot;:description&quot;: {<br />
+ &quot;:desc&quot;: &quot;Deploy branch != master -> Please add description&quot;<br />
+ }<br />
+ },<br />
+ &quot;:most-recent-update-at&quot;: &quot;2016-10-19T07:18:40.150Z&quot;,<br />
+ &quot;:status&quot;: &quot;killed&quot;,<br />
+ &quot;:global&quot;: {<br />
+ &quot;:description&quot;: &quot;no description&quot;<br />
+ },<br />
+ &quot;:details&quot;: null,<br />
+ &quot;:first-updated-at&quot;: &quot;2016-10-19T07:18:39.716Z&quot;,<br />
+ &quot;:has-been-waiting&quot;: true<br />
+ },<br />
+ &quot;:children&quot;: []<br />
+ }<br />
+ ],<br />
+ &quot;:result&quot;: {<br />
+ &quot;:most-recent-update-at&quot;: &quot;2016-10-19T07:18:39.788Z&quot;,<br />
+ &quot;:first-updated-at&quot;: &quot;2016-10-19T07:18:39.435Z&quot;,<br />
+ &quot;:status&quot;: &quot;success&quot;,<br />
+ &quot;:details&quot;: null<br />
+ }<br />
+ ENDE
+}</p></div>
+			</div>
 	</body>
 	<script type="text/javascript">
 		function toggleOpen(element){
 			element.parentElement.classList.toggle('open');
+		}
+
+		function toggleLayer(element){
+			element.parentElement.classList.toggle('open');
+			document.getElementById('layerShadow').classList.toggle('hidden');
 		}
 	</script>
 </html>	
