@@ -10,7 +10,7 @@
     "static-sass": "node-sass --output target/css src/sass",
     "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js --bail && cp src/html/index.html target",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --config webpack.config.dev.js",
-    "watch:test": "npm run test -- --watch",
+    "watch:test": "npm run test -- --watch=all",
     "lint": "node_modules/eslint/bin/eslint.js src/**/*.es6"
   },
   "repository": {

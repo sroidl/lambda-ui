@@ -1,5 +1,5 @@
 {
-  "testPathDirs": ["src/js/test"],
+  "testPathDirs": ["src/js/test", "src/js/main"],
   "testRegex" : ".*.test.es6$",
   "moduleFileExtensions" : ["js", "json", "es6"],
   "automock": false,
