@@ -1,32 +1,35 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
+import App from "App.es6";
 import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 
 export const Header = ({pipelineName}) => {
 
-return <div className="appHeader">
-          <div className="logo">
-            <img src={logo} className="logoImage" alt="logo" />
+    const triggerNewFn = () => App.backend().triggerNewBuild();
+
+    return <div className="appHeader">
+        <div className="logo">
+            <img src={logo} className="logoImage" alt="logo"/>
             <span className="logoText">LAMBDA CD</span>
-          </div>
-          <span className="pipelineName">{pipelineName}</span>
-          <button className="runButton">Start Build</button>
-        </div>;
+        </div>
+        <span className="pipelineName">{pipelineName}</span>
+        <button className="runButton" onClick={triggerNewFn}>Start Build</button>
+    </div>;
 };
 
 Header.propTypes = {
-  pipelineName: PropTypes.string.isRequired
+    pipelineName: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {
     return {
-      pipelineName: state.config.name
+        pipelineName: state.config.name
     };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return ownProps;
+    return ownProps;
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

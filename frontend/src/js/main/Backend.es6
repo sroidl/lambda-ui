@@ -10,6 +10,7 @@ const OPEN = 1;
 const outputUrl = (baseUrl, buildId, stepId) => "ws://" + baseUrl + "/lambdaui/api/builds/" + buildId + "/" + stepId;
 const detailsUrl = (baseUrl, buildId) => "ws://" +baseUrl + "/lambdaui/api/builds/" + buildId;
 const summariesUrl = baseUrl => "ws://" + baseUrl + "/lambdaui/api/builds";
+const triggerNewUrl = baseUrl => "http://" + baseUrl + "/lambdaui/api/triggerNew";
 
 export class Backend {
     constructor(baseUrl) {
@@ -72,6 +73,14 @@ export class Backend {
          dispatch(addBuildSummary(data.summaries));
       };
 
+    }
+
+    triggerNewBuild () {
+        const fetchOptions = {
+            method: "POST"
+        };
+
+        fetch(triggerNewUrl(this.baseUrl), fetchOptions);
     }
 
 }
