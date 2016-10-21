@@ -20,6 +20,14 @@
 
 (defonce server (atom nil))
 
+(defn create-config [pipeline]
+  "window.lambdaui = window.lambdaui || {};
+  window.lambdaui.config = {
+                            name: 'Pipeline config from server',
+                            baseUrl: window.location.host
+                            };"
+  )
+
 (defn pipeline-routes [pipeline]
   (ring-json/wrap-json-response
     (routes (context "/lambdaui/api" [] (new-api/api-routes pipeline))
@@ -27,6 +35,7 @@
             (GET "/old" [] (old-ui/ui-page pipeline))
             (route/resources "/" {:root "public"})
             (GET "/" [] (ring.util.response/redirect "/ui/index.html"))
+            (GET "/ui/config.js" [] (create-config pipeline))
             (route/resources "/ui" {:root "public/target"})
             )))
 
