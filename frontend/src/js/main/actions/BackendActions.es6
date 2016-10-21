@@ -27,8 +27,6 @@ export const outputConnectionInfo = (state) => {
 };
 
 
-
-
 export const summariesConnectionState = state => {
   return {type: SUMMARIES_CONNECTION_STATE, state: state};
 };

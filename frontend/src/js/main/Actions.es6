@@ -1,6 +1,3 @@
-import {outputConnection} from "./Backend.es6";
-import * as R from "ramda";
-
 export const TOGGLE_BUILD_DETAILS = "toggleBuildDetails";
 export const ADD_SUMMARIES = "addBuildSummaries";
 export const CHANGE_SUMMARY = "changeBuildSummary";
@@ -41,13 +38,6 @@ export const addBuildstepOutput = (buildId, stepId, output) => {
 
 export const showBuildOutput = (buildId, stepId) => {
     return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
-};
-
-export const requestOutput = (buildId, stepId) => {
-    return (dispatch, getState) => {
-        const baseUrl = R.view(R.lensPath(["config", "baseUrl"]))(getState()) || "";
-        outputConnection.requestOutput(dispatch, baseUrl)(buildId, stepId);
-    };
 };
 
 export const outputConnectionState = (connectionState) => {

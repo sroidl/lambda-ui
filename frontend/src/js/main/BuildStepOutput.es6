@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
-import {requestOutput} from "./Actions.es6";
+import {requestOutput} from "actions/BackendActions.es6";
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
