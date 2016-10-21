@@ -8,8 +8,6 @@ import BuildStepOutput from "./BuildStepOutput.es6";
 import {Backend} from "./BackendNew.es6";
 import {requestSummariesPolling} from "./actions/BackendActions.es6";
 
-
-
 let backend;
 let appStore;
 
