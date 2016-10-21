@@ -7,7 +7,7 @@
                  [lambdaui "0.1.0-SNAPSHOT"]
                  [lambdacd "0.9.0"]
                  [lambdacd-git "0.1.6"]
-                 [ring-server "0.4.0"]]
+                 [http-kit "2.1.18"]]
   :main ^:skip-aot lambdaui.example.simple-pipeline
   :min-lein-version "2.0.0"
 

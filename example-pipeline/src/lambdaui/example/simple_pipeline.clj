@@ -4,7 +4,7 @@
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
             [lambdacd.core :as lambdacd]
-            [ring.server.standalone :as ring-server]
+            [org.httpkit.server :as server]
             [lambdacd.ui.api]
             [lambdacd-git.core :as git]
             [lambdacd.runners :as runners]
@@ -54,7 +54,7 @@
 
     (git/init-ssh!)
     (runners/start-one-run-after-another pipeline)
-    (ring-server/serve (routes
+    (server/run-server (routes
                          (ui/pipeline-routes pipeline))
                        {:open-browser? false
                         :port          port})))
