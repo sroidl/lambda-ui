@@ -1,7 +1,7 @@
 /* globals describe it expect jest*/
-jest.mock("../Backend.es6");
-import * as Actions from "../Actions.es6";
-import * as Backend from "../Backend.es6";
+jest.mock("../main/Backend.es6");
+import * as Actions from "Actions.es6";
+import * as Backend from "Backend.es6";
 
 
 describe("Actions creators", () => {

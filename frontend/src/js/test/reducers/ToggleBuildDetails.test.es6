@@ -1,5 +1,5 @@
-import { toggleBuildDetails as action } from '../../Actions.es6'
-import { ToggleBuildDetailsReducer as subject } from '../ToggleBuildDetails.es6'
+import { toggleBuildDetails as action } from 'Actions.es6'
+import { ToggleBuildDetailsReducer as subject } from 'reducers/ToggleBuildDetails.es6'
 
 describe("toggleBuildDetailsAction", () =>
   it("should create a proper action", () =>

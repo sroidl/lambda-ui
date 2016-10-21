@@ -1,10 +1,10 @@
 /* globals jest describe expect it */
-jest.mock("../Actions.es6");
-import {viewBuildStep, showBuildOutput} from "../Actions.es6";
+jest.mock("../main/Actions.es6");
+import {viewBuildStep, showBuildOutput} from "Actions.es6";
 import React from "react";
 import {shallow, mount} from "enzyme";
-import BuildStepRedux, {BuildStep} from "../BuildStep.es6";
-import {MockStore} from "./TestSupport.es6";
+import BuildStepRedux, {BuildStep} from "BuildStep.es6";
+import {MockStore} from "./testsupport/TestSupport.es6";
 
 
 const details = newAttributes => Object.assign({stepId: 1, state: "success", name: "fooStep"}, newAttributes);

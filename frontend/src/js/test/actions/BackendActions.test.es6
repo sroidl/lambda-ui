@@ -1,9 +1,9 @@
 /* globals describe it expect jest beforeEach */
-jest.mock("../../BackendNew.es6");
-jest.mock("../../App.es6");
-import LambdaUI from "../../App.es6";
-import {Backend} from "../../BackendNew.es6";
-import * as subject from "../BackendActions.es6";
+jest.mock("../../main/BackendNew.es6");
+jest.mock("../../main/App.es6");
+import LambdaUI from "App.es6";
+import {Backend} from "BackendNew.es6";
+import * as subject from "actions/BackendActions.es6";
 
 
 describe("OutputConnection", () => {

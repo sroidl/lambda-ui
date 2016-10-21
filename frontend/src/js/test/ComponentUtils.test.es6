@@ -1,4 +1,4 @@
-import subject from '../ComponentUtils.es6'
+import subject from 'ComponentUtils.es6'
 
 describe("ComponentUtils test",() => {
   it("should concatenate class names", ()=>{

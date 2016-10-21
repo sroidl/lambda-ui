@@ -1,6 +1,6 @@
 /* eslint-disable */
-import {BuildSummariesReducer as subject} from '../BuildSummaries.es6';
-import {addBuildSummary as action, changeBuildSummary} from '../../Actions.es6'
+import {BuildSummariesReducer as subject} from 'reducers/BuildSummaries.es6';
+import {addBuildSummary as action, changeBuildSummary} from 'Actions.es6';
 
 const defaultBuildInput = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
 const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);

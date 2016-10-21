@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {PipelineConfigurationReducer as subject} from '../PipelineConfiguration.es6';
+import {PipelineConfigurationReducer as subject} from 'reducers/PipelineConfiguration.es6';
 
 describe("PipelineConfigurationReducer", () =>{
   it("should return oldState if no Add configuraiton action was emitted", ()=>{

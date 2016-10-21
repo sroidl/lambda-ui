@@ -1,12 +1,12 @@
 /* globals jest describe it expect */
-jest.mock("../BackendNew.es6");
-jest.mock("../actions/BackendActions.es6");
-import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from "../BuildDetails.es6";
+jest.mock("../main/BackendNew.es6");
+jest.mock("../main/actions/BackendActions.es6");
+import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from "BuildDetails.es6";
 import {shallow, mount} from "enzyme";
-import {MockStore} from "./TestSupport.es6";
+import {MockStore} from "./testsupport/TestSupport.es6";
 import React from "react";
 import { Provider } from "react-redux";
-import {requestDetails as requestDetailsAction} from "../actions/BackendActions.es6";
+import {requestDetails as requestDetailsAction} from "actions/BackendActions.es6";
 
 
 export const _it = () => {};

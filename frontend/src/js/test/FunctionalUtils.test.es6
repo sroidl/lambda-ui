@@ -1,5 +1,5 @@
 /* globals describe it expect */
-import * as subject from "../FunctionalUtils.es6";
+import * as subject from "FunctionalUtils.es6";
 
 describe("FunctionalUtils: mapTree", () => {
   it("should return mapped tree", () => {

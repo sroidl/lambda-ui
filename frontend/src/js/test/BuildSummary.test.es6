@@ -1,6 +1,6 @@
 /* eslint-disable */
-import {BuildSummary} from "../BuildSummary.es6";
-import * as subject from "../BuildSummary.es6";
+import {BuildSummary} from "BuildSummary.es6";
+import * as subject from "BuildSummary.es6";
 import {shallow} from "enzyme";
 import React from "react";
 

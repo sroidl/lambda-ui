@@ -1,5 +1,5 @@
 /* globals describe it expect jest */
-import * as subject from "../BuildStepOutput.es6";
+import * as subject from "BuildStepOutput.es6";
 import {shallow} from "enzyme";
 
 describe("Output presentation", () => {

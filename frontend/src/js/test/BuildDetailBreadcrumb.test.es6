@@ -1,11 +1,10 @@
 /* globals describe, it, expect */
 /* eslint-disable */
 import React from "react";
-import * as subject from "../BuildDetailBreadcrumb.es6";
-import {BuildDetailBreadcrumb} from "../BuildDetailBreadcrumb.es6";
+import * as subject from "BuildDetailBreadcrumb.es6";
+import {BuildDetailBreadcrumb} from "BuildDetailBreadcrumb.es6";
+import {viewBuildStep} from "Actions.es6";
 import {shallow} from "enzyme";
-import * as R from "ramda";
-import {viewBuildStep} from "../Actions.es6";
 
 const emptyFn = () => {};
 

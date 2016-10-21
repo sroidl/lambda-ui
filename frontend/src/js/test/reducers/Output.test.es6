@@ -1,6 +1,6 @@
 /* globals describe it expect */
-import {OutputReducer as subject} from "../Output.es6";
-import {showBuildOutput, ADD_BUILDSTEP_OUTPUT} from "../../Actions.es6";
+import {OutputReducer as subject} from "reducers/Output.es6";
+import {showBuildOutput, ADD_BUILDSTEP_OUTPUT} from "Actions.es6";
 
 describe("Output reducer", () => {
   it("should return oldState if not SHOW_BUILD_OUTPUT action", () => {

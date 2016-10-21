@@ -1,5 +1,5 @@
-import {BuildSummaryList} from '../BuildSummaryList.es6';
-import {shallow} from 'enzyme';
+import {BuildSummaryList} from "BuildSummaryList.es6";
+import {shallow} from "enzyme";
 
 describe("BuildSummaryList", () =>{
   it("should render two summaries", ()=>{

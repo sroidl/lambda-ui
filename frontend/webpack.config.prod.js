@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
   entry: [
     // Main App.
-    "./src/js/index.es6"
+    "./src/js/main/index.es6"
   ],
 
   output: {
