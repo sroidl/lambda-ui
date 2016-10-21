@@ -1,5 +1,5 @@
 /* globals jest describe it expect */
-jest.mock("../main/BackendNew.es6");
+jest.mock("../main/Backend.es6");
 jest.mock("../main/actions/BackendActions.es6");
 import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from "BuildDetails.es6";
 import {shallow, mount} from "enzyme";

@@ -1,6 +1,6 @@
 /* globals describe it jest expect beforeEach */
 jest.mock("../main/WebSocketFactory.es6");
-import {Backend} from "BackendNew.es6";
+import {Backend} from "Backend.es6";
 import {webSocket} from "WebSocketFactory.es6";
 
 describe("Backend", () => {

@@ -5,7 +5,7 @@ import React from "react";
 import BuildSummaryList from "./BuildSummaryList.es6";
 import Header from "./Header.es6";
 import BuildStepOutput from "./BuildStepOutput.es6";
-import {Backend} from "./BackendNew.es6";
+import {Backend} from "./Backend.es6";
 import {requestSummariesPolling} from "./actions/BackendActions.es6";
 
 let backend;
