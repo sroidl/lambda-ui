@@ -1,5 +1,6 @@
 {
   "testPathDirs": ["src/js"],
+  "testRegex" : "__tests__/.*.test.es6$",
   "moduleFileExtensions" : ["js", "json", "es6"],
   "automock": false,
 

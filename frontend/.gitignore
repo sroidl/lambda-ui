@@ -4,3 +4,5 @@ public/js
 build/
 */**/.DS_Store
 .tern-project
+src/js/**/*.js
+src/js/**/*.js.map
