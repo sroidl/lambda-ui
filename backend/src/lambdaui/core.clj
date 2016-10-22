@@ -19,14 +19,20 @@
   (let [ctx (:context pipeline)]
     (manualtrigger/post-id ctx (get-trigger-id pipeline) {})))
 
-
+(defn extract-location [location]
+  (if (= location :backend-location)
+    "window.location.host"
+    location))
 
 (defn create-config [pipeline]
-  "window.lambdaui = window.lambdaui || {};
-  window.lambdaui.config = {
-                            name: 'Pipeline config from server',
-                            baseUrl: window.location.host
-                            };"
+  (let [config (get-in pipeline [:context :config :ui-config])
+        name (:name config)
+        location (-> :location config
+                     extract-location)
+        path-prefix (:path-prefix config)]
+
+    (format "window.lambdaui = window.lambdaui || {};
+             window.lambdaui.config = { name: '%s', baseUrl: %s + '%s'};" name location path-prefix))
   )
 
 (defn pipeline-routes [pipeline]
@@ -36,7 +42,7 @@
             (context "/api" [] (old-api/rest-api pipeline))
             (GET "/old" [] (old-ui/ui-page pipeline))
             (route/resources "/" {:root "public"})
-            (GET "/" [] (ring.util.response/redirect "/ui/index.html"))
+            (GET "/" [] (ring.util.response/redirect "ui/index.html"))
             (GET "/ui/config.js" [] (create-config pipeline))
             (route/resources "/ui" {:root "public/target"})
             )))

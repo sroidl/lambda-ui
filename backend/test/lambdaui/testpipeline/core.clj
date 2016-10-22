@@ -3,17 +3,20 @@
             [lambdacd.core :as lambdacd]
             [lambdacd.runners :as runners]
             [org.httpkit.server :as http]
-            [lambdaui.simple-pipeline :as pipe]
+            [lambdaui.testpipeline.simple-pipeline :as pipe]
             [lambdaui.core :as ui]))
 
 (defonce server (atom nil))
+
+(defonce current-pipeline (atom nil))
 
 (defn try-parse-int [port default-fn]
   (try (Integer/parseInt port) (catch NumberFormatException e (default-fn e))))
 
 (defn start-server [port]
   (git/init-ssh!)
-  (let [pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir "/tmp/foo"})]
+  (let [pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir "/tmp/foo" :ui-config {:name "WURST" :location :backend-location :path-prefix ""}})]
+    (reset! current-pipeline pipeline)
     (runners/start-one-run-after-another pipeline)
     (reset! server (http/run-server (ui/pipeline-routes pipeline) {:port port}))))
 

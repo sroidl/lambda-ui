@@ -1,4 +1,4 @@
-(ns lambdaui.simple-pipeline
+(ns lambdaui.testpipeline.simple-pipeline
   (:use [compojure.core])
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
