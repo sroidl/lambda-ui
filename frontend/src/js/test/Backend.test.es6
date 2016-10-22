@@ -41,9 +41,9 @@ describe("Backend", () => {
       it("should dispatch new messages to the store", () => {
         subject.requestOutput(dispatchMock, 1, 2);
 
-        websocketMock.onmessage("{\"first\": \"key\"}");
+        websocketMock.onmessage({data: "{ \"stepResult\" : { \"out\": \"first key\"} }"});
 
-        expect(dispatchMock).toBeCalledWith({type: "addBuildstepOutput", buildId: 1, stepId: 2, output: {first: "key"}});
+        expect(dispatchMock).toBeCalledWith({type: "addBuildstepOutput", buildId: 1, stepId: 2, output: ["first key"]});
       });
 
       it("should dispatch connection state on close", () => {

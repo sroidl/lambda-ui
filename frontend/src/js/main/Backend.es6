@@ -37,7 +37,14 @@ export class Backend {
       this._closeConnection(this.outputConnection);
       this.outputConnection = webSocket(this.outputUrl(buildId, stepId));
       const connection = this.outputConnection;
-      connection.onmessage = body => dispatch(addBuildstepOutput(buildId, stepId, JSON.parse(body)));
+        /* eslint-disable */
+        connection.onmessage = body => {
+            const data = JSON.parse(body.data);
+            const out = R.view(R.lensPath(["stepResult", "out"]))(data);
+            if(out) {
+                dispatch(addBuildstepOutput(buildId, stepId, data.stepResult.out.split("\n")));
+            }
+      };
       connection.onclose = () => dispatch(outputConnectionState("closed"));
       connection.onopen = () => dispatch(outputConnectionState("open"));
       connection.onerror = () => dispatch(outputConnectionState("error"));
