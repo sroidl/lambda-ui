@@ -4,7 +4,7 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [lambdacd "0.9.0"]
+                 [lambdacd "0.9.3"]
                  [compojure "1.5.0"]
                  [http-kit "2.1.18"]
                  [org.clojure/data.json "0.2.6"]]
@@ -18,5 +18,5 @@
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
                                   [ring-server "0.4.0"]]
-                   :aot          [lambdaui.core]
-                   :main         lambdaui.core}})
+                   :aot          [lambdaui.testpipeline.core]
+                   :main         lambdaui.testpipeline.core}})
