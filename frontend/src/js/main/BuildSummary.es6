@@ -26,8 +26,11 @@ const icon = (buildState) => {
 
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails} = properties;
-    const classesForState = "row buildSummary " + state;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open} = properties;
+    let classesForState = "row buildSummary " + state;
+    if (open) {
+        classesForState += " open";
+    }
     const iconClassName = "fa " + icon(state);
     let {endTime} = properties;
     if (!endTime) {
@@ -76,18 +79,22 @@ BuildSummary.propTypes = {
     state: PropTypes.string.isRequired,
     startTime: PropTypes.string.isRequired,
     toggleBuildDetails: PropTypes.func.isRequired,
-    endTime: PropTypes.string
+    endTime: PropTypes.string,
+    open: PropTypes.boolean
 };
 
-export const mapStateToProps = (_, props) => {
-    const {buildId, buildNumber, state, startTime, endTime} = props.build;
+export const mapStateToProps = (state, props) => {
+    const {buildId, buildNumber, startTime, endTime} = props.build;
+    const buildState = props.build.state;
+    const open = state.openedBuilds[buildId] || false;
 
     return {
         buildId: buildId,
         buildNumber: buildNumber,
-        state: state,
+        state: buildState,
         startTime: startTime,
-        endTime: endTime
+        endTime: endTime,
+        open: open
     };
 };
 
