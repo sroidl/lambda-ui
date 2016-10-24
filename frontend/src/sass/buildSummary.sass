@@ -8,11 +8,10 @@
   height: 100%
   display: inline-block
   content: ''
-  width: 10px
+  width: 26px
   background-color: #FFFFFF
   border-radius: 3px 0 0 3px
   transistion: width 0.1s ease-in-out
-  transition: padding 0.1s ease-in-out
 
 
 .buildSummary
@@ -22,8 +21,7 @@
   background-color: #FFFFFF
   border-radius: 3px
   margin-bottom: 8px
-  padding: 0px 0px 0px 26px
-  transition: padding 0.1s ease-in-out
+  transition: width 0.1s ease-in-out
 
 
 
@@ -42,7 +40,7 @@
 .buildSummary.success:before
   background-color: $green
 
-.buildSummary.success
+.buildSummary.open.success .buildInfo
   & .buildNumber, .buildIcon
     color: $green
 
@@ -75,7 +73,8 @@
 // Open
 .buildSummary
   &.open:before
-    width: 26px
+    width: 10px
+    transition: width 0.1s ease-in-out
 
   &.open
     & .buildIcon
@@ -92,10 +91,13 @@
 
 //Build Info
 .buildSummary .buildInfo
+  padding-left: 26px
+
   & .buildIcon
     position: absolute
     top: 12px
-    left: 12px
+    left: 6px
+    color: $white
 
   & .buildInfoRow
     display: inline-block
@@ -117,9 +119,9 @@
 
 //Build Info open
 .buildSummary.open .buildInfo
-  &.buildIcon
-    left: 6px
-    color: $lightGrey
+  & .buildIcon
+    left: 16px
+    color: $very-dark-grey
     transition: left 0.1s ease-in-out
 
 
