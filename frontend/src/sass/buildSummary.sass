@@ -1,69 +1,132 @@
+*
+  box-sizing: border-box
+
+.buildSummary:before
+  position: absolute
+  top: 0px
+  left: 0px
+  height: 100%
+  display: inline-block
+  content: ''
+  width: 10px
+  background-color: #FFFFFF
+  border-radius: 3px 0 0 3px
+  transistion: width 0.1s ease-in-out
+  transition: padding 0.1s ease-in-out
+
+
 .buildSummary
   margin-bottom: 10px
+  width: 100%
+  position: relative
+  background-color: #FFFFFF
+  border-radius: 3px
+  margin-bottom: 8px
+  padding: 0px 0px 0px 26px
+  transition: padding 0.1s ease-in-out
 
-  &.running
-    background-color: $blue
-    color: $lightGrey
 
-    & .buildDetails
-      border-color: $blue
 
-  &.waiting
-    background-color: $peru
-    color: $lightGrey
 
-    & .buildDetails
-      border-color: $peru
-
-  &.failed
-    background-color: $red
-    color: $lightGrey
-
-    & .buildDetails
-      border-color: $red
-
-  &.success
+// Buildstate Colors
+.buildSummary
+  &.success:before
     background-color: $green
-    color: $black
+  &.failed:before
+    background-color: $red
 
-    & .buildDetails
-      border-color: $green
+  &.running:before
+    background-color: $blue
 
-  .buildIcon
+// Success
+.buildSummary.success:before
+  background-color: $green
+
+.buildSummary.success
+  & .buildNumber, .buildIcon
+    color: $green
+
+
+// Waiting
+.buildSummary.waiting:before
+  background-color: $peru
+
+.buildSummary.waiting
+  & .buildNumber, .buildIcon
+    color: $peru
+
+// Failed
+.buildSummary.failed:before
+  background-color: $red
+
+.buildSummary.failed
+  & .buildNumber, .buildIcon
+    color: $red
+
+// Running
+.buildSummary.running:before
+  background-color: $blue
+
+.buildSummary.running
+  & .buildNumber, .buildIcon
+    color: $blue
+
+
+
+.buildSummary .buildDetails
+  padding: 20px 5px 10px 50px
+  background-color: $lightGrey
+
+// Open
+.buildSummary
+  &.open:before
+    width: 26px
+
+  &.open
+    & .buildIcon
+      color: $lightGrey
+
+    & .buildInfo
+      border-bottom: 2px solid $lightGrey
+
+    & .buildInfo .buildIcon
+      position: absolute
+      left: 6px
+      color: $white
+      transition: left 0.1s ease-in-out
+
+//Build Info
+.buildSummary .buildInfo
+  & .buildIcon
+    position: absolute
+    top: 12px
+    left: 12px
+
+  & .buildInfoRow
     display: inline-block
-    padding: 10px 30px
-    font-size: 2em
-    font-weight: bold
+    vertical-align: top
+    padding: 8px
+    font-size: 1em
+    color: $dark-grey
 
-  .buildNumber
-    display: inline-block
-    padding-top: 10px
-    font-size: 2em
-    font-weight: bold
+    & .buildNumber
+      vertical-align: top
+      font-size: 1.3em
 
-  .buildStartTime
-    display: inline-block
-    padding-top: 15px
-    font-size: 1.5em
+    &.overview
+      width: 180px
+      max-width: 180px
 
-  .buildDuration
-    display: inline-block
-    padding-top: 15px
-    font-size: 1.5em
+    & .fa
+      padding: 4px
 
-  .buildDetailsToggle
-    display: inline-block
-    padding: 10px 30px
-    font-size: 2em
-    font-weight: bold
+//Build Info open
+.buildSummary.open .buildInfo
+  &.buildIcon
+    left: 6px
     color: $lightGrey
+    transition: left 0.1s ease-in-out
 
-    &:hover
-      color: lighten($lightGrey, 20%)
 
-  .buildDetails
-    display: block
-    background-color: $lightGrey
-    border-width: 2px
-    border-style: solid
-    padding: 20px
+
+

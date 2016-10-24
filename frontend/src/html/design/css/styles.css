@@ -15,6 +15,7 @@ body{
 	padding: 8px;
 }
 
+/* done */
 .buildSummary{
 	width: 100%;
 	position: relative;
@@ -25,25 +26,30 @@ body{
 	transition: padding 0.1s ease-in-out;
 }
 
+/* done */
 .open .buildInfo{
 	border-bottom: 2px solid #F2F0EB;
 }
 
+/* done */
 .open .buildDetails{
 }
 
+/* done */
 .buildIcon{
 	position: absolute;
 	top: 12px;
 	left: 12px;
 }
 
+/* done */
 .open .buildIcon{
 	left: 6px;
 	color: #FFF;
 	transition: left 0.1s ease-in-out;
 }
 
+/* done */
 .buildSummary:before{
 	position: absolute;
 	top:0px;
@@ -58,23 +64,33 @@ body{
 	transition: padding 0.1s ease-in-out;
 
 }
+
+/* done */
 .buildSummary.success:before{background-color: #75BD70}
+
+/* done */
 .buildSummary.open:before{width: 26px;}
 
+/* done */
 .buildSummary.success .buildNumber, .buildSummary.success .buildIcon{color: #75BD70;}
+
+/* done */
 .buildSummary.open .buildIcon{color: #FFFFFF;}
 
+/*done*/
 .buildSummary .buildNumber{
 	vertical-align: top;
 	font-size: 1em;
 }
 
+/*done*/
 .infoRow{
 	display: inline-block;
 	vertical-align: top;
 	padding: 8px;
 }
 
+/*done*/
 .infoRow > div{
 	font-size: 0.8em;
 	color: #867976;
@@ -85,6 +101,7 @@ body{
 	font-size: 0.8em;
 }
 
+/*done*/
 .infoRow.overview{
 	width: 180px;
 	max-width: 180px;
@@ -95,6 +112,7 @@ body{
 	float: right;
 }
 
+/*done*/
 .buildSummary .infoRow .fa{
 	padding-right: 4px;
 }
@@ -102,10 +120,15 @@ body{
 .buildSummary .buildDetails{display: none;}
 .buildSummary.open .buildDetails{display: block;}
 
+
 .buildDetails{
 	padding: 20px 5px 10px 50px;
 	background-color: #ECE9E2;
 }
+
+
+
+
 
 .buildstep{
 	position: relative;
