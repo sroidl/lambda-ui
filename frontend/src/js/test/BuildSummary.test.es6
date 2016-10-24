@@ -44,7 +44,7 @@ describe("BuildSummary Toggle", () => {
     const inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock, startTime: {toISOString: jest.fn()}};
 
     const component = shallow(buildSummary(inputProps));
-    component.find(".buildDetailsToggle").simulate("click");
+    component.find(".buildInfo").simulate("click");
 
     expect(toggleFnMock).toBeCalled();
   });
@@ -52,7 +52,8 @@ describe("BuildSummary Toggle", () => {
 
 describe("BuildSummary redux mapping", () => {
   it("should map to props properly", () => {
-    const state = {summaries: {1: {buildId: 1, buildNumber: 12, state:"running", endTime:"10min", startTime:"12sec"}}};
+    const state = {summaries: {1: {buildId: 1, buildNumber: 12, state:"running", endTime:"10min", startTime:"12sec"}},
+                    openedBuilds: {1: true}};
 
     const props = subject.mapStateToProps(state, {build: {buildId: 1, buildNumber: 12, state:"success", endTime:"10min", startTime:"12sec"}});
 
@@ -61,7 +62,8 @@ describe("BuildSummary redux mapping", () => {
       buildNumber: 12,
       state: "success",
       endTime: "10min",
-      startTime: "12sec"
+      startTime: "12sec",
+      open: true
     });
 
   });

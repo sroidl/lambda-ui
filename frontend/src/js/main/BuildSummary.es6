@@ -42,16 +42,19 @@ export const renderSummary = (properties) => {
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
     const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).seconds();
-    const durationHtml = <div className="three columns buildDuration">
-        <span>Duration:</span><FormattedDuration seconds={duration}/></div>;
 
     return <div className={classesForState}>
 
         <div className="buildInfo" onClick={toggleBuildDetails}>
             <div className="buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
-            <div className="three columns buildNumber">Build #{buildNumber}</div>
-            <div className="three columns buildStartTime">Started: {startMoment}</div>
-            {durationHtml}
+            <div className="buildInfoRow overview">
+                <div className="buildNumber">Build #{buildNumber}</div>
+            </div>
+            <div className="buildInfoRow time">
+                <div className="buildStartTime">Started: {startMoment}</div>
+                <div className="buildDuration">Duration: <FormattedDuration seconds={duration}/></div>
+            </div>
+
         </div>
         <BuildDetails buildId={buildId}/>
     </div>;
