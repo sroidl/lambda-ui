@@ -1,34 +1,81 @@
 .buildStep
-  margin-left: 10px
-  border-style: solid
-  border-color: black
-  border-radius: 0.3em
-  border-width: thin
-  padding: 5px
+  position: relative
   display: inline-block
+  border: 0px solid $dark-grey
+  border-radius: 3px
+  padding: 16px 8px 4px 8px
+  margin: 0 30px 20px 0
+  color: $very-dark-grey
+  background-color: $white
+  min-width: 80px
+  max-width: 180px
+  vertical-align: top
 
-  &.success
-    background-color: $green
-    color: $lightGrey
+.buildStep:first-of-type
+  margin-left: -30px
 
-  &.failure
-    background-color: $red
-    color: $lightGrey
 
-  &.running
-    background-color: $blue
-    color: $lightGrey
 
-  &.pending
-    background-color: $lightGrey
-    color: black
+.buildStep:before, .buildStep:after
+  content: ''
+  position: absolute
+  top: 3px
+  height: 2px
 
-  &.killed
-    background-color: $lightGrey
-    color: black
+.buildStep:before
+  width: 16px
+  left: -18px
+  background-color: $dark-grey
 
-  &.waiting
-    background-color: $peru
-    color: black
+.buildStep:after
+  width: 13px
+  left: -15px
+  background-color: $dark-grey
 
-  .showOutputLink
+.buildStep:first-of-type:before, .buildStep:first-of-type:after
+  display: none
+
+.buildStep
+  & .buildIcon
+    position: absolute
+    color: $white
+    top: -12px
+    left: -12px
+    border: 0px solid #3D3636
+    border-radius: 50%
+    width: 28px
+    height: 28px
+    text-align: center
+
+    & i
+      line-height: 28px
+      height: 28px
+
+      .running &
+        -webkit-animation: spin 4s linear infinite
+        -moz-animation: spin 4s linear infinite
+        animation: spin 4s linear infinite
+
+  & .stepName
+    font-size: 0.8em
+
+  & .stepDuration
+    position: absolute
+    font-size: 0.7em
+    font-weight: 100
+    right: 4px
+    top: 2px
+
+.buildStep.success .buildIcon
+  background-color: $green
+.buildStep.failure .buildIcon
+  background-color: $red
+.buildStep.running .buildIcon
+  background-color: $blue
+
+.buildStep.pending .buildIcon
+  background-color: $dark-grey
+
+.buildStep.waiting .buildIcon
+  background-color: $peru
+
