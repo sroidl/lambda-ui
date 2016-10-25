@@ -21,11 +21,15 @@
    If last step failed, return failed
    If all steps are successful, return success"
   [build-steps]
-  (cond
-    (some #(= :waiting (:status %)) (vals build-steps)) :waiting
-    (some #(= :running (:status %)) (vals build-steps)) :running
-    (= :failure (:status (last (vals build-steps)))) :failed
-    :default (:status (first (vals build-steps)))))
+  (let [aggregated-state (cond
+                           (some #(= :waiting (:status %)) (vals build-steps)) :waiting
+                           (some #(= :running (:status %)) (vals build-steps)) :running
+                           (= :failure (:status (last (vals build-steps)))) :failed
+                           :default (:status (first (vals build-steps))))]
+    (case aggregated-state
+      :failure :failed
+      aggregated-state))
+  )
 
 (defn extract-start-time [build-steps]
   (when-let [^DateTime joda-start-time (:first-updated-at (first (vals build-steps)))]

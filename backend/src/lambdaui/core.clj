@@ -41,9 +41,6 @@
   )
 
 (defn pipeline-routes [pipeline]
-
-  (logger/log :info  (str "Using ui-config: " (get-in pipeline [:context :config :ui-config])))
-
   (ring-json/wrap-json-response
     (routes (context "/lambdaui/api" [] (new-api/api-routes pipeline))
             (POST "/lambdaui/api/triggerNew" [] (do (trigger-new pipeline) {}))
