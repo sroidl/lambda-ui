@@ -17,13 +17,24 @@
 (defn ls [args ctx]
   (shell/bash ctx (:cwd args) "ls"))
 
-(defonce should-fail? (atom false))
+(defonce lastStatus (atom nil))
 
-(defn fail-every-other-run [_ _]
-  (swap! should-fail? not)
-  (if @should-fail?
-    {:status :failure}
-    {:status :success}))
+(defn swapStatus [lastStatus]
+  (case lastStatus
+    :success :failure
+    :failure :waiting
+    :waiting :success
+    :success)
+  )
+
+
+(defn long-running-task-10s [_ _]
+  (Thread/sleep 10000)
+  {:status :success}
+  )
+
+(defn different-status [_ _]
+  {:status (swap! lastStatus swapStatus)})
 
 (def pipeline-structure
   `((either
@@ -33,5 +44,6 @@
        clone
        git/list-changes
        ls)
-     fail-every-other-run
+     different-status
+     long-running-task-10s
      ))
