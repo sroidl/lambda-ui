@@ -26,13 +26,17 @@
 
 (defn create-config [pipeline]
   (let [config (get-in pipeline [:context :config :ui-config])
-        name (:name config)
-        location (-> :location config
-                     extract-location)
-        path-prefix (:path-prefix config)]
+        name (or (:name config) "Pipeline")
+        location (or (-> :location config
+                         extract-location) "window.location")
+        path-prefix  (:path-prefix config)
 
-    (format "window.lambdaui = window.lambdaui || {};
-             window.lambdaui.config = { name: '%s', baseUrl: %s + '%s'};" name location path-prefix))
+        prefix (if path-prefix (str " + '" path-prefix "'") "")
+        location (str location prefix)
+        ]
+
+    (str "window.lambdaui = window.lambdaui || {}; "
+         "window.lambdaui.config = { name: '" name "', baseUrl: " location "};"))
   )
 
 (defn pipeline-routes [pipeline]
