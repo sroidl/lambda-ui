@@ -6,7 +6,10 @@
     [lambdacd.ui.api :as old-api]
     [lambdacd.ui.ui-page :as old-ui]
     [lambdacd.steps.manualtrigger :as manualtrigger]
-    [compojure.route :as route])
+    [compojure.route :as route]
+    [clojure.tools.logging :as logger]
+
+    )
   (:gen-class)
   )
 
@@ -20,15 +23,13 @@
     (manualtrigger/post-id ctx (get-trigger-id pipeline) {})))
 
 (defn extract-location [location]
-  (if (= location :backend-location)
-    "window.location.host"
-    location))
+  (when (not (= location :backend-location)) location))
 
 (defn create-config [pipeline]
   (let [config (get-in pipeline [:context :config :ui-config])
         name (or (:name config) "Pipeline")
         location (or (extract-location (:location config))
-                     "window.location")
+                     "window.location.host")
         path-prefix  (:path-prefix config)
 
         prefix (if path-prefix (str " + '" path-prefix "'") "")
@@ -40,6 +41,9 @@
   )
 
 (defn pipeline-routes [pipeline]
+
+  (logger/log :info  (str "Using ui-config: " (get-in pipeline [:context :config :ui-config])))
+
   (ring-json/wrap-json-response
     (routes (context "/lambdaui/api" [] (new-api/api-routes pipeline))
             (POST "/lambdaui/api/triggerNew" [] (do (trigger-new pipeline) {}))
