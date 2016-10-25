@@ -27,8 +27,8 @@
 (defn create-config [pipeline]
   (let [config (get-in pipeline [:context :config :ui-config])
         name (or (:name config) "Pipeline")
-        location (or (-> :location config
-                         extract-location) "window.location")
+        location (or (extract-location (:location config))
+                     "window.location")
         path-prefix  (:path-prefix config)
 
         prefix (if path-prefix (str " + '" path-prefix "'") "")
