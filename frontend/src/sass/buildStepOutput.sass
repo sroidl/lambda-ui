@@ -2,3 +2,45 @@
 
 .buildStepOutput
   background-color: $lightGrey
+
+.layer
+  display: none
+  position: fixed
+  width: 90%
+  height: 90%
+  color: $black
+  border-radius: 3px
+  background-color: $buildInfo-open
+  z-index: 1
+  margin: auto
+  left: 5%
+  top: 5%
+  padding: 16px
+  overflow: hidden
+
+.layer.open
+  display: inline-block
+
+.layerClose
+  position: absolute
+  right: 16px
+  top: 16px
+
+.layerTitle
+  position: absolute
+  font-size: 2em
+
+.layerText
+  overflow: auto
+  margin-top: 50px
+  max-height: calc(100% - 50px)
+  padding: 8px
+  background-color: $white
+
+.layerShadow
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0
+  left: 0
+  background-color: $transparent-black

@@ -1,6 +1,7 @@
 /* globals describe it expect */
 import {OutputReducer as subject} from "reducers/Output.es6";
 import {showBuildOutput, ADD_BUILDSTEP_OUTPUT} from "Actions.es6";
+import {hideBuildOutput} from "actions/OutputActions.es6";
 
 describe("Output reducer", () => {
     it("should return oldState if not SHOW_BUILD_OUTPUT action", () => {
@@ -47,3 +48,27 @@ describe("OutputReducer: addBuildstepOutput", () => {
 
 });
 
+describe("OutputReducer: hideBuildstepOutput", () => {
+    it("should return oldState if no HIDE OUTPUT action was given", () => {
+        //given
+        const oldState = {old: "state"};
+
+        //when
+        const result = subject(oldState, {type: "NO HIDE OUTPUT ACTION"});
+
+        //then
+        expect(result).toBe(oldState);
+    });
+
+    it("should set showOutput value to false on HIDE OUTPUT action", () => {
+        //given
+        const oldState = {showOutput: true, some: "otherStuff"};
+
+        //when
+        const result = subject(oldState, hideBuildOutput());
+
+        //then
+        expect(result).not.toBe(oldState);
+        expect(result).toEqual({showOutput: false, some: "otherStuff"});
+    });
+});

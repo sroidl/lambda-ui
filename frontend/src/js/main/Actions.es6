@@ -8,6 +8,7 @@ export const SHOW_BUILD_OUTPUT = "showOutput";
 export const ADD_BUILDSTEP_OUTPUT = "addBuildstepOutput";
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 
+
 export const toggleBuildDetails = (id) => {
     return {type: TOGGLE_BUILD_DETAILS, buildId: id};
 };

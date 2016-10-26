@@ -1,6 +1,7 @@
 /* globals describe it expect jest */
 import * as subject from "BuildStepOutput.es6";
 import {shallow} from "enzyme";
+import {HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
 
 describe("Output presentation", () => {
   it("should be hidden when output is false", () => {
@@ -16,7 +17,7 @@ describe("Output presentation", () => {
 
     expect(component.find("#outputHeader__buildId").text()).toBe("1");
     expect(component.find("#outputHeader__stepName").text()).toBe("meinStep (stepId)");
-    expect(component.find("#outputContent").text()).toBe("hierTestOutput");
+    expect(component.find(".layerText").text()).toBe("hierTestOutput");
 
   });
 
@@ -27,6 +28,18 @@ describe("Output presentation", () => {
     shallow(subject.BuildStepOutput(input));
 
     expect(requestFnMock).toBeCalled();
+  });
+
+  it("should call closeLayer function if close button was clicked", () => {
+    //given
+    let wasClicked = false;
+    const closeLayerFunctionFake = () => {wasClicked = true;};
+    const input = {showOutput: true, buildId: 1, stepName: "2", requestFn: () => {}, closeLayerFn: closeLayerFunctionFake};
+
+    const component = shallow(subject.BuildStepOutput(input));
+    component.find(".layerClose").simulate("click");
+
+    expect(wasClicked).toEqual(true);
   });
 
 });
@@ -54,6 +67,16 @@ describe("Output redux", () => {
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true};
 
     expect(subject.mapStateToProps(state)).toEqual(expected);
+  });
+
+  it("should dispatch HideOutputAction on closeLayerFn", () => {
+    let dispatchedAction = {};
+    const dispatchFake = (action) => dispatchedAction = action;
+    const props = subject.mapDispatchToProps(dispatchFake);
+
+    props.closeLayerFn();
+
+    expect(dispatchedAction).toEqual({type: HIDE_BUILD_OUTPUT});
   });
 
 });
