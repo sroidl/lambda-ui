@@ -3,6 +3,7 @@
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
+            [lambdacd.steps.support :refer [capture-output]]
             [lambdacd-git.core :as git]))
 
 (def repo "https://github.com/flosell/testrepo.git")
@@ -27,10 +28,17 @@
     :success)
   )
 
+(defn spy [x]
+  (println x)
+  x)
 
-(defn long-running-task-10s [_ _]
-  (Thread/sleep 10000)
-  {:status :success}
+(defn a-lot-output [args context]
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; done")
+  )
+
+
+(defn long-running-task-20s [args context]
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; sleep 0.1s; done")
   )
 
 (defn different-status [_ _]
@@ -44,6 +52,7 @@
        clone
        git/list-changes
        ls)
+     a-lot-output
      different-status
-     long-running-task-10s
+     long-running-task-20s
      ))
