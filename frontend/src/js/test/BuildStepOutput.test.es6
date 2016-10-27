@@ -1,4 +1,4 @@
-/* globals describe it expect jest */
+/* globals describe it xit expect jest */
 import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "BuildStepOutput.es6"
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
@@ -76,3 +76,12 @@ describe("Output redux", () => {
   });
 
 });
+
+describe("Output scrollbar", () => {
+    xit("should check, that output text is scroll down", () => {
+
+        const component = shallow(<BuildStepOutput showOutput={true} buildId = {1} stepName = {"meinStep"} stepId = {"stepId"} requestFn={() => {}} />);
+        // TODO: Implement with real browser testing
+
+    });
+})

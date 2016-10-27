@@ -21,6 +21,11 @@ export class BuildStepOutput extends React.Component {
         super(props);
     }
 
+    componentDidUpdate(){
+        const element = this.layerText;
+        element.scrollTop = element.scrollHeight;
+    }
+
     outputLines() {
         const {buildId, requestFn, stepId} = this.props;
         let {output} = this.props;
@@ -54,7 +59,7 @@ export class BuildStepOutput extends React.Component {
                 </div>
                 <div className="layerClose" onClick={closeLayerFn}><i className="fa fa-times" aria-hidden="true"></i>
                 </div>
-                <div className="layerText">{this.outputLines()}</div>
+                <div ref={(div) => {this.layerText = div;}} className="layerText">{this.outputLines()}</div>
             </div>
         </div>;
     }
