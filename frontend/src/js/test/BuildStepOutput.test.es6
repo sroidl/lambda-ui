@@ -1,19 +1,18 @@
 /* globals describe it expect jest */
-import * as subject from "BuildStepOutput.es6";
+import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "BuildStepOutput.es6"
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
+import React from "react";
 
 describe("Output presentation", () => {
   it("should be hidden when output is false", () => {
-    const input = {showOutput: false};
+      const component = shallow(<BuildStepOutput showOutput={false}/>);
 
-    expect(subject.BuildStepOutput(input)).toBe(null);
+      expect(component.type()).toBe(null);
   });
 
   it("should display output of step if not hidden", () => {
-    const input = {showOutput: true, buildId: 1, stepName: "meinStep", stepId: "stepId", output: "hierTestOutput"};
-
-    const component = shallow(subject.BuildStepOutput(input));
+    const component = shallow(<BuildStepOutput showOutput={true} buildId = { 1 } stepName = { "meinStep"} stepId = { "stepId"} output = { "hierTestOutput"}/>);
 
     expect(component.find("#outputHeader__buildId").text()).toBe("1");
     expect(component.find("#outputHeader__stepName").text()).toBe("meinStep (stepId)");
@@ -22,10 +21,8 @@ describe("Output presentation", () => {
   });
 
   it("should request output if no output exists in build step", () => {
-    const requestFnMock = jest.fn();
-    const input = {showOutput: true, buildId: 1, stepName: "meinStep", requestFn: requestFnMock};
-
-    shallow(subject.BuildStepOutput(input));
+      const requestFnMock = jest.fn();
+      shallow(<BuildStepOutput showOutput={true} buildId = { 1 } stepName = { "meinStep"} requestFn = {requestFnMock} />);
 
     expect(requestFnMock).toBeCalled();
   });
@@ -34,9 +31,8 @@ describe("Output presentation", () => {
     //given
     let wasClicked = false;
     const closeLayerFunctionFake = () => {wasClicked = true;};
-    const input = {showOutput: true, buildId: 1, stepName: "2", requestFn: () => {}, closeLayerFn: closeLayerFunctionFake};
 
-    const component = shallow(subject.BuildStepOutput(input));
+    const component = shallow(<BuildStepOutput showOutput={true} buildId = { 1 } stepName = { "2"} requestFn = {() => {}} closeLayerFn={closeLayerFunctionFake} />);
     component.find(".layerClose").simulate("click");
 
     expect(wasClicked).toEqual(true);
@@ -46,7 +42,7 @@ describe("Output presentation", () => {
 
 describe("Output redux", () => {
   it("should not output render props if hidden", () => {
-    expect(subject.mapStateToProps({output: {showOutput: false}},{})).toEqual({showOutput:false});
+    expect(mapStateToProps({output: {showOutput: false}},{})).toEqual({showOutput:false});
   });
 
   it("should get output from buildstep", () => {
@@ -56,7 +52,7 @@ describe("Output redux", () => {
     };
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true};
 
-    expect(subject.mapStateToProps(state)).toEqual(expected);
+    expect(mapStateToProps(state)).toEqual(expected);
   });
 
   it("should get undefined from buildstep if no output exists", () => {
@@ -66,13 +62,13 @@ describe("Output redux", () => {
     };
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true};
 
-    expect(subject.mapStateToProps(state)).toEqual(expected);
+    expect(mapStateToProps(state)).toEqual(expected);
   });
 
   it("should dispatch HideOutputAction on closeLayerFn", () => {
     let dispatchedAction = {};
     const dispatchFake = (action) => dispatchedAction = action;
-    const props = subject.mapDispatchToProps(dispatchFake);
+    const props = mapDispatchToProps(dispatchFake);
 
     props.closeLayerFn();
 
