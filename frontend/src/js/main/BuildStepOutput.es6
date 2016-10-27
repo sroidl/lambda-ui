@@ -15,41 +15,50 @@ const ConnectionState_stateMapping = state => {
 };
 const ConnectionStateRedux = connect(ConnectionState_stateMapping)(ConnectionState);
 
+export class BuildStepOutput extends React.Component {
 
-export const BuildStepOutput = (props) => {
-    const {buildId, stepName, showOutput, requestFn, stepId, closeLayerFn} = props;
-    let {output} = props;
-
-    if (!showOutput) {
-        return null;
-    }
-    if (!output) {
-        requestFn(buildId, stepId);
-        output = ["Requesting Output from Server"];
+    constructor(props) {
+        super(props);
     }
 
+    outputLines() {
+        const {buildId, requestFn, stepId} = this.props;
+        let {output} = this.props;
+        if (!output) {
+            requestFn(buildId, stepId);
+            output = ["Requesting Output from Server"];
+        }
 
-    const lineKey = index => "line-" + index;
+        const lineKey = index => "line-" + index;
+        const mapIndexed = R.addIndex(R.map);
+        return (mapIndexed((line, index) => <div key={lineKey(index)}
+                                                 className="outputLine">{line}</div>)(output));
+    }
 
-    const mapIndexed = R.addIndex(R.map);
-    const outputLines = mapIndexed((line, index) => <div key={lineKey(index)}
-                                                         className="outputLine">{line}</div>)(output);
+    render() {
+        const {buildId, stepName, showOutput, stepId, closeLayerFn} = this.props;
 
-    return <div className="buildStepOutput ">
-        <div className="layerShadow"/>
-        <div id="outputContent" className="layer open">
-            <div id="outputHeader" className="layerTitle">
-                <span>Output of Build </span>
-                <span id="outputHeader__buildId">{buildId}</span>
-                <span> Step </span>
-                <span id="outputHeader__stepName">{stepName} ({stepId})</span>
-                <ConnectionStateRedux/>
+        if (!showOutput) {
+            return null;
+        }
+
+        return <div className="buildStepOutput ">
+            <div className="layerShadow"/>
+            <div id="outputContent" className="layer open">
+                <div id="outputHeader" className="layerTitle">
+                    <span>Output of Build </span>
+                    <span id="outputHeader__buildId">{buildId}</span>
+                    <span> Step </span>
+                    <span id="outputHeader__stepName">{stepName} ({stepId})</span>
+                    <ConnectionStateRedux/>
+                </div>
+                <div className="layerClose" onClick={closeLayerFn}><i className="fa fa-times" aria-hidden="true"></i>
+                </div>
+                <div className="layerText">{this.outputLines()}</div>
             </div>
-            <div className="layerClose" onClick={closeLayerFn}> <i className="fa fa-times" aria-hidden="true"></i></div>
-            <div className="layerText">{outputLines}</div>
-        </div>
-    </div>;
-};
+        </div>;
+    }
+}
 
 BuildStepOutput.propTypes = {
     buildId: PropTypes.any,
@@ -87,8 +96,10 @@ export const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => {
-    return {requestFn: (buildId, stepId) => dispatch(requestOutput(buildId, stepId)),
-            closeLayerFn: () => dispatch(hideBuildOutput())};
+    return {
+        requestFn: (buildId, stepId) => dispatch(requestOutput(buildId, stepId)),
+        closeLayerFn: () => dispatch(hideBuildOutput())
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuildStepOutput);
