@@ -58,6 +58,7 @@ BuildStepOutput.propTypes = {
     showOutput: PropTypes.bool,
     requestFn: PropTypes.func,
     stepId: PropTypes.any,
+    closeLayerFn: PropTypes.func
 };
 
 const outputHiddenProps = {showOutput: false};
