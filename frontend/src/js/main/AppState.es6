@@ -7,25 +7,25 @@ import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6
 import {OutputReducer} from "./reducers/Output.es6";
 
 const initialState = {
-  summaries: {},
-  openedBuilds: {},
-  buildDetails: {},
-  config: {name : "PIPELINE_NAME", baseUrl: "localhost:8081"},
-  output: {showOutput: false}
+    summaries: {},
+    openedBuilds: {},
+    buildDetails: {},
+    config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
+    output: {showOutput: false}
 };
 
 const rootReducer = combineReducers({
-  openedBuilds: ToggleBuildDetailsReducer,
-  summaries:  BuildSummariesReducer,
-  buildDetails: BuildDetailsReducer,
-  config: PipelineConfigurationReducer,
-  viewBuildSteps: ViewBuildStepReducer,
-  output: OutputReducer
+    openedBuilds: ToggleBuildDetailsReducer,
+    summaries: BuildSummariesReducer,
+    buildDetails: BuildDetailsReducer,
+    config: PipelineConfigurationReducer,
+    viewBuildSteps: ViewBuildStepReducer,
+    output: OutputReducer
 });
 
 const middleware = compose(
     applyMiddleware(ReduxThunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
-  );
+);
 
-export const createLambdaUiStore = () => createStore(rootReducer, initialState,  middleware);
+export const createLambdaUiStore = () => createStore(rootReducer, initialState, middleware);

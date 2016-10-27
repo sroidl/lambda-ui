@@ -21,7 +21,7 @@ export const changeBuildSummary = (buildId, newAttributes) => {
     return {type: CHANGE_SUMMARY, buildId: buildId, newAttributes: newAttributes};
 };
 
-export const addBuildDetails = (buildId,buildDetails) => {
+export const addBuildDetails = (buildId, buildDetails) => {
     return {type: ADD_BUILD_DETAILS, buildId: buildId, buildDetails: buildDetails};
 };
 
