@@ -3,20 +3,9 @@
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
-            [lambdacd.steps.support :refer [capture-output]]
-            [lambdacd-git.core :as git]))
+            [lambdacd.steps.support :refer [capture-output]]))
 
 (def repo "https://github.com/flosell/testrepo.git")
-
-(defn wait-for-git [args ctx] `(git/wait-for-git ctx repo
-                                                 :ref "refs/heads/master"
-                                                 :ms-between-polls (* 60 1000)))
-
-(defn clone [args ctx]
-  (git/clone ctx repo (:revision args) (:cwd args)))
-
-(defn ls [args ctx]
-  (shell/bash ctx (:cwd args) "ls"))
 
 (defonce lastStatus (atom nil))
 
@@ -45,13 +34,7 @@
   {:status (swap! lastStatus swapStatus)})
 
 (def pipeline-structure
-  `((either
-      wait-for-manual-trigger
-      wait-for-git)
-     (with-workspace
-       clone
-       git/list-changes
-       ls)
+  `( wait-for-manual-trigger
      a-lot-output
      different-status
      long-running-task-20s
