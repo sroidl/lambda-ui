@@ -1,7 +1,7 @@
 /* globals Map */
 import * as R from "ramda";
 import {webSocket} from "./WebSocketFactory.es6";
-import {addBuildSummary} from "./Actions.es6";
+import {addBuildSummary} from "actions/BuildSummaryActions.es6";
 import {addBuildstepOutput, outputConnectionState} from "./actions/OutputActions.es6";
 import {summariesConnectionState} from "./actions/BackendActions.es6";
 import {addBuildDetails} from "./actions/BuildDetailActions.es6";
