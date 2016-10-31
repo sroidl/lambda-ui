@@ -2,7 +2,7 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import BuildStep from "./BuildStep.es6";
 import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
-import {requestDetails} from "./actions/BackendActions.es6";
+import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 
 export const BuildDetails = (props) => {
@@ -76,7 +76,7 @@ export const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        requestDetailsFn: () => dispatch(requestDetails(ownProps.buildId))
+        requestDetailsFn: () => dispatch(requestDetailsPolling(ownProps.buildId))
     };
 };
 

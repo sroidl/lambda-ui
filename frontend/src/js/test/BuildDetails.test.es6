@@ -6,7 +6,7 @@ import {shallow, mount} from "enzyme";
 import {MockStore} from "./testsupport/TestSupport.es6";
 import React from "react";
 import { Provider } from "react-redux";
-import {requestDetails as requestDetailsAction} from "actions/BackendActions.es6";
+import {requestDetailsPolling as requestDetailsAction} from "actions/BackendActions.es6";
 
 
 export const _it = () => {};
