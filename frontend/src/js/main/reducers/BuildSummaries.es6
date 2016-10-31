@@ -1,5 +1,4 @@
-import {CHANGE_SUMMARY} from "../Actions.es6";
-import {ADD_SUMMARIES} from "actions/BuildSummaryActions.es6";
+import {ADD_SUMMARIES, CHANGE_SUMMARY} from "actions/BuildSummaryActions.es6";
 import * as R from "ramda";
 
 const transformBuildSummary = (summary) => {
