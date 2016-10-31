@@ -15,5 +15,11 @@ describe("OutputActions", () => {
                                 stepId: 1,
                                 output: "Output"});
     });
+
+    it("should return outputConnectionState action object", () =>{
+        const newAction = subject.outputConnectionState({});
+        expect(newAction).toEqual({type: "outputConnectionState",
+                                state: {}});
+    });
 });
 

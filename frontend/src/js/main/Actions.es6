@@ -5,7 +5,6 @@ export const ADD_BUILD_DETAILS = "addBuildDetails";
 export const VIEW_BUILD_STEP = "viewBuildStep";
 export const ADD_CONFIGURATION = "addConfiguration";
 export const SHOW_BUILD_OUTPUT = "showOutput";
-export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 
 
 // DETAILS
@@ -43,10 +42,4 @@ export const addConfiguration = config => {
 // OUTPUT
 export const showBuildOutput = (buildId, stepId) => {
     return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
-};
-
-
-// OUTPUT
-export const outputConnectionState = (connectionState) => {
-    return {type: OUTPUT_CONNECTION_STATE, state: connectionState};
 };

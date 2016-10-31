@@ -1,5 +1,5 @@
-import {SHOW_BUILD_OUTPUT, OUTPUT_CONNECTION_STATE} from "../Actions.es6";
-import {ADD_BUILDSTEP_OUTPUT, HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
+import {SHOW_BUILD_OUTPUT} from "../Actions.es6";
+import {ADD_BUILDSTEP_OUTPUT, HIDE_BUILD_OUTPUT, OUTPUT_CONNECTION_STATE} from "actions/OutputActions.es6";
 import * as R from "ramda";
 
 export const OutputReducer = (oldState = {showOutput: false}, action) => {
