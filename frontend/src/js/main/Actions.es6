@@ -1,6 +1,5 @@
 export const ADD_SUMMARIES = "addBuildSummaries";
 export const CHANGE_SUMMARY = "changeBuildSummary";
-export const ADD_BUILD_DETAILS = "addBuildDetails";
 export const VIEW_BUILD_STEP = "viewBuildStep";
 export const ADD_CONFIGURATION = "addConfiguration";
 export const SHOW_BUILD_OUTPUT = "showOutput";
@@ -13,11 +12,6 @@ export const addBuildSummary = (summary) => {
 // SUMMARY
 export const changeBuildSummary = (buildId, newAttributes) => {
     return {type: CHANGE_SUMMARY, buildId: buildId, newAttributes: newAttributes};
-};
-
-// DETAILS
-export const addBuildDetails = (buildId, buildDetails) => {
-    return {type: ADD_BUILD_DETAILS, buildId: buildId, buildDetails: buildDetails};
 };
 
 // DETAILS
