@@ -21,5 +21,12 @@ describe("OutputActions", () => {
         expect(newAction).toEqual({type: "outputConnectionState",
                                 state: {}});
     });
+
+    it("should return showBuildOutput action object", () => {
+        const newAction = subject.showBuildOutput(1,2);
+        expect(newAction).toEqual({type: "showOutput",
+                                buildId: 1,
+                                stepId: 2});
+    });
 });
 

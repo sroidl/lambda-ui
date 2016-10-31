@@ -1,8 +1,8 @@
 /* globals jest describe expect it */
-jest.mock("../main/Actions.es6");
 jest.mock("../main/actions/BuildDetailActions.es6");
-import {showBuildOutput} from "Actions.es6";
+jest.mock("../main/actions/OutputActions.es6");
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
+import {showBuildOutput} from "actions/OutputActions.es6";
 import React from "react";
 import {shallow, mount} from "enzyme";
 import BuildStepRedux, {BuildStep} from "BuildStep.es6";

@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import Moment from "moment";
 import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
-import {showBuildOutput} from "./Actions.es6";
+import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 
 const duration = ({startTime, endTime}) => {
