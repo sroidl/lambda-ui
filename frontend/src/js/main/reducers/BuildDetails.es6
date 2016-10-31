@@ -1,4 +1,5 @@
-import {ADD_BUILD_DETAILS, VIEW_BUILD_STEP} from "../Actions.es6";
+import {ADD_BUILD_DETAILS} from "../Actions.es6";
+import {VIEW_BUILD_STEP} from "actions/BuildDetailActions.es6";
 
 export const BuildDetailsReducer = (oldState = {}, action) => {
     switch (action.type) {

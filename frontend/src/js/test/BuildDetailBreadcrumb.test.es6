@@ -3,7 +3,7 @@
 import React from "react";
 import * as subject from "BuildDetailBreadcrumb.es6";
 import {BuildDetailBreadcrumb} from "BuildDetailBreadcrumb.es6";
-import {viewBuildStep} from "Actions.es6";
+import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {shallow} from "enzyme";
 
 const emptyFn = () => {};

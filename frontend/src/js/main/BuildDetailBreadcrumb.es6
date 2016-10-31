@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
-import {viewBuildStep} from "./Actions.es6";
+import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import "../../sass/buildDetails.sass";
 import {flatTree} from "./FunctionalUtils.es6";
 

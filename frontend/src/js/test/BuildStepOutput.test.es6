@@ -66,13 +66,12 @@ describe("Output redux", () => {
   });
 
   it("should dispatch HideOutputAction on closeLayerFn", () => {
-    let dispatchedAction = {};
-    const dispatchFake = (action) => dispatchedAction = action;
-    const props = mapDispatchToProps(dispatchFake);
+    const dispatchMock = jest.fn();
+    const props = mapDispatchToProps(dispatchMock);
 
     props.closeLayerFn();
 
-    expect(dispatchedAction).toEqual({type: HIDE_BUILD_OUTPUT});
+    expect(dispatchMock).toBeCalledWith({type: HIDE_BUILD_OUTPUT});
   });
 
 });
