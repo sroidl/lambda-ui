@@ -23,5 +23,3 @@ deploy:
   buildpack: clojure
   provider: heroku
   app: lambdaui-snapshot
-  run:
-    - restart
