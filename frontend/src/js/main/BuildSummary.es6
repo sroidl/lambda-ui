@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import BuildDetails from "./BuildDetails.es6";
-import {toggleBuildDetails as toggleAction} from "./Actions.es6";
+import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions";
 import Moment, {now} from "moment";
 
 import {FormattedDuration} from "./DateAndTime.es6";
