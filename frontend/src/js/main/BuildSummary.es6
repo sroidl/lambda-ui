@@ -37,7 +37,6 @@ export const renderSummary = (properties) => {
         endTime = now();
     }
 
-
     const timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
@@ -51,10 +50,9 @@ export const renderSummary = (properties) => {
                 <div className="buildNumber">Build #{buildNumber}</div>
             </div>
             <div className="buildInfoRow time">
-                <div className="buildStartTime">Started: {startMoment}</div>
-                <div className="buildDuration">Duration: <FormattedDuration seconds={duration}/></div>
+                <div className="buildStartTime"><i className="fa fa-flag-checkered" aria-hidden="true"></i>Started: {startMoment}</div>
+                <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration: <FormattedDuration seconds={duration}/></div>
             </div>
-
         </div>
         <BuildDetails buildId={buildId}/>
     </div>;
