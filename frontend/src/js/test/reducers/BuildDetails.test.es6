@@ -1,8 +1,7 @@
 /* globals describe it expect */
 /* eslint-disable */
 import {BuildDetailsReducer as subject, ViewBuildStepReducer as viewReducer} from "reducers/BuildDetails.es6";
-import {ADD_BUILD_DETAILS} from "Actions.es6";
-import {VIEW_BUILD_STEP} from "actions/BuildDetailActions.es6";
+import {VIEW_BUILD_STEP, ADD_BUILD_DETAILS} from "actions/BuildDetailActions.es6";
 
 describe("BuildDetailReducer", ()=>{
   it("should return oldState if no ADD_BUILD_DETAILS action was emitted", ()=>{

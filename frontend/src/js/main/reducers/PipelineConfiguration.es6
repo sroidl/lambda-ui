@@ -1,4 +1,4 @@
-import {ADD_CONFIGURATION} from "Actions.es6";
+import {ADD_CONFIGURATION} from "actions/ConfigActions.es6";
 
 export const PipelineConfigurationReducer = (oldState = {}, action) => {
     switch (action.type) {
