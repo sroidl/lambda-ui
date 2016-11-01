@@ -6,15 +6,14 @@ import "moment-duration-format";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 
-const duration = ({startTime, endTime}) => {
+export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
     const end = Moment(endTime);
 
     const duration = Moment.duration(end.diff(start), "milliseconds");
-
-    return duration.format("hh:mm:ss");
+    let durationString = duration.format("hh:mm:ss");
+    return durationString.length < 5 ? "00:" + durationString : durationString;
 };
-
 
 const buildIcon = (stepState) => {
     let iconClass;
