@@ -14,8 +14,8 @@ export const HeaderLinks = (links) => {
     });
     if (links.length > 0) {
         return links.length === 1 ?
-            <div>{linkComponent(links[0])}</div> :
-            <div>{linkComponents}</div>;
+            <div className="linksHeader">{linkComponent(links[0])}</div> :
+            <div className="linksHeader">{linkComponents}</div>;
     }
     return <div></div>;
 };
