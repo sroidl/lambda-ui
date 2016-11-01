@@ -51,7 +51,7 @@ export const renderSummary = (properties) => {
             </div>
             <div className="buildInfoRow time">
                 <div className="buildStartTime"><i className="fa fa-flag-checkered" aria-hidden="true"></i>Started: {startMoment}</div>
-                <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration: <FormattedDuration seconds={duration}/></div>
+                <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration: <FormattedDuration seconds={duration} longTime={true}/></div>
             </div>
         </div>
         <BuildDetails buildId={buildId}/>

@@ -10,9 +10,9 @@ const domDuration = (domElement) => {
     return dur;
 }
 
-describe("Duration", ()=> {
+describe("long Duration", ()=> {
     const expectDuration = (input, expectedOutput) => {
-        let inputProps = {seconds: input}
+        let inputProps = {seconds: input, longTime: true}
 
         let component = shallow(FormattedDuration(inputProps));
 

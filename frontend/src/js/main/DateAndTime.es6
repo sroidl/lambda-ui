@@ -49,11 +49,15 @@ const formatDuration = seconds => {
     return formatted.trim();
 };
 
-export const FormattedDuration = ({seconds}) => {
-    const duration = Moment.duration(seconds, "seconds");
-    return <span className="formattedDuration">{formatDuration(duration)}</span>;
+export const FormattedDuration = ({seconds, longTime}) => {
+    if(longTime){
+        const duration = Moment.duration(seconds, "seconds");
+        return <span className="formattedDuration">{formatDuration(duration)}</span>;
+    }
+    return null;
 };
 
 FormattedDuration.propTypes = {
-    seconds: PropTypes.number.isRequired
+    seconds: PropTypes.number.isRequired,
+    longTime: PropTypes.bool.isRequired
 };
