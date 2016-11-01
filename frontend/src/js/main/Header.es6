@@ -6,7 +6,7 @@ import "../../sass/header.sass";
 
 export const HeaderLinks = (links) => {
     const linkComponent = (link) => {
-        return <a href={link.url}>{link.name}</a>;
+        return <a href={link.url}>{link.text}</a>;
     };
 
     const linkComponents = links.map((link) => {
@@ -20,7 +20,7 @@ export const HeaderLinks = (links) => {
     return <div></div>;
 };
 
-export const Header = ({pipelineName}) => {
+export const Header = ({pipelineName, links}) => {
 
     const triggerNewFn = () => App.backend().triggerNewBuild();
 
@@ -30,17 +30,20 @@ export const Header = ({pipelineName}) => {
             <span className="logoText">LAMBDA CD</span>
         </div>
         <span className="pipelineName">{pipelineName}</span>
+        {HeaderLinks(links)}
         <button className="runButton" onClick={triggerNewFn}>Start Build</button>
     </div>;
 };
 
 Header.propTypes = {
-    pipelineName: PropTypes.string.isRequired
+    pipelineName: PropTypes.string.isRequired,
+    links: PropTypes.array
 };
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
     return {
-        pipelineName: state.config.name
+        pipelineName: state.config.name,
+        links: state.config.navbar.links
     };
 };
 
