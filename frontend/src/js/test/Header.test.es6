@@ -11,17 +11,18 @@ describe("Header", ()=>{
 
 describe("Navbar Links", () => {
     it("should return one html link", () => {
-        const component = HeaderLinks([{url:"http://", text:"Link"}]);
-        expect(component).toEqual(<div className="linksHeader"><a href="http://">Link</a></div>);
+        const component = HeaderLinks({links: [{url:"http://", text:"Link"}]});
+        expect(component).toEqual(<div className="linksHeader"><a key="http://" href="http://">Link</a></div>);
     });
 
     it("should return two html links", () => {
-        const component = HeaderLinks([{url:"http://", text:"Link1"}, {url:"https://", text:"Link2"}]);
-        expect(component).toEqual(<div className="linksHeader"><a href="http://">Link1</a><a href="https://">Link2</a></div>);
+        const component = HeaderLinks({links:[{url:"http://", text:"Link1"}, {url:"https://", text:"Link2"}]});
+        expect(component).toEqual(<div className="linksHeader"><a key="http://" href="http://">Link1</a><a key="https://" href="https://">Link2</a></div>);
     });
 
+
     it("should return emty div, when no url available", () => {
-        const component = HeaderLinks([]);
+        const component = HeaderLinks({links: []});
         expect(component).toEqual(<div></div>);
     });
 });

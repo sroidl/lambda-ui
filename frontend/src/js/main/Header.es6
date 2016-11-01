@@ -4,9 +4,9 @@ import App from "App.es6";
 import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 
-export const HeaderLinks = (links) => {
+export const HeaderLinks = ({links}) => {
     const linkComponent = (link) => {
-        return <a href={link.url}>{link.text}</a>;
+        return <a key={link.url} href={link.url}>{link.text}</a>;
     };
 
     const linkComponents = links.map((link) => {
@@ -20,6 +20,10 @@ export const HeaderLinks = (links) => {
     return <div></div>;
 };
 
+HeaderLinks.propTypes = {
+    links: PropTypes.array
+};
+
 export const Header = ({pipelineName, links}) => {
 
     const triggerNewFn = () => App.backend().triggerNewBuild();
@@ -30,10 +34,12 @@ export const Header = ({pipelineName, links}) => {
             <span className="logoText">LAMBDA CD</span>
         </div>
         <span className="pipelineName">{pipelineName}</span>
-        {HeaderLinks(links)}
+
+        <HeaderLinks links={links} />
         <button className="runButton" onClick={triggerNewFn}>Start Build</button>
     </div>;
 };
+
 
 Header.propTypes = {
     pipelineName: PropTypes.string.isRequired,
