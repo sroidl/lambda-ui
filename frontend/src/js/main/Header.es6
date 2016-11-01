@@ -4,6 +4,22 @@ import App from "App.es6";
 import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 
+export const HeaderLinks = (links) => {
+    const linkComponent = (link) => {
+        return <a href={link.url}>{link.name}</a>;
+    };
+
+    const linkComponents = links.map((link) => {
+        return linkComponent(link);
+    });
+    if (links.length > 0) {
+        return links.length === 1 ?
+            <div>{linkComponent(links[0])}</div> :
+            <div>{linkComponents}</div>;
+    }
+    return <div></div>;
+};
+
 export const Header = ({pipelineName}) => {
 
     const triggerNewFn = () => App.backend().triggerNewBuild();
