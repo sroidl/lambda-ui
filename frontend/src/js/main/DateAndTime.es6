@@ -2,62 +2,71 @@ import React, {PropTypes} from "react";
 import Moment from "moment";
 import "moment-duration-format";
 
-const formatSeconds = (input) => {
+const formatSeconds = (input, longTime) => {
     const duration = Moment.duration(input.seconds(), "seconds");
     if (duration.seconds() === 0) {
-        return "";
+        return longTime ? "" : "00";
     }
-    else if (duration.seconds() === 1) {
+    else if (duration.seconds() === 1 && longTime) {
         return "1 second";
     }
-    else if (duration.seconds() < 10) {
+    else if (duration.seconds() < 10 && longTime) {
         return duration.format("s") + " seconds";
     }
-    return duration.format("ss") + " seconds";
+    const format = longTime ? " seconds" : "";
+    return duration.format("ss") + format;
 };
 
-const formatMinutes = (input) => {
+const formatMinutes = (input, longTime) => {
     const duration = Moment.duration(input.minutes(), "minutes");
     if (duration.minutes() === 0) {
-        return "";
+        return longTime ? "" : "00:";
     }
-    else if (duration.minutes() === 1) {
+    else if (duration.minutes() === 1 && longTime) {
         return "1 minute";
     }
-    else if (duration.minutes() < 10) {
+    else if (duration.minutes() < 10 && longTime) {
         return duration.format("m") + " minutes";
     }
-    return duration.format("mm") + " minutes";
+    const format = longTime ? " minutes" : ":";
+    return duration.format("mm") + format;
 };
 
-const formatHours = (duration) => {
+const formatHours = (duration, longTime) => {
     if (duration.hours() === 0) {
         return "";
     }
-    else if (duration.hours() === 1) {
+    else if (duration.hours() === 1 && longTime) {
         return "1 hour";
     }
-    else if (duration.hours() < 10) {
+    else if (duration.hours() < 10 && longTime) {
         return duration.format("h") + " hours";
     }
-    return duration.format("hh") + " hours";
+    const format = longTime ? " hours" : ":";
+    return duration.format("hh") + format;
 };
 
-const formatDuration = seconds => {
+const formatLongDuration = seconds => {
     const duration = Moment.duration(seconds, "seconds");
-    const formatted = formatHours(duration) + " " + formatMinutes(duration) + " " + formatSeconds(duration);
+    const formatted = formatHours(duration, true) + " " + formatMinutes(duration, true) + " " + formatSeconds(duration, true);
     return formatted.trim();
 };
 
+const formatShortDuration = seconds => {
+    const duration = Moment.duration(seconds, "seconds");
+    const formatted = formatHours(duration, false) + formatMinutes(duration, false) + formatSeconds(duration, false);
+    return formatted.trim();
+}
+
 export const FormattedDuration = ({seconds, longTime}) => {
+    const duration = Moment.duration(seconds, "seconds");
     if(longTime){
-        const duration = Moment.duration(seconds, "seconds");
-        return <span className="formattedDuration">{formatDuration(duration)}</span>;
+        return <span className="formattedDuration">{formatLongDuration(duration)}</span>;
     }
-    return null;
+    return <span className="formattedDuration">{formatShortDuration(duration)}</span>;
 };
 
 FormattedDuration.propTypes = {
     seconds: PropTypes.number.isRequired,
-    longTime: PropTypes.bool.isRequired
+    longTime: PropTypes.bool
 };
