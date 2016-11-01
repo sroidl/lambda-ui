@@ -56,7 +56,7 @@ const formatShortDuration = seconds => {
     const duration = Moment.duration(seconds, "seconds");
     const formatted = formatHours(duration, false) + formatMinutes(duration, false) + formatSeconds(duration, false);
     return formatted.trim();
-}
+};
 
 export const FormattedDuration = ({seconds, longTime}) => {
     const duration = Moment.duration(seconds, "seconds");
