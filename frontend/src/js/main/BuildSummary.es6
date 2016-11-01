@@ -81,7 +81,7 @@ BuildSummary.propTypes = {
     startTime: PropTypes.string.isRequired,
     toggleBuildDetails: PropTypes.func.isRequired,
     endTime: PropTypes.string,
-    open: PropTypes.boolean
+    open: PropTypes.bool
 };
 
 export const mapStateToProps = (state, props) => {
