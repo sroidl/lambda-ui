@@ -5,7 +5,7 @@ import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import React from "react";
 import {shallow, mount} from "enzyme";
-import BuildStepRedux, {BuildStep} from "BuildStep.es6";
+import BuildStepRedux, {BuildStep, getStepDuration} from "BuildStep.es6";
 import {MockStore} from "./testsupport/TestSupport.es6";
 
 
@@ -75,5 +75,22 @@ describe("BuildStep wiring", () => {
         expect(dispatchMock).toBeCalledWith({type: "showOutput"});
     });
 });
+
+describe("BuildStep duration", () => {
+    it("should return same step, when endTime available", () => {
+        const step = {startTime: "24:00:00", endTime: "24:00:32"};
+        expect(getStepDuration(step)).toBe(step);
+    });
+
+    it("should return same step, when startTime is null", () => {
+        const step = {startTime: null, endTime: null};
+        expect(getStepDuration(step)).toBe(step);
+    });
+
+    it("should return step with other endTime, when endTime is null", () => {
+        const step = {startTime: "24:00:00", endTime: null};
+        expect(getStepDuration(step).endTime).not.toEqual(null);
+    });
+})
 
 

@@ -33,6 +33,14 @@ const buildIcon = (stepState) => {
     return <div className="buildIcon"><i className={"fa " + iconClass}/></div>;
 };
 
+export const getStepDuration = (step) => {
+    if(step.endTime || !step.startTime){
+        return step;
+    }
+    const endTime = Moment();
+    return ({startTime: step.startTime, endTime: endTime});
+};
+
 export const BuildStep = props => {
     const {step, goIntoStepFn, showOutputFn} = props;
 
@@ -41,7 +49,7 @@ export const BuildStep = props => {
     const infos = <div>
         {buildStepIcon}
         <div className="stepName">{step.name}</div>
-        <div className="stepDuration">{duration(step)}</div>
+        <div className="stepDuration">{duration(getStepDuration(step))}</div>
     </div>;
     const goIntoStepLink = <a className="goIntoStepLink" href="#" onClick={goIntoStepFn}>Substeps</a>;
     const showOutputLink = <a className="showOutputLink" href="#" onClick={showOutputFn}>Show Output</a>;
