@@ -6,7 +6,7 @@ import "../../sass/header.sass";
 
 export const HeaderLinks = ({links}) => {
     const linkComponent = (link) => {
-        return <a key={link.url} href={link.url}>{link.text}</a>;
+        return <a target="_blank" key={link.url} href={link.url}>{link.text}</a>;
     };
 
     const linkComponents = links.map((link) => {
