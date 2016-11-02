@@ -8,7 +8,7 @@ const transformBuildSummary = (summary) => {
     return summaryAsMap;
 };
 
-const isValidBuild = build => {
+export const isValidBuild = build => {
     if (!build) {
         return false;
     }
@@ -20,7 +20,8 @@ const isValidBuild = build => {
         || build.state === "failed"
         || build.state === "success"
         || build.state === "pending"
-        || build.state === "waiting";
+        || build.state === "waiting"
+        || build.state === "killed";
 
     const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
     if (!keepBuild) {

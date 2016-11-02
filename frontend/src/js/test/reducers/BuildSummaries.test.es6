@@ -1,6 +1,7 @@
 /* eslint-disable */
-import {BuildSummariesReducer as subject} from "reducers/BuildSummaries.es6";
+import {BuildSummariesReducer as subject, isValidBuild} from "reducers/BuildSummaries.es6";
 import {addBuildSummary as action, changeBuildSummary} from "actions/BuildSummaryActions.es6";
+import Moment from "moment";
 
 const defaultBuildInput = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
 const defaultBuild = buildInfo => Object.assign({state: "running", buildNumber: "1", startTime: "2015-01-25"}, buildInfo);
@@ -70,13 +71,13 @@ describe("BuildSummariesReducer: CHANGE_SUMMARY", ()=>{
   it("should return oldState if buildId does not exist", ()=>{
     const oldState = {};
 
-    const newState = subject(oldState, changeBuildSummary(1, {}))
+    const newState = subject(oldState, changeBuildSummary(1, {}));
 
-    expect(newState).toBe(oldState)
+    expect(newState).toBe(oldState);
   });
   it("should change existing summary, keeping attributes that are not in changeobject", ()=>{
     const oldState = {1: defaultBuild({buildId: 1})};
-    let expected = defaultBuild({buildId:1, duration: 1})
+    let expected = defaultBuild({buildId:1, duration: 1});
 
     const newState = subject(oldState, changeBuildSummary(1, {duration: 1}));
 
@@ -86,8 +87,15 @@ describe("BuildSummariesReducer: CHANGE_SUMMARY", ()=>{
   it("should reject change summary that leads to invalid state", ()=>{
     const oldState = {1: defaultBuild({buildId: 1})};
 
-    const newState = subject(oldState, changeBuildSummary(1, {state: "wrongNewState"}))
+    const newState = subject(oldState, changeBuildSummary(1, {state: "wrongNewState"}));
 
-    expect(newState).toBe(oldState)
+    expect(newState).toBe(oldState);
   })
-})
+});
+
+describe("BuildSummaries isValidBuild", () => {
+    it("should return true, when build state is killed", ()=> {
+        const build = {buildId: 1, buildNumber: 1, startTime: Moment(), state: "killed"};
+        expect(isValidBuild(build)).toBe(true);
+    });
+});
