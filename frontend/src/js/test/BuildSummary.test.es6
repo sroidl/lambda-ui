@@ -35,6 +35,13 @@ describe("BuildIcons", () => {
 
     expect(buildIcon(component).hasClass("fa-cog")).toBe(true);
   });
+
+  it("should show correct running state icon", () => {
+      const inputProps = {buildId: 1, state: "killed", startTime: {toISOString: jest.fn()}};
+
+      const component = shallow(buildSummary(inputProps));
+      expect(buildIcon(component).hasClass("fa-ban")).toBe(true);
+  });
   });
 });
 

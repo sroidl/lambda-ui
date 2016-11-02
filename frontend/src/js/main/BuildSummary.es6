@@ -9,6 +9,7 @@ import {FormattedDuration} from "./DateAndTime.es6";
 const SUCCESS_ICON = "fa-check";
 const FAILURE_ICON = "fa-times";
 const RUNNING_ICON = "fa-cog";
+const KILLED_ICON = "fa-ban";
 
 
 const icon = (buildState) => {
@@ -19,6 +20,8 @@ const icon = (buildState) => {
             return FAILURE_ICON;
         case "running" :
             return RUNNING_ICON;
+        case "killed" :
+            return KILLED_ICON;
         default :
             return "";
     }
