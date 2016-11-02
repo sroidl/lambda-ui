@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import App from "App.es6";
 import logo from "../../img/logo.png";
 import "../../sass/header.sass";
+import R from "ramda";
 
 export const HeaderLinks = ({links}) => {
     if(!links || links.length < 1){
@@ -48,8 +49,7 @@ Header.propTypes = {
 };
 
 export const mapStateToProps = (state) => {
-    const headerLinks = !state.config.navbar || !state.config.navbar.links
-        ? [] : state.config.navbar.links;
+    const headerLinks = R.view(R.lensPath(["config", "navbar", "links"]))(state) || [];
     return {
         pipelineName: state.config.name,
         links: headerLinks
