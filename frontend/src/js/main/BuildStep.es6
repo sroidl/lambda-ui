@@ -15,19 +15,29 @@ export const duration = ({startTime, endTime}) => {
     return durationString.length < 5 ? "00:" + durationString : durationString;
 };
 
+const SUCCESS_ICON = "fa-check";
+const FAILURE_ICON = "fa-times";
+const RUNNING_ICON = "fa-cog";
+const KILLED_ICON = "fa-ban";
+const DEFAULT_ICON = "fa-ellipsis-h";
+
 const buildIcon = (stepState) => {
     let iconClass;
-    if (stepState === "success") {
-        iconClass = "fa-check";
-    }
-    else if (stepState === "failure") {
-        iconClass = "fa-times";
-    }
-    else if (stepState === "running") {
-        iconClass = "fa-cog";
-    }
-    else {
-        iconClass = "fa-ellipsis-h";
+    switch (stepState){
+        case "success":
+            iconClass = SUCCESS_ICON;
+            break;
+        case "failure":
+            iconClass = FAILURE_ICON;
+            break;
+        case "running":
+            iconClass = RUNNING_ICON;
+            break;
+        case "killed":
+            iconClass = KILLED_ICON;
+            break;
+        default:
+            iconClass = DEFAULT_ICON;
     }
     return <div className="buildIcon"><i className={"fa " + iconClass}/></div>;
 };

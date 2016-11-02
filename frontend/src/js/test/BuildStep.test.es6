@@ -7,6 +7,7 @@ import React from "react";
 import {shallow, mount} from "enzyme";
 import BuildStepRedux, {BuildStep, getStepDuration, duration} from "BuildStep.es6";
 import {MockStore} from "./testsupport/TestSupport.es6";
+import Moment from "moment";
 
 
 const details = newAttributes => Object.assign({stepId: 1, state: "success", name: "fooStep"}, newAttributes);
@@ -103,6 +104,43 @@ describe("BuildStep duration", () => {
         expect(duration({startTime: "2016-11-01T04:47:16", endTime: "2016-11-01T14:48:26"})).toEqual("10:01:10");
         expect(duration({startTime: "2016-11-01T00:38:16", endTime: "2016-11-01T14:48:51"})).toEqual("14:10:35");
     });
-})
+});
+
+function buildIcon(domElement){
+    return domElement.find(".buildIcon").find(".fa");
+}
+
+describe("BuildStep Icon", () => {
+    const props = state => {
+        return {step: {endTime: Moment(), startTime: Moment(), state: state, steps: []} ,
+            goIntoStepFn: ()=>{},
+            showOutputFn: ()=>{}};
+    };
+
+    it("should return icon for state success", () => {
+        const component = shallow(BuildStep(props("success")));
+        expect(buildIcon(component).hasClass("fa-check")).toBe(true);
+    });
+
+    it("should return icon for state failure", () => {
+        const component = shallow(BuildStep(props("failure")));
+        expect(buildIcon(component).hasClass("fa-times")).toBe(true);
+    });
+
+    it("should return icon for state running", () => {
+        const component = shallow(BuildStep(props("running")));
+        expect(buildIcon(component).hasClass("fa-cog")).toBe(true);
+    });
+
+    it("should return icon for state killed", () => {
+        const component = shallow(BuildStep(props("killed")));
+        expect(buildIcon(component).hasClass("fa-ban")).toBe(true);
+    });
+
+    it("should return icon for default", () => {
+        const component = shallow(BuildStep(props("")));
+        expect(buildIcon(component).hasClass("fa-ellipsis-h")).toBe(true);
+    });
+});
 
 
