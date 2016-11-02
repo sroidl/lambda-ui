@@ -5,6 +5,9 @@ import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 
 export const HeaderLinks = ({links}) => {
+    if(!links || links.length < 1){
+        return null;
+    }
     const linkComponent = (link) => {
         return <a target="_blank" key={link.url} href={link.url}>{link.text}</a>;
     };
@@ -12,12 +15,11 @@ export const HeaderLinks = ({links}) => {
     const linkComponents = links.map((link) => {
         return linkComponent(link);
     });
-    if (links.length > 0) {
-        return links.length === 1 ?
-            <div className="linksHeader">{linkComponent(links[0])}</div> :
-            <div className="linksHeader">{linkComponents}</div>;
+
+    if (links.length === 1){
+        return <div className="linksHeader">{linkComponent(links[0])}</div>;
     }
-    return <div></div>;
+    return <div className="linksHeader">{linkComponents}</div>;
 };
 
 HeaderLinks.propTypes = {
@@ -25,7 +27,6 @@ HeaderLinks.propTypes = {
 };
 
 export const Header = ({pipelineName, links}) => {
-
     const triggerNewFn = () => App.backend().triggerNewBuild();
 
     return <div className="appHeader">
@@ -47,9 +48,11 @@ Header.propTypes = {
 };
 
 export const mapStateToProps = (state) => {
+    const headerLinks = !state.config.navbar || !state.config.navbar.links
+        ? [] : state.config.navbar.links;
     return {
         pipelineName: state.config.name,
-        links: state.config.navbar.links
+        links: headerLinks
     };
 };
 

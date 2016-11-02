@@ -21,16 +21,33 @@ describe("Navbar Links", () => {
     });
 
 
-    it("should return emty div, when no url available", () => {
+    it("should return null, when emty array in links available", () => {
         const component = HeaderLinks({links: []});
-        expect(component).toEqual(<div></div>);
+        expect(component).toEqual(null);
+    });
+
+    it("should return null, wenn no links in state available", () => {
+        const component = HeaderLinks({});
+        expect(component).toEqual(null);
     });
 });
 
 describe("Header redux", () => {
     it("should get config", () => {
-        const state = {config: {name: "Pipline", navbar: {links: [{url: "http...", name: "Name"}]}}};
-        const expected = {pipelineName: "Pipline", links: [{url: "http...", name: "Name"}]};
+        const state = {config: {name: "Pipeline", navbar: {links: [{url: "http...", name: "Name"}]}}};
+        const expected = {pipelineName: "Pipeline", links: [{url: "http...", name: "Name"}]};
+        expect(mapStateToProps(state)).toEqual(expected);
+    });
+
+    it("should get emty array for links, when no links available", () => {
+        const state = {config: {name: "Pipeline", navbar: {}}};
+        const expected = {pipelineName: "Pipeline", links: []};
+        expect(mapStateToProps(state)).toEqual(expected);
+    });
+
+    it("should get emty array for links, when no navbar available", () => {
+        const state = {config: {name: "Pipeline"}};
+        const expected = {pipelineName: "Pipeline", links: []};
         expect(mapStateToProps(state)).toEqual(expected);
     });
 })
