@@ -41,6 +41,7 @@ describe("BuildSummariesReducer: ADD_SUMMARIES", ()=> {
     const newState = subject({}, action([build]));
     let b = {}
     b[build.buildId] = build;
+    console.log(newState)
     expect(newState).toEqual(b);
   }
 
@@ -62,8 +63,14 @@ describe("BuildSummariesReducer: ADD_SUMMARIES", ()=> {
   it("should accept state 'failed'", ()=>{
     shouldAccept(defaultBuild({buildId: 1, state: "failed"}))
   })
-  it("should accept state 'failed'", ()=>{
+  it("should accept state 'pending'", ()=>{
     shouldAccept(defaultBuild({buildId: 1, state: "pending"}))
+  })
+  it("should accept state 'success'", ()=>{
+    shouldAccept(defaultBuild({buildId: 1, state: "success"}))
+  })
+  it("should accept state 'killed'", ()=>{
+    shouldAccept(defaultBuild({buildId: 1, state: "killed"}))
   })
 });
 
@@ -91,11 +98,4 @@ describe("BuildSummariesReducer: CHANGE_SUMMARY", ()=>{
 
     expect(newState).toBe(oldState);
   })
-});
-
-describe("BuildSummaries isValidBuild", () => {
-    it("should return true, when build state is killed", ()=> {
-        const build = {buildId: 1, buildNumber: 1, startTime: Moment(), state: "killed"};
-        expect(isValidBuild(build)).toBe(true);
-    });
 });
