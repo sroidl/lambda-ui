@@ -5,7 +5,11 @@ import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 import R from "ramda";
 
-export const HeaderLinks = ({links}) => {
+export const HeaderLinks = (props) => {
+    if(!props) {
+        return null;
+    }
+    const {links} = props;
     if(!links || links.length < 1){
         return null;
     }
@@ -30,14 +34,21 @@ HeaderLinks.propTypes = {
 export const Header = ({pipelineName, links}) => {
     const triggerNewFn = () => App.backend().triggerNewBuild();
 
+    let headerLinks;
+    if(links) {
+        headerLinks = <HeaderLinks links={links} />;
+    }
+    else {
+        headerLinks = "";
+    }
+
     return <div className="appHeader">
         <div className="logo">
             <img src={logo} className="logoImage" alt="logo"/>
             <span className="logoText">LAMBDA CD</span>
         </div>
         <span className="pipelineName">{pipelineName}</span>
-
-        <HeaderLinks links={links} />
+        {headerLinks}
         <button className="runButton" onClick={triggerNewFn}>Start Build</button>
     </div>;
 };

@@ -27,7 +27,7 @@ describe("Navbar Links", () => {
     });
 
     it("should return null, wenn no links in state available", () => {
-        const component = HeaderLinks({});
+        const component = HeaderLinks();
         expect(component).toEqual(null);
     });
 });
