@@ -41,7 +41,6 @@ describe("BuildSummariesReducer: ADD_SUMMARIES", ()=> {
     const newState = subject({}, action([build]));
     let b = {}
     b[build.buildId] = build;
-    console.log(newState)
     expect(newState).toEqual(b);
   }
 

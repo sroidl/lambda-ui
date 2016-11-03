@@ -1,11 +1,10 @@
-/* globals Promise */
-
 import LambdaUI from "../App.es6";
 import R from "ramda";
+import {delay} from "Utils.es6";
+
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 export const SUMMARIES_CONNECTION_STATE = "summariesConnectionState";
 
-const delay = ms => new Promise((resolve) => setTimeout(resolve, ms));
 
 
 export const requestOutput = (buildId, stepId) =>
@@ -32,8 +31,6 @@ export const requestDetailsPolling = (buildId) =>
             const stateLens = R.lensPath(["summaries", buildId, "state"]);
             const isRunning = R.view(stateLens, state) === "running";
             const isWaiting = R.view(stateLens, state) === "waiting";
-
-            console.log("isOpen", isOpen, "isRunning", isRunning, "isWaiting", isWaiting);
 
             if (!!isOpen && (!!isRunning || !!isWaiting)) {
                 dispatch(requestDetailsPolling(buildId));
