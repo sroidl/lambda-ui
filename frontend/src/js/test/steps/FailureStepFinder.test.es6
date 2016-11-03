@@ -14,9 +14,8 @@ describe("Find failed Substep", () => {
             }}
         };
         const buildId = 1;
-        const stepId = "1";
 
-        const result = findFailedSubstep(state, buildId, stepId);
+        const result = findFailedSubstep(state, buildId);
 
         expect(result).toEqual("1");
 
@@ -33,9 +32,8 @@ describe("Find failed Substep", () => {
             }}
         };
         const buildId = 1;
-        const stepId = "1";
 
-        const result = findFailedSubstep(state, buildId, stepId);
+        const result = findFailedSubstep(state, buildId);
 
         expect(result).toEqual(null);
 
@@ -61,15 +59,95 @@ describe("Find failed Substep", () => {
                             steps: []
                         }]
                 }]
-
             }}
         };
         const buildId = 1;
-        const stepId = "1";
 
-        const result = findFailedSubstep(state, buildId, stepId);
+        const result = findFailedSubstep(state, buildId);
 
         expect(result).toEqual("1-2");
 
+    });
+
+    it("should return children children step if it failed", () => {
+        const state = {
+            buildDetails: { 1: {
+                buildId: 1,
+                steps : [{
+                    stepId: "1",
+                    state: "failure",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "failure",
+                        steps: [{
+                            stepId: "1-1-1",
+                            state: "failure",
+                            steps: []
+                        }]
+                    }]
+                }]
+            }}
+        };
+
+        const result = findFailedSubstep(state, 1);
+        expect(result).toEqual("1-1-1");
+    });
+    const stateLevel4 = {
+        buildDetails: { 1: {
+            buildId: 1,
+            steps : [{
+                stepId: "1",
+                state: "failure",
+                steps: [{
+                    stepId: "1-1",
+                    state: "failure",
+                    steps: [{
+                        stepId: "1-1-1",
+                        state: "failure",
+                        steps: [{
+                            stepId: "1-1-1-1",
+                            state: "failure",
+                            steps: []
+                        }]
+                    }]
+                }]
+            }]
+        }}
+    };
+    it("should returnlowermost children step if it failed", () => {
+        const result = findFailedSubstep(stateLevel4, 1);
+        expect(result).toEqual("1-1-1-1");
+    });
+
+    it("should return children step of substep if it failed", () => {
+         const result = findFailedSubstep(stateLevel4, 1);
+        expect(result).toEqual("1-1-1-1");
+    });
+
+    it("should return the first failure step", () => {
+        const state = {
+            buildDetails: { 1: {
+                buildId: 1,
+                steps : [{
+                    stepId: "1",
+                    state: "failure",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "failure",
+                        steps: []
+                    }]
+                }, {
+                    stepId: "2",
+                    state: "failure",
+                    steps: [{
+                        stepId: "2-1",
+                        state: "failure",
+                        steps: []
+                    }]
+                }]
+            }}
+        };
+        const result = findFailedSubstep(state, 1);
+        expect(result).toEqual("1-1");
     });
 });

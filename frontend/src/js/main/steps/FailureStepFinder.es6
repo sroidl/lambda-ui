@@ -1,30 +1,21 @@
 import R from "ramda";
 
-const isStepFailed = (step) => {
-    return step.state === "failure";
-};
+const getFailedStep = R.filter(step => step.state === "failure");
+const getSubSteps = R.pipe(R.view(R.lensIndex(0)), R.view(R.lensProp("steps")));
 
-const createStepIdFilter = (stepId) => {
-    const stepIdFilter = (step) => {
-        return step.stepId === stepId && isStepFailed(step);
-    };
-
-    return stepIdFilter;
-};
-
-export const findFailedSubstep = (state, buildId, stepId) => {
+export const findFailedSubstep = (state, buildId) => {
     const steps = state.buildDetails[buildId].steps;
 
-    const foundStep = R.filter(createStepIdFilter(stepId),steps);
+    let foundStep = getFailedStep(steps);
     if (foundStep.length === 0){
         return null;
     }
-    const subSteps = foundStep[0].steps;
-    if (subSteps.length > 0){
-        const foundSubSteps = R.filter(isStepFailed, subSteps);
-        if (foundSubSteps.length === 1){
-            return foundSubSteps[0].stepId;
-        }
+    let subSteps = getSubSteps(foundStep);
+    while (subSteps.length > 0){
+        foundStep = getFailedStep(subSteps);
+        subSteps = getSubSteps(foundStep);
     }
     return foundStep[0].stepId;
 };
+
+
