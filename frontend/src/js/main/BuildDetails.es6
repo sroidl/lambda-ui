@@ -6,39 +6,40 @@ import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 
 export class BuildDetails extends React.Component {
+    
 
-  render() {
+    render() {
 
-    const {buildId, open, stepsToDisplay, requestDetailsFn} = this.props;
-    if (!open) {
-        return null;
-    }
+        const {buildId, open, stepsToDisplay, requestDetailsFn} = this.props;
+        if (!open) {
+            return null;
+        }
 
-    if (!stepsToDisplay) {
-        requestDetailsFn();
+        if (!stepsToDisplay) {
+            requestDetailsFn();
+            return <div className="twelve columns buildDetails">
+                <div className="row loadingMessage">Loading build details</div>
+            </div>;
+        }
+
+
+        const steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(stepsToDisplay);
+
         return <div className="twelve columns buildDetails">
-            <div className="row loadingMessage">Loading build details</div>
+            <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
+            <div className="row ">{steps}</div>
         </div>;
-    }
-
-
-    const steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(stepsToDisplay);
-
-    return <div className="twelve columns buildDetails">
-        <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
-        <div className="row ">{steps}</div>
-    </div>;
 
     }
 }
-
 
 
 BuildDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
     open: PropTypes.bool.isRequired,
     requestDetailsFn: PropTypes.func.isRequired,
-    stepsToDisplay: PropTypes.array
+    stepsToDisplay: PropTypes.array,
+    pollingEnabled: PropTypes.bool
 };
 
 const resolveStepsToDisplay = (buildDetails, stepIdToShow) => {
@@ -77,7 +78,8 @@ export const mapStateToProps = (state, ownProps) => {
         buildId: buildId,
         details: state.buildDetails[buildId],
         stepsToDisplay: stepsToDisplay,
-        open: state.openedBuilds[buildId] || false
+        open: state.openedBuilds[buildId] || false,
+        pollingEnabled: R.pathOr(false, ["config", "buildDetails", "pollingEnabled"])(state)
     };
 };
 
