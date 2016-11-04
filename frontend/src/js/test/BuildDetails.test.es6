@@ -1,7 +1,7 @@
 /* globals jest describe it expect */
 jest.mock("../main/Backend.es6");
 jest.mock("../main/actions/BackendActions.es6");
-import BuildDetailsRedux, {BuildDetails as subject, mapStateToProps} from "BuildDetails.es6";
+import BuildDetailsRedux, {BuildDetails, mapStateToProps} from "BuildDetails.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "./testsupport/TestSupport.es6";
 import React from "react";
@@ -13,6 +13,11 @@ export const _it = () => {};
 
 describe("BuildDetails Component", () => {
   const input = newAttributes => Object.assign({buildId: 1, open: true, requestDetailsFn: jest.fn()}, newAttributes);
+
+  const subject = (properties) => {
+    const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
+    return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn} stepsToDisplay={stepsToDisplay}/>;
+  } ;
 
   it("should display loading message if no details are in state", () => {
     const component = shallow(subject(input()));

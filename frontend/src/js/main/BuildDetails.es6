@@ -5,8 +5,11 @@ import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
 import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 
-export const BuildDetails = (props) => {
-    const {buildId, open, stepsToDisplay, requestDetailsFn} = props;
+export class BuildDetails extends React.Component {
+
+  render() {
+
+    const {buildId, open, stepsToDisplay, requestDetailsFn} = this.props;
     if (!open) {
         return null;
     }
@@ -25,7 +28,11 @@ export const BuildDetails = (props) => {
         <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
         <div className="row ">{steps}</div>
     </div>;
-};
+
+    }
+}
+
+
 
 BuildDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
