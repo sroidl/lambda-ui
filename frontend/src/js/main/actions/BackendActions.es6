@@ -1,6 +1,6 @@
 import LambdaUI from "../App.es6";
 import R from "ramda";
-import {delay} from "Utils.es6";
+import * as Utils from "Utils.es6";
 
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 export const SUMMARIES_CONNECTION_STATE = "summariesConnectionState";
@@ -21,18 +21,14 @@ export const requestDetails = buildId =>
 
 export const requestDetailsPolling = (buildId) =>
     dispatch => {
-        // TODO : how to test this properly?
         const store = LambdaUI.appStore();
         dispatch(requestDetails(buildId));
-        delay(1000).then(() => {
-            /* eslint-disable */
+        Utils.delay(1000).then(() => {
             const state = store.getState();
-            const isOpen = R.view(R.lensPath(["openedBuilds", buildId]), state);
-            const stateLens = R.lensPath(["summaries", buildId, "state"]);
-            const isRunning = R.view(stateLens, state) === "running";
-            const isWaiting = R.view(stateLens, state) === "waiting";
+            const isOpen = R.pathOr(false, ["openedBuilds", buildId])(state);
+            const build = R.path(["buildDetails", buildId])(state);
 
-            if (!!isOpen && (!!isRunning || !!isWaiting)) {
+            if (isOpen && Utils.isBuildRunning(build)) {
                 dispatch(requestDetailsPolling(buildId));
             }
         });
