@@ -10,19 +10,19 @@ import {requestDetailsPolling as requestDetailsAction} from "actions/BackendActi
 
 describe("BuildDetails", () => {
 
+    const subject = (properties) => {
+        const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
+        return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn}
+                             stepsToDisplay={stepsToDisplay}/>;
+    };
 
     describe("BuildDetails Component", () => {
+
         const input = newAttributes => Object.assign({
             buildId: 1,
             open: true,
             requestDetailsFn: jest.fn()
         }, newAttributes);
-
-        const subject = (properties) => {
-            const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
-            return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn}
-                                 stepsToDisplay={stepsToDisplay}/>;
-        };
 
         it("should display loading message if no details are in state", () => {
             const component = shallow(subject(input()));
@@ -126,5 +126,5 @@ describe("BuildDetails", () => {
             expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}]);
         });
     });
-
+    
 });

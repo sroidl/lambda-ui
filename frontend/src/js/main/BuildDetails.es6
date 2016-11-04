@@ -6,7 +6,6 @@ import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 
 export class BuildDetails extends React.Component {
-    
 
     render() {
 
@@ -38,8 +37,7 @@ BuildDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
     open: PropTypes.bool.isRequired,
     requestDetailsFn: PropTypes.func.isRequired,
-    stepsToDisplay: PropTypes.array,
-    pollingEnabled: PropTypes.bool
+    stepsToDisplay: PropTypes.array
 };
 
 const resolveStepsToDisplay = (buildDetails, stepIdToShow) => {
@@ -79,7 +77,6 @@ export const mapStateToProps = (state, ownProps) => {
         details: state.buildDetails[buildId],
         stepsToDisplay: stepsToDisplay,
         open: state.openedBuilds[buildId] || false,
-        pollingEnabled: R.pathOr(false, ["config", "buildDetails", "pollingEnabled"])(state)
     };
 };
 
