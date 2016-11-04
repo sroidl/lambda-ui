@@ -11,7 +11,7 @@ export const duration = ({startTime, endTime}) => {
     const end = Moment(endTime);
 
     const duration = Moment.duration(end.diff(start), "milliseconds");
-    let durationString = duration.format("hh:mm:ss");
+    const durationString = duration.format("hh:mm:ss");
     return durationString.length < 5 ? "00:" + durationString : durationString;
 };
 
