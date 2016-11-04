@@ -1,10 +1,29 @@
-/* globals describe it xit expect jest */
+/* globals describe it xit expect jest beforeEach afterEach */
 import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "BuildStepOutput.es6"
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
 import React from "react";
 
 describe("Output presentation", () => {
+
+  let realConsole;
+  const fn = () => {};
+
+  beforeEach(() => {
+    const consoleThrowing = {
+      error: (...args) => {
+        realConsole.error("Got errors on console: ", args);
+        throw new Error(args); },
+      log: (...args) => { realConsole.log(args); }
+    };
+    realConsole = window.console;
+    window.console = consoleThrowing;
+  });
+
+  afterEach(() => {
+    window.console = realConsole;
+  });
+
   it("should be hidden when output is false", () => {
       const component = shallow(<BuildStepOutput showOutput={false}/>);
 
@@ -12,7 +31,7 @@ describe("Output presentation", () => {
   });
 
   it("should display output of step if not hidden", () => {
-    const component = shallow(<BuildStepOutput showOutput={true} buildId = { 1 } stepName = { "meinStep"} stepId = { "stepId"} output = { "hierTestOutput"}/>);
+    const component = shallow(<BuildStepOutput showOutput={true} buildId = { 1 } stepName = { "meinStep"} stepId = { "stepId"} output = { ["hierTestOutput"]}/>);
 
     expect(component.find("#outputHeader__buildId").text()).toBe("1");
     expect(component.find("#outputHeader__stepName").text()).toBe("meinStep (stepId)");
