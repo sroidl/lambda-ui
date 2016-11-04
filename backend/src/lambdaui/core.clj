@@ -46,7 +46,7 @@
             (route/resources "/" {:root "public"})
             (GET "/" [] (ring.util.response/redirect "ui/index.html"))
             (GET "/ui/config.js" [] (create-config pipeline))
-            (route/resources "/ui" {:root "public/target"})
+            (route/resources "/ui" {:root "public"})
             )))
 
 
