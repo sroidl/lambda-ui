@@ -10,7 +10,7 @@
     "static-sass": "node-sass --output target/css src/sass",
     "compile": "node_modules/webpack/bin/webpack.js --config webpack.config.prod.js --bail && cp src/html/index.html target",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --config webpack.config.dev.js",
-    "watch:test": "npm run test -- --watch=all",
+    "watch:test": "npm run test -- --watch",
     "lint": "node_modules/eslint/bin/eslint.js src/**/*.es6"
   },
   "repository": {
@@ -48,7 +48,7 @@
     "eslint-loader": "^1.5.0",
     "eslint-plugin-react": "^6.2.1",
     "file-loader": "^0.9.0",
-    "jest-cli": "^14.1.0",
+    "jest-cli": "^16.0.2",
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",
     "react-addons-test-utils": "^15.3.1",
