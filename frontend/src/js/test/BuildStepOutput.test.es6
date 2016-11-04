@@ -7,7 +7,6 @@ import React from "react";
 describe("Output presentation", () => {
 
   let realConsole;
-  const fn = () => {};
 
   beforeEach(() => {
     const consoleThrowing = {
