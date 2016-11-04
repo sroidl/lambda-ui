@@ -32,6 +32,24 @@ describe("Utils | flatSteps", () => {
 
         expect(subject.flatSteps(input)).toEqual([stepC, stepB, stepA, stepB, stepA, step, step]);
     });
+});
 
+describe("Utils | BuildFinished", () => {
+    it("should recognize a finished build with one step", () => {
+        const input = { steps: [ { stepId: "1", state: "failed" } ] };
 
+        expect(subject.isBuildRunning(input)).toBe(false);
+    });
+
+    it("should recognize a running build with one step", () => {
+        let input = { steps: [ { stepId: "1", state: "running" } ] };
+
+        expect(subject.isBuildRunning(input)).toBe(true);
+    });
+
+    it("should recognize a running build with more than one step", () => {
+        let input = { steps: [ { stepId: "1", state: "finished" }, { stepId: "2", state: "running" } ] };
+
+        expect(subject.isBuildRunning(input)).toBe(true);
+    });
 });
