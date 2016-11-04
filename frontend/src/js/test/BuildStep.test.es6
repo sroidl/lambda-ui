@@ -144,28 +144,33 @@ describe("BuildStep", () => {
             };
         };
 
+        const subject = properties => {
+            const {buildId, step, goIntoStepFn, showOutputFn} = properties;
+            return <BuildStep buildId={buildId} step={step} goIntoStepFn={goIntoStepFn} showOutputFn={showOutputFn}/>
+        }
+
         it("should return icon for state success", () => {
-            const component = shallow(BuildStep(props("success")));
+            const component = shallow(subject(props("success")));
             expect(buildIcon(component).hasClass("fa-check")).toBe(true);
         });
 
         it("should return icon for state failure", () => {
-            const component = shallow(BuildStep(props("failure")));
+            const component = shallow(subject(props("failure")));
             expect(buildIcon(component).hasClass("fa-times")).toBe(true);
         });
 
         it("should return icon for state running", () => {
-            const component = shallow(BuildStep(props("running")));
+            const component = shallow(subject(props("running")));
             expect(buildIcon(component).hasClass("fa-cog")).toBe(true);
         });
 
         it("should return icon for state killed", () => {
-            const component = shallow(BuildStep(props("killed")));
+            const component = shallow(subject(props("killed")));
             expect(buildIcon(component).hasClass("fa-ban")).toBe(true);
         });
 
         it("should return icon for default", () => {
-            const component = shallow(BuildStep(props("")));
+            const component = shallow(subject(props("")));
             expect(buildIcon(component).hasClass("fa-ellipsis-h")).toBe(true);
         });
     });
