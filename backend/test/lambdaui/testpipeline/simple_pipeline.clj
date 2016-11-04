@@ -39,8 +39,7 @@
   {:status (swap! lastStatus swapStatus)})
 
 (def pipeline-structure
-  `( wait-for-manual-trigger
-     a-lot-output
+  `( a-lot-output
      (step/alias "i have substeps"
             (run successfullStep
                  successfullStep
@@ -49,5 +48,10 @@
                              different-status))
                  a-lot-output)
             )
+     (in-parallel
+       (step/alias "double-long" (run long-running-task-20s long-running-task-20s))
+       long-running-task-20s
+       long-running-task-20s
+       )
      long-running-task-20s
      ))
