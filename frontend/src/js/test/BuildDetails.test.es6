@@ -8,115 +8,123 @@ import React from "react";
 import {Provider} from "react-redux";
 import {requestDetailsPolling as requestDetailsAction} from "actions/BackendActions.es6";
 
+describe("BuildDetails", () => {
 
-describe("BuildDetails Component", () => {
-    const input = newAttributes => Object.assign({buildId: 1, open: true, requestDetailsFn: jest.fn()}, newAttributes);
 
-    const subject = (properties) => {
-        const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
-        return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn}
-                             stepsToDisplay={stepsToDisplay}/>;
-    };
+    describe("BuildDetails Component", () => {
+        const input = newAttributes => Object.assign({
+            buildId: 1,
+            open: true,
+            requestDetailsFn: jest.fn()
+        }, newAttributes);
 
-    it("should display loading message if no details are in state", () => {
-        const component = shallow(subject(input()));
+        const subject = (properties) => {
+            const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
+            return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn}
+                                 stepsToDisplay={stepsToDisplay}/>;
+        };
 
-        expect(component.text()).toEqual("Loading build details");
-    });
+        it("should display loading message if no details are in state", () => {
+            const component = shallow(subject(input()));
 
-    it("should request build details if no details are in the state", () => {
-        const requestMockFn = jest.fn();
-
-        shallow(subject(input({requestDetailsFn: requestMockFn})));
-
-        expect(requestMockFn).toBeCalled();
-    });
-
-    it("should render all buildSteps on first level", () => {
-        const steps = [{stepId: 1}, {stepId: 2}];
-        const storeMock = MockStore({
-            buildDetails: {1: {buildId: 1, steps: steps}},
-            openedBuilds: {1: true},
-            viewBuildSteps: {}
+            expect(component.text()).toEqual("Loading build details");
         });
 
-        const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
+        it("should request build details if no details are in the state", () => {
+            const requestMockFn = jest.fn();
 
-        expect(component.find("BuildStep").length).toEqual(2);
+            shallow(subject(input({requestDetailsFn: requestMockFn})));
+
+            expect(requestMockFn).toBeCalled();
+        });
+
+        it("should render all buildSteps on first level", () => {
+            const steps = [{stepId: 1}, {stepId: 2}];
+            const storeMock = MockStore({
+                buildDetails: {1: {buildId: 1, steps: steps}},
+                openedBuilds: {1: true},
+                viewBuildSteps: {}
+            });
+
+            const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
+
+            expect(component.find("BuildStep").length).toEqual(2);
+        });
+
+        it("MapDispatchToProps should wire to backend.", () => {
+            const dispatchMock = jest.fn();
+            const store = MockStore({buildDetails: {}, openedBuilds: {2: true}}, dispatchMock);
+
+            mount(<BuildDetailsRedux store={store} buildId="2"/>);
+
+            expect(dispatchMock).toBeCalled();
+            expect(requestDetailsAction).toBeCalledWith("2");
+        });
     });
 
-    it("MapDispatchToProps should wire to backend.", () => {
-        const dispatchMock = jest.fn();
-        const store = MockStore({buildDetails: {}, openedBuilds: {2: true}}, dispatchMock);
+    describe("View Build details", () => {
+        it("should map root steps if no view build details is given", () => {
+            const state = {
+                buildDetails: {
+                    1: {buildId: 1, steps: [{stepId: 1}, {stepId: 2}]}
+                },
+                openedBuilds: {1: true}
+            };
+            const newProps = mapStateToProps(state, {buildId: 1});
 
-        mount(<BuildDetailsRedux store={store} buildId="2"/>);
+            expect(newProps.stepsToDisplay).toEqual([{stepId: 1}, {stepId: 2}]);
+        });
 
-        expect(dispatchMock).toBeCalled();
-        expect(requestDetailsAction).toBeCalledWith("2");
-    });
-});
-
-describe("View Build details", () => {
-    it("should map root steps if no view build details is given", () => {
-        const state = {
-            buildDetails: {
-                1: {buildId: 1, steps: [{stepId: 1}, {stepId: 2}]}
-            },
-            openedBuilds: {1: true}
-        };
-        const newProps = mapStateToProps(state, {buildId: 1});
-
-        expect(newProps.stepsToDisplay).toEqual([{stepId: 1}, {stepId: 2}]);
-    });
-
-    it("should display steps of direct substep if viewBuildStep is set", () => {
-        const state = {
-            buildDetails: {
-                1: {
-                    buildId: 1, steps: [{
-                        stepId: "1", steps: [
-                            {stepId: "1.1"}, {stepId: "1.2"}
-                        ]
-                    },
-                        {stepId: 2}
-                    ]
-                }
-            },
-            openedBuilds: {1: true},
-            viewBuildSteps: {1: "1"}
-        };
-
-        const newProps = mapStateToProps(state, {buildId: 1});
-
-        expect(newProps.stepsToDisplay).toEqual([{stepId: "1.1"}, {stepId: "1.2"}]);
-    });
-
-    it("should display substep of substep", () => {
-        const state = {
-            buildDetails: {
-                1: {
-                    buildId: 1,
-                    steps: [
-                        {
-                            stepId: "1",
-                            steps: [
-                                {
-                                    stepId: "1.1", steps: [
-                                    {stepId: "substepLevel2"},
-                                    {stepId: "substepLevel2-2"}
-                                ]
-                                }
+        it("should display steps of direct substep if viewBuildStep is set", () => {
+            const state = {
+                buildDetails: {
+                    1: {
+                        buildId: 1, steps: [{
+                            stepId: "1", steps: [
+                                {stepId: "1.1"}, {stepId: "1.2"}
                             ]
-                        }
-                    ]
-                }
-            },
-            openedBuilds: {1: true},
-            viewBuildSteps: {1: "1.1"}
-        };
+                        },
+                            {stepId: 2}
+                        ]
+                    }
+                },
+                openedBuilds: {1: true},
+                viewBuildSteps: {1: "1"}
+            };
 
-        const newProps = mapStateToProps(state, {buildId: 1});
+            const newProps = mapStateToProps(state, {buildId: 1});
 
-        expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}]);
+            expect(newProps.stepsToDisplay).toEqual([{stepId: "1.1"}, {stepId: "1.2"}]);
+        });
+
+        it("should display substep of substep", () => {
+            const state = {
+                buildDetails: {
+                    1: {
+                        buildId: 1,
+                        steps: [
+                            {
+                                stepId: "1",
+                                steps: [
+                                    {
+                                        stepId: "1.1", steps: [
+                                        {stepId: "substepLevel2"},
+                                        {stepId: "substepLevel2-2"}
+                                    ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                openedBuilds: {1: true},
+                viewBuildSteps: {1: "1.1"}
+            };
+
+            const newProps = mapStateToProps(state, {buildId: 1});
+
+            expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}]);
+        });
     });
+
 });
