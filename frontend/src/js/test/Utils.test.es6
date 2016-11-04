@@ -52,4 +52,10 @@ describe("Utils | BuildFinished", () => {
 
         expect(subject.isBuildRunning(input)).toBe(true);
     });
+
+    it("should return false on invalid input", () => {
+        expect(subject.isBuildRunning({})).toBe(false);
+        expect(subject.isBuildRunning()).toBe(false);
+    });
+
 });
