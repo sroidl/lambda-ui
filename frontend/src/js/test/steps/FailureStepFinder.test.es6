@@ -1,4 +1,4 @@
-/* globals describe expect it */
+/* globals describe expect it xit */
 import {findParentOfFailedSubstep, getFlatSteps} from "steps/FailureStepFinder.es6";
 
 describe("Find failed Substep", () => {
@@ -152,6 +152,7 @@ describe("Find failed Substep", () => {
     });
 
     xit("should return second failure substep", () => {
+        // TODO: Show correct failed step if several failed steps available
         const result = findParentOfFailedSubstep(complexState, 1, "2");
         expect(result).toEqual("2");
     });
@@ -176,8 +177,8 @@ describe("Get flat state", () => {
             }}
         };
         const expected = [
-            {stepId: "1", state: "failure", parentId: "root"},
-            {stepId: "2", state: "failure", parentId: "root"}
+            {stepId: "1", state: "failure", parentId: "root", steps: []},
+            {stepId: "2", state: "failure", parentId: "root", steps: []}
         ];
 
         expect(getFlatSteps(state, 1)).toEqual(expected);
@@ -210,10 +211,10 @@ describe("Get flat state", () => {
                 }]
             }}
         };
-        const expected = [{stepId: "1", state:"failure", parentId: "root"},
-            {stepId: "1-1", state:"failure", parentId: "1"},
-            {stepId: "2", state:"failure", parentId: "root"},
-            {stepId: "2-1", state:"failure", parentId: "2"}];
+        const expected = [{stepId: "1", state:"failure", parentId: "root", steps: [{stepId: "1-1", state: "failure", parentId: "1", steps: []}]},
+            {stepId: "1-1", state:"failure", parentId: "1", steps: []},
+            {stepId: "2", state:"failure", parentId: "root", steps: [{stepId: "2-1", state: "failure", parentId: "2", steps: []}]},
+            {stepId: "2-1", state:"failure", parentId: "2", steps: []}];
         expect(getFlatSteps(state, 1)).toEqual(expected);
     });
 });
