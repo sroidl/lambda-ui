@@ -3,30 +3,9 @@ import {connect} from "react-redux";
 import BuildDetails from "./BuildDetails.es6";
 import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
+import {StateIcon} from "StateIcon.es6";
 
 import {FormattedDuration} from "./DateAndTime.es6";
-
-const SUCCESS_ICON = "fa-check";
-const FAILURE_ICON = "fa-times";
-const RUNNING_ICON = "fa-cog";
-const KILLED_ICON = "fa-ban";
-
-
-const icon = (buildState) => {
-    switch (buildState) {
-        case "success" :
-            return SUCCESS_ICON;
-        case "failed" :
-            return FAILURE_ICON;
-        case "running" :
-            return RUNNING_ICON;
-        case "killed" :
-            return KILLED_ICON;
-        default :
-            return "";
-    }
-};
-
 
 export const renderSummary = (properties) => {
     const {buildId, buildNumber, startTime, state, toggleBuildDetails, open} = properties;
@@ -34,7 +13,6 @@ export const renderSummary = (properties) => {
     if (open) {
         classesForState += " open";
     }
-    const iconClassName = "fa " + icon(state);
     let {endTime} = properties;
     if (!endTime) {
         endTime = now();
@@ -48,7 +26,7 @@ export const renderSummary = (properties) => {
     return <div className={classesForState}>
 
         <div className="buildInfo" onClick={toggleBuildDetails}>
-            <div className="buildIcon"><i className={iconClassName} aria-hidden="true"></i></div>
+            <StateIcon state={state}/>
             <div className="buildInfoRow overview">
                 <div className="buildNumber">Build #{buildNumber}</div>
             </div>

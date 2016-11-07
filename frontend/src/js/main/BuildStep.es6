@@ -8,6 +8,7 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import R from "ramda";
+import {StateIcon} from "StateIcon.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -16,33 +17,6 @@ export const duration = ({startTime, endTime}) => {
     const duration = Moment.duration(end.diff(start), "milliseconds");
     const durationString = duration.format("hh:mm:ss");
     return durationString.length < 5 ? "00:" + durationString : durationString;
-};
-
-const SUCCESS_ICON = "fa-check";
-const FAILURE_ICON = "fa-times";
-const RUNNING_ICON = "fa-cog";
-const KILLED_ICON = "fa-ban";
-const DEFAULT_ICON = "fa-ellipsis-h";
-
-const buildIcon = (stepState) => {
-    let iconClass;
-    switch (stepState){
-        case "success":
-            iconClass = SUCCESS_ICON;
-            break;
-        case "failure":
-            iconClass = FAILURE_ICON;
-            break;
-        case "running":
-            iconClass = RUNNING_ICON;
-            break;
-        case "killed":
-            iconClass = KILLED_ICON;
-            break;
-        default:
-            iconClass = DEFAULT_ICON;
-    }
-    return <div className="buildIcon"><i className={"fa " + iconClass}/></div>;
 };
 
 export const getStepDuration = (step) => {
@@ -56,11 +30,8 @@ export const getStepDuration = (step) => {
 export const BuildStep = props => {
     const {step, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep} = props;
 
-
-    const buildStepIcon = buildIcon(step.state);
-
     const infos = <div>
-        {buildStepIcon}
+        <StateIcon state={step.state}/>
         <div className="stepName">{step.name}</div>
         <div className="stepDuration">{duration(getStepDuration(step))}</div>
     </div>;

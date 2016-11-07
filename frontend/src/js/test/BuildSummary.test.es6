@@ -40,42 +40,6 @@ describe("Build Summary", () => {
         window.console = realConsole;
     });
 
-
-    describe("BuildSummary Display", () => {
-        describe("BuildIcons", () => {
-            it("should show correct failed state icon", () => {
-                const inputProps = {buildId: 1, state: "failed"};
-
-                const component = shallow(buildSummary(inputProps));
-
-                expect(buildIcon(component).hasClass("fa-times")).toBe(true);
-            });
-
-            it("should show correct success state icon", () => {
-                const inputProps = {buildId: 1, state: "success"};
-
-                const component = shallow(buildSummary(inputProps));
-
-                expect(buildIcon(component).hasClass("fa-check")).toBe(true);
-            });
-
-            it("should show correct running state icon", () => {
-                const inputProps = {buildId: 1, state: "running"};
-
-                const component = shallow(buildSummary(inputProps));
-
-                expect(buildIcon(component).hasClass("fa-cog")).toBe(true);
-            });
-
-            it("should show correct running state icon", () => {
-                const inputProps = {buildId: 1, state: "killed"};
-
-                const component = shallow(buildSummary(inputProps));
-                expect(buildIcon(component).hasClass("fa-ban")).toBe(true);
-            });
-        });
-    });
-
     describe("BuildSummary Toggle", () => {
         it("should call the toggle details function on click", () => {
             const toggleFnMock = jest.fn();
