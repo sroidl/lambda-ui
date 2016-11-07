@@ -34,7 +34,7 @@ describe("BuildStep", () => {
 
     describe("BuildStep rendering", () => {
 
-        const subject = (buildId, stepData) => <BuildStep buildId={buildId} step={stepData} goIntoStepFn={fn} showOutputFn={fn}/>;
+        const subject = (buildId, stepData) => <BuildStep buildId={buildId} step={stepData} goIntoStepFn={fn} showOutputFn={fn} goIntoFailureStepFn={fn} failureStep={"1"}/>;
 
         it("should render all step information", () => {
             const input = details();
@@ -82,7 +82,7 @@ describe("BuildStep", () => {
             const substeps = {steps: [{stepId: "1-1"}]};
             viewBuildStep.mockReturnValue({type: "stepInto"});
 
-            const component = mount(<BuildStepRedux buildId={1} step={details(substeps)} store={storeMock}/>);
+            const component = mount(<BuildStepRedux buildId={1} step={details(substeps)} store={storeMock} />);
             component.find(".goIntoStepLink").simulate("click");
 
             expect(dispatchMock).toBeCalledWith({type: "stepInto"});
@@ -137,17 +137,20 @@ describe("BuildStep", () => {
         const props = state => {
             return {
                 step: {endTime: Moment(), startTime: Moment(), state: state, steps: []},
+                failureStep: "",
                 goIntoStepFn: ()=> {
                 },
                 showOutputFn: ()=> {
-                }
+                },
+                goIntoFailureStepFn: ()=> {
+                },
             };
         };
 
         const subject = properties => {
-            const {buildId, step, goIntoStepFn, showOutputFn} = properties;
-            return <BuildStep buildId={buildId} step={step} goIntoStepFn={goIntoStepFn} showOutputFn={showOutputFn}/>
-        }
+            const {step, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep} = properties;
+            return <BuildStep step={step} goIntoStepFn={goIntoStepFn} showOutputFn={showOutputFn} goIntoFailureStepFn={goIntoFailureStepFn} failureStep={failureStep}/>;
+        };
 
         it("should return icon for state success", () => {
             const component = shallow(subject(props("success")));

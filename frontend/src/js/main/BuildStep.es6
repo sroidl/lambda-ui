@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import Moment from "moment";
@@ -5,6 +6,8 @@ import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
+import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
+import R from "ramda";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -51,7 +54,8 @@ export const getStepDuration = (step) => {
 };
 
 export const BuildStep = props => {
-    const {step, goIntoStepFn, showOutputFn} = props;
+    const {step, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep} = props;
+
 
     const buildStepIcon = buildIcon(step.state);
 
@@ -61,6 +65,7 @@ export const BuildStep = props => {
         <div className="stepDuration">{duration(getStepDuration(step))}</div>
     </div>;
     const goIntoStepLink = <a className="goIntoStepLink" href="#" onClick={goIntoStepFn}>Substeps</a>;
+    const goIntoFailureStepLink = <a className="goIntoFailureStepLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}>Failure Substep</a>;
     const showOutputLink = <a className="showOutputLink" href="#" onClick={showOutputFn}>Show Output</a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
 
@@ -69,24 +74,29 @@ export const BuildStep = props => {
         {showOutputLink}
         <br/>&nbsp;
         {hasSubsteps ? goIntoStepLink : ""}
+        <br/>&nbsp;
+        {failureStep && hasSubsteps ? goIntoFailureStepLink : ""}
     </div>;
 };
-
 BuildStep.propTypes = {
     step: PropTypes.object.isRequired,
+    failureStep: PropTypes.string,
     goIntoStepFn: PropTypes.func.isRequired,
+    goIntoFailureStepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
-    return ownProps;
+    const newProps = R.merge(ownProps, {failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId)});
+    return newProps;
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+
     return {
         goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.step.stepId)),
-        showOutputFn: () => dispatch(showBuildOutput(ownProps.buildId, ownProps.step.stepId))
+        showOutputFn: () => dispatch(showBuildOutput(ownProps.buildId, ownProps.step.stepId)),
+        goIntoFailureStepFn: (failureStep) => dispatch(viewBuildStep(ownProps.buildId, failureStep))
     };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(BuildStep);
