@@ -1,8 +1,9 @@
 import React, {PropTypes} from "react";
+import "../../sass/stateIcon.sass";
 
 const SUCCESS_ICON = "fa-check";
 const FAILURE_ICON = "fa-times";
-const RUNNING_ICON = "fa-cog";
+const RUNNING_ICON = "fa-cog rotate";
 const KILLED_ICON = "fa-ban";
 const DEFAULT_ICON = "fa-ellipsis-h";
 
