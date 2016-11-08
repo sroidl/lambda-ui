@@ -39,14 +39,14 @@
 
 (defn pipeline-routes [pipeline]
   (ring-json/wrap-json-response
-    (routes (context "/lambdaui/api" [] (new-api/api-routes pipeline))
+    (routes
+            (route/resources "/" {:root "public"})
+            (GET "/" [] (ring.util.response/redirect "/index.html"))
+            (GET "/config.js" [] (create-config pipeline))
+            (context "/lambdaui/api" [] (new-api/api-routes pipeline))
             (POST "/lambdaui/api/triggerNew" [] (do (runner/trigger-new-build pipeline) {}))
             (context "/api" [] (old-api/rest-api pipeline))
             (GET "/old" [] (old-ui/ui-page pipeline))
-            (route/resources "/" {:root "public"})
-            (GET "/" [] (ring.util.response/redirect "ui/index.html"))
-            (GET "/ui/config.js" [] (create-config pipeline))
-            (route/resources "/ui" {:root "public"})
             )))
 
 
