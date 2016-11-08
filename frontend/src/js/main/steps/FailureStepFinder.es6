@@ -1,25 +1,13 @@
 import R from "ramda";
+import {getFlatTree} from "FunctionalUtils.es6";
 
 const getBuildDetails = R.view(R.lensProp("buildDetails"));
 const getBuild = (buildId) => R.view(R.lensIndex(buildId));
-const getSteps = R.view(R.lensProp("steps"));
-const getHeadSteps = buildId => R.pipe(getBuildDetails(), getBuild(buildId), getSteps());
+const getBuildProps = buildId => R.pipe(getBuildDetails(), getBuild(buildId));
 
 export const getFlatSteps = (state, buildId) => {
-    const steps = getHeadSteps(buildId)(state);
-
-    const flatSteps = [];
-
-    const extractElements = (steps, flatSteps) => {
-        R.map(step => {flatSteps.push(step);
-            if(step.steps instanceof Array && step.steps.length > 0){
-                extractElements(step.steps, flatSteps);
-            }
-        })(steps);
-    };
-
-    extractElements(steps,flatSteps);
-    return flatSteps;
+    const build = getBuildProps(buildId)(state);
+    return getFlatTree(build, "steps");
 };
 
 const filterStepsById = stepId => R.filter(step => step.stepId === stepId);
@@ -39,6 +27,7 @@ export const findParentOfFailedSubstep = (state, buildId, stepId) => {
     }
 
     // TODO: Use Steps from flatSteps
+    const getHeadSteps = buildId => R.pipe(getBuildProps(buildId), R.view(R.lensProp("steps")));
     const steps = getHeadSteps(buildId)(state);
     foundSteps = getFailedStep(steps);
     if (!foundSteps || foundSteps.length < 1){
