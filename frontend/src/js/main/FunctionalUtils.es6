@@ -26,5 +26,5 @@ export const mapTree = mappingFn => input => {
         return Object.assign({}, input, {steps: R.map(R.pipe(mp, mappingFn))(input.steps)});
     }
     return input;
-}
+};
 
