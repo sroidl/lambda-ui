@@ -15,9 +15,9 @@ describe("State Icon", () => {
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with running icon and hint", () => {
+    it("should return div with running icon and rotate class and hint", () => {
         const state = "running";
-        const expected = <div className="buildIcon" title="Running"><i className="fa fa-cog"/></div>;
+        const expected = <div className="buildIcon" title="Running"><i className="fa fa-cog rotate"/></div>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
