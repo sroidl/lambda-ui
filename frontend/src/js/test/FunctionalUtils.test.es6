@@ -25,3 +25,13 @@ describe("FunctionalUtils: mapTree", () => {
     expect(subject.mapTree(mp)(input)).toEqual(expected);
   });
 });
+
+describe("getFlatTree", () => {
+  it("should return flat tree", () => {
+    const input = {buildId: 1, subElements: [{name: "element1", subElements: [{name: "element1-1"}]}
+                  ,{name: "element2", subElements: [{name: "element2-1"}]}]};
+    const expected = [{name: "element1", subElements: [{name: "element1-1"}]}, {name: "element1-1"},
+                    {name: "element2", subElements: [{name: "element2-1"}]}, {name: "element2-1"}];
+    expect(subject.getFlatTree(input, "subElements")).toEqual(expected);
+  });
+});
