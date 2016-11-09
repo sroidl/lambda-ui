@@ -9,6 +9,7 @@ import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import R from "ramda";
 import {StateIcon} from "StateIcon.es6";
+import {isStepInParallel} from "steps/InParallelChecker.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -28,7 +29,7 @@ export const getStepDuration = (step) => {
 };
 
 export const BuildStep = props => {
-    const {step, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep} = props;
+    const {step, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
 
     const infos = <div>
         <StateIcon state={step.state}/>
@@ -39,8 +40,9 @@ export const BuildStep = props => {
     const goIntoFailureStepLink = <a className="goIntoFailureStepLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}>Failure Substep</a>;
     const showOutputLink = <a className="showOutputLink" href="#" onClick={showOutputFn}>Show Output</a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
+    const parallelClass = isParallel ? "inParallel" : "";
 
-    return <div className={Utils.classes("buildStep", step.state)}>
+    return <div className={Utils.classes("buildStep", step.state, parallelClass)}>
         {infos}
         {showOutputLink}
         <br/>&nbsp;
@@ -52,13 +54,15 @@ export const BuildStep = props => {
 BuildStep.propTypes = {
     step: PropTypes.object.isRequired,
     failureStep: PropTypes.string,
+    isParallel: PropTypes.bool,
     goIntoStepFn: PropTypes.func.isRequired,
     goIntoFailureStepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const newProps = R.merge(ownProps, {failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId)});
+    const newProps = R.merge(ownProps, {failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId),
+                                        isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId)});
     return newProps;
 };
 

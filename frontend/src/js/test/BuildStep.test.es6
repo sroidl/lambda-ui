@@ -34,44 +34,51 @@ describe("BuildStep", () => {
 
     describe("BuildStep rendering", () => {
 
-        const subject = (buildId, stepData) => <BuildStep buildId={buildId} step={stepData} goIntoStepFn={fn} showOutputFn={fn} goIntoFailureStepFn={fn} failureStep={"1"}/>;
+        const subject = (buildId, stepData, inParallel) => <BuildStep buildId={buildId} step={stepData} goIntoStepFn={fn} showOutputFn={fn} goIntoFailureStepFn={fn} failureStep={"1"} isParallel={inParallel}/>;
 
-        it("should render all step information", () => {
+        it("should render all step information for no inParallel step", () => {
             const input = details();
 
-            const component = shallow(subject(1,input));
+            const component = shallow(subject(1,input, false));
 
             expect(component.find(".stepName").text()).toEqual("fooStep");
             expect(component.find(".buildStep").hasClass("success")).toBe(true);
+            expect(component.find(".buildStep").hasClass("inParallel")).toBe(false);
         });
 
         it("should render failed step state", () => {
-            const component = shallow(subject(1, details({state: "failed"})));
+            const component = shallow(subject(1, details({state: "failed"}), false));
             expect(component.find(".buildStep").hasClass("failed")).toBe(true);
         });
 
         it("should render running step state", () => {
-            const component = shallow(subject(1, details({state: "running"})));
+            const component = shallow(subject(1, details({state: "running"}), false));
             expect(component.find(".buildStep").hasClass("running")).toBe(true);
         });
 
         it("should render pending step state", () => {
-            const component = shallow(subject(1, details({state: "pending"})));
+            const component = shallow(subject(1, details({state: "pending"}), false));
             expect(component.find(".buildStep").hasClass("pending")).toBe(true);
         });
 
         it("should render link if step has substeps", () => {
             const substeps = {steps: [{stepId: "1.1"}]};
 
-            const component = shallow(subject(1, details(substeps)));
+            const component = shallow(subject(1, details(substeps), false));
 
             expect(component.find(".goIntoStepLink").length).toBe(1);
         });
 
         it("should render output link", () => {
-            const component = shallow(subject(1, details()));
+            const component = shallow(subject(1, details(), false));
 
             expect(component.find(".showOutputLink").length).toBe(1);
+        });
+
+        it("should render parallel step", () => {
+            const component = shallow(subject(1, details(), true));
+
+            expect(component.find(".buildStep").hasClass("inParallel")).toBe(true);
         });
     });
 

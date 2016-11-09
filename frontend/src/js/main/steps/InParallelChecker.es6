@@ -5,7 +5,13 @@ const getBuild = buildId => R.pipe(R.view(R.lensProp("buildDetails")), R.view(R.
 const filterStep = stepId => R.filter(step => step.stepId === stepId);
 
 export const isStepInParallel = (state, buildId, stepId) => {
-    const buildDetails = getBuild(buildId)(state);
+    let buildDetails;
+    try {
+        buildDetails = getBuild(buildId)(state);
+    } catch (err){
+        // Catch all invalid states
+        return false;
+    }
     const flatSteps = getFlatTree(buildDetails, "steps");
     const currentStep = filterStep(stepId)(flatSteps)[0];
     const parentStepId = currentStep.parentId;

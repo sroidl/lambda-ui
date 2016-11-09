@@ -24,8 +24,6 @@ describe("isStepInParallel", () => {
         const ownState = state([{stepId: "1", parentId: "root"}]);
         const stepId = "1";
 
-        console.log(ownState);
-
         expectation(ownState, stepId, false);
     });
 
@@ -45,5 +43,10 @@ describe("isStepInParallel", () => {
         }]);
         const stepId = "1-1";
         expectation(ownState, stepId, true);
+    });
+
+    it("should return false if valid state isn't available", () => {
+        const ownState = {someState: {withRandom: "content"}};
+        expectation(ownState, "1", false);
     });
 });
