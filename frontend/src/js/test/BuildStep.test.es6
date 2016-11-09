@@ -44,6 +44,7 @@ describe("BuildStep", () => {
             expect(component.find(".stepName").text()).toEqual("fooStep");
             expect(component.find(".buildStep").hasClass("success")).toBe(true);
             expect(component.find(".buildStep").hasClass("inParallel")).toBe(false);
+            expect(component.contains(<div className="verticalLine"></div>)).toBe(false);
         });
 
         it("should render failed step state", () => {
@@ -79,6 +80,7 @@ describe("BuildStep", () => {
             const component = shallow(subject(1, details(), true));
 
             expect(component.find(".buildStep").hasClass("inParallel")).toBe(true);
+            expect(component.contains(<div className="verticalLine"></div>)).toBe(true);
         });
     });
 

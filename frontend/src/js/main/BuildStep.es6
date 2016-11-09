@@ -36,6 +36,12 @@ export const BuildStep = props => {
         <div className="stepName">{step.name}</div>
         <div className="stepDuration">{duration(getStepDuration(step))}</div>
     </div>;
+
+    const parallelLines = <div>
+        <div className="verticalLine"></div>
+        <div className="verticalLine"></div>
+    </div>;
+
     const goIntoStepLink = <a className="goIntoStepLink" href="#" onClick={goIntoStepFn}>Substeps</a>;
     const goIntoFailureStepLink = <a className="goIntoFailureStepLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}>Failure Substep</a>;
     const showOutputLink = <a className="showOutputLink" href="#" onClick={showOutputFn}>Show Output</a>;
@@ -43,6 +49,7 @@ export const BuildStep = props => {
     const parallelClass = isParallel ? "inParallel" : "";
 
     return <div className={Utils.classes("buildStep", step.state, parallelClass)}>
+        {isParallel ? parallelLines : ""}
         {infos}
         {showOutputLink}
         <br/>&nbsp;

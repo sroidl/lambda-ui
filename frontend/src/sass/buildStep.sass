@@ -93,5 +93,24 @@
 .buildStep.killed .buildIcon
   background-color: $black
 
+.verticalLine
+  position: absolute
+  top: -126px
+  background-color: $dark-grey
+  width: 2px
+  height: 131px
+  left: 195px
+
+.verticalLine:first-of-type
+  left: -20px
+
+.buildStep.inParallel:first-of-type>div>.verticalLine
+  display: none
+
+
+
+
+
+
 
 
