@@ -10,8 +10,9 @@ export const getFlatTree = (object, arg) => {
     const headArray = object[arg];
     const flatTree = [];
     const extractElements = (array, arg, flatTree) => {
-        R.map(content => {flatTree.push(content);
-            if(content[arg] instanceof Array && content[arg].length > 0){
+        R.map(content => {
+            flatTree.push(content);
+            if (content[arg] instanceof Array && content[arg].length > 0) {
                 extractElements(content[arg], arg, flatTree);
             }
         })(array);
