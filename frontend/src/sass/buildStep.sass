@@ -11,10 +11,14 @@
   max-width: 180px
   vertical-align: top
 
+.buildStep.inParallel
+  display: block
+
 .buildStep:first-of-type
   margin-left: -30px
 
-
+.buildStep.inParallel:first-of-type
+  margin-left: 0px
 
 .buildStep:before, .buildStep:after
   content: ''
@@ -27,13 +31,25 @@
   left: -18px
   background-color: $dark-grey
 
+.buildStep.inParallel:first-of-type:before
+  width: 30px
+  left: -30px
+
 .buildStep:after
   width: 15px
   right: -15px
   background-color: $dark-grey
 
+.buildStep.inParallel:first-of-type:after
+  width: 25px
+  right: -25px
+
 .buildStep:first-of-type:before, .buildStep:last-of-type:after
   display: none
+
+.buildStep.inParallel:first-of-type:before, .buildStep.inParallel:last-of-type:after
+  display: initial
+
 
 .buildStep
   & .buildIcon
@@ -77,6 +93,5 @@
 .buildStep.killed .buildIcon
   background-color: $black
 
-.buildStep.inParallel
-  border: 1px red solid
+
 
