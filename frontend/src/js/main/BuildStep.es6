@@ -32,7 +32,7 @@ export const getStepDuration = (step) => {
 export const BuildStep = props => {
     const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
 
-    if(step.type === "parallel") {
+    if(!isParallel && step.type === "parallel") {
         const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
         return <div key={step.stepId} className="parallelColumn">{steps}</div>;
     }

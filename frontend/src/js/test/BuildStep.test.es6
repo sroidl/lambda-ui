@@ -84,8 +84,14 @@ describe("BuildStep", () => {
         });
 
         it("should render parallel column if step have type parallel", () => {
-            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}),true));
+            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}),false));
             expect(component.is(".parallelColumn")).toBe(true);
+        });
+
+        it("should render no parallel column if parent step is parallel", () => {
+            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), true));
+            expect(component.is(".buildStep")).toBe(true);
+            expect(component.is(".parallelColumn")).toBe(false);
         });
     });
 
