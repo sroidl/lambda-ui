@@ -8,6 +8,7 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import R from "ramda";
+import BuildStepCon from "./BuildStep.es6";
 import {StateIcon} from "StateIcon.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
 
@@ -29,7 +30,12 @@ export const getStepDuration = (step) => {
 };
 
 export const BuildStep = props => {
-    const {step, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
+    const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
+
+    if(step.type === "parallel") {
+        const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
+        return <div key={step.stepId} className="parallelColumn">{steps}</div>;
+    }
 
     const infos = <div>
         <StateIcon state={step.state}/>
@@ -60,6 +66,7 @@ export const BuildStep = props => {
 };
 BuildStep.propTypes = {
     step: PropTypes.object.isRequired,
+    buildId: PropTypes.number,
     failureStep: PropTypes.string,
     isParallel: PropTypes.bool,
     goIntoStepFn: PropTypes.func.isRequired,
@@ -69,7 +76,8 @@ BuildStep.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     const newProps = R.merge(ownProps, {failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId),
-                                        isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId)});
+                                        isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId),
+                                        buildId: ownProps.buildId});
     return newProps;
 };
 

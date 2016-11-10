@@ -82,6 +82,11 @@ describe("BuildStep", () => {
             expect(component.find(".buildStep").hasClass("inParallel")).toBe(true);
             expect(component.contains(<div className="verticalLine"></div>)).toBe(true);
         });
+
+        it("should render parallel column if step have type parallel", () => {
+            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}),true));
+            expect(component.is(".parallelColumn")).toBe(true);
+        });
     });
 
     describe("BuildStep wiring", () => {
