@@ -22,15 +22,7 @@ export const findParentOfFailedSubstep = (state, buildId, stepId) => {
     }
     const flatSteps = getFlatSteps(state, buildId);
     let foundSteps = findAndFilterFailedStep(stepId)(flatSteps);
-    if(!foundSteps || foundSteps.length < 1){
-        return null;
-    }
-
-    // TODO: Use Steps from flatSteps
-    const getHeadSteps = buildId => R.pipe(getBuildProps(buildId), R.view(R.lensProp("steps")));
-    const steps = getHeadSteps(buildId)(state);
-    foundSteps = getFailedStep(steps);
-    if (!foundSteps || foundSteps.length < 1){
+    if(!foundSteps || foundSteps.length < 1 || !getSubSteps(foundSteps)){
         return null;
     }
 
