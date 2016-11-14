@@ -23,6 +23,12 @@ export const renderSummary = (properties) => {
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
     const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).seconds();
 
+    const openInterestingStep = () => {
+        if (open){
+            toggleBuildDetails();
+        }
+    };
+
     return <div className={classesForState}>
 
         <div className="buildInfo" onClick={toggleBuildDetails}>
@@ -33,6 +39,9 @@ export const renderSummary = (properties) => {
             <div className="buildInfoRow time">
                 <div className="buildStartTime"><i className="fa fa-flag-checkered" aria-hidden="true"></i>Started: {startMoment}</div>
                 <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration: <FormattedDuration seconds={duration}/></div>
+            </div>
+            <div className="buildInfoRow">
+                <div><a href="#" onClick={openInterestingStep}>Test</a></div>
             </div>
         </div>
         <BuildDetails buildId={buildId}/>
