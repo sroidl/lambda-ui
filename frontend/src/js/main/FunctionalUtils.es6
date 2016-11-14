@@ -19,6 +19,7 @@ const getBuild = (buildId) => R.view(R.lensIndex(buildId));
 const getBuildProps = buildId => R.pipe(getBuildDetails(), getBuild(buildId));
 
 export const getFlatTree = (object, arg) => {
+    if(!object || !arg){return null;}
     const headArray = object[arg];
     const flatTree = [];
     const extractElements = (array, arg, flatTree) => {
@@ -37,4 +38,3 @@ export const getFlatSteps = (state, buildId) => {
     const build = getBuildProps(buildId)(state);
     return getFlatTree(build, "steps");
 };
-

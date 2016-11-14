@@ -6,6 +6,8 @@ const filterFailure = R.filter(step => step.state === "failure");
 
 export const getInterestingStepId = (state, buildId) => {
     const steps = getFlatSteps(state, buildId);
+    if(!steps){return null;}
+
     const runningSteps = filterRunning(steps);
     if(runningSteps.length > 0){
         return runningSteps[runningSteps.length -1].stepId;
