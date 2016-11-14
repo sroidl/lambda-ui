@@ -1,14 +1,5 @@
 import R from "ramda";
-import {getFlatTree} from "FunctionalUtils.es6";
-
-const getBuildDetails = R.view(R.lensProp("buildDetails"));
-const getBuild = (buildId) => R.view(R.lensIndex(buildId));
-const getBuildProps = buildId => R.pipe(getBuildDetails(), getBuild(buildId));
-
-export const getFlatSteps = (state, buildId) => {
-    const build = getBuildProps(buildId)(state);
-    return getFlatTree(build, "steps");
-};
+import {getFlatSteps} from "FunctionalUtils.es6";
 
 const filterStepsById = stepId => R.filter(step => step.stepId === stepId);
 const getFailedStep = R.filter(step => step.state === "failure");

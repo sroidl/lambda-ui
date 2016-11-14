@@ -6,6 +6,18 @@ export const flatTree = stepDownFn =>
         return stepDownFn(input) ? R.reduce(conmap(flatTree(stepDownFn)), [input], stepDownFn(input)) : [input];
     };
 
+export const mapTree = mappingFn => input => {
+    if (input.steps) {
+        const mp = mapTree(mappingFn);
+        return Object.assign({}, input, {steps: R.map(R.pipe(mp, mappingFn))(input.steps)});
+    }
+    return input;
+};
+
+const getBuildDetails = R.view(R.lensProp("buildDetails"));
+const getBuild = (buildId) => R.view(R.lensIndex(buildId));
+const getBuildProps = buildId => R.pipe(getBuildDetails(), getBuild(buildId));
+
 export const getFlatTree = (object, arg) => {
     const headArray = object[arg];
     const flatTree = [];
@@ -21,11 +33,8 @@ export const getFlatTree = (object, arg) => {
     return flatTree;
 };
 
-export const mapTree = mappingFn => input => {
-    if (input.steps) {
-        const mp = mapTree(mappingFn);
-        return Object.assign({}, input, {steps: R.map(R.pipe(mp, mappingFn))(input.steps)});
-    }
-    return input;
+export const getFlatSteps = (state, buildId) => {
+    const build = getBuildProps(buildId)(state);
+    return getFlatTree(build, "steps");
 };
 

@@ -35,3 +35,64 @@ describe("getFlatTree", () => {
     expect(subject.getFlatTree(input, "subElements")).toEqual(expected);
   });
 });
+
+describe("getFlatSteps", () => {
+  it("should return array with stepIds", () => {
+    const state = {
+      buildDetails: { 1: {
+        buildId: 1,
+        steps : [{
+          stepId: "1",
+          state: "failure",
+          parentId: "root",
+          steps: []
+        },{
+          stepId: "2",
+          state: "failure",
+          parentId: "root",
+          steps: []
+        }]
+      }}
+    };
+    const expected = [
+      {stepId: "1", state: "failure", parentId: "root", steps: []},
+      {stepId: "2", state: "failure", parentId: "root", steps: []}
+    ];
+
+    expect(subject.getFlatSteps(state, 1)).toEqual(expected);
+  });
+
+  it("should return flat array with steps", () => {
+    const state = {
+      buildDetails: { 1: {
+        buildId: 1,
+        steps : [{
+          stepId: "1",
+          state: "failure",
+          parentId: "root",
+          steps: [{
+            stepId: "1-1",
+            state: "failure",
+            parentId: "1",
+            steps: []
+          }]
+        }, {
+          stepId: "2",
+          state: "failure",
+          parentId: "root",
+          steps: [{
+            stepId: "2-1",
+            state: "failure",
+            parentId: "2",
+            steps: []
+          }]
+        }]
+      }}
+    };
+    const expected = [{stepId: "1", state:"failure", parentId: "root", steps: [{stepId: "1-1", state: "failure", parentId: "1", steps: []}]},
+      {stepId: "1-1", state:"failure", parentId: "1", steps: []},
+      {stepId: "2", state:"failure", parentId: "root", steps: [{stepId: "2-1", state: "failure", parentId: "2", steps: []}]},
+      {stepId: "2-1", state:"failure", parentId: "2", steps: []}];
+    expect(subject.getFlatSteps(state, 1)).toEqual(expected);
+  });
+});
