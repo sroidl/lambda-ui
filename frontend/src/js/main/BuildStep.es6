@@ -8,7 +8,6 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import R from "ramda";
-import BuildStepCon from "./BuildStep.es6";
 import {StateIcon} from "StateIcon.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
 
@@ -89,4 +88,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         goIntoFailureStepFn: (failureStep) => dispatch(viewBuildStep(ownProps.buildId, failureStep))
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(BuildStep);
+const BuildStepCon = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
+export default BuildStepCon;
