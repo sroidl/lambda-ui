@@ -4,7 +4,7 @@ import BuildDetails from "./BuildDetails.es6";
 import {toggleBuildDetails as toggleAction, viewBuildStep} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
-/* eslint-disable */
+
 import {getInterestingStepId} from "steps/InterestingStepFinder.es6";
 
 import {FormattedDuration} from "./DateAndTime.es6";
@@ -26,15 +26,16 @@ export const renderSummary = (properties) => {
     const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).seconds();
 
     const openInterestingStep = () => {
-        if(open){
+        if (open) {
             toggleBuildDetails();
         }
-        if(interestingStepId !== "root"){
+        if (interestingStepId !== "root") {
             showInterestingStep(interestingStepId);
         }
     };
 
-    const interestingStepLink = interestingStepId ? <a href="#" onClick={openInterestingStep}>Show interesting step</a> : "";
+    const interestingStepLink = interestingStepId ?
+        <a href="#" onClick={openInterestingStep}>Show interesting step</a> : "";
 
     return <div className={classesForState}>
 
@@ -44,8 +45,10 @@ export const renderSummary = (properties) => {
                 <div className="buildNumber">Build #{buildNumber}</div>
             </div>
             <div className="buildInfoRow time">
-                <div className="buildStartTime"><i className="fa fa-flag-checkered" aria-hidden="true"></i>Started: {startMoment}</div>
-                <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration: <FormattedDuration seconds={duration}/></div>
+                <div className="buildStartTime"><i className="fa fa-flag-checkered"
+                                                   aria-hidden="true"></i>Started: {startMoment}</div>
+                <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration:
+                    <FormattedDuration seconds={duration}/></div>
             </div>
             <div className="buildInfoRow">
                 <div>{interestingStepLink}</div>
@@ -101,8 +104,12 @@ export const mapStateToProps = (state, props) => {
 
 export const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        toggleBuildDetails: () => {dispatch(toggleAction(ownProps.build.buildId));},
-        showInterestingStep: (stepId) => {dispatch(viewBuildStep(ownProps.build.buildId, stepId));}
+        toggleBuildDetails: () => {
+            dispatch(toggleAction(ownProps.build.buildId));
+        },
+        showInterestingStep: (stepId) => {
+            dispatch(viewBuildStep(ownProps.build.buildId, stepId));
+        }
     };
 };
 

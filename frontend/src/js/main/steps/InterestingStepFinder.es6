@@ -6,17 +6,19 @@ const filterFailure = R.filter(step => step.state === "failure");
 
 export const getInterestingStepId = (state, buildId) => {
     const steps = getFlatSteps(state, buildId);
-    if(!steps){return null;}
+    if (!steps) {
+        return null;
+    }
 
     const runningSteps = filterRunning(steps);
-    if(runningSteps.length > 0){
-        return runningSteps[runningSteps.length -1].parentId;
+    if (runningSteps.length > 0) {
+        return runningSteps[runningSteps.length - 1].parentId;
     }
     const failureSteps = filterFailure(steps);
-    if(failureSteps.length > 0){
-        return failureSteps[failureSteps.length -1].parentId;
+    if (failureSteps.length > 0) {
+        return failureSteps[failureSteps.length - 1].parentId;
     }
-    if (steps[steps.length - 1].state === "success"){
+    if (steps[steps.length - 1].state === "success") {
         return steps[steps.length - 1].parentId;
     }
     return null;

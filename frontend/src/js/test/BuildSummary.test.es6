@@ -8,14 +8,15 @@ function buildIcon(domElement) {
     return domElement.find(".buildIcon").find(".fa");
 }
 
-const fn = () => {  };
-const time = {  };
+const fn = () => {
+};
+const time = {};
 
-const buildSummary = ({buildId=1, state="running", startTime="time", toggleBuildDetails=fn}) => {
-  return  <BuildSummary buildId={buildId} state={state}
-                  startTime={startTime}
-                  toggleBuildDetails={toggleBuildDetails}
-                  buildNumber={1}/>;
+const buildSummary = ({buildId = 1, state = "running", startTime = "time", toggleBuildDetails = fn}) => {
+    return <BuildSummary buildId={buildId} state={state}
+                         startTime={startTime}
+                         toggleBuildDetails={toggleBuildDetails}
+                         buildNumber={1}/>;
 };
 
 describe("Build Summary", () => {

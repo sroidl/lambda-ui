@@ -8,18 +8,18 @@ export const isStepInParallel = (state, buildId, stepId) => {
     let buildDetails;
     try {
         buildDetails = getBuild(buildId)(state);
-    } catch (err){
+    } catch (err) {
         // Catch all invalid states
         return false;
     }
     const flatSteps = getFlatTree(buildDetails, "steps");
     const currentStep = filterStep(stepId)(flatSteps)[0];
     const parentStepId = currentStep.parentId;
-    if(parentStepId === "root"){
+    if (parentStepId === "root") {
         return false;
     }
     const parentStep = filterStep(parentStepId)(flatSteps)[0];
-    if(parentStep && parentStep.type && parentStep.type === "parallel"){
+    if (parentStep && parentStep.type && parentStep.type === "parallel") {
         return true;
     }
     return false;
