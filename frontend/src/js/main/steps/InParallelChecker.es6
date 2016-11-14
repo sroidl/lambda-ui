@@ -19,7 +19,7 @@ export const isStepInParallel = (state, buildId, stepId) => {
         return false;
     }
     const parentStep = filterStep(parentStepId)(flatSteps)[0];
-    if(parentStep.type && parentStep.type === "parallel"){
+    if(parentStep && parentStep.type && parentStep.type === "parallel"){
         return true;
     }
     return false;

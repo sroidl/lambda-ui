@@ -56,7 +56,8 @@ describe("Build Summary", () => {
         it("should map to props properly", () => {
             const state = {
                 summaries: {1: {buildId: 1, buildNumber: 12, state: "running", endTime: "10min", startTime: "12sec"}},
-                openedBuilds: {1: true}
+                openedBuilds: {1: true},
+                buildDetails: {}
             };
 
             const props = subject.mapStateToProps(state, {
@@ -75,6 +76,7 @@ describe("Build Summary", () => {
                 state: "success",
                 endTime: "10min",
                 startTime: "12sec",
+                interestingStepId: null,
                 open: true
             });
 

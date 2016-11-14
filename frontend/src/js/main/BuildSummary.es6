@@ -1,14 +1,16 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import BuildDetails from "./BuildDetails.es6";
-import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions.es6";
+import {toggleBuildDetails as toggleAction, viewBuildStep} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
+/* eslint-disable */
+import {getInterestingStepId} from "steps/InterestingStepFinder.es6";
 
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open} = properties;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep, interestingStepId} = properties;
     let classesForState = "row buildSummary " + state;
     if (open) {
         classesForState += " open";
@@ -23,6 +25,17 @@ export const renderSummary = (properties) => {
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
     const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).seconds();
 
+    const openInterestingStep = () => {
+        if(open){
+            toggleBuildDetails();
+        }
+        if(interestingStepId !== "root"){
+            showInterestingStep(interestingStepId);
+        }
+    };
+
+    const interestingStepLink = interestingStepId ? <a href="#" onClick={openInterestingStep}>Show interesting step</a> : "";
+
     return <div className={classesForState}>
 
         <div className="buildInfo" onClick={toggleBuildDetails}>
@@ -33,6 +46,9 @@ export const renderSummary = (properties) => {
             <div className="buildInfoRow time">
                 <div className="buildStartTime"><i className="fa fa-flag-checkered" aria-hidden="true"></i>Started: {startMoment}</div>
                 <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration: <FormattedDuration seconds={duration}/></div>
+            </div>
+            <div className="buildInfoRow">
+                <div>{interestingStepLink}</div>
             </div>
         </div>
         <BuildDetails buildId={buildId}/>
@@ -49,7 +65,6 @@ export class BuildSummary extends React.Component {
         if (this.props.state === "running") {
             setTimeout(() => this.forceUpdate(), 1000);
         }
-
         return renderSummary(this.props);
     }
 }
@@ -61,6 +76,8 @@ BuildSummary.propTypes = {
     state: PropTypes.string.isRequired,
     startTime: PropTypes.string.isRequired,
     toggleBuildDetails: PropTypes.func.isRequired,
+    showInterestingStep: PropTypes.func,
+    interestingStepId: PropTypes.string,
     endTime: PropTypes.string,
     open: PropTypes.bool
 };
@@ -69,6 +86,7 @@ export const mapStateToProps = (state, props) => {
     const {buildId, buildNumber, startTime, endTime} = props.build;
     const buildState = props.build.state;
     const open = state.openedBuilds[buildId] || false;
+    const interestingStepId = state.buildDetails[buildId] ? getInterestingStepId(state, buildId) : null;
 
     return {
         buildId: buildId,
@@ -76,15 +94,15 @@ export const mapStateToProps = (state, props) => {
         state: buildState,
         startTime: startTime,
         endTime: endTime,
-        open: open
+        open: open,
+        interestingStepId: interestingStepId
     };
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        toggleBuildDetails: () => {
-            dispatch(toggleAction(ownProps.build.buildId));
-        }
+        toggleBuildDetails: () => {dispatch(toggleAction(ownProps.build.buildId));},
+        showInterestingStep: (stepId) => {dispatch(viewBuildStep(ownProps.build.buildId, stepId));}
     };
 };
 
