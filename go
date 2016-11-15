@@ -74,10 +74,12 @@ goal_jar() {
   popd > /dev/null
   if [ ! -e ${SCRIPT_DIR}/backend/resources/public ]; then
     mkdir -p ${SCRIPT_DIR}/backend/resources/public
+    mkdir -p ${SCRIPT_DIR}/backend/resources/public/thirdparty/fontawesome
   fi
 
   echo 'Copying frontend assets to backend'
   cp frontend/target/* backend/resources/public
+  cp -R frontend/src/thirdparty/fontawesome backend/resources/public/thirdparty
   echo 'Compiling backend'
   pushd ${SCRIPT_DIR}/backend > /dev/null
    ./lein jar
