@@ -77,7 +77,6 @@ describe("Build Summary", () => {
                 state: "success",
                 endTime: "10min",
                 startTime: "12sec",
-                interestingStepId: null,
                 open: true
             });
 

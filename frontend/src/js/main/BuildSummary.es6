@@ -5,12 +5,10 @@ import {toggleBuildDetails as toggleAction, viewBuildStep} from "actions/BuildDe
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
 
-import {getInterestingStepId} from "steps/InterestingStepFinder.es6";
-
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep, interestingStepId} = properties;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep} = properties;
     let classesForState = "row buildSummary " + state;
     if (open) {
         classesForState += " open";
@@ -29,13 +27,16 @@ export const renderSummary = (properties) => {
         if (open) {
             toggleBuildDetails();
         }
-        if (interestingStepId !== "root") {
-            showInterestingStep(interestingStepId);
-        }
+        showInterestingStep();
     };
 
-    const interestingStepLink = interestingStepId ?
-        <a href="#" onClick={openInterestingStep}>Show interesting step</a> : "";
+    const interestingStepLink = () => {
+        if(["waiting", "running", "failed"].includes(state)){
+            return <a href="#" onClick={openInterestingStep}>Show interesting step</a>;
+        }
+        return "";
+    };
+
 
     return <div className={classesForState}>
 
@@ -51,7 +52,7 @@ export const renderSummary = (properties) => {
                     <FormattedDuration seconds={duration}/></div>
             </div>
             <div className="buildInfoRow">
-                <div>{interestingStepLink}</div>
+                <div>{interestingStepLink()}</div>
             </div>
         </div>
         <BuildDetails buildId={buildId}/>
@@ -80,7 +81,6 @@ BuildSummary.propTypes = {
     startTime: PropTypes.string.isRequired,
     toggleBuildDetails: PropTypes.func.isRequired,
     showInterestingStep: PropTypes.func,
-    interestingStepId: PropTypes.string,
     endTime: PropTypes.string,
     open: PropTypes.bool
 };
@@ -89,7 +89,6 @@ export const mapStateToProps = (state, props) => {
     const {buildId, buildNumber, startTime, endTime} = props.build;
     const buildState = props.build.state;
     const open = state.openedBuilds[buildId] || false;
-    const interestingStepId = state.buildDetails[buildId] ? getInterestingStepId(state, buildId) : null;
 
     return {
         buildId: buildId,
@@ -98,7 +97,6 @@ export const mapStateToProps = (state, props) => {
         startTime: startTime,
         endTime: endTime,
         open: open,
-        interestingStepId: interestingStepId
     };
 };
 
@@ -107,8 +105,8 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
         toggleBuildDetails: () => {
             dispatch(toggleAction(ownProps.build.buildId));
         },
-        showInterestingStep: (stepId) => {
-            dispatch(viewBuildStep(ownProps.build.buildId, stepId));
+        showInterestingStep: () => {
+            dispatch(viewBuildStep(ownProps.build.buildId, "__showInterestingStep"));
         }
     };
 };

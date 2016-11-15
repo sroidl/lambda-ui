@@ -1,7 +1,7 @@
 /* globals jest describe it expect */
 jest.mock("../main/Backend.es6");
 jest.mock("../main/actions/BackendActions.es6");
-import BuildDetailsRedux, {BuildDetails, mapStateToProps} from "BuildDetails.es6";
+import BuildDetailsRedux, {BuildDetails, mapStateToProps, getStepIdToShow} from "BuildDetails.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "./testsupport/TestSupport.es6";
 import React from "react";
@@ -126,5 +126,4 @@ describe("BuildDetails", () => {
             expect(newProps.stepsToDisplay).toEqual([{stepId: "substepLevel2"}, {stepId: "substepLevel2-2"}]);
         });
     });
-    
 });
