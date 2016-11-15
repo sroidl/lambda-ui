@@ -13,8 +13,6 @@ export const getInterestingStepId = (state, buildId) => {
     }
 
     if(state.viewBuildSteps[buildId] !== "__showInterestingStep"){
-        /* eslint-disable */
-        console.log("StepID to display: " , state.viewBuildSteps[buildId]);
         return state.viewBuildSteps[buildId] || null;
     }
     const runningSteps = filterRunning(steps);
