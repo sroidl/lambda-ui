@@ -14,25 +14,23 @@ export const mapTree = mappingFn => input => {
     return input;
 };
 
-const getBuildDetails = R.view(R.lensProp("buildDetails"));
-const getBuild = (buildId) => R.view(R.lensIndex(buildId));
-const getBuildProps = buildId => R.pipe(getBuildDetails(), getBuild(buildId));
+const mapObject = (arg) => R.map(content => {
+    if (content[arg] instanceof Array && content[arg].length > 0) {
+        return R.append(content, mapObject(arg)(content[arg]));
+    }
+    return content;
+});
 
 export const getFlatTree = (object, arg) => {
     if(!object || !arg){return null;}
     const headArray = object[arg];
-    const flatTree = [];
-    const extractElements = (array, arg, flatTree) => {
-        R.map(content => {
-            flatTree.push(content);
-            if (content[arg] instanceof Array && content[arg].length > 0) {
-                extractElements(content[arg], arg, flatTree);
-            }
-        })(array);
-    };
-    extractElements(headArray, arg, flatTree);
-    return flatTree;
+
+    return R.flatten(mapObject(arg)(headArray));
 };
+
+const getBuildDetails = R.view(R.lensProp("buildDetails"));
+const getBuild = (buildId) => R.view(R.lensIndex(buildId));
+const getBuildProps = buildId => R.pipe(getBuildDetails(), getBuild(buildId));
 
 export const getFlatSteps = (state, buildId) => {
     const build = getBuildProps(buildId)(state);
