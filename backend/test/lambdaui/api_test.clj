@@ -139,6 +139,9 @@
   `(do-stuff))
 
 (def pipeline-with-substeps
+  `((ctrl-flow/run do-stuff do-stuff)))
+
+(def pipeline-with-substeps-parallel
   `((ctrl-flow/in-parallel do-stuff do-stuff)))
 
 (def pipeline-with-substeps-state
@@ -182,12 +185,34 @@
                                   :startTime "2016-01-01T12:00:00.000Z"
                                   :endTime   "2016-01-01T14:00:00.000Z"}]}
                       (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId)))))))
-  (testing "that it returns build details"
+  (testing "that it returns build details of nested steps"
+    (let [buildId 1]
+      (is (= {:buildId 1
+              :steps   [{:stepId    "1"
+                         :state     :running
+                         :name      "run"
+                         :startTime "2016-01-01T12:00:00.000Z"
+                         :endTime   nil
+                         :type      :container
+                         :steps     [{:stepId    "1-1"
+                                      :state     :running
+                                      :name      "do-stuff"
+                                      :startTime "2016-01-01T12:00:00.000Z"
+                                      :endTime   nil}
+
+                                     {:stepId    "2-1"
+                                      :state     :pending
+                                      :name      "do-stuff"
+                                      :startTime nil
+                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId)))))
+
+  (testing "that it returns build details of nested parallel step"
     (let [buildId 1]
       (is (= {:buildId 1
               :steps   [{:stepId    "1"
                          :state     :running
                          :name      "in-parallel"
+                         :type      :parallel
                          :startTime "2016-01-01T12:00:00.000Z"
                          :endTime   nil
                          :steps     [{:stepId    "1-1"
@@ -200,7 +225,7 @@
                                       :state     :pending
                                       :name      "do-stuff"
                                       :startTime nil
-                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId))))))
+                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId))))))
 
 (deftest output-websocket
   (testing "that a payload is sent through the ws channel"
@@ -233,7 +258,9 @@
     (close [_] nil))
   )
 
-
+(defn debug [x]
+  ;(println x)
+  x)
 
 (deftest details-websocket
   (testing "that a json payload is sent through the ws channel"
@@ -248,9 +275,10 @@
         (is (= {:buildId "1"
                 :steps   [{:stepId    "1"
                            :state     "pending"
-                           :name      "in-parallel"
+                           :name      "run"
                            :startTime nil
                            :endTime   nil
+                           :type      "container"
                            :steps     [{:stepId    "1-1"
                                         :state     "pending"
                                         :name      "do-stuff"
@@ -264,7 +292,7 @@
                                         :endTime   nil}]}]}
 
 
-               (subject/debug (json/read-json (async/<!! ws-ch))))
+               (debug (json/read-json (async/<!! ws-ch))))
             )))
 
     ))

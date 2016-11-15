@@ -5,18 +5,12 @@
     [ring.middleware.json :as ring-json]
     [lambdacd.ui.api :as old-api]
     [lambdacd.ui.ui-page :as old-ui]
-    [lambdacd.steps.manualtrigger :as manualtrigger]
     [compojure.route :as route]
     [clojure.tools.logging :as logger]
     [lambdaui.trigger :as runner]
 
     )
   (:gen-class)
-  )
-
-
-(defn get-trigger-id [pipeline]
-  (((val (last (lambdacd.internal.pipeline-state/get-all (get-in pipeline [:context :pipeline-state-component])))) '(1 1)) :trigger-id)
   )
 
 (defn extract-location [location]

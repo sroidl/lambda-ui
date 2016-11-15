@@ -11,9 +11,7 @@
             [lambdacd.internal.pipeline-state :as state])
   (:import (org.joda.time DateTime)))
 
-(defn debug [x]
-  ;(println x)
-  x)
+
 
 (defn extract-state
   "If one step is waiting, return waiting
@@ -80,10 +78,12 @@
                   :state     (or status :pending)
                   :startTime (to-iso-string (:first-updated-at (:result step)))
                   :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
+        type (if (:type step) (:type step) "normal")
+        base-with-type (assoc base :type type)
         children (:children step)]
     (if (and children
              (not (empty? children)))
-      (assoc base :steps (map to-output-format (:children step)))
+      (assoc base-with-type :steps (map to-output-format (:children step)))
       base)))
 
 
