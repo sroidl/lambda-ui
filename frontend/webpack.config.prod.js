@@ -38,5 +38,9 @@ module.exports = {
         loader: "file"
       }
     ]
-  }
+  },
+
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({minimize: true})
+  ]
 }
