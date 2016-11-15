@@ -74,11 +74,10 @@ goal_jar() {
   popd > /dev/null
   if [ ! -e ${SCRIPT_DIR}/backend/resources/public ]; then
     mkdir -p ${SCRIPT_DIR}/backend/resources/public
-
   fi
 
   echo 'Copying frontend assets to backend'
-  cp -R frontend/target/ backend/resources/public
+  cp frontend/target/* backend/resources/public
   echo 'Compiling backend'
   pushd ${SCRIPT_DIR}/backend > /dev/null
    ./lein jar
