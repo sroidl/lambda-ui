@@ -2,36 +2,58 @@
   (:use [compojure.core])
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
-            [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
+            [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run] :as step]
             [lambdacd.core :as lambdacd]
             [org.httpkit.server :as server]
             [lambdacd.ui.api]
-            [lambdacd-git.core :as git]
             [lambdacd.runners :as runners]
             [clojure.java.io :as io]
             [lambdaui.core :as ui]))
 
-(def repo "git@github.com:flosell/testrepo")
+(defonce lastStatus (atom nil))
 
-(defn wait-for-git [args ctx] `(git/wait-for-git ctx repo
-                                                 :ref "refs/heads/master"
-                                                 :ms-between-polls (* 60 1000)))
+(defn swapStatus [lastStatus]
+  (case lastStatus
+    :success :failure
+    :failure :waiting
+    :waiting :success
+    :success)
+  )
 
-(defn clone [args ctx]
-  (git/clone ctx repo (:revision args) (:cwd args)))
+(defn successfullStep [args ctx]
+  {:status :success :out "Wohoo!"})
 
-(defn ls [args ctx]
-  (shell/bash ctx (:cwd args) "ls"))
+(defn a-lot-output [args context]
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; done")
+  )
+
+
+(defn long-running-task-20s [args context]
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; sleep 0.1s; done")
+  )
+
+(defn different-status [_ _]
+  {:status (swap! lastStatus swapStatus)})
 
 (def pipeline-structure
-  `((either
-      wait-for-manual-trigger
-      wait-for-git)
-     (with-workspace
-       clone
-       git/list-changes
+  `( a-lot-output
+     (step/alias "i have substeps"
+                 (run successfullStep
+                      successfullStep
+                      (step/alias "i have more substeps"
+                                  (run a-lot-output
+                                       different-status))
+                      a-lot-output)
+                 )
+     (in-parallel
+       (step/alias "double-long" (run long-running-task-20s long-running-task-20s))
+       long-running-task-20s
+       long-running-task-20s
+       )
+     long-running-task-20s
+     ))
 
-       ls)))
+
 (defn try-parse [input default]
   (if input
     (try
@@ -41,19 +63,11 @@
       default)
     ))
 
-(defonce pipe (atom nil))
-
 (defn -main [& args]
   (let [home-dir (io/file "/tmp/foo")
         config {:home-dir home-dir}
         port (try-parse (System/getenv "PORT") 8082)
         pipeline (lambdacd/assemble-pipeline pipeline-structure config)]
-
-    (reset! pipe pipeline)
-
-
-    (git/init-ssh!)
-    (runners/start-one-run-after-another pipeline)
     (server/run-server (routes
                          (ui/pipeline-routes pipeline))
                        {:open-browser? false
