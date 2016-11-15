@@ -5,6 +5,7 @@ import {BuildSummariesReducer} from "./reducers/BuildSummaries.es6";
 import {BuildDetailsReducer, ViewBuildStepReducer} from "./reducers/BuildDetails.es6";
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
 import {OutputReducer} from "./reducers/Output.es6";
+import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
 
 
 
@@ -14,7 +15,8 @@ const initialState = {
     openedBuilds: {},
     buildDetails: {},
     config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
-    output: {showOutput: false}
+    output: {showOutput: false},
+    developmentToggles: { usePolling : true }
 };
 
 const rootReducer = combineReducers({
@@ -23,7 +25,8 @@ const rootReducer = combineReducers({
     buildDetails: BuildDetailsReducer,
     config: PipelineConfigurationReducer,
     viewBuildSteps: ViewBuildStepReducer,
-    output: OutputReducer
+    output: OutputReducer,
+    developmentToggles: DevelopmentTogglesReducer
 });
 
 const middleware = compose(
