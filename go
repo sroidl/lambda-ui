@@ -61,6 +61,7 @@ goal_setup() {
 goal_clean() {
   pushd ${SCRIPT_DIR}/backend > /dev/null
   ./lein clean
+  rm -rf resources/public
   popd > /dev/null
   pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm run clean
