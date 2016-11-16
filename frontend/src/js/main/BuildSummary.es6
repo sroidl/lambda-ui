@@ -8,7 +8,7 @@ import {StateIcon} from "StateIcon.es6";
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep} = properties;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep, useInterestingStep} = properties;
     let classesForState = "row buildSummary " + state;
     if (open) {
         classesForState += " open";
@@ -31,7 +31,9 @@ export const renderSummary = (properties) => {
     };
 
     const interestingStepLink = () => {
-        if(["waiting", "running", "failed"].includes(state)){
+        /* eslint-disable */
+        console.log("UseInterestingStep: " , useInterestingStep);
+        if(useInterestingStep && ["waiting", "running", "failed"].includes(state)){
             return <a href="#" onClick={openInterestingStep}>Show interesting step</a>;
         }
         return "";
@@ -57,7 +59,6 @@ export const renderSummary = (properties) => {
         </div>
         <BuildDetails buildId={buildId}/>
     </div>;
-
 };
 
 export class BuildSummary extends React.Component {
@@ -82,7 +83,8 @@ BuildSummary.propTypes = {
     toggleBuildDetails: PropTypes.func.isRequired,
     showInterestingStep: PropTypes.func,
     endTime: PropTypes.string,
-    open: PropTypes.bool
+    open: PropTypes.bool,
+    useInterestingStep: PropTypes.bool
 };
 
 export const mapStateToProps = (state, props) => {
@@ -97,6 +99,7 @@ export const mapStateToProps = (state, props) => {
         startTime: startTime,
         endTime: endTime,
         open: open,
+        useInterestingStep: state.developmentToggles.useInterestingStep
     };
 };
 

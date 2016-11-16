@@ -9,6 +9,9 @@ class DevToggles {
     get usePolling () {
         return isActive("usePolling");
     }
+    get useInterestingStep () {
+        return isActive("useInterestingStep");
+    }
 }
 
 export default new DevToggles();
