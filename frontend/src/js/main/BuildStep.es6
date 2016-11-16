@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, {PropTypes} from "react";
+import ReactDOM from "react-dom";
 import {connect} from "react-redux";
 import Moment from "moment";
 import Utils from "./ComponentUtils.es6";
@@ -51,8 +52,8 @@ export const BuildStep = props => {
     </div>;
 
     const goIntoStepLink = <a className="toolLink goIntoStepLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"></i></a>;
-    const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i></a>;
     const showOutputLink = <a className="toolLink showOutputLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"></i></a>;
+    const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i className="fa fa-arrow-circle-down" aria-hidden="true"></i></a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
     const parallelClass = isParallel ? "inParallel" : "";
 
@@ -63,10 +64,12 @@ export const BuildStep = props => {
             <div className="tool">{showOutputLink}</div>
             <div className="tool">{hasSubsteps ? goIntoStepLink : ""}</div>
             <div className="tool">{failureStep && hasSubsteps ? goIntoFailureStepLink : ""}</div>
-            <div className="expandTools"></div>
+            <div className="expandTools"><i className="fa fa-angle-down" aria-hidden="true"></i></div>
         </div>
     </div>;
 };
+
+
 BuildStep.propTypes = {
     step: PropTypes.object.isRequired,
     buildId: PropTypes.number,
@@ -89,7 +92,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.step.stepId)),
         showOutputFn: () => dispatch(showBuildOutput(ownProps.buildId, ownProps.step.stepId)),
-        goIntoFailureStepFn: (failureStep) => dispatch(viewBuildStep(ownProps.buildId, failureStep))
+        goIntoFailureStepFn: (failureStep) => dispatch(viewBuildStep(ownProps.buildId, failureStep)),
     };
 };
 const BuildStepCon = connect(mapStateToProps, mapDispatchToProps)(BuildStep);

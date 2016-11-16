@@ -3,7 +3,7 @@
   display: inline-block
   border: 0px solid $dark-grey
   border-radius: 3px
-  padding: 16px 8px 4px 8px
+  padding: 16px 0px 0px 0px
   margin: 0 30px 20px 0
   color: $very-dark-grey
   background-color: $white
@@ -70,6 +70,7 @@
 
   & .stepName
     font-size: 0.8em
+    margin: 0px 8px 0px 8px
 
   & .stepDuration
     position: absolute
@@ -111,3 +112,46 @@
 .parallelColumn
   display: inline-block
   margin-left: 10px
+
+.toolBox
+  margin: 0px
+  width: 100%
+  //border: 1px solid gray
+  border-radius: 0px 0px 3px 3px
+  overflow: hidden
+
+.tool
+  height: 28px
+  width: 33.33333%
+  float: left
+  text-align: center
+  background-color: $dark-grey
+
+.toolLink
+  height: 28px
+  width: 100%
+  text-align: center
+
+.toolLink > .fa
+  width: 28px
+  height: 28px
+  color: $white
+
+.expandTools
+  height: 10px
+  clear: both
+  text-align: center
+  cursor: pointer
+
+.expandTools > .fa
+  width: 28px
+  height: 10px
+  position: relative
+  top: -7px
+  color: $dark-grey
+
+.expandTools:hover
+  background-color: $dark-grey
+
+.expandTools:hover > .fa
+  color: $white
