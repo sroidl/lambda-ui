@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, {PropTypes} from "react";
-import ReactDOM from "react-dom";
 import {connect} from "react-redux";
 import Moment from "moment";
 import Utils from "./ComponentUtils.es6";
@@ -13,6 +12,9 @@ import R from "ramda";
 import {StateIcon} from "StateIcon.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
 import Toggles from "./DevToggles.es6";
+
+
+const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -32,7 +34,7 @@ export const getStepDuration = (step) => {
 };
 
 export const BuildStep = props => {
-    const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel, toggleStepToolboxFn} = props;
+    const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel, toggleStepToolboxFn, toolboxOpen} = props;
 
     if (Toggles.showParallelStepsDirectly) {
         if (!isParallel && step.type === "parallel") {
@@ -52,21 +54,35 @@ export const BuildStep = props => {
         <div className="verticalLine"></div>
     </div>;
 
-    const goIntoStepLink = <a className="toolLink goIntoStepLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"></i></a>;
-    const showOutputLink = <a className="toolLink showOutputLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"></i></a>;
-    const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i className="fa fa-arrow-circle-down" aria-hidden="true"></i></a>;
+    const goIntoStepLink = <a className="toolLink goIntoStepLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"/></a>;
+    const showOutputLink = <a className="toolLink showOutputLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"/></a>;
+    const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i className="fa fa-arrow-circle-down" aria-hidden="true"/></a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
     const parallelClass = isParallel ? "inParallel" : "";
+
+    const tools = () => {
+        const ToolboxLink = ({iconClass, linkText, linkCallback}) => {
+            return <div className="tool" onClick={linkCallback}><i className={Utils.classes("fa", iconClass)}/><span className="linkText">{linkText}</span></div>
+        };
+
+        const toolbox = <div className="toolbox">
+            <ToolboxLink iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show" linkCallback={showOutputFn}/></div>;
+        const toggleToolboxClasses = Utils.classes("fa", (toolboxOpen ? "fa-angle-up" : "fa-angle-down") );
+
+
+        return <div className="tools">
+            <div className="tool">{showOutputLink}</div>
+            <div className="tool">{hasSubsteps ? goIntoStepLink : ""}</div>
+            <div className="tool">{failureStep && hasSubsteps ? goIntoFailureStepLink : ""}</div>
+            {toolboxOpen ? toolbox : ""}
+            <div className="expandTools" onClick={toggleStepToolboxFn}><i className={toggleToolboxClasses} aria-hidden="true"/></div>
+        </div>;
+    };
 
     return <div className={Utils.classes("buildStep", step.state, parallelClass)}>
         {isParallel ? parallelLines : ""}
         {infos}
-        <div className="toolBox">
-            <div className="tool">{showOutputLink}</div>
-            <div className="tool">{hasSubsteps ? goIntoStepLink : ""}</div>
-            <div className="tool">{failureStep && hasSubsteps ? goIntoFailureStepLink : ""}</div>
-            <div className="expandTools" onClick={toggleStepToolboxFn}><i className="fa fa-angle-down" aria-hidden="true"></i></div>
-        </div>
+        {tools()}
     </div>;
 };
 
@@ -79,7 +95,8 @@ BuildStep.propTypes = {
     goIntoStepFn: PropTypes.func.isRequired,
     goIntoFailureStepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired,
-    toggleStepToolboxFn: PropTypes.func.isRequired
+    toggleStepToolboxFn: PropTypes.func.isRequired,
+    toolboxOpen: PropTypes.bool.isRequired
 };
 
 export const mapStateToProps = (state, ownProps) => {

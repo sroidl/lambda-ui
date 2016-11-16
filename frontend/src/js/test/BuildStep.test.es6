@@ -17,14 +17,18 @@ const details = newAttributes => Object.assign({stepId: 1, state: "success", nam
 describe("BuildStep", () => {
 
     let realConsole;
-    const fn = () => {};
+    const fn = () => {
+    };
 
     beforeEach(() => {
         const consoleThrowing = {
             error: (...args) => {
                 realConsole.error("Got errors on console: ", args);
-                throw new Error(args); },
-            log: (...args) => { realConsole.log(args); }
+                throw new Error(args);
+            },
+            log: (...args) => {
+                realConsole.log(args);
+            }
         };
         realConsole = window.console;
         window.console = consoleThrowing;
@@ -36,12 +40,20 @@ describe("BuildStep", () => {
 
     describe("BuildStep rendering", () => {
 
-        const subject = (buildId, stepData, inParallel) => <BuildStep buildId={buildId} step={stepData} goIntoStepFn={fn} showOutputFn={fn} goIntoFailureStepFn={fn} failureStep={"1"} isParallel={inParallel} toggleStepToolboxFn={fn}/>;
+        const subject = (buildId, stepData, inParallel, showToolbox = false) => <BuildStep buildId={buildId}
+                                                                                           step={stepData}
+                                                                                           goIntoStepFn={fn}
+                                                                                           showOutputFn={fn}
+                                                                                           goIntoFailureStepFn={fn}
+                                                                                           failureStep={"1"}
+                                                                                           isParallel={inParallel}
+                                                                                           toggleStepToolboxFn={fn}
+                                                                                           toolboxOpen={showToolbox}/>;
 
         it("should render all step information for no inParallel step", () => {
             const input = details();
 
-            const component = shallow(subject(1,input, false));
+            const component = shallow(subject(1, input, false));
 
             expect(component.find(".stepName").text()).toEqual("fooStep");
             expect(component.find(".buildStep").hasClass("success")).toBe(true);
@@ -86,7 +98,7 @@ describe("BuildStep", () => {
         });
 
         it("should render parallel column if step have type parallel", () => {
-            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}),false));
+            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), false));
             expect(component.is(".parallelColumn")).toBe(true);
         });
 
@@ -94,6 +106,20 @@ describe("BuildStep", () => {
             const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), true));
             expect(component.is(".buildStep")).toBe(true);
             expect(component.is(".parallelColumn")).toBe(false);
+        });
+
+        describe("Toolbox", () => {
+            it("should show open toolbox if flag is true", () => {
+                const component = shallow(subject(1, details(), true, true));
+
+                expect(component.find(".toolbox").length).toBe(1);
+            });
+
+            it("should not show toolbox if flag is false", () => {
+                const component = shallow(subject(1, details(), true, false));
+
+                expect(component.find(".toolbox").length).toBe(0);
+            });
         });
     });
 
@@ -104,7 +130,7 @@ describe("BuildStep", () => {
             const substeps = {steps: [{stepId: "1-1"}]};
             viewBuildStep.mockReturnValue({type: "stepInto"});
 
-            const component = mount(<BuildStepRedux buildId={1} step={details(substeps)} store={storeMock} />);
+            const component = mount(<BuildStepRedux buildId={1} step={details(substeps)} store={storeMock}/>);
             component.find(".goIntoStepLink").simulate("click");
 
             expect(dispatchMock).toBeCalledWith({type: "stepInto"});
@@ -125,7 +151,7 @@ describe("BuildStep", () => {
             const inputState = {
                 showStepToolbox: {
                     1: {
-                        "step1" : true
+                        "step1": true
                     }
                 }
             };

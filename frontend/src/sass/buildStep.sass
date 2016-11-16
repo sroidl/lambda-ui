@@ -113,29 +113,38 @@
   display: inline-block
   margin-left: 10px
 
-.toolBox
+
+.tool
+  height: 28px
+  float: left
+  background-color: $dark-grey
+
+.tools
   margin: 0px
   width: 100%
   //border: 1px solid gray
   border-radius: 0px 0px 3px 3px
   overflow: hidden
 
-.tool
-  height: 28px
-  width: 33.33333%
-  float: left
-  text-align: center
-  background-color: $dark-grey
+  > .tool
+    width: 33.33333%
+    text-align: center
+
+
+.toolbox
+  .tool
+    width: 100%
+    padding-left: 5px
 
 .toolLink
   height: 28px
   width: 100%
   text-align: center
 
-.toolLink > .fa
-  width: 28px
-  height: 28px
-  color: $white
+  .fa
+    width: 28px
+    height: 28px
+    color: $white
 
 .expandTools
   height: 10px
@@ -143,12 +152,12 @@
   text-align: center
   cursor: pointer
 
-.expandTools > .fa
-  width: 28px
-  height: 10px
-  position: relative
-  top: -7px
-  color: $dark-grey
+  .fa
+    width: 28px
+    height: 10px
+    position: relative
+    top: -7px
+    color: $dark-grey
 
 .expandTools:hover
   background-color: $dark-grey
