@@ -58,7 +58,8 @@ describe("Build Summary", () => {
             const state = {
                 summaries: {1: {buildId: 1, buildNumber: 12, state: "running", endTime: "10min", startTime: "12sec"}},
                 openedBuilds: {1: true},
-                buildDetails: {}
+                buildDetails: {},
+                developmentToggles: {useInterestingStep: false}
             };
 
             const props = subject.mapStateToProps(state, {
@@ -77,7 +78,8 @@ describe("Build Summary", () => {
                 state: "success",
                 endTime: "10min",
                 startTime: "12sec",
-                open: true
+                open: true,
+                useInterestingStep: false
             });
 
         });

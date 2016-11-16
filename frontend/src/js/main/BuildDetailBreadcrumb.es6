@@ -4,7 +4,7 @@ import * as R from "ramda";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import "../../sass/buildDetails.sass";
 import {flatTree} from "./FunctionalUtils.es6";
-import {getInterestingStepId} from "steps/InterestingStepFinder.es6";
+import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
 
 export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn}) => {
     const clickFn = stepId => () => viewStepFn(buildId, stepId);
@@ -59,7 +59,7 @@ export const calculateBreadcrumb = (buildDetails, currentViewStepId) => {
 
 export const mapStateToProps = (state, {buildId}) => {
     const buildDetails = Object.assign({}, state.buildDetails[buildId]);
-    const currentViewStepId = getInterestingStepId(state, buildId);
+    const currentViewStepId = shouldShowInterestingStep(state, buildId) ? getInterestingStepId(state, buildId) : state.viewBuildSteps[buildId] || null;
 
     return {
         buildId: buildId,

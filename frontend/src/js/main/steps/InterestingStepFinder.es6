@@ -6,15 +6,19 @@ const filterRunning = R.pipe(R.filter(step => step.state === "running"), haveSub
 const filterFailure = R.pipe(R.filter(step => step.state === "failure"), haveSubsteps);
 const filterWaiting = R.pipe(R.filter(step => step.state === "waiting"), haveSubsteps);
 
+export const shouldShowInterestingStep = (state, buildId) => {
+    if(!state.viewBuildSteps){
+        return false;
+    }
+    return state.viewBuildSteps[buildId] === "__showInterestingStep";
+};
+
 export const getInterestingStepId = (state, buildId) => {
     const steps = getFlatSteps(state, buildId);
     if (!steps || !state.viewBuildSteps) {
         return null;
     }
 
-    if(state.viewBuildSteps[buildId] !== "__showInterestingStep"){
-        return state.viewBuildSteps[buildId] || null;
-    }
     const runningSteps = filterRunning(steps);
     if (runningSteps.length > 0) {
         return runningSteps[runningSteps.length - 1].parentId;

@@ -4,7 +4,7 @@ import BuildStep from "./BuildStep.es6";
 import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
 import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
-import {getInterestingStepId} from "steps/InterestingStepFinder.es6";
+import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
 
 export class BuildDetails extends React.Component {
 
@@ -68,8 +68,8 @@ const resolveStepsToDisplay = (buildDetails, stepIdToShow) => {
 export const mapStateToProps = (state, ownProps) => {
     const buildId = Number.parseInt(ownProps.buildId);
     const details = state.buildDetails[buildId] || {};
-
-    const stepsToDisplay = resolveStepsToDisplay(details, getInterestingStepId(state, buildId));
+    const currentStepId = shouldShowInterestingStep(state, ownProps.buildId) ? getInterestingStepId(state, buildId) : state.viewBuildSteps[buildId];
+    const stepsToDisplay = resolveStepsToDisplay(details, currentStepId);
 
     return {
         buildId: buildId,

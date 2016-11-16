@@ -29,7 +29,4 @@ describe("getInterestingStepId", () => {
     it("should return last waiting stepId", () => {
         expect(getInterestingStepId(state("waiting", "__showInterestingStep"),buildId)).toEqual("root2");
     });
-    it("should return viewBuildStep value if viewBuildStep isn't __showInterestingStep", () => {
-        expect(getInterestingStepId(state("success", "1"), buildId)).toBe("1");
-    });
 });

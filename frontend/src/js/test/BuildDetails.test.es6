@@ -53,7 +53,7 @@ describe("BuildDetails", () => {
 
         it("MapDispatchToProps should wire to backend.", () => {
             const dispatchMock = jest.fn();
-            const store = MockStore({buildDetails: {}, openedBuilds: {2: true}}, dispatchMock);
+            const store = MockStore({buildDetails: {}, openedBuilds: {2: true}, viewBuildSteps: {}}, dispatchMock);
 
             mount(<BuildDetailsRedux store={store} buildId="2"/>);
 
@@ -68,7 +68,8 @@ describe("BuildDetails", () => {
                 buildDetails: {
                     1: {buildId: 1, steps: [{stepId: 1}, {stepId: 2}]}
                 },
-                openedBuilds: {1: true}
+                openedBuilds: {1: true},
+                viewBuildSteps: {}
             };
             const newProps = mapStateToProps(state, {buildId: 1});
 
