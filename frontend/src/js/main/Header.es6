@@ -44,10 +44,11 @@ export const Header = ({pipelineName, links}) => {
 
     return <div className="appHeader">
         <div className="logo">
-            <img src={logo} className="logoImage" alt="logo"/>
-            <span className="logoText">LAMBDA CD</span>
+            <a href="http://www.lambda.cd/">
+                <img src={logo} className="logoImage" alt="logo"/>
+            </a>
+            <span className="logoText">{pipelineName}</span>
         </div>
-        <span className="pipelineName">{pipelineName}</span>
         {headerLinks}
         <button className="runButton" onClick={triggerNewFn}>Start Build</button>
     </div>;
