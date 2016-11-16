@@ -21,7 +21,7 @@
         name (or (:name config) "Pipeline")
         location (or (extract-location (:location config))
                      "window.location.host")
-        path-prefix  (:path-prefix config)
+        path-prefix (:path-prefix config)
 
         prefix (if path-prefix (str " + '" path-prefix "'") "")
         location (str location prefix)
@@ -34,14 +34,14 @@
 (defn pipeline-routes [pipeline]
   (ring-json/wrap-json-response
     (routes
-            (route/resources "/lambdaui" {:root "public"})
-            (route/resources "/" {:root "public"})
-            (GET "/lambdaui" [] (ring.util.response/redirect "/lambdaui/index.html"))
-            (GET "/lambdaui/config.js" [] (create-config pipeline))
-            (context "/lambdaui/api" [] (new-api/api-routes pipeline))
-            (POST "/lambdaui/api/triggerNew" [] (do (runner/trigger-new-build pipeline) {}))
-            (GET "/" [] (old-ui/ui-page pipeline))
-            (context "/api" [] (old-api/rest-api pipeline))
-            )))
+      (route/resources "/lambdaui" {:root "public"})
+      (route/resources "/" {:root "public"})
+      (GET "/lambdaui" [] (ring.util.response/redirect "lambdaui/index.html"))
+      (GET "/lambdaui/config.js" [] (create-config pipeline))
+      (context "/lambdaui/api" [] (new-api/api-routes pipeline))
+      (POST "/lambdaui/api/triggerNew" [] (do (runner/trigger-new-build pipeline) {}))
+      (GET "/" [] (old-ui/ui-page pipeline))
+      (context "/api" [] (old-api/rest-api pipeline))
+      )))
 
 
