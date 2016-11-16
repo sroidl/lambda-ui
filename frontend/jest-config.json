@@ -2,7 +2,6 @@
   "testPathDirs": ["src/js/test", "src/js/main"],
   "testRegex" : ".*.test.es6$",
   "moduleFileExtensions" : ["js", "json", "es6"],
-  "automock": false,
 
   "moduleNameMapper": {
       "^.+\\.(css|less|sass)$": "<rootDir>/src/js/test/testsupport/styleMock.es6",
