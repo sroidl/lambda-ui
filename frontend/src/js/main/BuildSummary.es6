@@ -31,8 +31,6 @@ export const renderSummary = (properties) => {
     };
 
     const interestingStepLink = () => {
-        /* eslint-disable */
-        console.log("UseInterestingStep: " , useInterestingStep);
         if(useInterestingStep && ["waiting", "running", "failed"].includes(state)){
             return <a href="#" onClick={openInterestingStep}>Show interesting step</a>;
         }
