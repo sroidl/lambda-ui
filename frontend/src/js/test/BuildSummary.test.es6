@@ -1,4 +1,5 @@
 /* eslint-disable */
+jest.mock("../main/DevToggles.es6");
 import {BuildSummary} from "BuildSummary.es6";
 import * as subject from "BuildSummary.es6";
 import {shallow} from "enzyme";
@@ -58,8 +59,7 @@ describe("Build Summary", () => {
             const state = {
                 summaries: {1: {buildId: 1, buildNumber: 12, state: "running", endTime: "10min", startTime: "12sec"}},
                 openedBuilds: {1: true},
-                buildDetails: {},
-                developmentToggles: {useInterestingStep: false}
+                buildDetails: {}
             };
 
             const props = subject.mapStateToProps(state, {
@@ -78,8 +78,7 @@ describe("Build Summary", () => {
                 state: "success",
                 endTime: "10min",
                 startTime: "12sec",
-                open: true,
-                useInterestingStep: false
+                open: true
             });
 
         });

@@ -31,6 +31,7 @@ export const getStepDuration = (step) => {
 
 export const BuildStep = props => {
     const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
+
     if(Toggles.showParallelStepsDirectly){
         if(!isParallel && step.type === "parallel") {
             const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
@@ -49,9 +50,9 @@ export const BuildStep = props => {
         <div className="verticalLine"></div>
     </div>;
 
-    const goIntoStepLink = <a className="toolLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"></i></a>;
+    const goIntoStepLink = <a className="toolLink goIntoStepLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"></i></a>;
     const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i></a>;
-    const showOutputLink = <a className="toolLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"></i></a>;
+    const showOutputLink = <a className="toolLink showOutputLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"></i></a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
     const parallelClass = isParallel ? "inParallel" : "";
 

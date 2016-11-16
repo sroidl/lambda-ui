@@ -1,14 +1,16 @@
 /* globals jest describe expect it beforeEach afterEach */
 jest.mock("../main/actions/BuildDetailActions.es6");
 jest.mock("../main/actions/OutputActions.es6");
+jest.mock("../main/DevToggles.es6");
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import React from "react";
 import {shallow, mount} from "enzyme";
 import BuildStepRedux, {BuildStep, getStepDuration, duration} from "BuildStep.es6";
 import {MockStore} from "./testsupport/TestSupport.es6";
-import Moment from "moment";
+import DevToggles from "DevToggles.es6";
 
+DevToggles.showParallelStepsDirectly = true;
 
 const details = newAttributes => Object.assign({stepId: 1, state: "success", name: "fooStep"}, newAttributes);
 
