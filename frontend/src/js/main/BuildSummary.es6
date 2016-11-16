@@ -4,11 +4,12 @@ import BuildDetails from "./BuildDetails.es6";
 import {toggleBuildDetails as toggleAction, viewBuildStep} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
+import Toggles from "./DevToggles.es6";
 
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep, useInterestingStep} = properties;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep} = properties;
     let classesForState = "row buildSummary " + state;
     if (open) {
         classesForState += " open";
@@ -31,8 +32,10 @@ export const renderSummary = (properties) => {
     };
 
     const interestingStepLink = () => {
-        if(useInterestingStep && ["waiting", "running", "failed"].includes(state)){
-            return <a href="#" onClick={openInterestingStep}>Show interesting step</a>;
+        if(Toggles.showInterestingStep){
+            if(["waiting", "running", "failed"].includes(state)){
+                return <a href="#" onClick={openInterestingStep}>Show interesting step</a>;
+            }
         }
         return "";
     };
@@ -81,8 +84,7 @@ BuildSummary.propTypes = {
     toggleBuildDetails: PropTypes.func.isRequired,
     showInterestingStep: PropTypes.func,
     endTime: PropTypes.string,
-    open: PropTypes.bool,
-    useInterestingStep: PropTypes.bool
+    open: PropTypes.bool
 };
 
 export const mapStateToProps = (state, props) => {
@@ -96,8 +98,7 @@ export const mapStateToProps = (state, props) => {
         state: buildState,
         startTime: startTime,
         endTime: endTime,
-        open: open,
-        useInterestingStep: state.developmentToggles.useInterestingStep
+        open: open
     };
 };
 

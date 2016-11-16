@@ -9,8 +9,11 @@ class DevToggles {
     get usePolling () {
         return isActive("usePolling");
     }
-    get useInterestingStep () {
-        return isActive("useInterestingStep");
+    get showInterestingStep () {
+        return isActive("showInterestingStep");
+    }
+    get showParallelStepsDirectly (){
+        return isActive("showParallelStepsDirectly");
     }
 }
 

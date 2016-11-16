@@ -16,7 +16,7 @@ const initialState = {
     buildDetails: {},
     config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
     output: {showOutput: false},
-    developmentToggles: { usePolling : true, useInterestingStep: false }
+    developmentToggles: { usePolling : true, showInterestingStep: false, showParallelStepsDirectly: false }
 };
 
 const rootReducer = combineReducers({

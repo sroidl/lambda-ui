@@ -10,6 +10,7 @@ import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import R from "ramda";
 import {StateIcon} from "StateIcon.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
+import Toggles from "./DevToggles.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -30,10 +31,11 @@ export const getStepDuration = (step) => {
 
 export const BuildStep = props => {
     const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
-
-    if(!isParallel && step.type === "parallel") {
-        const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
-        return <div key={step.stepId} className="parallelColumn">{steps}</div>;
+    if(Toggles.showParallelStepsDirectly){
+        if(!isParallel && step.type === "parallel") {
+            const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
+            return <div key={step.stepId} className="parallelColumn">{steps}</div>;
+        }
     }
 
     const infos = <div>
@@ -47,20 +49,21 @@ export const BuildStep = props => {
         <div className="verticalLine"></div>
     </div>;
 
-    const goIntoStepLink = <a className="goIntoStepLink" href="#" onClick={goIntoStepFn}>Substeps</a>;
-    const goIntoFailureStepLink = <a className="goIntoFailureStepLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}>Failure Substep</a>;
-    const showOutputLink = <a className="showOutputLink" href="#" onClick={showOutputFn}>Show Output</a>;
+    const goIntoStepLink = <a className="toolLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"></i></a>;
+    const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i></a>;
+    const showOutputLink = <a className="toolLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"></i></a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
     const parallelClass = isParallel ? "inParallel" : "";
 
     return <div className={Utils.classes("buildStep", step.state, parallelClass)}>
         {isParallel ? parallelLines : ""}
         {infos}
-        {showOutputLink}
-        <br/>&nbsp;
-        {hasSubsteps ? goIntoStepLink : ""}
-        <br/>&nbsp;
-        {failureStep && hasSubsteps ? goIntoFailureStepLink : ""}
+        <div className="toolBox">
+            <div className="tool">{showOutputLink}</div>
+            <div className="tool">{hasSubsteps ? goIntoStepLink : ""}</div>
+            <div className="tool">{failureStep && hasSubsteps ? goIntoFailureStepLink : ""}</div>
+            <div className="expandTools"></div>
+        </div>
     </div>;
 };
 BuildStep.propTypes = {
