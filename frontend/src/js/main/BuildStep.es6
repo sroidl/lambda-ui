@@ -7,6 +7,7 @@ import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
+import {toggleStepToolbox} from "actions/BuildStepActions.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import R from "ramda";
 import {StateIcon} from "StateIcon.es6";
@@ -31,7 +32,7 @@ export const getStepDuration = (step) => {
 };
 
 export const BuildStep = props => {
-    const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel} = props;
+    const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel, toggleStepToolboxFn} = props;
 
     if(Toggles.showParallelStepsDirectly){
         if(!isParallel && step.type === "parallel") {
@@ -64,7 +65,7 @@ export const BuildStep = props => {
             <div className="tool">{showOutputLink}</div>
             <div className="tool">{hasSubsteps ? goIntoStepLink : ""}</div>
             <div className="tool">{failureStep && hasSubsteps ? goIntoFailureStepLink : ""}</div>
-            <div className="expandTools"><i className="fa fa-angle-down" aria-hidden="true"></i></div>
+            <div className="expandTools" onClick={toggleStepToolboxFn}><i className="fa fa-angle-down" aria-hidden="true"></i></div>
         </div>
     </div>;
 };
@@ -77,7 +78,8 @@ BuildStep.propTypes = {
     isParallel: PropTypes.bool,
     goIntoStepFn: PropTypes.func.isRequired,
     goIntoFailureStepFn: PropTypes.func.isRequired,
-    showOutputFn: PropTypes.func.isRequired
+    showOutputFn: PropTypes.func.isRequired,
+    toggleStepToolboxFn: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -93,6 +95,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.step.stepId)),
         showOutputFn: () => dispatch(showBuildOutput(ownProps.buildId, ownProps.step.stepId)),
         goIntoFailureStepFn: (failureStep) => dispatch(viewBuildStep(ownProps.buildId, failureStep)),
+        toggleStepToolboxFn: () => dispatch(toggleStepToolbox(ownProps.buildId, ownProps.step.stepId))
     };
 };
 const BuildStepCon = connect(mapStateToProps, mapDispatchToProps)(BuildStep);

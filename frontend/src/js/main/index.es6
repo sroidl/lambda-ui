@@ -11,4 +11,5 @@ console.log("Using configuration", config);
 LambdaUI.startUp(config);
 
 console.log("UsePolling ", Toggles.usePolling);
-console.log("UseInterestingStep ", Toggles.useInterestingStep);
+console.log("ShowInterestingStep ", Toggles.showInterestingStep);
+console.log("ShowParallelStepsDirectly ", Toggles.showParallelStepsDirectly);
