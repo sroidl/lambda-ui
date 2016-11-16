@@ -6,7 +6,7 @@ import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import React from "react";
 import {shallow, mount} from "enzyme";
-import BuildStepRedux, {BuildStep, getStepDuration, duration} from "BuildStep.es6";
+import BuildStepRedux, {BuildStep, getStepDuration, duration, mapStateToProps} from "BuildStep.es6";
 import {MockStore} from "./testsupport/TestSupport.es6";
 import DevToggles from "DevToggles.es6";
 
@@ -119,6 +119,32 @@ describe("BuildStep", () => {
             component.find(".showOutputLink").simulate("click");
 
             expect(dispatchMock).toBeCalledWith({type: "showOutput"});
+        });
+
+        it("should put toolboxopen state into props", () => {
+            const inputState = {
+                showStepToolbox: {
+                    1: {
+                        "step1" : true
+                    }
+                }
+            };
+            const inputProps = {buildId: 1, step: {stepId: "step1"}};
+
+            const actual = mapStateToProps(inputState, inputProps);
+
+            expect(actual.toolboxOpen).toBe(true);
+        });
+
+        it("should default to close state if toolboxOpen store is not defined for step", () => {
+            const inputState = {
+                showStepToolbox: {}
+            };
+            const inputProps = {buildId: 1, step: {stepId: "step1"}};
+
+            const actual = mapStateToProps(inputState, inputProps);
+
+            expect(actual.toolboxOpen).toBe(false);
         });
     });
 

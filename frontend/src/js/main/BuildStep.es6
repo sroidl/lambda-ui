@@ -24,7 +24,7 @@ export const duration = ({startTime, endTime}) => {
 };
 
 export const getStepDuration = (step) => {
-    if(step.endTime || !step.startTime){
+    if (step.endTime || !step.startTime) {
         return step;
     }
     const endTime = Moment();
@@ -34,8 +34,8 @@ export const getStepDuration = (step) => {
 export const BuildStep = props => {
     const {step, buildId, goIntoStepFn, showOutputFn, goIntoFailureStepFn, failureStep, isParallel, toggleStepToolboxFn} = props;
 
-    if(Toggles.showParallelStepsDirectly){
-        if(!isParallel && step.type === "parallel") {
+    if (Toggles.showParallelStepsDirectly) {
+        if (!isParallel && step.type === "parallel") {
             const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
             return <div key={step.stepId} className="parallelColumn">{steps}</div>;
         }
@@ -82,10 +82,14 @@ BuildStep.propTypes = {
     toggleStepToolboxFn: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => {
-    const newProps = R.merge(ownProps, {failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId),
-                                        isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId),
-                                        buildId: ownProps.buildId});
+export const mapStateToProps = (state, ownProps) => {
+    const newProps = R.merge(ownProps,
+        {
+            failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId),
+            isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId),
+            toolboxOpen: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showStepToolbox),
+            buildId: ownProps.buildId
+        });
     return newProps;
 };
 
