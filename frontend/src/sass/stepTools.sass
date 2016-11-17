@@ -28,6 +28,11 @@
     width: 100%
     float: none
     background-color: $grey
+    animation-name: toolExpand
+    animation-duration: 0.2s
+    animation-delay: 0s
+    overflow: hidden
+
 
     > .toolIcon
       width: 28px
@@ -41,6 +46,18 @@
       float: left
       padding-top: 3px
       padding-right: 5px
+
+@keyframes toolExpand
+  0%
+    height: 0px
+  25%
+    height: 5px
+  50%
+    height: 10px
+  75%
+    height: 18px
+  100%
+    height: 28px
 
 .toolLink
   height: 28px
