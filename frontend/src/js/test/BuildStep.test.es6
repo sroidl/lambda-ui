@@ -2,12 +2,9 @@
 jest.mock("../main/actions/BuildDetailActions.es6");
 jest.mock("../main/actions/OutputActions.es6");
 jest.mock("../main/DevToggles.es6");
-import {viewBuildStep} from "actions/BuildDetailActions.es6";
-import {showBuildOutput} from "actions/OutputActions.es6";
 import React from "react";
-import {shallow, mount} from "enzyme";
-import BuildStepRedux, {BuildStep, getStepDuration, duration, mapStateToProps} from "BuildStep.es6";
-import {MockStore} from "./testsupport/TestSupport.es6";
+import {shallow} from "enzyme";
+import {BuildStep, getStepDuration, duration, StepInfos} from "BuildStep.es6";
 import DevToggles from "DevToggles.es6";
 
 DevToggles.showParallelStepsDirectly = true;
@@ -55,7 +52,6 @@ describe("BuildStep", () => {
 
             const component = shallow(subject(1, input, false));
 
-            expect(component.find(".stepName").text()).toEqual("fooStep");
             expect(component.find(".buildStep").hasClass("success")).toBe(true);
             expect(component.find(".buildStep").hasClass("inParallel")).toBe(false);
             expect(component.contains(<div className="verticalLine"></div>)).toBe(false);
@@ -76,21 +72,6 @@ describe("BuildStep", () => {
             expect(component.find(".buildStep").hasClass("pending")).toBe(true);
         });
 
-        it("should render link if step has substeps", () => {
-            const substeps = {steps: [{stepId: "1.1"}]};
-
-            const component = mount(subject(1, details(substeps), false));
-
-            expect(component.find(".fa-level-down").length).toBe(1);
-        });
-
-        it("should render output link", () => {
-            // TODO: Change back to shallow when tools is refactored
-            const component = mount(subject(1, details(), false));
-
-            expect(component.find(".fa-align-justify").length).toBe(1);
-        });
-
         xit("should render parallel step", () => {
             const component = shallow(subject(1, details(), true));
 
@@ -107,71 +88,6 @@ describe("BuildStep", () => {
             const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), true));
             expect(component.is(".buildStep")).toBe(true);
             expect(component.is(".parallelColumn")).toBe(false);
-        });
-
-        describe("Toolbox", () => {
-            it("should show open toolbox if flag is true", () => {
-                const component = mount(subject(1, details(), true, true));
-
-                expect(component.find(".toolbox").length).toBe(1);
-            });
-
-            it("should not show toolbox if flag is false", () => {
-                const component = shallow(subject(1, details(), true, false));
-
-                expect(component.find(".toolbox").length).toBe(0);
-            });
-        });
-    });
-
-    describe("BuildStep wiring", () => {
-        xit("should dispatch go into step action on link click", () => {
-            const dispatchMock = jest.fn();
-            const storeMock = MockStore({}, dispatchMock);
-            const substeps = {steps: [{stepId: "1-1"}]};
-            viewBuildStep.mockReturnValue({type: "stepInto"});
-
-            const component = mount(<BuildStepRedux buildId={1} step={details(substeps)} store={storeMock}/>);
-            component.find(".goIntoStepLink").simulate("click");
-
-            expect(dispatchMock).toBeCalledWith({type: "stepInto"});
-        });
-
-        xit("should dispatch show output action on link click", () => {
-            const dispatchMock = jest.fn();
-            const storeMock = MockStore({}, dispatchMock);
-            showBuildOutput.mockReturnValue({type: "showOutput"});
-
-            const component = mount(<BuildStepRedux buildId={1} step={details()} store={storeMock}/>);
-            component.find(".showOutputLink").simulate("click");
-
-            expect(dispatchMock).toBeCalledWith({type: "showOutput"});
-        });
-
-        it("should put toolboxopen state into props", () => {
-            const inputState = {
-                showStepToolbox: {
-                    1: {
-                        "step1": true
-                    }
-                }
-            };
-            const inputProps = {buildId: 1, step: {stepId: "step1"}};
-
-            const actual = mapStateToProps(inputState, inputProps);
-
-            expect(actual.toolboxOpen).toBe(true);
-        });
-
-        it("should default to close state if toolboxOpen store is not defined for step", () => {
-            const inputState = {
-                showStepToolbox: {}
-            };
-            const inputProps = {buildId: 1, step: {stepId: "step1"}};
-
-            const actual = mapStateToProps(inputState, inputProps);
-
-            expect(actual.toolboxOpen).toBe(false);
         });
     });
 
@@ -201,6 +117,21 @@ describe("BuildStep", () => {
             expect(duration({startTime: "2016-11-01T13:48:16", endTime: "2016-11-01T14:48:21"})).toEqual("01:00:05");
             expect(duration({startTime: "2016-11-01T04:47:16", endTime: "2016-11-01T14:48:26"})).toEqual("10:01:10");
             expect(duration({startTime: "2016-11-01T00:38:16", endTime: "2016-11-01T14:48:51"})).toEqual("14:10:35");
+        });
+    });
+
+    describe("BuildStep infos", () => {
+        const stepInfos = <StepInfos step={{state: "success", name: "stepName", startTime: "2016-11-01T13:48:16", endTime: "2016-11-01T14:48:21"}} />
+
+        it("should render stepName", () => {
+            const component = shallow(stepInfos);
+            expect(component.contains("stepName")).toBe(true);
+        });
+
+        it("should have correct css Classes", () => {
+            const component = shallow(stepInfos);
+            expect(component.find(".stepName").length).toBe(1);
+            expect(component.find(".stepDuration").length).toBe(1);
         });
     });
 });
