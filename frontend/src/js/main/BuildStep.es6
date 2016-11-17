@@ -15,6 +15,8 @@ import Toggles from "./DevToggles.es6";
 
 
 const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
+const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
+const SHOW_FAILURE_STEP_ICON_CLASS = "fa-arrow-circle-down";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -54,35 +56,40 @@ export const BuildStep = props => {
         <div className="verticalLine"></div>
     </div>;
 
-    const goIntoStepLink = <a className="toolLink goIntoStepLink" href="#" onClick={goIntoStepFn}><i className="fa fa-level-down" aria-hidden="true"/></a>;
-    const showOutputLink = <a className="toolLink showOutputLink" href="#" onClick={showOutputFn}><i className="fa fa-align-justify" aria-hidden="true"/></a>;
-    const goIntoFailureStepLink = <a className="toolLink" href="#" onClick={() => goIntoFailureStepFn(failureStep)}><i className="fa fa-arrow-circle-down" aria-hidden="true"/></a>;
     const hasSubsteps = step.steps && step.steps.length !== 0;
     const parallelClass = isParallel ? "inParallel" : "";
 
-    const tools = () => {
+    const Tools = () => {
         const ToolboxLink = ({iconClass, linkText, linkCallback}) => {
-            return <div className="tool" onClick={linkCallback}><i className={Utils.classes("fa", iconClass)}/><span className="linkText">{linkText}</span></div>
+            return <div className="tool" onClick={linkCallback}><div className="toolIcon"><i className={Utils.classes("fa", iconClass)}/></div><div className="linkText">{linkText}</div></div>
         };
 
-        const toolbox = <div className="toolbox">
-            <ToolboxLink iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show" linkCallback={showOutputFn}/></div>;
-        const toggleToolboxClasses = Utils.classes("fa", (toolboxOpen ? "fa-angle-up" : "fa-angle-down") );
+        const showOutputTool = <ToolboxLink iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output" linkCallback={showOutputFn}/>;
+        const showSubstepTool = hasSubsteps ?  <ToolboxLink iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps" linkCallback={goIntoStepFn}/> : "";
+        const showFailureStepTool = failureStep && hasSubsteps ? <ToolboxLink iconClass={SHOW_FAILURE_STEP_ICON_CLASS} linkText="Failure Step" linkCallback={() => goIntoFailureStepFn(failureStep)}/> : "";
 
+        const toolbox = <div className="toolbox">
+            {showOutputTool}
+            {showSubstepTool}
+            {showFailureStepTool}
+        </div>;
+        const toggleToolboxClasses = Utils.classes("fa", (toolboxOpen ? "fa-angle-up" : "fa-angle-down") );
+        const toggleToolbox = <div className="expandTools" onClick={toggleStepToolboxFn}><i className={toggleToolboxClasses} aria-hidden="true"/></div>;
 
         return <div className="tools">
-            <div className="tool">{showOutputLink}</div>
-            <div className="tool">{hasSubsteps ? goIntoStepLink : ""}</div>
-            <div className="tool">{failureStep && hasSubsteps ? goIntoFailureStepLink : ""}</div>
+            <div className="toolbar">
+                {showOutputTool}
+                {showSubstepTool}
+                {showFailureStepTool}
+            </div>
             {toolboxOpen ? toolbox : ""}
-            <div className="expandTools" onClick={toggleStepToolboxFn}><i className={toggleToolboxClasses} aria-hidden="true"/></div>
+            {toggleToolbox}
         </div>;
     };
 
     return <div className={Utils.classes("buildStep", step.state, parallelClass)}>
-        {isParallel ? parallelLines : ""}
         {infos}
-        {tools()}
+        <Tools/>
     </div>;
 };
 
