@@ -2,6 +2,7 @@
 jest.mock("../../main/actions/OutputActions.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
+jest.mock("../../main/DevToggles.es6");
 import React from "react";
 import ToolsRedux, {Tools, ToolboxLink, SHOW_OUTPUT_ICON_CLASS, SHOW_SUBSTEP_ICON_CLASS, SHOW_FAILURE_STEP_ICON_CLASS} from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
@@ -9,6 +10,9 @@ import {MockStore} from "../testsupport/TestSupport.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox} from "actions/BuildStepActions.es6";
+import DevToggles from "DevToggles.es6";
+
+DevToggles.showParallelStepsDirectly = true;
 
 const fn = () => {};
 

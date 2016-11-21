@@ -3,7 +3,7 @@ jest.mock("../main/actions/BuildDetailActions.es6");
 jest.mock("../main/actions/OutputActions.es6");
 jest.mock("../main/DevToggles.es6");
 import React from "react";
-import {shallow} from "enzyme";
+import {shallow, mount} from "enzyme";
 import {BuildStep, getStepDuration, duration, StepInfos} from "BuildStep.es6";
 import DevToggles from "DevToggles.es6";
 
@@ -37,7 +37,7 @@ describe("BuildStep", () => {
 
     describe("BuildStep rendering", () => {
 
-        const subject = (buildId, stepData, inParallel, showToolbox = false) => <BuildStep buildId={buildId}
+        const subject = (buildId, stepData, inParallel, showToolbox = false, showDirectlyInParallel = false) => <BuildStep buildId={buildId}
                                                                                            step={stepData}
                                                                                            goIntoStepFn={fn}
                                                                                            showOutputFn={fn}
@@ -45,7 +45,8 @@ describe("BuildStep", () => {
                                                                                            failureStep={"1"}
                                                                                            isParallel={inParallel}
                                                                                            toggleStepToolboxFn={fn}
-                                                                                           toolboxOpen={showToolbox}/>;
+                                                                                           toolboxOpen={showToolbox}
+                                                                                           showDirectlyInParallel={showDirectlyInParallel} />;
 
         it("should render all step information for no inParallel step", () => {
             const input = details();
@@ -72,16 +73,23 @@ describe("BuildStep", () => {
             expect(component.find(".buildStep").hasClass("pending")).toBe(true);
         });
 
-        xit("should render parallel step", () => {
+        it("should render parallel step", () => {
             const component = shallow(subject(1, details(), true));
-
             expect(component.find(".buildStep").hasClass("inParallel")).toBe(true);
-            expect(component.contains(<div className="verticalLine"></div>)).toBe(true);
         });
 
-        it("should render parallel column if step have type parallel", () => {
-            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), false));
+        it("should not render parallel column if step have type parallel and showDirectlyInParallel is false", () => {
+            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), false, false, false));
+            expect(component.is(".parallelColumn")).toBe(false);
+            expect(component.find(".parallelLeft").length).toBe(0);
+            expect(component.find(".parallelRight").length).toBe(0);
+        });
+
+        it("should render parallel column if step have type parallel and showDirectlyInParallel is true", () => {
+            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), false, false, true));
             expect(component.is(".parallelColumn")).toBe(true);
+            expect(component.find(".parallelLeft").length).toBe(1);
+            expect(component.find(".parallelRight").length).toBe(1);
         });
 
         it("should render no parallel column if parent step is parallel", () => {

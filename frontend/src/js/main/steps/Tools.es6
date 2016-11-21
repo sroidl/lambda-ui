@@ -3,8 +3,9 @@ import Utils from "ComponentUtils.es6";
 import {connect} from "react-redux";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
-import {toggleStepToolbox} from "actions/BuildStepActions.es6";
+import {toggleStepToolbox, toggleParallelStep} from "actions/BuildStepActions.es6";
 import R from "ramda";
+import Toggles from "DevToggles.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
@@ -36,7 +37,13 @@ export class Tools extends React.Component{
 
     showSubstepTool() {
         if(this.props.hasSubsteps){
-            return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps" linkFn={this.props.goIntoStepFn}/>;
+            let linkFn = this.props.goIntoStepFn;
+            if(Toggles.showParallelStepsDirectly){
+                if(this.props.isParallel){
+                    linkFn = this.props.toggleParallelStepFn;
+                }
+            }
+            return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps" linkFn={linkFn}/>;
         }
         return "";
     }
@@ -87,27 +94,35 @@ export class Tools extends React.Component{
 Tools.propTypes = {
     failureStep: PropTypes.string,
     hasSubsteps: PropTypes.bool.isRequired,
+    isParallel: PropTypes.bool.isRequired,
     toolboxOpen: PropTypes.bool.isRequired,
     goIntoFailureStepFn: PropTypes.func.isRequired,
     goIntoStepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired,
-    toggleStepToolboxFn: PropTypes.func.isRequired
+    toggleStepToolboxFn: PropTypes.func.isRequired,
+    toggleParallelStepFn: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
     const hasSubsteps = ownProps.step.steps && ownProps.step.steps.length !== 0 || false;
+    const isParallel = ownProps.step.type && ownProps.step.type === "parallel" || false;
 
     return {failureStep: ownProps.failureStep,
             hasSubsteps: hasSubsteps,
+            isParallel: isParallel,
             toolboxOpen: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showStepToolbox)};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+    const buildId = ownProps.buildId;
+    const stepId = ownProps.step.stepId;
+
     return {
-        goIntoStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.step.stepId)),
-        showOutputFn: () => dispatch(showBuildOutput(ownProps.buildId, ownProps.step.stepId)),
-        goIntoFailureStepFn: () => dispatch(viewBuildStep(ownProps.buildId, ownProps.failureStep)),
-        toggleStepToolboxFn: () => dispatch(toggleStepToolbox(ownProps.buildId, ownProps.step.stepId))
+        goIntoStepFn: () => dispatch(viewBuildStep(buildId, stepId)),
+        showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
+        goIntoFailureStepFn: () => dispatch(viewBuildStep(buildId, stepId)),
+        toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
+        toggleParallelStepFn: () => dispatch(toggleParallelStep(buildId, stepId))
     };
 };
 
