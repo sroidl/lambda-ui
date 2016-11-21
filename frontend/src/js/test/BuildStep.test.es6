@@ -37,12 +37,14 @@ describe("BuildStep", () => {
 
     describe("BuildStep rendering", () => {
 
-        const subject = (buildId, stepData, inParallel, showToolbox = false, showDirectlyInParallel = false) => <BuildStep buildId={buildId}
-                                                                                           step={stepData}
-                                                                                           failureStep={"1"}
-                                                                                           isParallel={inParallel}
-                                                                                           showDirectlyInParallel={showDirectlyInParallel}
-                                                                                           toggleParallelStep={()=>{}}/>;
+        const subject = (buildId, stepData, inParallel, showToolbox = false, showDirectlyInParallel = false) =>
+            <BuildStep buildId={buildId}
+                       step={stepData}
+                       failureStep={"1"}
+                       isParallel={inParallel}
+                       showDirectlyInParallel={showDirectlyInParallel}
+                       toggleParallelStep={()=> {
+                       }}/>;
 
         it("should render all step information for no inParallel step", () => {
             const input = details();
@@ -75,14 +77,20 @@ describe("BuildStep", () => {
         });
 
         it("should not render parallel column if step have type parallel and showDirectlyInParallel is false", () => {
-            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), false, false, false));
+            const component = shallow(subject(1, details({
+                type: "parallel",
+                steps: [{stepId: "1-1"}]
+            }), false, false, false));
             expect(component.is(".parallelColumn")).toBe(false);
             expect(component.find(".parallelLeft").length).toBe(0);
             expect(component.find(".parallelRight").length).toBe(0);
         });
 
         it("should render parallel column if step have type parallel and showDirectlyInParallel is true", () => {
-            const component = shallow(subject(1, details({type: "parallel", steps: [{stepId: "1-1"}]}), false, false, true));
+            const component = shallow(subject(1, details({
+                type: "parallel",
+                steps: [{stepId: "1-1"}]
+            }), false, false, true));
             expect(component.is(".parallelColumn")).toBe(true);
             expect(component.find(".parallelLeft").length).toBe(1);
             expect(component.find(".parallelRight").length).toBe(1);
@@ -125,7 +133,12 @@ describe("BuildStep", () => {
     });
 
     describe("BuildStep infos", () => {
-        const stepInfos = <StepInfos step={{state: "success", name: "stepName", startTime: "2016-11-01T13:48:16", endTime: "2016-11-01T14:48:21"}} />
+        const stepInfos = <StepInfos step={{
+            state: "success",
+            name: "stepName",
+            startTime: "2016-11-01T13:48:16",
+            endTime: "2016-11-01T14:48:21"
+        }}/>
 
         it("should render stepName", () => {
             const component = shallow(stepInfos);

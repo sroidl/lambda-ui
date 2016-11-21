@@ -7,21 +7,21 @@ describe("toggle State", () => {
         const oldState = {};
         const newState = toggleState(oldState, 1, "1");
 
-        expect(newState).toEqual({1:{"1":true}});
+        expect(newState).toEqual({1: {"1": true}});
     });
 
     it("should add new entry and don't change exist entries", () => {
         const oldState = {1: {"1": true}};
         const newState = toggleState(oldState, 2, "1");
 
-        expect(newState).toEqual({1:{"1":true}, 2:{"1":true}});
+        expect(newState).toEqual({1: {"1": true}, 2: {"1": true}});
     });
 
     it("should add new entry into existent build", () => {
         const oldState = {1: {"1": true}};
         const newState = toggleState(oldState, 1, "2");
 
-        expect(newState).toEqual({1: {"1":true, "2":true}});
+        expect(newState).toEqual({1: {"1": true, "2": true}});
     });
 
     it("should toggle existent entry", () => {
@@ -29,7 +29,7 @@ describe("toggle State", () => {
 
         const newState = toggleState(oldState, 1, "1");
 
-        expect(newState).toEqual({1: {"1":false}});
+        expect(newState).toEqual({1: {"1": false}});
     });
 });
 

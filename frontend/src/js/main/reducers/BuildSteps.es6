@@ -5,12 +5,12 @@ export const toggleState = (oldState, buildId, stepId) => {
     let newObj = {};
     let newSubObj = {};
     newSubObj[stepId] = true;
-    if(oldState[buildId]){
-        if(oldState[buildId][stepId]){
+    if (oldState[buildId]) {
+        if (oldState[buildId][stepId]) {
             newSubObj[stepId] = !oldState[buildId][stepId];
         }
         newObj[buildId] = R.merge(oldState[buildId], newSubObj);
-    } else{
+    } else {
         newObj[buildId] = newSubObj;
     }
     return R.merge(oldState, newObj);

@@ -52,20 +52,21 @@ export class BuildStep extends React.Component {
         super(props);
     }
 
-    showParallelSteps(){
+    showParallelSteps() {
         const {buildId, step, toggleParallelStep} = this.props;
 
         const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
 
         return <div key={step.stepId} className="parallelColumn">
-            <div className="closeParallelStep" onClick={toggleParallelStep}><i className="fa fa-close" aria-hidden="true"></i></div>
+            <div className="closeParallelStep" onClick={toggleParallelStep}><i className="fa fa-close"
+                                                                               aria-hidden="true"></i></div>
             <div className="parallelLeft"></div>
             <div className="parallelRight"></div>
             <div>{steps}</div>
         </div>;
     }
 
-    render(){
+    render() {
         const {step, buildId, isParallel, showDirectlyInParallel, failureStep} = this.props;
 
         if (Toggles.showParallelStepsDirectly) {
@@ -77,10 +78,10 @@ export class BuildStep extends React.Component {
         const buildStepClasses = Utils.classes("buildStep", step.state, isParallel ? "inParallel" : "");
 
         return <div className={buildStepClasses}>
-            <HideLine isParallel={isParallel} />
-            <HideLine isParallel={isParallel} />
-            <StepInfos step={step} />
-            <Tools buildId={buildId} step={step} failureStep={failureStep} />
+            <HideLine isParallel={isParallel}/>
+            <HideLine isParallel={isParallel}/>
+            <StepInfos step={step}/>
+            <Tools buildId={buildId} step={step} failureStep={failureStep}/>
         </div>;
     }
 }
@@ -97,11 +98,11 @@ BuildStep.propTypes = {
 export const mapStateToProps = (state, ownProps) => {
 
     return R.merge(ownProps, {
-            isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId),
-            showDirectlyInParallel: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showInParallel),
-            buildId: ownProps.buildId,
-            failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId)
-        });
+        isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId),
+        showDirectlyInParallel: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showInParallel),
+        buildId: ownProps.buildId,
+        failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId)
+    });
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

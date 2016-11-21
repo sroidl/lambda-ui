@@ -25,38 +25,40 @@ ToolboxLink.propTypes = {
     linkFn: PropTypes.func.isRequired
 };
 
-export class Tools extends React.Component{
+export class Tools extends React.Component {
 
     constructor(props) {
         super(props);
     }
 
     showOutputTool() {
-        return <ToolboxLink toolClass="outputTool" iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output" linkFn={this.props.showOutputFn}/>;
+        return <ToolboxLink toolClass="outputTool" iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output"
+                            linkFn={this.props.showOutputFn}/>;
     }
 
     showSubstepTool() {
-        if(this.props.hasSubsteps){
+        if (this.props.hasSubsteps) {
             let linkFn = this.props.goIntoStepFn;
-            if(Toggles.showParallelStepsDirectly){
-                if(this.props.isParallel){
+            if (Toggles.showParallelStepsDirectly) {
+                if (this.props.isParallel) {
                     linkFn = this.props.toggleParallelStepFn;
                 }
             }
-            return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps" linkFn={linkFn}/>;
+            return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps"
+                                linkFn={linkFn}/>;
         }
         return "";
     }
 
-    showFailureStepTool(){
-        if(this.props.failureStep && this.props.hasSubsteps){
+    showFailureStepTool() {
+        if (this.props.failureStep && this.props.hasSubsteps) {
             return <ToolboxLink toolClass="failureStepTool" iconClass={SHOW_FAILURE_STEP_ICON_CLASS}
                                 linkText="Failure Step" linkFn={this.props.goIntoFailureStepFn}/>;
         }
         return "";
     }
 
-    showToolbar(){
+    showToolbar() {
         return <div className="toolbar">
             {this.showOutputTool()}
             {this.showSubstepTool()}
@@ -64,8 +66,8 @@ export class Tools extends React.Component{
         </div>;
     }
 
-    showToolbox(){
-        if(this.props.toolboxOpen){
+    showToolbox() {
+        if (this.props.toolboxOpen) {
             return <div className="toolbox">
                 {this.showOutputTool()}
                 {this.showSubstepTool()}
@@ -75,14 +77,14 @@ export class Tools extends React.Component{
         return "";
     }
 
-    showToggleToolbox(){
+    showToggleToolbox() {
         const toggleToolboxClasses = Utils.classes("fa", (this.props.toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
         return <div className="expandTools" onClick={this.props.toggleStepToolboxFn}>
             <i className={toggleToolboxClasses} aria-hidden="true"/>
         </div>;
     }
 
-    render(){
+    render() {
         return <div className="tools">
             {this.showToolbar()}
             {this.showToolbox()}
@@ -107,10 +109,12 @@ const mapStateToProps = (state, ownProps) => {
     const hasSubsteps = ownProps.step.steps && ownProps.step.steps.length !== 0 || false;
     const isParallel = ownProps.step.type && ownProps.step.type === "parallel" || false;
 
-    return {failureStep: ownProps.failureStep,
-            hasSubsteps: hasSubsteps,
-            isParallel: isParallel,
-            toolboxOpen: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showStepToolbox)};
+    return {
+        failureStep: ownProps.failureStep,
+        hasSubsteps: hasSubsteps,
+        isParallel: isParallel,
+        toolboxOpen: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showStepToolbox)
+    };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
