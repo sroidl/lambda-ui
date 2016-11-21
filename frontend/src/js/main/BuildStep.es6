@@ -9,6 +9,7 @@ import Tools from "steps/Tools.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
 import Toggles from "./DevToggles.es6";
+import {toggleParallelStep} from "actions/BuildStepActions.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -51,17 +52,24 @@ export class BuildStep extends React.Component {
         super(props);
     }
 
+    showParallelSteps(){
+        const {buildId, step, toggleParallelStep} = this.props;
+
+        const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
+        return <div key={step.stepId} className="parallelColumn">
+            <div className="closeParallelStep" onClick={toggleParallelStep}><i className="fa fa-close" aria-hidden="true"></i></div>
+            <div className="parallelLeft"></div>
+            <div className="parallelRight"></div>
+            <div>{steps}</div>
+        </div>;
+    }
+
     render(){
         const {step, buildId, isParallel, showDirectlyInParallel, failureStep} = this.props;
 
         if (Toggles.showParallelStepsDirectly) {
             if (!isParallel && showDirectlyInParallel) {
-                const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
-                return <div key={step.stepId} className="parallelColumn">
-                    <div className="parallelLeft"></div>
-                    <div className="parallelRight"></div>
-                    <div>{steps}</div>
-                </div>;
+                return this.showParallelSteps();
             }
         }
 
@@ -81,7 +89,8 @@ BuildStep.propTypes = {
     buildId: PropTypes.number,
     isParallel: PropTypes.bool,
     showDirectlyInParallel: PropTypes.bool,
-    failureStep: PropTypes.string
+    failureStep: PropTypes.string,
+    toggleParallelStep: PropTypes.func
 };
 
 export const mapStateToProps = (state, ownProps) => {
@@ -94,6 +103,12 @@ export const mapStateToProps = (state, ownProps) => {
         });
 };
 
-const BuildStepCon = connect(mapStateToProps)(BuildStep);
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        toggleParallelStep: () => dispatch(toggleParallelStep(ownProps.buildId, ownProps.step.stepId))
+    };
+};
+
+const BuildStepCon = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
 export default BuildStepCon;
 
