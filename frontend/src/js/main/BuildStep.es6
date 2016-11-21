@@ -1,15 +1,15 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import Moment from "moment";
+import R from "ramda";
 import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
-import R from "ramda";
-import {StateIcon} from "StateIcon.es6";
-import Tools from "steps/Tools.es6";
 import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
-import Toggles from "./DevToggles.es6";
+import {StateIcon} from "StateIcon.es6";
+import Tools from "steps/Tools.es6";
 import {toggleParallelStep} from "actions/BuildStepActions.es6";
+import Toggles from "./DevToggles.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -56,6 +56,7 @@ export class BuildStep extends React.Component {
         const {buildId, step, toggleParallelStep} = this.props;
 
         const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
+
         return <div key={step.stepId} className="parallelColumn">
             <div className="closeParallelStep" onClick={toggleParallelStep}><i className="fa fa-close" aria-hidden="true"></i></div>
             <div className="parallelLeft"></div>
@@ -86,11 +87,11 @@ export class BuildStep extends React.Component {
 
 BuildStep.propTypes = {
     step: PropTypes.object.isRequired,
-    buildId: PropTypes.number,
-    isParallel: PropTypes.bool,
-    showDirectlyInParallel: PropTypes.bool,
+    buildId: PropTypes.number.isRequired,
+    isParallel: PropTypes.bool.isRequired,
+    showDirectlyInParallel: PropTypes.bool.isRequired,
     failureStep: PropTypes.string,
-    toggleParallelStep: PropTypes.func
+    toggleParallelStep: PropTypes.func.isRequired
 };
 
 export const mapStateToProps = (state, ownProps) => {

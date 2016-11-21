@@ -39,14 +39,10 @@ describe("BuildStep", () => {
 
         const subject = (buildId, stepData, inParallel, showToolbox = false, showDirectlyInParallel = false) => <BuildStep buildId={buildId}
                                                                                            step={stepData}
-                                                                                           goIntoStepFn={fn}
-                                                                                           showOutputFn={fn}
-                                                                                           goIntoFailureStepFn={fn}
                                                                                            failureStep={"1"}
                                                                                            isParallel={inParallel}
-                                                                                           toggleStepToolboxFn={fn}
-                                                                                           toolboxOpen={showToolbox}
-                                                                                           showDirectlyInParallel={showDirectlyInParallel} />;
+                                                                                           showDirectlyInParallel={showDirectlyInParallel}
+                                                                                           toggleParallelStep={()=>{}}/>;
 
         it("should render all step information for no inParallel step", () => {
             const input = details();
