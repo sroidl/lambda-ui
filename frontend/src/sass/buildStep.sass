@@ -90,6 +90,7 @@
   background-color: $black
 
 /* Style for Parallel Steps */
+
 .buildStep.inParallel:first-of-type:before
   width: 30px
   left: -30px
@@ -101,6 +102,20 @@
 .parallelColumn
   display: inline-block
   margin-left: 10px
+
+  &:first-of-type
+    .buildStep.inParallel:before
+      display: none
+
+    .parallelLeft
+      display: none
+
+  &:last-of-type
+    .buildStep.inParallel:after
+      display: none
+
+    .parallelRight
+      display: none
 
   .buildStep.inParallel:last-of-type .hideLine
     position: absolute
