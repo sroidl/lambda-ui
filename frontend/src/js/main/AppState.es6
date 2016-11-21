@@ -6,7 +6,7 @@ import {BuildDetailsReducer, ViewBuildStepReducer} from "./reducers/BuildDetails
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
 import {OutputReducer} from "./reducers/Output.es6";
 import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
-import BuildStepsReducer from "./reducers/BuildSteps.es6";
+import BuildStepsReducer, {ParallelStepsReducer} from "./reducers/BuildSteps.es6";
 
 
 
@@ -18,7 +18,8 @@ const initialState = {
     viewBuidSteps: {},
     output: {showOutput: false},
     developmentToggles: { usePolling : true, showInterestingStep: false, showParallelStepsDirectly: false },
-    showStepToolbox: {}
+    showStepToolbox: {},
+    showInParallel: {}
 };
 
 const rootReducer = combineReducers({
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     viewBuildSteps: ViewBuildStepReducer,
     output: OutputReducer,
     developmentToggles: DevelopmentTogglesReducer,
-    showStepToolbox: BuildStepsReducer
+    showStepToolbox: BuildStepsReducer,
+    showInParallel: ParallelStepsReducer
 });
 
 const middleware = compose(
