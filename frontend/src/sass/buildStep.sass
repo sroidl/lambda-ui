@@ -13,10 +13,6 @@
   max-width: 180px
   vertical-align: top
 
-.buildStep.inParallel
-  display: block
-  width: 170px
-
 .buildStep:first-of-type
   margin-left: -30px
 
@@ -90,6 +86,12 @@
   background-color: $black
 
 /* Style for Parallel Steps */
+.buildStep.inParallel
+  display: block
+  width: 170px
+  animation-name: parallelStepExpand
+  animation-delay: 0s
+  animation-duration: 0.5s
 
 .buildStep.inParallel:first-of-type:before
   width: 30px
@@ -150,3 +152,17 @@
   margin-top: -19px
   margin-left: 151px
   cursor: pointer
+
+@keyframes parallelStepExpand
+  0%
+    width: 120px
+  100%
+    width: 170px
+
+
+
+
+
+
+
+
