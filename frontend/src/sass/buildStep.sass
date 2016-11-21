@@ -34,25 +34,17 @@
   left: -18px
   background-color: $dark-grey
 
-.buildStep.inParallel:first-of-type:before
-  width: 30px
-  left: -30px
-
 .buildStep:after
   width: 15px
   right: -15px
   background-color: $dark-grey
 
-.buildStep.inParallel:first-of-type:after
-  width: 25px
-  right: -25px
 
 .buildStep:first-of-type:before, .buildStep:last-of-type:after
   display: none
 
 .buildStep.inParallel:first-of-type:before, .buildStep.inParallel:last-of-type:after
   display: initial
-
 
 .buildStep
   & .buildIcon
@@ -67,8 +59,8 @@
     text-align: center
 
     & i
-      line-height: 28px
-      height: 28px
+    line-height: 28px
+    height: 28px
 
   & .stepName
     font-size: 0.8em
@@ -97,20 +89,39 @@
 .buildStep.killed .buildIcon
   background-color: $black
 
-.verticalLine
-  position: absolute
-  top: -126px
-  background-color: $dark-grey
-  width: 2px
-  height: 131px
-  left: 185px
+/* Style for Parallel Steps */
+.buildStep.inParallel:first-of-type:before
+  width: 30px
+  left: -30px
 
-.verticalLine:first-of-type
-  left: -20px
-
-.buildStep.inParallel:first-of-type>div>.verticalLine
-  display: none
+.buildStep.inParallel:first-of-type:after
+  width: 25px
+  right: -25px
 
 .parallelColumn
   display: inline-block
   margin-left: 10px
+
+  .buildStep.inParallel:last-of-type .hideLine
+    position: absolute
+    background-color: $lightGrey
+    width: 4px
+    margin-top: -11px
+    height: 100%
+    margin-left: 182px
+
+    &:first-of-type
+      margin-left: -20px
+
+.parallelLeft, .parallelRight
+  width: 2px
+  height: calc(100% - 235px)
+  position: absolute
+  background-color: $dark-grey
+  margin-top: 4px
+
+.parallelLeft
+  margin-left: -18px
+
+.parallelRight
+  margin-left: 183px

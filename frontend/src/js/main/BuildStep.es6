@@ -35,6 +35,7 @@ export const StepInfos = ({step}) => {
         <div className="stepDuration">{duration(getStepDuration(step))}</div>
     </div>;
 };
+const HideLine = ({isParallel}) => isParallel ? <div className="hideLine"></div> : <div></div>;
 
 export class BuildStep extends React.Component {
 
@@ -48,13 +49,19 @@ export class BuildStep extends React.Component {
         if (Toggles.showParallelStepsDirectly) {
             if (!isParallel && step.type === "parallel") {
                 const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
-                return <div key={step.stepId} className="parallelColumn">{steps}</div>;
+                return <div key={step.stepId} className="parallelColumn">
+                    <div className="parallelLeft"></div>
+                    <div className="parallelRight"></div>
+                    <div>{steps}</div>
+                </div>;
             }
         }
 
         const buildStepClasses = Utils.classes("buildStep", step.state, isParallel ? "inParallel" : "");
 
         return <div className={buildStepClasses}>
+            <HideLine isParallel={isParallel} />
+            <HideLine isParallel={isParallel} />
             <StepInfos step={step} />
             <Tools buildId={buildId} step={step} failureStep={failureStep} />
         </div>;
