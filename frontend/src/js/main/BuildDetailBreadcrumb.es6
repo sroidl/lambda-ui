@@ -6,6 +6,7 @@ import "../../sass/buildDetails.sass";
 import {flatTree} from "./FunctionalUtils.es6";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
 import {toggleParentSteps} from "actions/BuildDetailBreadcrumbActions.es6";
+import {toggleBuildDetails} from "actions/BuildDetailActions.es6";
 
 export const BreadcrumbLink = ({clickFn, name}) => {
     return <div id={name} className="breadcrumbLink" onClick={clickFn}>{name}</div>;
@@ -35,10 +36,15 @@ export class BuildDetailBreadcrumb extends React.Component {
     }
 
     renderLevelUpIcon() {
-        const {viewStepFn, steps} = this.props;
+        const {viewStepFn, closeBuildDetailsFn, steps} = this.props;
 
         const parentStepId = steps && steps.length > 1 ? steps[steps.length - 2].stepId : null;
-        return <div className="levelUp" onClick={() => viewStepFn(parentStepId)}>
+        let onClickFn = () => viewStepFn(parentStepId);
+        if(!steps || steps.length === 0){
+            onClickFn = closeBuildDetailsFn;
+        }
+
+        return <div className="levelUp" onClick={onClickFn}>
             <div className="levelUpIcon">
                 <i className="fa fa-level-up fa-flip-horizontal"></i>
             </div>
@@ -111,7 +117,8 @@ BuildDetailBreadcrumb.propTypes = {
     buildId: PropTypes.number.isRequired,
     showParentStepBreadcrumb: PropTypes.bool.isRequired,
     viewStepFn: PropTypes.func.isRequired,
-    showParentStepsFn: PropTypes.func.isRequired
+    showParentStepsFn: PropTypes.func.isRequired,
+    closeBuildDetailsFn: PropTypes.func.isRequired
 };
 
 const safeSteps = input => {
@@ -151,7 +158,8 @@ export const mapStateToProps = (state, {buildId}) => {
 export const mapDispatchToProps = (dispatch, {buildId}) => {
     return {
         viewStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
-        showParentStepsFn: () => dispatch(toggleParentSteps(buildId))
+        showParentStepsFn: () => dispatch(toggleParentSteps(buildId)),
+        closeBuildDetailsFn: () => dispatch(toggleBuildDetails(buildId))
     };
 };
 
