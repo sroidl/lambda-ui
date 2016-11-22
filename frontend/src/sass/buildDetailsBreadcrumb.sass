@@ -6,9 +6,6 @@
   margin-top: -10px
   margin-left: -60px
 
-.goUp
-
-
 .levelUpIcon
   border-radius: 3px 0px 0px 3px
   width: 20px
@@ -76,6 +73,10 @@
   height: 20px
   background-color: $grey
   padding-right: 5px
+  animation-name: expandParentStepBreadcrumb
+  animation-duration: 0.2s
+  animation-delay: 0s
+  overflow: hidden
 
   .breadcrumbLink
     cursor: pointer
@@ -101,6 +102,15 @@
   height: 2px
   margin-top: 43px
   margin-left: 9px
+
+@keyframes expandParentStepBreadcrumb
+  0%
+    width: 0px
+  100%
+    width: inherit
+
+
+
 
 
 
