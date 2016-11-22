@@ -28,7 +28,7 @@ export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn, showParentSte
     const stepHtml = (step) => <BreadcrumbLink clickFn={clickFn(step.stepId)} name={step.name} />;
 
     const stepsHtml = R.map(step => {
-        return <div className="buildStepLink">
+        return <div className="breadcrumbLink">
             <div className="inlineArrowRight">&nbsp;>&nbsp;</div>
             {stepHtml(step)}
         </div> ;
