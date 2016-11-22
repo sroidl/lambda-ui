@@ -43,6 +43,8 @@ export class BuildDetailBreadcrumb extends React.Component {
                 <i className="fa fa-level-up fa-flip-horizontal"></i>
             </div>
             <div className="arrowRight levelUpArrow"></div>
+            <div className="breadConnectionVertical"></div>
+            <div className="breadConnectionHorizontal"></div>
         </div>;
     }
 
