@@ -48,7 +48,7 @@ describe("BuildDetails", () => {
                 buildDetails: {1: {buildId: 1, steps: steps}},
                 openedBuilds: {1: true},
                 viewBuildSteps: {},
-
+                showParentStepBreadcrumb: {}
             });
 
             const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
