@@ -23,7 +23,13 @@ describe("BreadcrumbLink", () => {
 
 describe("Breadcrumb presentation", () => {
     it("should show one root breadcrumb if no step is given", () => {
-        expect(shallow(subject.BuildDetailBreadcrumb({steps: [], buildId: 1})).text()).toEqual("<BreadcrumbLink />");
+        const component = shallow(<BuildDetailBreadcrumb steps={[]}
+                                                         viewStepFn={() =>{}}
+                                                         buildId={1}
+                                                         showParentStepBreadcrumb={false}
+                                                         showParentStepsFn={() => {}} /> );
+
+        expect(component.text()).toEqual("<BreadcrumbLink />");
     });
 
     it("should show breadcrumb of current step if showParentStepBreadcrumb is false", () => {
@@ -32,7 +38,12 @@ describe("Breadcrumb presentation", () => {
             steps: steps, viewStepFn: () => {
             }, buildId: 1, showParentStepBreadcrumb: false
         }
-        expect(shallow(subject.BuildDetailBreadcrumb(input)).find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink />");
+        const component = shallow(<BuildDetailBreadcrumb steps={steps}
+                                                         viewStepFn={() =>{}}
+                                                         buildId={1}
+                                                         showParentStepBreadcrumb={false}
+                                                         showParentStepsFn={() => {}} /> );
+        expect(component.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink />");
     });
 
     it("should show breadcrumb of all steps if showParentStepBreadcrumb is true", () => {
@@ -41,7 +52,13 @@ describe("Breadcrumb presentation", () => {
             steps: steps, viewStepFn: () => {
             }, buildId: 1, showParentStepBreadcrumb: true
         }
-        expect(shallow(subject.BuildDetailBreadcrumb(input)).find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink /> > <BreadcrumbLink /><BreadcrumbLink />");
+        const component = shallow(<BuildDetailBreadcrumb steps={steps}
+                                                         viewStepFn={() =>{}}
+                                                         buildId={1}
+                                                         showParentStepBreadcrumb={true}
+                                                         showParentStepsFn={() => {}} /> );
+
+        expect(component.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink /> > <BreadcrumbLink /><BreadcrumbLink />");
     })
 });
 

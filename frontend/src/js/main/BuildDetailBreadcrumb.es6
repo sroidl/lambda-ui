@@ -16,45 +16,93 @@ BreadcrumbLink.propTypes = {
     name: PropTypes.string.isRequired
 };
 
-export const BuildDetailBreadcrumb = ({buildId, steps, viewStepFn, showParentStepsFn, showParentStepBreadcrumb}) => {
-    const parentStepId = steps && steps.length > 1 ? steps[steps.length - 2].stepId : null;
+export class BuildDetailBreadcrumb extends React.Component {
 
-    const levelUp = <div className="levelUp" onClick={() => viewStepFn(parentStepId)}><div className="levelUpIcon"><i className="fa fa-level-up fa-flip-horizontal"></i></div><div className="arrowRight levelUpArrow"></div></div>;
-
-    const clickFn = stepId => () => viewStepFn(stepId);
-
-    const rootLink = <BreadcrumbLink clickFn={clickFn("root")} name={"Build " + buildId}/>;
-
-    const stepHtml = (step) => <BreadcrumbLink clickFn={clickFn(step.stepId)} name={step.name} />;
-
-    const stepsHtml = R.map(step => {
-        return <div className="breadcrumbLink">
-            <div className="inlineArrowRight">&nbsp;>&nbsp;</div>
-            {stepHtml(step)}
-        </div> ;
-    })(steps.slice(0, steps.length - 1));
-
-
-    const parentStepIcon = () => {
-        if(showParentStepBreadcrumb || !steps || steps.length === 0){
-            return <div></div>;
-        }
-        return <div className="parentStepIcon" onClick={showParentStepsFn}><i className="fa fa-ellipsis-h"></i></div>;
-    };
-    const currentStep = currentLink => <div className="currentStep"><div className="arrowRight parentStepArrow"></div><div className="currentText">{currentLink}</div></div>;
-    const currentArrow = <div className="arrowRight currentStepArrow"></div>;
-
-
-    if (!steps || steps.length === 0) {
-        return <div className="buildDetailBreadcrumb">{levelUp}{parentStepIcon()}{currentStep(rootLink)}{currentArrow}</div>;
+    constructor(props) {
+        super(props);
     }
 
-    const parentSteps = showParentStepBreadcrumb ? <div className="parentSteps">{rootLink}{stepsHtml}</div> : <div></div>;
+    clickFn(stepId) {
+        return () => this.props.viewStepFn(stepId);
+    }
 
-    return <div className="buildDetailBreadcrumb">
-        {levelUp}{parentStepIcon()}{parentSteps}{currentStep(stepHtml(steps[steps.length - 1]))}{currentArrow}
-    </div>;
-};
+    getRootLink() {
+        return <BreadcrumbLink clickFn={this.clickFn("root")} name={"Build " + this.props.buildId}/>;
+    }
+
+    getStepLink(step) {
+        return <BreadcrumbLink clickFn={this.clickFn(step.stepId)} name={step.name}/>;
+    }
+
+    renderLevelUpIcon() {
+        const {viewStepFn, steps} = this.props;
+
+        const parentStepId = steps && steps.length > 1 ? steps[steps.length - 2].stepId : null;
+        return <div className="levelUp" onClick={() => viewStepFn(parentStepId)}>
+            <div className="levelUpIcon">
+                <i className="fa fa-level-up fa-flip-horizontal"></i>
+            </div>
+            <div className="arrowRight levelUpArrow"></div>
+        </div>;
+    }
+
+    renderParentStepIcon() {
+        const {showParentStepBreadcrumb, steps, showParentStepsFn} = this.props;
+
+        if (showParentStepBreadcrumb || !steps || steps.length === 0) {
+            return <div></div>;
+        }
+        return <div className="parentStepIcon" onClick={showParentStepsFn}>
+            <i className="fa fa-ellipsis-h"></i>
+        </div>;
+    }
+
+    renderParentSteps() {
+        const {steps, showParentStepBreadcrumb} = this.props;
+
+        if (!showParentStepBreadcrumb || !steps || steps.length === 0) {
+            return <div></div>;
+        }
+
+        const stepsHtml = R.map(step => {
+            return <div className="breadcrumbLink">
+                <div className="inlineArrowRight">&nbsp;>&nbsp;</div>
+                {this.getStepLink(step)}
+            </div>;
+        })(steps.slice(0, steps.length - 1));
+
+        return <div className="parentSteps">{this.getRootLink()}{stepsHtml}</div>;
+
+    }
+
+    renderCurrentStep() {
+        const {steps} = this.props;
+
+        let currentLink = this.getRootLink();
+        if (steps && steps.length > 0) {
+            currentLink = this.getStepLink(steps[steps.length - 1]);
+        }
+
+        return <div className="currentStep">
+            <div className="arrowRight parentStepArrow"></div>
+            <div className="currentText">{currentLink}</div>
+        </div>;
+    }
+
+    renderCurrentArrow() {
+        return <div className="arrowRight currentStepArrow"></div>;
+    }
+
+    render() {
+        return <div className="buildDetailBreadcrumb">
+            {this.renderLevelUpIcon()}
+            {this.renderParentStepIcon()}
+            {this.renderParentSteps()}
+            {this.renderCurrentStep()}
+            {this.renderCurrentArrow()}
+        </div>;
+    }
+}
 
 BuildDetailBreadcrumb.propTypes = {
     steps: PropTypes.array,
@@ -105,10 +153,4 @@ export const mapDispatchToProps = (dispatch, {buildId}) => {
     };
 };
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(BuildDetailBreadcrumb);
-
-
-
-
-
