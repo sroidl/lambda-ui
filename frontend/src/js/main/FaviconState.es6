@@ -1,10 +1,12 @@
 import R from "ramda";
 
-const SUCCESS_FAVICON_LINK = "http://www.favicon-generator.de/images/icons/51c78d75-bc6a-4455-a0ee-fc38a391c1f8-16.ico";
-const FAILURE_FAVICON_LINK = "http://www.favicon-generator.de/images/icons/9a623dd8-e617-4f97-b315-6cdbc16780f8-16.ico";
-const RUNNING_FAVICON_LINK = "http://www.favicon-generator.de/images/icons/de3c2446-91a0-40f5-9576-1de331190356-16.ico";
-const WAITING_FAVICON_LINK = "http://www.favicon-generator.de/images/icons/03305978-ad7f-495b-a1fc-1293bcf1f27d-16.ico";
+const SUCCESS_FAVICON_LINK = "http://icons.veryicon.com/ico/System/Flatastic%202/success.ico";
+const FAILURE_FAVICON_LINK = "http://www.iconsdb.com/icons/download/red/delete-2-16.ico";
+const RUNNING_FAVICON_LINK = "http://www.iconarchive.com/download/i96210/iconsmind/outline/Gears.ico";
+const WAITING_FAVICON_LINK = "http://www.iconarchive.com/download/i7929/hopstarter/soft-scraps/Button-Warning.ico";
 const KILLED_FAVICON_LINK = "";
+
+
 
 export const changeFavicon = (src) => {
     const link = document.createElement("link");
@@ -51,3 +53,5 @@ export const getStateForFavicon = summaries => {
 
     return state;
 };
+
+
