@@ -1,4 +1,5 @@
 import React, {PropTypes} from "react";
+import Utils from "ComponentUtils.es6";
 import {connect} from "react-redux";
 import * as R from "ramda";
 import {viewBuildStep} from "./actions/BuildDetailActions.es6";
@@ -44,11 +45,13 @@ export class BuildDetailBreadcrumb extends React.Component {
             onClickFn = closeBuildDetailsFn;
         }
 
+        const classesArrow = Utils.classes("arrowRight","levelUpArrow", !steps || steps.length === 0 ? "withoutParentSteps" : "");
+
         return <div className="levelUp" onClick={onClickFn}>
             <div className="levelUpIcon">
                 <i className="fa fa-level-up fa-flip-horizontal"></i>
             </div>
-            <div className="arrowRight levelUpArrow"></div>
+            <div className={classesArrow}></div>
             <div className="breadConnectionVertical"></div>
             <div className="breadConnectionHorizontal"></div>
         </div>;
@@ -91,8 +94,10 @@ export class BuildDetailBreadcrumb extends React.Component {
             currentLink = this.getStepLink(steps[steps.length - 1]);
         }
 
+        const classesArrow = Utils.classes("arrowRight","parentStepArrow", !steps || steps.length === 0 ? "withoutParentSteps" : "");
+
         return <div className="currentStep">
-            <div className="arrowRight parentStepArrow"></div>
+            <div className={classesArrow}></div>
             <div className="currentText">{currentLink}</div>
         </div>;
     }
