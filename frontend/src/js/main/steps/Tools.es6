@@ -51,9 +51,10 @@ export class Tools extends React.Component {
     }
 
     showFailureStepTool() {
-        if (this.props.failureStep && this.props.hasSubsteps) {
+        const {failureStep, hasSubsteps, goIntoFailureStepFn} = this.props;
+        if (failureStep && hasSubsteps) {
             return <ToolboxLink toolClass="failureStepTool" iconClass={SHOW_FAILURE_STEP_ICON_CLASS}
-                                linkText="Failure Step" linkFn={this.props.goIntoFailureStepFn}/>;
+                                linkText="Failure Step" linkFn={() => goIntoFailureStepFn(failureStep)}/>;
         }
         return "";
     }
@@ -124,7 +125,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         goIntoStepFn: () => dispatch(viewBuildStep(buildId, stepId)),
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
-        goIntoFailureStepFn: () => dispatch(viewBuildStep(buildId, stepId)),
+        goIntoFailureStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
         toggleParallelStepFn: () => dispatch(toggleParallelStep(buildId, stepId))
     };
