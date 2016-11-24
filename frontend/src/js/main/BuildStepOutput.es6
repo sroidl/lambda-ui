@@ -21,7 +21,7 @@ export class BuildStepOutput extends React.Component {
         super(props);
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         const element = this.layerText;
         element.scrollTop = element.scrollHeight;
     }
@@ -34,7 +34,7 @@ export class BuildStepOutput extends React.Component {
             output = ["Requesting Output from Server"];
         }
 
-        const formattingLine = line => line.replace(/ /g,"\u00a0");
+        const formattingLine = line => line.replace(/ /g, "\u00a0");
         const lineKey = index => "line-" + index;
         const mapIndexed = R.addIndex(R.map);
         return (mapIndexed((line, index) => {
@@ -42,19 +42,6 @@ export class BuildStepOutput extends React.Component {
                         className="outputLine">{formattingLine(line)}</div>;
         })(output));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     render() {
         const {buildId, stepName, showOutput, stepId, closeLayerFn} = this.props;
@@ -75,7 +62,9 @@ export class BuildStepOutput extends React.Component {
                 </div>
                 <div className="layerClose" onClick={closeLayerFn}><i className="fa fa-times" aria-hidden="true"></i>
                 </div>
-                <div ref={(div) => {this.layerText = div;}} className="layerText">{this.outputLines()}</div>
+                <div ref={(div) => {
+                    this.layerText = div;
+                }} className="layerText">{this.outputLines()}</div>
             </div>
         </div>;
     }
