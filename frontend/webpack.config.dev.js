@@ -44,7 +44,7 @@ module.exports = {
       },
       // Enables importing of images into the ES6 modules.
       {
-        test: /\.png$/,
+        test: /\.(png|ico)$/,
         loader: "file"
 
       }

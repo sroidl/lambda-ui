@@ -1,10 +1,15 @@
 import R from "ramda";
+import successFavicon from "../../img/successFavicon.ico";
+import failureFavicon from "../../img/failureFavicon.ico";
+import runningFavicon from "../../img/runningFavicon.ico";
+import waitingFavicon from "../../img/warningFavicon.ico";
 
-const SUCCESS_FAVICON_LINK = "http://icons.veryicon.com/ico/System/Flatastic%202/success.ico";
-const FAILURE_FAVICON_LINK = "http://www.iconsdb.com/icons/download/red/delete-2-16.ico";
-const RUNNING_FAVICON_LINK = "http://www.iconarchive.com/download/i96210/iconsmind/outline/Gears.ico";
-const WAITING_FAVICON_LINK = "http://www.iconarchive.com/download/i7929/hopstarter/soft-scraps/Button-Warning.ico";
+const SUCCESS_FAVICON_LINK = successFavicon;
+const FAILURE_FAVICON_LINK = failureFavicon;
+const RUNNING_FAVICON_LINK = runningFavicon;
+const WAITING_FAVICON_LINK = waitingFavicon;
 const KILLED_FAVICON_LINK = "";
+const DEFAULT_FAVICON_LINK = "";
 
 
 
@@ -39,6 +44,7 @@ export const setStateFavicon = (state) => {
             changeFavicon(KILLED_FAVICON_LINK);
             break;
         default:
+            changeFavicon(DEFAULT_FAVICON_LINK);
             break;
     }
 };
