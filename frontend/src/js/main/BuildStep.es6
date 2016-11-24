@@ -41,7 +41,7 @@ StepInfos.propTypes = {
 
 const HideLine = ({isParallel}) => {
     if(isParallel){
-        return <div className="hideLine"></div>;
+        return <div><div className="hideLine"></div><div className="hideLine"></div></div>;
     }
     return <div></div>;
 };
@@ -80,7 +80,6 @@ export class BuildStep extends React.Component {
         const buildStepClasses = Utils.classes("buildStep", step.state, isParallel ? "inParallel" : "");
 
         return <div className={buildStepClasses}>
-            <HideLine isParallel={isParallel}/>
             <HideLine isParallel={isParallel}/>
             <StepInfos step={step}/>
             <Tools buildId={buildId} step={step} failureStep={failureStep}/>
