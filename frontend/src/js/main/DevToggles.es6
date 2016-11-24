@@ -12,6 +12,9 @@ class DevToggles {
     get showInterestingStep () {
         return isActive("showInterestingStep");
     }
+    get showConnectionState () {
+        return isActive("showConnectionState");
+    }
 }
 
 export default new DevToggles();

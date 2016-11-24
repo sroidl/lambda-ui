@@ -17,7 +17,7 @@ const initialState = {
     config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
     viewBuildSteps: {},
     output: {showOutput: false},
-    developmentToggles: { usePolling : true, showInterestingStep: false},
+    developmentToggles: { usePolling : true, showInterestingStep: false, showConnectionState: true},
     showStepToolbox: {},
     showInParallel: {},
     showParentStepBreadcrumb: {}
@@ -42,5 +42,3 @@ const middleware = compose(
 );
 
 export const createLambdaUiStore = () => createStore(rootReducer, initialState, middleware);
-
-

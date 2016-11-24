@@ -4,6 +4,7 @@ import * as R from "ramda";
 import {requestOutput} from "actions/BackendActions.es6";
 import "../../sass/buildStepOutput.sass";
 import {hideBuildOutput} from "actions/OutputActions.es6";
+import DevToggles from "DevToggles.es6";
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
@@ -44,21 +45,23 @@ export class BuildStepOutput extends React.Component {
     }
 
     render() {
-        const {buildId, stepName, showOutput, stepId, closeLayerFn} = this.props;
+        const {buildId, stepName, showOutput, closeLayerFn} = this.props;
 
         if (!showOutput) {
             return null;
         }
 
+        const connectionState = DevToggles.showConnectionState ? <ConnectionStateRedux/> : "";
+
         return <div className="buildStepOutput ">
             <div className="layerShadow"/>
             <div id="outputContent" className="layer open">
                 <div id="outputHeader" className="layerTitle">
-                    <span>Output of Build </span>
+                    <span>Build: </span>
                     <span id="outputHeader__buildId">{buildId}</span>
-                    <span> Step </span>
-                    <span id="outputHeader__stepName">{stepName} ({stepId})</span>
-                    <ConnectionStateRedux/>
+                    <span> - Step: </span>
+                    <span id="outputHeader__stepName">{stepName}</span>
+                    {connectionState}
                 </div>
                 <div className="layerClose" onClick={closeLayerFn}><i className="fa fa-times" aria-hidden="true"></i>
                 </div>
@@ -80,12 +83,14 @@ BuildStepOutput.propTypes = {
     closeLayerFn: PropTypes.func
 };
 
+
+
 const outputHiddenProps = {showOutput: false};
 
 const outputVisibleProps = (state) => {
     const buildId = state.output.buildId;
     const stepId = state.output.stepId;
-    const stepNameLens = R.lensPath(["buildDetails", buildId, stepId, "name"]);
+    const stepNameLens = R.lensPath(["buildDetails", buildId, "steps", stepId, "name"]);
     const outputLens = R.lensPath(["output", "content", buildId, stepId]);
 
     return {

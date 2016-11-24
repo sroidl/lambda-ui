@@ -1,4 +1,5 @@
 /* globals describe it xit expect jest beforeEach afterEach */
+jest.mock("../main/DevToggles.es6");
 import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "BuildStepOutput.es6"
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
@@ -33,7 +34,7 @@ describe("Output presentation", () => {
     const component = shallow(<BuildStepOutput showOutput={true} buildId = { 1 } stepName = { "meinStep"} stepId = { "stepId"} output = { ["hierTestOutput"]}/>);
 
     expect(component.find("#outputHeader__buildId").text()).toBe("1");
-    expect(component.find("#outputHeader__stepName").text()).toBe("meinStep (stepId)");
+    expect(component.find("#outputHeader__stepName").text()).toBe("meinStep");
     expect(component.find(".layerText").text()).toBe("hierTestOutput");
 
   });
@@ -65,7 +66,7 @@ describe("Output redux", () => {
 
   it("should get output from buildstep", () => {
     const state = {
-      buildDetails: {1: {"1": {name: "myStep"}}},
+      buildDetails: {1: {steps: {"1": {name: "myStep"}}}},
       output: {showOutput:true, buildId: 1, stepId: "1", content: {1: {"1" : ["line1"]}}}
     };
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true};
@@ -75,7 +76,7 @@ describe("Output redux", () => {
 
   it("should get undefined from buildstep if no output exists", () => {
     const state = {
-      buildDetails: {1: {"1": {name: "myStep"}}},
+      buildDetails: {1: {steps: {"1": {name: "myStep"}}}},
       output: {showOutput:true, buildId: 1, stepId: "1", content: {}}
     };
     const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true};
