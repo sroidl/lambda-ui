@@ -3,15 +3,15 @@ import successFavicon from "../../img/successFavicon.ico";
 import failureFavicon from "../../img/failureFavicon.ico";
 import runningFavicon from "../../img/runningFavicon.ico";
 import waitingFavicon from "../../img/warningFavicon.ico";
+import killedFavicon from "../../img/killedFavicon.ico";
+import defaultFavicon from "../../img/defaultFavicon.ico";
 
 const SUCCESS_FAVICON_LINK = successFavicon;
 const FAILURE_FAVICON_LINK = failureFavicon;
 const RUNNING_FAVICON_LINK = runningFavicon;
 const WAITING_FAVICON_LINK = waitingFavicon;
-const KILLED_FAVICON_LINK = "";
-const DEFAULT_FAVICON_LINK = "";
-
-
+const KILLED_FAVICON_LINK = killedFavicon;
+const DEFAULT_FAVICON_LINK = defaultFavicon;
 
 export const changeFavicon = (src) => {
     const link = document.createElement("link");
