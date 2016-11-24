@@ -15,7 +15,7 @@ const initialState = {
     openedBuilds: {},
     buildDetails: {},
     config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
-    viewBuidSteps: {},
+    viewBuildSteps: {},
     output: {showOutput: false},
     developmentToggles: { usePolling : true, showInterestingStep: false, showParallelStepsDirectly: false },
     showStepToolbox: {},

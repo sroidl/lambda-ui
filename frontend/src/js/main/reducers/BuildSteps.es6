@@ -2,8 +2,8 @@ import {TOGGLE_STEP_TOOLBOX, TOGGLE_PARALLEL_STEP} from "actions/BuildStepAction
 import R from "ramda";
 
 export const toggleState = (oldState, buildId, stepId) => {
-    let newObj = {};
-    let newSubObj = {};
+    const newObj = {};
+    const newSubObj = {};
     newSubObj[stepId] = true;
     if (oldState[buildId]) {
         if (oldState[buildId][stepId]) {
@@ -35,4 +35,3 @@ export const ParallelStepsReducer = (oldState = {}, action) => {
             return oldState;
     }
 };
-

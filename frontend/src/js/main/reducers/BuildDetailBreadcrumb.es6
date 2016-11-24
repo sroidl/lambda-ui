@@ -2,7 +2,7 @@ import {TOGGLE_PARENT_STEPS} from "actions/BuildDetailBreadcrumbActions.es6";
 import R from "ramda";
 
 export const toggleState = (oldState, buildId) => {
-    let newObject = {};
+    const newObject = {};
     if (oldState[buildId]) {
         newObject[buildId] = !oldState[buildId];
     } else {
@@ -20,4 +20,3 @@ export default (oldState = {}, action) => {
             return oldState;
     }
 };
-

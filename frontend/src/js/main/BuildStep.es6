@@ -40,7 +40,12 @@ StepInfos.propTypes = {
     step: PropTypes.object.isRequired
 };
 
-const HideLine = ({isParallel}) => isParallel ? <div className="hideLine"></div> : <div></div>;
+const HideLine = ({isParallel}) => {
+    if(isParallel){
+        return <div className="hideLine"></div>;
+    }
+    return <div></div>;
+};
 
 HideLine.propTypes = {
     isParallel: PropTypes.bool.isRequired
@@ -113,4 +118,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const BuildStepCon = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
 export default BuildStepCon;
-
