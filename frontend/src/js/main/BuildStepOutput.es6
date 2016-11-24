@@ -34,11 +34,27 @@ export class BuildStepOutput extends React.Component {
             output = ["Requesting Output from Server"];
         }
 
+        const formattingLine = line => line.replace(/ /g,"\u00a0");
         const lineKey = index => "line-" + index;
         const mapIndexed = R.addIndex(R.map);
-        return (mapIndexed((line, index) => <div key={lineKey(index)}
-                                                 className="outputLine">{line}</div>)(output));
+        return (mapIndexed((line, index) => {
+            return <div key={lineKey(index)}
+                        className="outputLine">{formattingLine(line)}</div>;
+        })(output));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     render() {
         const {buildId, stepName, showOutput, stepId, closeLayerFn} = this.props;
