@@ -74,10 +74,8 @@ export class BuildStep extends React.Component {
     render() {
         const {step, buildId, isParallel, showDirectlyInParallel, failureStep} = this.props;
 
-        if (Toggles.showParallelStepsDirectly) {
-            if (!isParallel && showDirectlyInParallel) {
-                return this.showParallelSteps();
-            }
+        if (!isParallel && showDirectlyInParallel) {
+            return this.showParallelSteps();
         }
 
         const buildStepClasses = Utils.classes("buildStep", step.state, isParallel ? "inParallel" : "");

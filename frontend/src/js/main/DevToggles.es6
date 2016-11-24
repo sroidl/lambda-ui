@@ -12,9 +12,6 @@ class DevToggles {
     get showInterestingStep () {
         return isActive("showInterestingStep");
     }
-    get showParallelStepsDirectly (){
-        return isActive("showParallelStepsDirectly");
-    }
 }
 
 export default new DevToggles();

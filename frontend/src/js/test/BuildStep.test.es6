@@ -1,21 +1,15 @@
 /* globals jest describe expect it beforeEach afterEach */
 jest.mock("../main/actions/BuildDetailActions.es6");
 jest.mock("../main/actions/OutputActions.es6");
-jest.mock("../main/DevToggles.es6");
 import React from "react";
-import {shallow, mount} from "enzyme";
+import {shallow} from "enzyme";
 import {BuildStep, getStepDuration, duration, StepInfos} from "BuildStep.es6";
-import DevToggles from "DevToggles.es6";
-
-DevToggles.showParallelStepsDirectly = true;
 
 const details = newAttributes => Object.assign({stepId: 1, state: "success", name: "fooStep"}, newAttributes);
 
 describe("BuildStep", () => {
 
     let realConsole;
-    const fn = () => {
-    };
 
     beforeEach(() => {
         const consoleThrowing = {

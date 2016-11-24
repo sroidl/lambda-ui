@@ -1,7 +1,6 @@
 /* globals jest describe it expect */
 jest.mock("../main/Backend.es6");
 jest.mock("../main/actions/BackendActions.es6");
-jest.mock("../main/DevToggles.es6");
 import BuildDetailsRedux, {BuildDetails, mapStateToProps, getStepIdToShow} from "BuildDetails.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "./testsupport/TestSupport.es6";
@@ -9,8 +8,6 @@ import React from "react";
 import {Provider} from "react-redux";
 import {requestDetailsPolling as requestDetailsAction} from "actions/BackendActions.es6";
 import DevToggles from "DevToggles.es6";
-
-DevToggles.showParallelStepsDirectly = true;
 
 describe("BuildDetails", () => {
 

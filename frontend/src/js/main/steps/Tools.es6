@@ -39,10 +39,8 @@ export class Tools extends React.Component {
     showSubstepTool() {
         if (this.props.hasSubsteps) {
             let linkFn = this.props.goIntoStepFn;
-            if (Toggles.showParallelStepsDirectly) {
-                if (this.props.isParallel) {
-                    linkFn = this.props.toggleParallelStepFn;
-                }
+            if (this.props.isParallel) {
+                linkFn = this.props.toggleParallelStepFn;
             }
             return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps"
                                 linkFn={linkFn}/>;
