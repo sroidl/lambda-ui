@@ -5,7 +5,6 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox, toggleParallelStep} from "actions/BuildStepActions.es6";
 import R from "ramda";
-import Toggles from "DevToggles.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";

@@ -9,7 +9,6 @@ import {isStepInParallel} from "steps/InParallelChecker.es6";
 import {StateIcon} from "StateIcon.es6";
 import Tools from "steps/Tools.es6";
 import {toggleParallelStep} from "actions/BuildStepActions.es6";
-import Toggles from "./DevToggles.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
