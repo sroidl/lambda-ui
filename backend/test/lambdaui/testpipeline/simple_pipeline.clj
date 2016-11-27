@@ -32,7 +32,7 @@
 
 
 (defn long-running-task-20s [args context]
-  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; sleep 0.1s; done")
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; echo \"Outputline ${i}\"; echo \"Outputline ${i}\"; echo \"Outputline ${i}\"; sleep 0.1s; done; echo \"..done \"")
   )
 
 (defn different-status [_ _]

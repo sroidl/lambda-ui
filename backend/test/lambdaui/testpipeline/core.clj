@@ -6,7 +6,9 @@
             [lambdaui.testpipeline.simple-pipeline :as pipe]
             [lambdaui.core :as ui]
             [lambdacd.internal.execution :as exec]
-            [clojure.core.async :as async])
+            [clojure.core.async :as async :refer [go <! <!! >! >!!]]
+            [lambdacd.event-bus :as events]
+            [lambdacd.event-bus :as event-bus])
   (:use [lambdacd.runners]))
 
 (defonce server (atom nil))
@@ -28,3 +30,25 @@
   (let [port (try-parse-int portArg (fn [_] (when portArg (println "Port '" portArg "' is not a number. Using default port")) 8081))]
     (println "Started Server on port " port ". CTRL+C to abort.")
     (start-server port)))
+
+(defonce ctx (atom nil))
+(defonce ch (atom nil))
+(defonce sub (atom nil))
+
+
+(defn subscribe [topic]
+  (let [_ctx (:context @current-pipeline)
+        _sub (event-bus/subscribe _ctx :step-result-updated)
+        _pay (event-bus/only-payload _sub)]
+    (reset! ctx _ctx)
+    (reset! sub _sub)
+    (reset! ch _pay)))
+
+(defn is-finished? [m]
+  (not (= :running (get-in m [:step-result :status] ))))
+
+(defn display-finished-updates []
+  (go (loop []
+        (let [update (<! @ch)] (when (is-finished? update) (println update)))
+        (recur))))
+

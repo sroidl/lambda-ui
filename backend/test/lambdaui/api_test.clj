@@ -237,10 +237,34 @@
       (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
                     event-bus/only-payload (fn [subscription] event-channel)
                     state/get-all (fn [_] {})]
-        (subject/build-step-events-to-ws nil ws-ch 1 "2-1")
+        (subject/output-events nil ws-ch 1 "2-1")
         (async/>!! event-channel {:build-number 1 :step-id [2 1] :step-result {:foo :bar}})
         (async/<!! sent-channel)                            ;ignore first msg. not part of test
-        (is (= (json/write-str {:stepId "2-1" :buildId 1 :stepResult {:foo :bar}}) (async/<!! sent-channel)))))))
+        (is (= (json/write-str {:stepId "2-1" :buildId 1 :stepResult {:foo :bar}}) (async/<!! sent-channel))))))
+
+  (testing "that a websocket is closed if step is finished"
+    (let [
+
+          event-channel (async/chan)
+          sent-channel  (async/chan 1)
+          closed (atom false)
+          ws-ch         (reify httpkit-server/Channel
+                          (on-close [& _])
+                          (close [ws-ch] (reset! closed true))
+                          (send! [ws-ch data] (async/>!! sent-channel data)))]
+      (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
+                    event-bus/only-payload (fn [subscription] event-channel)
+                    state/get-all (fn [_] {})]
+        (subject/output-events nil ws-ch 1 "2-1")
+        (async/>!! event-channel {:build-number 1 :step-id [2 1] :stepResult {:status :running}})
+        (async/>!! event-channel {:build-number 1 :step-id [2 1] :stepResult {:status :success}})
+
+        (println (async/<!! sent-channel))                  ;ignore first msg. not part of test
+        (println (async/<!! sent-channel))
+        ;(is (= true @closed))
+        )
+        ))
+    )
 
 (deftest only-matching-step-test
   (testing "that it filters for matching steps"
