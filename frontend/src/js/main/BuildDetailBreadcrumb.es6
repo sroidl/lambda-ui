@@ -40,11 +40,11 @@ export class BuildDetailBreadcrumb extends React.Component {
 
         const parentStepId = steps && steps.length > 1 ? steps[steps.length - 2].stepId : null;
         let onClickFn = () => viewStepFn(parentStepId);
-        if(!steps || steps.length === 0){
+        if (!steps || steps.length === 0) {
             onClickFn = closeBuildDetailsFn;
         }
 
-        const classesArrow = Utils.classes("arrowRight","levelUpArrow", !steps || steps.length === 0 ? "withoutParentSteps" : "");
+        const classesArrow = Utils.classes("arrowRight", "levelUpArrow", !steps || steps.length === 0 ? "withoutParentSteps" : "");
 
         return <div className="levelUp" onClick={onClickFn}>
             <div className="levelUpIcon">
@@ -65,7 +65,10 @@ export class BuildDetailBreadcrumb extends React.Component {
 
         const stepsHtml = R.map(step => {
             return <div className="breadcrumbLink">
-                <div className="inlineArrowRight"><div className="arrowRight parentStepArrow inlineArrowAbsolut"></div><div className="arrowRight parentStepArrow inlineArrowWhite"></div></div>
+                <div className="inlineArrowRight">
+                    <div className="arrowRight parentStepArrow inlineArrowAbsolut"></div>
+                    <div className="arrowRight parentStepArrow inlineArrowWhite"></div>
+                </div>
                 {this.getStepLink(step)}
             </div>;
         })(steps.slice(0, steps.length - 1));
@@ -82,7 +85,7 @@ export class BuildDetailBreadcrumb extends React.Component {
             currentLink = this.getStepLink(steps[steps.length - 1]);
         }
 
-        const classesArrow = Utils.classes("arrowRight","parentStepArrow", !steps || steps.length === 0 ? "withoutParentSteps" : "");
+        const classesArrow = Utils.classes("arrowRight", "parentStepArrow", !steps || steps.length === 0 ? "withoutParentSteps" : "");
 
         return <div className="currentStep">
             <div className={classesArrow}></div>

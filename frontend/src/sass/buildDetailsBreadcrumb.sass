@@ -23,22 +23,21 @@
     top: -1px
     position: relative
 
-
 .levelUpArrow
   border-color: $dark-grey
-  border-top-color:    $grey
-  border-right-color:  $grey
+  border-top-color: $grey
+  border-right-color: $grey
   border-bottom-color: $grey
 
   &.withoutParentSteps
-    border-top-color:    $white
-    border-right-color:  $white
+    border-top-color: $white
+    border-right-color: $white
     border-bottom-color: $white
 
 .parentStepArrow
   border-color: $grey
-  border-top-color:    transparent
-  border-right-color:  transparent
+  border-top-color: transparent
+  border-right-color: transparent
   border-bottom-color: transparent
 
   &.withoutParentSteps
@@ -46,8 +45,8 @@
 
 .currentStepArrow
   border-color: $white
-  border-top-color:    transparent
-  border-right-color:  transparent
+  border-top-color: transparent
+  border-right-color: transparent
   border-bottom-color: transparent
 
 .arrowRight
@@ -77,6 +76,7 @@
   background-color: $white
   float: left
   height: 20px
+  animation-duration: 2s
 
 .parentSteps
   font-size: 14px
@@ -85,6 +85,9 @@
   background-color: $grey
   padding-right: 5px
   overflow: hidden
+
+  > .breadcrumbLink
+    animation: expandParentStepBreadcrumb 0.2s linear
 
   .breadcrumbLink
     cursor: pointer
@@ -95,9 +98,6 @@
 .breadcrumbLink
   float: left
   margin-right: 3px
-  animation-name: expandParentStepBreadcrumb
-  animation-duration: 0.2s
-  animation-delay: 0s
 
 .inlineArrowRight
   float: left
