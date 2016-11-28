@@ -87,6 +87,14 @@ describe("Breadcrumb calculation", () => {
         expect(actual).toEqual([{stepId: "1", name: "substep"}]);
 
     });
+
+    it("should calculate current breadcrumb without parallel steps", () => {
+        const input = {stepId: "root", name: "root", steps: [{stepId: "1", name: "substep", type: "parallel", steps: [{stepId: "1-1", name: "subsubstep"}]}]};
+
+        const actual = subject.calculateBreadcrumb(input, "1");
+
+        expect(actual).toEqual([]);
+    });
 });
 
 describe("Breadcrumb redux component", () => {

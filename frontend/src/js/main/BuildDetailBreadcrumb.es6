@@ -132,9 +132,12 @@ export const calculateBreadcrumb = (buildDetails, currentViewStepId) => {
         return R.chain(R.identity, result);
     };
 
-    const objects = R.project(["name", "stepId"])(expandBreadcrumb(currentViewStepId, allSteps(buildDetails)));
+    const filterNoInParallel = R.filter((step) => step.type !== "parallel");
+
+    const objects = R.project(["name", "stepId", "type"])(expandBreadcrumb(currentViewStepId, allSteps(buildDetails)));
     const allButRoot = R.tail(objects);
-    return allButRoot;
+
+    return filterNoInParallel(allButRoot);
 };
 
 export const mapStateToProps = (state, {buildId}) => {
