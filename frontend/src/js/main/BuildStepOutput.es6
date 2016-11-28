@@ -44,6 +44,21 @@ export class BuildStepOutput extends React.Component {
         })(output));
     }
 
+    closeOnEscClick(){
+        document.onkeydown = (evt) => {
+            evt = evt || window.event;
+            let isEscape = false;
+            if ("key" in evt) {
+                isEscape = (evt.key === "Escape" || evt.key === "Esc");
+            } else {
+                isEscape = (evt.keyCode === 27);
+            }
+            if (isEscape) {
+                this.props.closeLayerFn();
+            }
+        };
+    }
+
     render() {
         const {buildId, stepName, showOutput, closeLayerFn} = this.props;
 
@@ -51,10 +66,12 @@ export class BuildStepOutput extends React.Component {
             return null;
         }
 
+        this.closeOnEscClick();
+
         const connectionState = DevToggles.showConnectionState ? <ConnectionStateRedux/> : "";
 
         return <div className="buildStepOutput ">
-            <div className="layerShadow"/>
+            <div onClick={closeLayerFn} className="layerShadow"/>
             <div id="outputContent" className="layer open">
                 <div id="outputHeader" className="layerTitle">
                     <span>Build: </span>
