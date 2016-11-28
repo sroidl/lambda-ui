@@ -12,7 +12,7 @@ export const SHOW_FAILURE_STEP_ICON_CLASS = "fa-arrow-circle-down";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
     return <div className={Utils.classes(toolClass, "tool")} onClick={linkFn}>
-        <div className="toolIcon"><i className={Utils.classes("fa", iconClass)}/></div>
+        <div className="toolIcon" title={linkText}><i className={Utils.classes("fa", iconClass)}/></div>
         <div className="linkText">{linkText}</div>
     </div>;
 };
