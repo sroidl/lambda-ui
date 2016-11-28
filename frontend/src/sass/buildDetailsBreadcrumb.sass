@@ -84,9 +84,6 @@
   height: 20px
   background-color: $grey
   padding-right: 5px
-  animation-name: expandParentStepBreadcrumb
-  animation-duration: 0.2s
-  animation-delay: 0s
   overflow: hidden
 
   .breadcrumbLink
@@ -97,9 +94,20 @@
 
 .breadcrumbLink
   float: left
+  margin-right: 3px
+  animation-name: expandParentStepBreadcrumb
+  animation-duration: 0.2s
+  animation-delay: 0s
 
 .inlineArrowRight
   float: left
+
+.inlineArrowWhite
+  border-left-color: $white
+  margin-left: 3px
+
+.inlineArrowAbsolut
+  position: absolute
 
 .breadConnectionVertical
   position: absolute
@@ -120,5 +128,7 @@
 @keyframes expandParentStepBreadcrumb
   0%
     width: 0px
+  50%
+    width: 25px
   100%
     width: inherit

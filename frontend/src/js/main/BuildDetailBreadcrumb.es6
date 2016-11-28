@@ -6,7 +6,6 @@ import {viewBuildStep} from "./actions/BuildDetailActions.es6";
 import "../../sass/buildDetails.sass";
 import {flatTree} from "./FunctionalUtils.es6";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
-import {toggleParentSteps} from "actions/BuildDetailBreadcrumbActions.es6";
 import {toggleBuildDetails} from "actions/BuildDetailActions.es6";
 
 export const BreadcrumbLink = ({clickFn, name}) => {
@@ -57,27 +56,16 @@ export class BuildDetailBreadcrumb extends React.Component {
         </div>;
     }
 
-    renderParentStepIcon() {
-        const {showParentStepBreadcrumb, steps, showParentStepsFn} = this.props;
-
-        if (showParentStepBreadcrumb || !steps || steps.length === 0) {
-            return <div></div>;
-        }
-        return <div className="parentStepIcon" onClick={showParentStepsFn}>
-            <i className="fa fa-ellipsis-h"></i>
-        </div>;
-    }
-
     renderParentSteps() {
-        const {steps, showParentStepBreadcrumb} = this.props;
+        const {steps} = this.props;
 
-        if (!showParentStepBreadcrumb || !steps || steps.length === 0) {
+        if (!steps || steps.length === 0) {
             return <div></div>;
         }
 
         const stepsHtml = R.map(step => {
             return <div className="breadcrumbLink">
-                <div className="inlineArrowRight">&nbsp;>&nbsp;</div>
+                <div className="inlineArrowRight"><div className="arrowRight parentStepArrow inlineArrowAbsolut"></div><div className="arrowRight parentStepArrow inlineArrowWhite"></div></div>
                 {this.getStepLink(step)}
             </div>;
         })(steps.slice(0, steps.length - 1));
@@ -109,7 +97,6 @@ export class BuildDetailBreadcrumb extends React.Component {
     render() {
         return <div className="buildDetailBreadcrumb">
             {this.renderLevelUpIcon()}
-            {this.renderParentStepIcon()}
             {this.renderParentSteps()}
             {this.renderCurrentStep()}
             {this.renderCurrentArrow()}
@@ -120,7 +107,6 @@ export class BuildDetailBreadcrumb extends React.Component {
 BuildDetailBreadcrumb.propTypes = {
     steps: PropTypes.array,
     buildId: PropTypes.number.isRequired,
-    showParentStepBreadcrumb: PropTypes.bool.isRequired,
     viewStepFn: PropTypes.func.isRequired,
     showParentStepsFn: PropTypes.func.isRequired,
     closeBuildDetailsFn: PropTypes.func.isRequired
@@ -151,19 +137,16 @@ export const calculateBreadcrumb = (buildDetails, currentViewStepId) => {
 export const mapStateToProps = (state, {buildId}) => {
     const buildDetails = Object.assign({}, state.buildDetails[buildId]);
     const currentViewStepId = shouldShowInterestingStep(state, buildId) ? getInterestingStepId(state, buildId) : state.viewBuildSteps[buildId] || null;
-    const showParentStepBreadcrumb = state.showParentStepBreadcrumb[buildId] || false;
 
     return {
         buildId: buildId,
-        steps: calculateBreadcrumb(buildDetails, currentViewStepId),
-        showParentStepBreadcrumb: showParentStepBreadcrumb
+        steps: calculateBreadcrumb(buildDetails, currentViewStepId)
     };
 };
 
 export const mapDispatchToProps = (dispatch, {buildId}) => {
     return {
         viewStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
-        showParentStepsFn: () => dispatch(toggleParentSteps(buildId)),
         closeBuildDetailsFn: () => dispatch(toggleBuildDetails(buildId))
     };
 };

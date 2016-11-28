@@ -32,20 +32,6 @@ describe("Breadcrumb presentation", () => {
         expect(component.text()).toEqual("<BreadcrumbLink />");
     });
 
-    it("should show breadcrumb of current step if showParentStepBreadcrumb is false", () => {
-        const steps = [{name: "first"}, {name: "Second"}];
-        const input = {
-            steps: steps, viewStepFn: () => {
-            }, buildId: 1, showParentStepBreadcrumb: false
-        }
-        const component = shallow(<BuildDetailBreadcrumb steps={steps}
-                                                         viewStepFn={() =>{}}
-                                                         buildId={1}
-                                                         showParentStepBreadcrumb={false}
-                                                         showParentStepsFn={() => {}} /> );
-        expect(component.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink />");
-    });
-
     it("should show breadcrumb of all steps if showParentStepBreadcrumb is true", () => {
         const steps = [{name: "first"}, {name: "Second"}];
         const input = {
@@ -58,7 +44,7 @@ describe("Breadcrumb presentation", () => {
                                                          showParentStepBreadcrumb={true}
                                                          showParentStepsFn={() => {}} /> );
 
-        expect(component.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink /> > <BreadcrumbLink /><BreadcrumbLink />");
+        expect(component.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink /><BreadcrumbLink /><BreadcrumbLink />");
     })
 });
 
@@ -105,25 +91,23 @@ describe("Breadcrumb calculation", () => {
 
 describe("Breadcrumb redux component", () => {
     it("should show root component if no viewBuildStep is set", () => {
-        const state = {buildDetails: {1: {}}, viewBuildSteps: {}, showParentStepBreadcrumb: {}};
+        const state = {buildDetails: {1: {}}, viewBuildSteps: {}};
 
         const actual = subject.mapStateToProps(state, {buildId: 1});
 
-        expect(actual).toEqual({buildId: 1, showParentStepBreadcrumb: false, steps: []});
+        expect(actual).toEqual({buildId: 1, steps: []});
     });
 
     it("should show inner step breadcrumb if it was chosen", () => {
         const state = {
             buildDetails: {1: {steps: [{stepId: "1", name: "innerStep"}]}},
-            viewBuildSteps: {1: "1"},
-            showParentStepBreadcrumb: {}
+            viewBuildSteps: {1: "1"}
         };
 
         const actual = subject.mapStateToProps(state, {buildId: 1});
 
         expect(actual).toEqual({
             buildId: 1,
-            showParentStepBreadcrumb: false,
             steps: [{stepId: "1", name: "innerStep"}]
         });
     });
