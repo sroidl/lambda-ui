@@ -5,10 +5,12 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox, toggleParallelStep} from "actions/BuildStepActions.es6";
 import R from "ramda";
+import DevToggle from "../DevToggles.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
 export const SHOW_FAILURE_STEP_ICON_CLASS = "fa-arrow-circle-down";
+export const TRIGGER_STEP_ICON = "fa-hand-pointer-o";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
     return <div className={Utils.classes(toolClass, "tool")} onClick={linkFn}>
@@ -56,7 +58,24 @@ export class Tools extends React.Component {
         return "";
     }
 
+    showTriggerTool(){
+        const {stepTrigger} = this.props;
+        if(stepTrigger && stepTrigger.url){
+            const linkFn = () => {};
+            return <ToolboxLink iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;
+        }
+        return "";
+    }
+
     showToolbar() {
+        if(DevToggle.handleTriggerSteps){
+            if(this.props.stepType === "trigger"){
+                return <div className="toolbar">
+                    {this.showTriggerTool()}
+                </div>;
+            }
+        }
+
         return <div className="toolbar">
             {this.showOutputTool()}
             {this.showSubstepTool()}
@@ -66,6 +85,14 @@ export class Tools extends React.Component {
 
     showToolbox() {
         if (this.props.toolboxOpen) {
+            if(DevToggle.handleTriggerSteps){
+                if(this.props.stepType === "trigger"){
+                    return <div className="toolbox">
+                        {this.showTriggerTool()}
+                    </div>;
+                }
+            }
+
             return <div className="toolbox">
                 {this.showOutputTool()}
                 {this.showSubstepTool()}

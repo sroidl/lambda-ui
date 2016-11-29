@@ -2,6 +2,7 @@
 jest.mock("../../main/actions/OutputActions.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
+jest.mock("../../main/DevToggles.es6");
 import React from "react";
 import ToolsRedux, {Tools, ToolboxLink, SHOW_OUTPUT_ICON_CLASS, SHOW_SUBSTEP_ICON_CLASS, SHOW_FAILURE_STEP_ICON_CLASS} from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
@@ -9,6 +10,9 @@ import {MockStore} from "../testsupport/TestSupport.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox} from "actions/BuildStepActions.es6";
+import DevToggles from "../../main/DevToggles.es6";
+
+DevToggles.handleTriggerSteps = true;
 
 const fn = () => {};
 
@@ -43,10 +47,10 @@ describe("Tools Icons", () => {
 
 describe("Tools", () => {
 
-    const tools = (toolboxOpen = false, hasSubsteps = false, failureStep = null) =>
+    const tools = (toolboxOpen = false, hasSubsteps = false, failureStep = null, stepType = "", stepTrigger = null) =>
         <Tools goIntoFailureStepFn={fn()} goIntoStepFn={fn()} hasSubsteps={hasSubsteps}
                showOutputFn={fn()} toggleStepToolboxFn={fn()} toolboxOpen={toolboxOpen}
-               failureStep={failureStep} />;
+               failureStep={failureStep} stepType={stepType} stepTrigger={stepTrigger}/>;
 
     describe("Rendering", () => {
         it("should render Tools", () => {
@@ -101,6 +105,11 @@ describe("Tools", () => {
             expect(component.find(".outputTool").length).toBe(2);
             expect(component.find(".substepTool").length).toBe(2);
             expect(component.find(".failureStepTool").length).toBe(2);
+        });
+
+        it("should render TriggerTool", () => {
+            const component = mount(tools(false,false,null,"trigger", {url: "someURL"}));
+            expect(component.find(".triggerStepTool").length).toBe(1);
         });
     });
 
