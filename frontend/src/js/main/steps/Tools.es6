@@ -38,7 +38,7 @@ export class Tools extends React.Component {
     showSubstepTool() {
         if (this.props.hasSubsteps) {
             let linkFn = this.props.goIntoStepFn;
-            if (this.props.isParallel) {
+            if (this.props.stepType === "parallel") {
                 linkFn = this.props.toggleParallelStepFn;
             }
             return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS} linkText="Substeps"
@@ -94,23 +94,26 @@ export class Tools extends React.Component {
 Tools.propTypes = {
     failureStep: PropTypes.string,
     hasSubsteps: PropTypes.bool.isRequired,
-    isParallel: PropTypes.bool.isRequired,
+    stepType: PropTypes.string.isRequired,
     toolboxOpen: PropTypes.bool.isRequired,
     goIntoFailureStepFn: PropTypes.func.isRequired,
     goIntoStepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired,
     toggleStepToolboxFn: PropTypes.func.isRequired,
-    toggleParallelStepFn: PropTypes.func.isRequired
+    toggleParallelStepFn: PropTypes.func.isRequired,
+    stepTrigger: PropTypes.object
 };
 
 const mapStateToProps = (state, ownProps) => {
     const hasSubsteps = ownProps.step.steps && ownProps.step.steps.length !== 0 || false;
-    const isParallel = ownProps.step.type && ownProps.step.type === "parallel" || false;
+    const stepType = ownProps.step.type || "";
+    const stepTrigger = ownProps.step.trigger || null;
 
     return {
         failureStep: ownProps.failureStep,
         hasSubsteps: hasSubsteps,
-        isParallel: isParallel,
+        stepType: stepType,
+        stepTrigger: stepTrigger,
         toolboxOpen: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showStepToolbox)
     };
 };
