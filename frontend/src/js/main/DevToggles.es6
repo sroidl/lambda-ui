@@ -15,6 +15,9 @@ class DevToggles {
     get showConnectionState () {
         return isActive("showConnectionState");
     }
+    get useAnsiCodeColors () {
+        return isActive("useAnsiCodeColors");
+    }
 }
 
 export default new DevToggles();
