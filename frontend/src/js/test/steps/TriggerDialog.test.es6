@@ -4,16 +4,21 @@ import {TriggerDialog} from "steps/TriggerDialog.es6";
 import {shallow} from "enzyme";
 
 describe("TriggerDialog", () => {
-    const component = (showTrigger = true, fn = () => {}, parms = [], url = "") =>
+    const component = (showTrigger = true, parms = [], fn = () => {}, url = "") =>
         shallow(<TriggerDialog closeTriggerDialog={fn} parameter={parms} showTrigger={showTrigger} url={url}/>);
 
-    it("should render triggerDialog div", () => {
-        const newComponent = component();
+    it("should render triggerDialog div if parameter available", () => {
+        const newComponent = component(true, [{name: "name", key: "key"}]);
         expect(newComponent.find(".triggerDialog").length).toBe(1);
     });
 
     it("should not render triggerDialog div if showTrigger is false", () => {
         const newComponent = component(false);
+        expect(newComponent.find(".triggerDialog").length).toBe(0);
+    });
+
+    it("should not render triggerDialog div if no parameter available", () => {
+        const newComponent = component(true);
         expect(newComponent.find(".triggerDialog").length).toBe(0);
     });
 });
