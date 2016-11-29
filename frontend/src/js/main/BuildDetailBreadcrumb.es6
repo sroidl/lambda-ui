@@ -111,7 +111,6 @@ BuildDetailBreadcrumb.propTypes = {
     steps: PropTypes.array,
     buildId: PropTypes.number.isRequired,
     viewStepFn: PropTypes.func.isRequired,
-    showParentStepsFn: PropTypes.func.isRequired,
     closeBuildDetailsFn: PropTypes.func.isRequired
 };
 
