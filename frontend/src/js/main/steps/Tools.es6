@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox, toggleParallelStep} from "actions/BuildStepActions.es6";
+import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import R from "ramda";
 import DevToggle from "../DevToggles.es6";
 
@@ -59,9 +60,9 @@ export class Tools extends React.Component {
     }
 
     showTriggerTool(){
-        const {stepTrigger} = this.props;
+        const {stepTrigger, showTriggerDialogFn} = this.props;
         if(stepTrigger && stepTrigger.url){
-            const linkFn = () => {};
+            const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
             return <ToolboxLink iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;
         }
         return "";
@@ -128,6 +129,7 @@ Tools.propTypes = {
     showOutputFn: PropTypes.func.isRequired,
     toggleStepToolboxFn: PropTypes.func.isRequired,
     toggleParallelStepFn: PropTypes.func.isRequired,
+    showTriggerDialogFn: PropTypes.func.isRequired,
     stepTrigger: PropTypes.object
 };
 
@@ -154,7 +156,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
         goIntoFailureStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
-        toggleParallelStepFn: () => dispatch(toggleParallelStep(buildId, stepId))
+        toggleParallelStepFn: () => dispatch(toggleParallelStep(buildId, stepId)),
+        showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter))
     };
 };
 
