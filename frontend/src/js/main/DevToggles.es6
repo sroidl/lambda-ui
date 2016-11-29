@@ -18,6 +18,9 @@ class DevToggles {
     get useAnsiCodeColors () {
         return isActive("useAnsiCodeColors");
     }
+    get handleTriggerSteps() {
+        return isActive("handleTriggerSteps");
+    }
 }
 
 export default new DevToggles();
