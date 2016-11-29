@@ -1,0 +1,19 @@
+/* globals describe it expect */
+import React from "react";
+import {TriggerDialog} from "steps/TriggerDialog.es6";
+import {shallow} from "enzyme";
+
+describe("TriggerDialog", () => {
+    const component = (showTrigger = true, fn = () => {}, parms = [], url = "") =>
+        shallow(<TriggerDialog closeTriggerDialog={fn} parameter={parms} showTrigger={showTrigger} url={url}/>);
+
+    it("should render triggerDialog div", () => {
+        const newComponent = component();
+        expect(newComponent.find(".triggerDialog").length).toBe(1);
+    });
+
+    it("should not render triggerDialog div if showTrigger is false", () => {
+        const newComponent = component(false);
+        expect(newComponent.find(".triggerDialog").length).toBe(0);
+    });
+});
