@@ -24,9 +24,9 @@ describe("BuildStepTrigger Reducer",() => {
         it("should change showTrigger by true", () => {
             const oldState = {};
 
-            const newState = TriggerReducer(oldState, {type: OPEN_TRIGGER_DIALOG, url:"url", parameter: []});
+            const newState = TriggerReducer(oldState, {type: OPEN_TRIGGER_DIALOG, url:"url", parameter: [], triggerName: "name"});
 
-            expect(newState).toEqual({showTrigger: true, url: "url", parameter: []});
+            expect(newState).toEqual({showTrigger: true, url: "url", parameter: [], triggerName: "name"});
         });
     });
 

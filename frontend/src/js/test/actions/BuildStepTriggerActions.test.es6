@@ -4,8 +4,8 @@ import {openTriggerDialog, closeTriggerDialog} from "actions/BuildStepTriggerAct
 describe("BuildStepTriggerActions", () => {
     it("should return openTriggerDialog action object", () => {
         const inputParameter = [{name: "name", key: "key"}];
-        const newAction = openTriggerDialog("testURL", inputParameter);
-        expect(newAction).toEqual({type: "openTriggerDialog", url: "testURL", parameter: inputParameter});
+        const newAction = openTriggerDialog("testURL", inputParameter, "triggerName");
+        expect(newAction).toEqual({type: "openTriggerDialog", url: "testURL", parameter: inputParameter, triggerName: "triggerName"});
     });
 
     it("should return closeTriggerDialog action object", () => {

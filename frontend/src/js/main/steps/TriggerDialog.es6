@@ -87,7 +87,7 @@ export class TriggerDialog extends React.Component {
     }
 
     render() {
-        const {showTrigger, closeTriggerDialog, parameter, url} = this.props;
+        const {showTrigger, closeTriggerDialog, parameter, url, triggerName} = this.props;
 
         if (!showTrigger) {
             return null;
@@ -108,12 +108,12 @@ export class TriggerDialog extends React.Component {
         if(!parameter || parameter.length === 0){
             this.executeTrigger(parameter, url);
             return <div>
-                {triggerDialog("Start Trigger...")}
+                {triggerDialog("Start: " + triggerName + " ...")}
                 {setTimeout(closeTriggerDialog, 2000)}
             </div>;
         }
 
-        return triggerDialog("Step Name");
+        return triggerDialog(triggerName);
     }
 }
 
@@ -121,7 +121,8 @@ TriggerDialog.propTypes = {
     parameter: PropTypes.array,
     url: PropTypes.string,
     closeTriggerDialog: PropTypes.func.isRequired,
-    showTrigger: PropTypes.bool
+    showTrigger: PropTypes.bool,
+    triggerName: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {

@@ -150,6 +150,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     const buildId = ownProps.buildId;
     const stepId = ownProps.step.stepId;
+    const stepName = ownProps.step.name;
 
     return {
         goIntoStepFn: () => dispatch(viewBuildStep(buildId, stepId)),
@@ -157,7 +158,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         goIntoFailureStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
         toggleParallelStepFn: () => dispatch(toggleParallelStep(buildId, stepId)),
-        showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter))
+        showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName))
     };
 };
 
