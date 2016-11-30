@@ -10,6 +10,11 @@ export class TriggerDialog extends React.Component {
         super(props);
     }
 
+    haveParameter(){
+        const {parameter} = this.props;
+        return parameter && parameter.length > 0;
+    }
+
     checkValidInput(){
         const getValues = R.map(param => document.getElementById(param.key).value);
 
@@ -19,29 +24,51 @@ export class TriggerDialog extends React.Component {
         return inputValues.length === filterValidValues(inputValues).length;
     }
 
-    executeTrigger(closeTriggerDialog,parameter, url) {
+    executeTrigger(parameter, url) {
         const inputValues = R.map((param) => param.key + "=" + document.getElementById(param.key).value);
         const formatToUrlParm = R.pipe(inputValues, R.toString,R.replace("\", \"", "&"), R.replace("[\"", ""), R.replace("\"]", ""));
 
-        const urlParameter = formatToUrlParm(parameter);
+        let urlParameter = "";
+        if (this.haveParameter()){
+            urlParameter = formatToUrlParm(parameter);
+        }
         /* eslint-disable */
         console.log("Request URL: " + url + "?" + urlParameter);
         /* eslint-enable */
 
         // TODO: execute
-
-        closeTriggerDialog();
     }
 
     renderInputs() {
-        const {parameter} = this.props;
+        if(!this.haveParameter()){
+            return null;
+        }
         const mapInputFields = R.map((prop) => {
             return  <div>
                 <label htmlFor={prop.key}>{prop.name}</label>
                 <input type="text" name={prop.key} id={prop.key}/>
             </div>;
         });
-        return mapInputFields(parameter);
+        return mapInputFields(this.props.parameter);
+    }
+
+    renderButton() {
+        const {parameter, url, closeTriggerDialog} = this.props;
+
+        if(!this.haveParameter()){
+            return null;
+        }
+
+        const clickExecute = () => {
+            if(this.checkValidInput()){
+                this.executeTrigger(parameter, url);
+                closeTriggerDialog();
+            } else{
+                document.getElementById("triggerFailure").innerHTML = "No valid input!";
+            }
+        };
+
+        return <button className="triggerBtn" onClick={clickExecute}>Start Trigger</button>;
     }
 
     render() {
@@ -51,28 +78,25 @@ export class TriggerDialog extends React.Component {
             return null;
         }
 
-        if(!parameter || parameter.length === 0){
-            this.executeTrigger(closeTriggerDialog, parameter, url);
-            return null;
-        }
-
-        const clickExecute = () => {
-            if(this.checkValidInput()){
-                this.executeTrigger(closeTriggerDialog, parameter, url);
-            } else{
-                document.getElementById("triggerFailure").innerHTML = "No valid input!";
-            }
-        };
-
-        return <div className="triggerDialog">
+        const triggerDialog = (titleText) => <div className="triggerDialog">
             <div className="triggerShadow" onClick={closeTriggerDialog}></div>
             <div className="triggerContent">
-                <div className="triggerTitle"></div>
+                <div className="triggerTitle">{titleText}</div>
                 <div id="triggerFailure"></div>
                 {this.renderInputs()}
-                <button onClick={clickExecute}>Start Trigger</button>
+                {this.renderButton()}
             </div>
         </div>;
+
+        if(!parameter || parameter.length === 0){
+            this.executeTrigger(parameter, url);
+            return <div>
+                {triggerDialog("Start Trigger...")}
+                {setTimeout(closeTriggerDialog, 2000)}
+            </div>;
+        }
+
+        return triggerDialog("Step Name");
     }
 }
 
