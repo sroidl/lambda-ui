@@ -10,9 +10,24 @@ export class TriggerDialog extends React.Component {
         super(props);
     }
 
-    haveParameter(){
+    hasParameter(){
         const {parameter} = this.props;
         return parameter && parameter.length > 0;
+    }
+
+    closeOnEscClick(){
+        document.onkeydown = (evt) => {
+            evt = evt || window.event;
+            let isEscape = false;
+            if ("key" in evt) {
+                isEscape = (evt.key === "Escape" || evt.key === "Esc");
+            } else {
+                isEscape = (evt.keyCode === 27);
+            }
+            if (isEscape) {
+                this.props.closeTriggerDialog();
+            }
+        };
     }
 
     checkValidInput(){
@@ -29,7 +44,7 @@ export class TriggerDialog extends React.Component {
         const formatToUrlParm = R.pipe(inputValues, R.toString,R.replace("\", \"", "&"), R.replace("[\"", ""), R.replace("\"]", ""));
 
         let urlParameter = "";
-        if (this.haveParameter()){
+        if (this.hasParameter()){
             urlParameter = formatToUrlParm(parameter);
         }
         /* eslint-disable */
@@ -40,7 +55,7 @@ export class TriggerDialog extends React.Component {
     }
 
     renderInputs() {
-        if(!this.haveParameter()){
+        if(!this.hasParameter()){
             return null;
         }
         const mapInputFields = R.map((prop) => {
@@ -55,7 +70,7 @@ export class TriggerDialog extends React.Component {
     renderButton() {
         const {parameter, url, closeTriggerDialog} = this.props;
 
-        if(!this.haveParameter()){
+        if(!this.hasParameter()){
             return null;
         }
 
@@ -77,6 +92,8 @@ export class TriggerDialog extends React.Component {
         if (!showTrigger) {
             return null;
         }
+
+        this.closeOnEscClick();
 
         const triggerDialog = (titleText) => <div className="triggerDialog">
             <div className="triggerShadow" onClick={closeTriggerDialog}></div>
