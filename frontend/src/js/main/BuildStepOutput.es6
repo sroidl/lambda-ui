@@ -24,8 +24,12 @@ export class BuildStepOutput extends React.Component {
 
     componentDidUpdate() {
         const element = this.layerText;
-        element.scrollTop = element.scrollHeight;
+        if(element){
+            element.scrollTop = element.scrollHeight;
+        }
     }
+
+
 
     ansiCodeToHexCode(ansiCode){
         switch(ansiCode){

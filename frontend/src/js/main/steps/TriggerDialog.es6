@@ -124,7 +124,7 @@ TriggerDialog.propTypes = {
     url: PropTypes.string,
     closeTriggerDialog: PropTypes.func.isRequired,
     showTrigger: PropTypes.bool,
-    triggerName: PropTypes.string.isRequired
+    triggerName: PropTypes.string
 };
 
 const mapStateToProps = (state) => {
