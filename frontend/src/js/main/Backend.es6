@@ -91,4 +91,18 @@ export class Backend {
         fetch(triggerNewUrl(this.baseUrl), fetchOptions);
     }
 
+    triggerStep(url, body) {
+        const fetchOptions = {
+            method: "POST",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: body
+        };
+
+        fetch(url, fetchOptions).catch((error) => {
+            console.error("Request failed: " , error);
+        });
+    }
+
 }

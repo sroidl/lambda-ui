@@ -16,9 +16,4 @@ describe("TriggerDialog", () => {
         const newComponent = component(false);
         expect(newComponent.find(".triggerDialog").length).toBe(0);
     });
-
-    it("should render triggerDialog div if no parameter available", () => {
-        const newComponent = component(true);
-        expect(newComponent.find(".triggerDialog").length).toBe(1);
-    });
 });

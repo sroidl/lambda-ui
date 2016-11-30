@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {closeTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import "../../../sass/buildStepTrigger.sass";
 import R from "ramda";
+import App from "../App.es6";
 
 export class TriggerDialog extends React.Component {
 
@@ -47,11 +48,8 @@ export class TriggerDialog extends React.Component {
         if (this.hasParameter()){
             urlParameter = formatToUrlParm(parameter);
         }
-        /* eslint-disable */
-        console.log("Request URL: " + url + "?" + urlParameter);
-        /* eslint-enable */
 
-        // TODO: execute
+        App.backend().triggerStep(url, urlParameter);
     }
 
     renderInputs() {
