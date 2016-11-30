@@ -10,10 +10,25 @@ export class TriggerDialog extends React.Component {
         super(props);
     }
 
-    postExecute(closeTriggerDialog) {
-        //const inputValues = R.map((param) => param.key + "=" + document.getElementById(param.key).value);
-        //const concatValues = R.concat(R.lensIndex(1), R.lensIndex(2));
-        //const getParameterValues = R.pipe(inputValues, concatValues);
+    checkValidInput(){
+        const getValues = R.map(param => document.getElementById(param.key).value);
+
+        const inputValues = getValues(this.props.parameter);
+        const filterValidValues = R.filter(value => value && value !== "");
+
+        return inputValues.length === filterValidValues(inputValues).length;
+    }
+
+    executeTrigger(closeTriggerDialog,parameter, url) {
+        const inputValues = R.map((param) => param.key + "=" + document.getElementById(param.key).value);
+        const formatToUrlParm = R.pipe(inputValues, R.toString,R.replace("\", \"", "&"), R.replace("[\"", ""), R.replace("\"]", ""));
+
+        const urlParameter = formatToUrlParm(parameter);
+        /* eslint-disable */
+        console.log("Request URL: " + url + "?" + urlParameter);
+        /* eslint-enable */
+
+        // TODO: execute
 
         closeTriggerDialog();
     }
@@ -30,22 +45,32 @@ export class TriggerDialog extends React.Component {
     }
 
     render() {
-        const {showTrigger, closeTriggerDialog, parameter} = this.props;
+        const {showTrigger, closeTriggerDialog, parameter, url} = this.props;
 
         if (!showTrigger) {
             return null;
         }
 
         if(!parameter || parameter.length === 0){
-            this.postExecute(closeTriggerDialog);
+            this.executeTrigger(closeTriggerDialog, parameter, url);
             return null;
         }
+
+        const clickExecute = () => {
+            if(this.checkValidInput()){
+                this.executeTrigger(closeTriggerDialog, parameter, url);
+            } else{
+                document.getElementById("triggerFailure").innerHTML = "No valid input!";
+            }
+        };
 
         return <div className="triggerDialog">
             <div className="triggerShadow" onClick={closeTriggerDialog}></div>
             <div className="triggerContent">
+                <div className="triggerTitle"></div>
+                <div id="triggerFailure"></div>
                 {this.renderInputs()}
-                <button onClick={() => this.postExecute(closeTriggerDialog)}>Start Trigger</button>
+                <button onClick={clickExecute}>Start Trigger</button>
             </div>
         </div>;
     }
