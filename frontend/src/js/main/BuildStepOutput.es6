@@ -112,9 +112,11 @@ export class BuildStepOutput extends React.Component {
         const {buildId, stepName, showOutput, closeLayerFn} = this.props;
 
         if (!showOutput) {
+            document.body.style.overflowY = "auto";
             return null;
         }
 
+        document.body.style.overflowY = "hidden";
         this.closeOnEscClick();
 
         const connectionState = DevToggles.showConnectionState ? <ConnectionStateRedux/> : "";

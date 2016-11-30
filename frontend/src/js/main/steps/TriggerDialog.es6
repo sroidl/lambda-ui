@@ -90,10 +90,12 @@ export class TriggerDialog extends React.Component {
         const {showTrigger, closeTriggerDialog, parameter, url, triggerName} = this.props;
 
         if (!showTrigger) {
+            document.body.style.overflowY = "auto";
             return null;
         }
 
         this.closeOnEscClick();
+        document.body.style.overflowY = "hidden";
 
         const triggerDialog = (titleText) => <div className="triggerDialog">
             <div className="triggerShadow" onClick={closeTriggerDialog}></div>
