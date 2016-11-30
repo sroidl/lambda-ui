@@ -22,29 +22,25 @@ describe("BreadcrumbLink", () => {
 });
 
 describe("Breadcrumb presentation", () => {
-    it("should show one root breadcrumb if no step is given", () => {
-        const component = shallow(<BuildDetailBreadcrumb steps={[]}
-                                                         viewStepFn={() =>{}}
-                                                         buildId={1}
-                                                         showParentStepBreadcrumb={false}
-                                                         showParentStepsFn={() => {}} /> );
+    const component = (steps = []) => shallow(
+        <BuildDetailBreadcrumb steps={steps}
+                               viewStepFn={() =>{}}
+                               buildId={1}
+                               closeBuildDetailsFn={() => {}}
 
-        expect(component.text()).toEqual("<BreadcrumbLink />");
+        />);
+
+    it("should show one root breadcrumb if no step is given", () => {
+        const newComponent = component();
+
+        expect(newComponent.text()).toEqual("<BreadcrumbLink />");
     });
 
     it("should show breadcrumb of all steps if showParentStepBreadcrumb is true", () => {
         const steps = [{name: "first"}, {name: "Second"}];
-        const input = {
-            steps: steps, viewStepFn: () => {
-            }, buildId: 1, showParentStepBreadcrumb: true
-        }
-        const component = shallow(<BuildDetailBreadcrumb steps={steps}
-                                                         viewStepFn={() =>{}}
-                                                         buildId={1}
-                                                         showParentStepBreadcrumb={true}
-                                                         showParentStepsFn={() => {}} /> );
+        const newComponent = component(steps);
 
-        expect(component.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink /><BreadcrumbLink /><BreadcrumbLink />");
+        expect(newComponent.find(".buildDetailBreadcrumb").text()).toEqual("<BreadcrumbLink /><BreadcrumbLink /><BreadcrumbLink />");
     })
 });
 

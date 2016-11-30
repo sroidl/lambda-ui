@@ -17,7 +17,12 @@ DevToggles.handleTriggerSteps = true;
 const fn = () => {};
 
 describe("ToolboxLink", () => {
-    const toolBoxLink = shallow(<ToolboxLink toolClass={"someTool"} iconClass={"iconCss"} linkFn={fn()} linkText={"Link Text"} />);
+    const toolBoxLink = shallow(<ToolboxLink
+        toolClass={"someTool"}
+        iconClass={"iconCss"}
+        linkFn={fn}
+        linkText={"Link Text"} />);
+
     it("should have correct iconClass", () => {
         expect(toolBoxLink.find(".iconCss").length).toBe(1);
     });
@@ -46,11 +51,18 @@ describe("Tools Icons", () => {
 });
 
 describe("Tools", () => {
-
     const tools = (toolboxOpen = false, hasSubsteps = false, failureStep = null, stepType = "", stepTrigger = null) =>
-        <Tools goIntoFailureStepFn={fn()} goIntoStepFn={fn()} hasSubsteps={hasSubsteps}
-               showOutputFn={fn()} toggleStepToolboxFn={fn()} toolboxOpen={toolboxOpen}
-               failureStep={failureStep} stepType={stepType} stepTrigger={stepTrigger}/>;
+        <Tools toolboxOpen={toolboxOpen}
+               hasSubsteps={hasSubsteps}
+               failureStep={failureStep}
+               stepType={stepType}
+               stepTrigger={stepTrigger}
+               goIntoFailureStepFn={fn}
+               goIntoStepFn={fn}
+               showOutputFn={fn}
+               toggleStepToolboxFn={fn}
+               toggleParallelStepFn={fn}
+               showTriggerDialogFn={fn}/>;
 
     describe("Rendering", () => {
         it("should render Tools", () => {

@@ -59,7 +59,7 @@ export class TriggerDialog extends React.Component {
             return null;
         }
         const mapInputFields = R.map((prop) => {
-            return  <div>
+            return  <div key={prop.key}>
                 <label htmlFor={prop.key}>{prop.name}</label>
                 <input type="text" name={prop.key} id={prop.key}/>
             </div>;

@@ -64,7 +64,7 @@ export class BuildDetailBreadcrumb extends React.Component {
         }
 
         const stepsHtml = R.map(step => {
-            return <div className="breadcrumbLink">
+            return <div key={step.name} className="breadcrumbLink">
                 <div className="inlineArrowRight">
                     <div className="arrowRight parentStepArrow inlineArrowAbsolut"></div>
                     <div className="arrowRight parentStepArrow inlineArrowWhite"></div>
