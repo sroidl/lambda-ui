@@ -4,7 +4,7 @@ import Moment from "moment";
 import R from "ramda";
 import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
-import {findParentOfFailedSubstep} from "steps/InterestingStepFinder.es6";
+import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
 import {StateIcon} from "StateIcon.es6";
 import Tools from "steps/Tools.es6";
@@ -81,7 +81,7 @@ export class BuildStep extends React.Component {
     }
 
     render() {
-        const {step, buildId, isParallel, showDirectlyInParallel, failureStep} = this.props;
+        const {step, buildId, isParallel, showDirectlyInParallel, failureStep, runningStep} = this.props;
 
         if (!isParallel && showDirectlyInParallel) {
             return this.showParallelSteps();
@@ -93,7 +93,7 @@ export class BuildStep extends React.Component {
         return <div className={buildStepClasses}>
             <HideLine isParallel={isParallel}/>
             <StepInfos step={step} isTriggerInfo={isTriggerStep}/>
-            <Tools buildId={buildId} step={step} failureStep={failureStep}/>
+            <Tools buildId={buildId} step={step} failureStep={failureStep} runningStep={runningStep}/>
         </div>;
     }
 }
@@ -104,6 +104,7 @@ BuildStep.propTypes = {
     isParallel: PropTypes.bool.isRequired,
     showDirectlyInParallel: PropTypes.bool.isRequired,
     failureStep: PropTypes.string,
+    runningStep: PropTypes.string,
     toggleParallelStep: PropTypes.func.isRequired
 };
 
@@ -113,7 +114,8 @@ export const mapStateToProps = (state, ownProps) => {
         isParallel: isStepInParallel(state, ownProps.buildId, ownProps.step.stepId),
         showDirectlyInParallel: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showInParallel),
         buildId: ownProps.buildId,
-        failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId)
+        failureStep: findParentOfFailedSubstep(state, ownProps.buildId, ownProps.step.stepId),
+        runningStep: findParentOfRunningSubstep(state, ownProps.buildId, ownProps.step.stepId)
     });
 };
 

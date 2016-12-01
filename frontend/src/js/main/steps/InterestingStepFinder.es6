@@ -64,5 +64,8 @@ export const findParentOfFailedSubstep = (state, buildId, stepId) => {
 
 export const findParentOfRunningSubstep = (state, buildId, stepId) => {
     return findParentOfSubstep(state, buildId, stepId, "running");
-}
+};
+
+
+
 

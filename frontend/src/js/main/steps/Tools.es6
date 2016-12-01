@@ -10,7 +10,7 @@ import DevToggle from "../DevToggles.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
-export const SHOW_FAILURE_STEP_ICON_CLASS = "fa-arrow-circle-down";
+export const SHOW_INTERESTING_STEP_ICON_CLASS = "fa-arrow-circle-down";
 export const TRIGGER_STEP_ICON = "fa-play";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
@@ -50,13 +50,27 @@ export class Tools extends React.Component {
         return "";
     }
 
-    showFailureStepTool() {
-        const {failureStep, hasSubsteps, goIntoFailureStepFn} = this.props;
-        if (failureStep && hasSubsteps) {
-            return <ToolboxLink toolClass="failureStepTool" iconClass={SHOW_FAILURE_STEP_ICON_CLASS}
-                                linkText="Failure Step" linkFn={() => goIntoFailureStepFn(failureStep)}/>;
+    showInterestingStepTool() {
+        const {failureStep, runningStep, hasSubsteps, goIntoInterestingStepFn} = this.props;
+
+        if((!failureStep && !runningStep) || !hasSubsteps){
+            return "";
         }
-        return "";
+
+
+        const linkFn = () => {
+            if(runningStep){
+                goIntoInterestingStepFn(runningStep);
+            } else if(failureStep){
+                goIntoInterestingStepFn(failureStep);
+            }
+        };
+
+        const toolClasses = Utils.classes("interestingStepTool", failureStep ? "failureStepTool" : "runningStepTool");
+
+        return <ToolboxLink toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
+                            linkText="Failure Step" linkFn={linkFn}/>;
+
     }
 
     showTriggerTool(){
@@ -80,7 +94,7 @@ export class Tools extends React.Component {
         return <div className="toolbar">
             {this.showOutputTool()}
             {this.showSubstepTool()}
-            {this.showFailureStepTool()}
+            {this.showInterestingStepTool()}
         </div>;
     }
 
@@ -97,7 +111,7 @@ export class Tools extends React.Component {
             return <div className="toolbox">
                 {this.showOutputTool()}
                 {this.showSubstepTool()}
-                {this.showFailureStepTool()}
+                {this.showInterestingStepTool()}
             </div>;
         }
         return "";
@@ -132,10 +146,11 @@ export class Tools extends React.Component {
 
 Tools.propTypes = {
     failureStep: PropTypes.string,
+    runningStep: PropTypes.string,
     hasSubsteps: PropTypes.bool.isRequired,
     stepType: PropTypes.string.isRequired,
     toolboxOpen: PropTypes.bool.isRequired,
-    goIntoFailureStepFn: PropTypes.func.isRequired,
+    goIntoInterestingStepFn: PropTypes.func.isRequired,
     goIntoStepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired,
     toggleStepToolboxFn: PropTypes.func.isRequired,
@@ -151,6 +166,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         failureStep: ownProps.failureStep,
+        runningStep: ownProps.runningStep,
         hasSubsteps: hasSubsteps,
         stepType: stepType,
         stepTrigger: stepTrigger,
@@ -166,7 +182,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         goIntoStepFn: () => dispatch(viewBuildStep(buildId, stepId)),
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
-        goIntoFailureStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
+        goIntoInterestingStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
         toggleParallelStepFn: () => dispatch(toggleParallelStep(buildId, stepId)),
         showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName))

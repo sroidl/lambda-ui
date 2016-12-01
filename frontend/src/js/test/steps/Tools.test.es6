@@ -9,7 +9,7 @@ import ToolsRedux, {
     ToolboxLink,
     SHOW_OUTPUT_ICON_CLASS,
     SHOW_SUBSTEP_ICON_CLASS,
-    SHOW_FAILURE_STEP_ICON_CLASS
+    SHOW_INTERESTING_STEP_ICON_CLASS
 } from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestSupport.es6";
@@ -17,7 +17,6 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox} from "actions/BuildStepActions.es6";
 import DevToggles from "../../main/DevToggles.es6";
-import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 DevToggles.handleTriggerSteps = true;
 
@@ -25,16 +24,6 @@ const fn = () => {
 };
 
 describe("Tools", () => {
-
-    let realConsole;
-
-    beforeEach(() => {
-        TestUtils.consoleThrowingBefore(realConsole);
-    });
-
-    afterEach(() => {
-        TestUtils.consoleThrowingAfter(realConsole);
-    });
 
     describe("ToolboxLink", () => {
         const toolBoxLink = shallow(<ToolboxLink
@@ -66,7 +55,7 @@ describe("Tools", () => {
         });
 
         it("should get iconClass for FailureStep Tool", () => {
-            expect(SHOW_FAILURE_STEP_ICON_CLASS).toEqual("fa-arrow-circle-down");
+            expect(SHOW_INTERESTING_STEP_ICON_CLASS).toEqual("fa-arrow-circle-down");
         });
     });
 
@@ -75,9 +64,10 @@ describe("Tools", () => {
             <Tools toolboxOpen={toolboxOpen}
                    hasSubsteps={hasSubsteps}
                    failureStep={failureStep}
+                   runningStep=""
                    stepType={stepType}
                    stepTrigger={stepTrigger}
-                   goIntoFailureStepFn={fn}
+                   goIntoInterestingStepFn={fn}
                    goIntoStepFn={fn}
                    showOutputFn={fn}
                    toggleStepToolboxFn={fn}
