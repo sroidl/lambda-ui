@@ -1,7 +1,19 @@
-/* globals describe expect it xit */
-import {findParentOfFailedSubstep, getFlatSteps} from "steps/FailureStepFinder.es6";
+/* globals describe expect it xit beforeEach afterEach */
+import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("Find failed Substep", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     it("should return current step if it has failed and no substeps", () => {
         const state = {
             buildDetails: { 1: {

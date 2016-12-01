@@ -1,5 +1,6 @@
-/* globals describe it expect */
+/* globals describe it expect beforeEach afterEach */
 import {getInterestingStepId} from "steps/InterestingStepFinder.es6";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("getInterestingStepId", () => {
     const buildId = 1;
@@ -18,6 +19,17 @@ describe("getInterestingStepId", () => {
             viewBuildSteps: {1: viewBuildStep}
         };
     };
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     it("should return failure stepId", () => {
         expect(getInterestingStepId(state("failure", "__showInterestingStep"),buildId)).toEqual("root2");
     });

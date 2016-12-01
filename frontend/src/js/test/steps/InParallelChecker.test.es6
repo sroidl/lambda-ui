@@ -1,7 +1,19 @@
-/* globals describe it expect */
+/* globals describe it expect beforeEach afterEach */
 import {isStepInParallel} from "steps/InParallelChecker.es6";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("isStepInParallel", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     const state = (content) => {
         return {
             buildDetails: {
@@ -19,7 +31,6 @@ describe("isStepInParallel", () => {
         expect(isStepInParallel(state, buildId, stepId)).toEqual(result);
     };
 
-    /* eslint-disable */
     it("should return false if parent step is root", () => {
         const ownState = state([{stepId: "1", parentId: "root"}]);
         const stepId = "1";

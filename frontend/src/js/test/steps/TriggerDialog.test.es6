@@ -1,9 +1,21 @@
-/* globals describe it expect */
+/* globals describe it expect beforeEach afterEach */
 import React from "react";
 import {TriggerDialog} from "steps/TriggerDialog.es6";
 import {shallow} from "enzyme";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("TriggerDialog", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     const component = (showTrigger = true, parms = [], fn = () => {}, url = "") =>
         shallow(<TriggerDialog closeTriggerDialog={fn} parameter={parms} showTrigger={showTrigger} url={url}/>);
 
