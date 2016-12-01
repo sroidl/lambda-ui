@@ -1,19 +1,14 @@
-/* eslint-disable */
+/* globals describe it expect beforeEach afterEach jest */
 jest.mock("../main/DevToggles.es6");
-import {BuildSummary} from "BuildSummary.es6";
-import * as subject from "BuildSummary.es6";
+import {BuildSummary, mapStateToProps} from "BuildSummary.es6";
 import {shallow} from "enzyme";
 import React from "react";
-
-function buildIcon(domElement) {
-    return domElement.find(".buildIcon").find(".fa");
-}
+import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
 const fn = () => {
 };
-const time = {};
 
-const buildSummary = ({buildId = 1, state = "running", startTime = "time", toggleBuildDetails = fn}) => {
+const buildSummary = (buildId = 1, toggleBuildDetails = fn, state = "running", startTime = "time") => {
     return <BuildSummary buildId={buildId} state={state}
                          startTime={startTime}
                          toggleBuildDetails={toggleBuildDetails}
@@ -25,29 +20,18 @@ describe("Build Summary", () => {
     let realConsole;
 
     beforeEach(() => {
-        const consoleThrowing = {
-            error: (...args) => {
-                realConsole.error("Got errors on console: ", args);
-                throw new Error(args);
-            },
-            log: (...args) => {
-                realConsole.log(args);
-            }
-        };
-        realConsole = window.console;
-        window.console = consoleThrowing;
+        TestUtils.consoleThrowingBefore(realConsole);
     });
 
     afterEach(() => {
-        window.console = realConsole;
+        TestUtils.consoleThrowingAfter(realConsole);
     });
 
     describe("BuildSummary Toggle", () => {
         it("should call the toggle details function on click", () => {
             const toggleFnMock = jest.fn();
-            const inputProps = {buildId: 1, toggleBuildDetails: toggleFnMock};
 
-            const component = shallow(buildSummary(inputProps));
+            const component = shallow(buildSummary(1, toggleFnMock));
             component.find(".buildInfo").simulate("click");
 
             expect(toggleFnMock).toBeCalled();
@@ -62,7 +46,7 @@ describe("Build Summary", () => {
                 buildDetails: {}
             };
 
-            const props = subject.mapStateToProps(state, {
+            const props = mapStateToProps(state, {
                 build: {
                     buildId: 1,
                     buildNumber: 12,
