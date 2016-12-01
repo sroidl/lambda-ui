@@ -9,6 +9,7 @@ import {isStepInParallel} from "steps/InParallelChecker.es6";
 import {StateIcon} from "StateIcon.es6";
 import Tools from "steps/Tools.es6";
 import {toggleParallelStep} from "actions/BuildStepActions.es6";
+import DevToggle from "DevToggles.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
@@ -27,16 +28,24 @@ export const getStepDuration = (step) => {
     return ({startTime: step.startTime, endTime: endTime});
 };
 
-export const StepInfos = ({step}) => {
+export const StepInfos = ({step, isTriggerInfo}) => {
+    let stepDuration;
+    if(DevToggle.handleTriggerSteps){
+        stepDuration = isTriggerInfo ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
+    } else {
+        stepDuration = <div className="stepDuration">{duration(getStepDuration(step))}</div>;
+    }
+
     return <div>
         <StateIcon state={step.state}/>
         <div className="stepName">{step.name}</div>
-        <div className="stepDuration">{duration(getStepDuration(step))}</div>
+        {stepDuration}
     </div>;
 };
 
 StepInfos.propTypes = {
-    step: PropTypes.object.isRequired
+    step: PropTypes.object.isRequired,
+    isTriggerInfo: PropTypes.bool.isRequired
 };
 
 const HideLine = ({isParallel}) => {
@@ -62,8 +71,9 @@ export class BuildStep extends React.Component {
         const steps = R.map(step => <BuildStepCon key={step.stepId} buildId={buildId} step={step}/>)(step.steps);
 
         return <div key={step.stepId} className="parallelColumn">
-            <div className="closeParallelStep" onClick={toggleParallelStep}><i className="fa fa-close"
-                                                                               aria-hidden="true"></i></div>
+            <div className="closeParallelStep" onClick={toggleParallelStep}>
+                <i className="fa fa-close" aria-hidden="true"></i>
+            </div>
             <div className="parallelLeft"></div>
             <div className="parallelRight"></div>
             <div>{steps}</div>
@@ -78,10 +88,11 @@ export class BuildStep extends React.Component {
         }
 
         const buildStepClasses = Utils.classes("buildStep", step.state, isParallel ? "inParallel" : "");
+        const isTriggerStep = typeof step.trigger === "object";
 
         return <div className={buildStepClasses}>
             <HideLine isParallel={isParallel}/>
-            <StepInfos step={step}/>
+            <StepInfos step={step} isTriggerInfo={isTriggerStep}/>
             <Tools buildId={buildId} step={step} failureStep={failureStep}/>
         </div>;
     }

@@ -119,16 +119,24 @@ describe("Tools", () => {
             expect(component.find(".failureStepTool").length).toBe(2);
         });
 
-        it("should render TriggerTool", () => {
-            const component = mount(tools(false,false,null,"trigger", {url: "someURL"}));
-            expect(component.find(".triggerStepTool").length).toBe(1);
+        describe("trigger Tool", () => {
+            it("should render TriggerTool", () => {
+                const component = mount(tools(false,false,null,"trigger", {url: "someURL"}));
+                expect(component.find(".triggerStepTool").length).toBe(1);
+            });
+
+            it("should not render expand arrow if step is trigger step", () => {
+                const component = shallow(tools(false,false,null,"trigger",{url: "someURL"}));
+                expect(component.find(".showNoIcon").length).toBe(1);
+            });
         });
     });
 
     describe("Wiring" , () => {
         const substeps = {stepId: "1-1", state: "failure"};
-        const tools = (storeMock) => <ToolsRedux buildId={1} failureStep={"1-1"}
-                                  step={{stepId: 1, state: "failure", steps:substeps}}
+        const defaultStep = {stepId: 1, state: "failure", steps:substeps};
+        const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} failureStep={"1-1"}
+                                  step={step}
                                   store={storeMock} />;
 
         it("should dispatch showOutput", () => {
@@ -173,6 +181,17 @@ describe("Tools", () => {
             component.find(".expandTools").simulate("click");
 
             expect(dispatchMock).toBeCalledWith({type: "toggleToolbox"});
+        });
+
+        it("should not call toggleToolbox if step is triggerStep", () => {
+            const dispatchMock = jest.fn();
+            const storeMock = MockStore({}, dispatchMock);
+
+            const component = mount(tools(storeMock,{stepId: 1, state: "waiting", type: "trigger", trigger: {url: "someURL"}}));
+            component.find(".expandTools").simulate("click");
+
+            expect(dispatchMock).not.toBeCalled();
+
         });
     });
 });

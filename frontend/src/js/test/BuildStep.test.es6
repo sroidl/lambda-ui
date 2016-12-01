@@ -1,9 +1,13 @@
 /* globals jest describe expect it beforeEach afterEach */
 jest.mock("../main/actions/BuildDetailActions.es6");
 jest.mock("../main/actions/OutputActions.es6");
+jest.mock("../main/DevToggles.es6");
 import React from "react";
 import {shallow} from "enzyme";
 import {BuildStep, getStepDuration, duration, StepInfos} from "BuildStep.es6";
+import DevToggles from "DevToggles.es6";
+
+DevToggles.handleTriggerSteps = true;
 
 const details = newAttributes => Object.assign({stepId: 1, state: "success", name: "fooStep"}, newAttributes);
 
@@ -127,22 +131,27 @@ describe("BuildStep", () => {
     });
 
     describe("BuildStep infos", () => {
-        const stepInfos = <StepInfos step={{
+        const stepInfos = (isTriggerInfo = false) => <StepInfos step={{
             state: "success",
             name: "stepName",
             startTime: "2016-11-01T13:48:16",
             endTime: "2016-11-01T14:48:21"
-        }}/>
+        }} isTriggerInfo={isTriggerInfo}/>;
 
         it("should render stepName", () => {
-            const component = shallow(stepInfos);
+            const component = shallow(stepInfos());
             expect(component.contains("stepName")).toBe(true);
         });
 
         it("should have correct css Classes", () => {
-            const component = shallow(stepInfos);
+            const component = shallow(stepInfos());
             expect(component.find(".stepName").length).toBe(1);
             expect(component.find(".stepDuration").length).toBe(1);
+        });
+
+        it("should not render stepDuration if step is triggerStep", () => {
+            const component = shallow(stepInfos(true));
+            expect(component.find(".stepDuration").length).toBe(0);
         });
     });
 });

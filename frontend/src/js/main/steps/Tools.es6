@@ -11,7 +11,7 @@ import DevToggle from "../DevToggles.es6";
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
 export const SHOW_FAILURE_STEP_ICON_CLASS = "fa-arrow-circle-down";
-export const TRIGGER_STEP_ICON = "fa-hand-pointer-o";
+export const TRIGGER_STEP_ICON = "fa-play";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
     return <div className={Utils.classes(toolClass, "tool")} onClick={linkFn}>
@@ -104,9 +104,20 @@ export class Tools extends React.Component {
     }
 
     showToggleToolbox() {
-        const toggleToolboxClasses = Utils.classes("fa", (this.props.toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
-        return <div className="expandTools" onClick={this.props.toggleStepToolboxFn}>
-            <i className={toggleToolboxClasses} aria-hidden="true"/>
+        let triggerClass, toggleOnClick;
+
+        if(DevToggle.handleTriggerSteps){
+            triggerClass = this.props.stepTrigger ? "showNoIcon" : "";
+            toggleOnClick = this.props.stepTrigger ? "" : this.props.toggleStepToolboxFn;
+        } else {
+            triggerClass = "";
+            toggleOnClick = this.props.toggleStepToolboxFn;
+        }
+        const toggleToolboxClasses = Utils.classes("expandTools", triggerClass);
+        const toggleToolboxIconClasses = Utils.classes("fa", (this.props.toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
+
+        return <div className={toggleToolboxClasses} onClick={toggleOnClick}>
+            <i className={toggleToolboxIconClasses} aria-hidden="true"/>
         </div>;
     }
 
