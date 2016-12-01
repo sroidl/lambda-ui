@@ -1,18 +1,29 @@
-/* globals jest describe it expect */
+/* globals jest describe it expect beforeEach afterEach */
 jest.mock("../main/Backend.es6");
 jest.mock("../main/actions/BackendActions.es6");
 jest.mock("../main/DevToggles.es6");
-import BuildDetailsRedux, {BuildDetails, mapStateToProps, getStepIdToShow} from "BuildDetails.es6";
+import BuildDetailsRedux, {BuildDetails, mapStateToProps} from "BuildDetails.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "./testsupport/TestSupport.es6";
 import React from "react";
 import {Provider} from "react-redux";
 import {requestDetailsPolling as requestDetailsAction} from "actions/BackendActions.es6";
 import DevToggles from "../main/DevToggles.es6";
+import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
 DevToggles.handleTriggerSteps = true;
 
 describe("BuildDetails", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
 
     const subject = (properties) => {
         const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
