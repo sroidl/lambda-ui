@@ -4,7 +4,13 @@ jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
 jest.mock("../../main/DevToggles.es6");
 import React from "react";
-import ToolsRedux, {Tools, ToolboxLink, SHOW_OUTPUT_ICON_CLASS, SHOW_SUBSTEP_ICON_CLASS, SHOW_FAILURE_STEP_ICON_CLASS} from "steps/Tools.es6";
+import ToolsRedux, {
+    Tools,
+    ToolboxLink,
+    SHOW_OUTPUT_ICON_CLASS,
+    SHOW_SUBSTEP_ICON_CLASS,
+    SHOW_FAILURE_STEP_ICON_CLASS
+} from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestSupport.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
@@ -15,7 +21,8 @@ import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 DevToggles.handleTriggerSteps = true;
 
-const fn = () => {};
+const fn = () => {
+};
 
 describe("Tools", () => {
 
@@ -34,7 +41,7 @@ describe("Tools", () => {
             toolClass={"someTool"}
             iconClass={"iconCss"}
             linkFn={fn}
-            linkText={"Link Text"} />);
+            linkText={"Link Text"}/>);
 
         it("should have correct iconClass", () => {
             expect(toolBoxLink.find(".iconCss").length).toBe(1);
@@ -134,23 +141,23 @@ describe("Tools", () => {
 
             describe("trigger Tool", () => {
                 it("should render TriggerTool", () => {
-                    const component = mount(tools(false,false,null,"trigger", {url: "someURL"}));
+                    const component = mount(tools(false, false, null, "trigger", {url: "someURL"}));
                     expect(component.find(".triggerStepTool").length).toBe(1);
                 });
 
                 it("should not render expand arrow if step is trigger step", () => {
-                    const component = shallow(tools(false,false,null,"trigger",{url: "someURL"}));
+                    const component = shallow(tools(false, false, null, "trigger", {url: "someURL"}));
                     expect(component.find(".showNoIcon").length).toBe(1);
                 });
             });
         });
 
-        describe("Wiring" , () => {
+        describe("Wiring", () => {
             const substeps = {stepId: "1-1", state: "failure"};
-            const defaultStep = {stepId: 1, state: "failure", steps:substeps};
+            const defaultStep = {stepId: 1, state: "failure", steps: substeps};
             const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} failureStep={"1-1"}
-                                      step={step}
-                                      store={storeMock} />;
+                                                                         step={step}
+                                                                         store={storeMock}/>;
 
             it("should dispatch showOutput", () => {
                 const dispatchMock = jest.fn();
@@ -200,7 +207,12 @@ describe("Tools", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
 
-                const component = mount(tools(storeMock,{stepId: 1, state: "waiting", type: "trigger", trigger: {url: "someURL"}}));
+                const component = mount(tools(storeMock, {
+                    stepId: 1,
+                    state: "waiting",
+                    type: "trigger",
+                    trigger: {url: "someURL"}
+                }));
                 component.find(".expandTools").simulate("click");
 
                 expect(dispatchMock).not.toBeCalled();

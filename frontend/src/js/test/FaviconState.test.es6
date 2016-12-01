@@ -23,7 +23,7 @@ describe("getStateForFavivon", () => {
     });
 
     it("should return first state if state has one element", () => {
-        const newState = {1:{state: "success"}};
+        const newState = {1: {state: "success"}};
 
         const buildState = getStateForFavicon(newState);
 
@@ -31,7 +31,7 @@ describe("getStateForFavivon", () => {
     });
 
     it("should return last state of summaries", () => {
-        const newState = {1:{state: "success"}, 2:{state: "failure"}};
+        const newState = {1: {state: "success"}, 2: {state: "failure"}};
 
         const buildState = getStateForFavicon(newState);
 
@@ -39,7 +39,7 @@ describe("getStateForFavivon", () => {
     });
 
     it("should return highest state of summaries", () => {
-        const newState = {1:{state: "success"}, 3:{state: "failure"}, 2:{state: "running"}};
+        const newState = {1: {state: "success"}, 3: {state: "failure"}, 2: {state: "running"}};
 
         const buildState = getStateForFavicon(newState);
 

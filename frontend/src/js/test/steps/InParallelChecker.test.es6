@@ -39,9 +39,11 @@ describe("isStepInParallel", () => {
     });
 
     it("should return false if parent step isn't in parallel", () => {
-        const ownState = state([{stepId: "1", parentId: "root", steps: [
-            {stepId: "1-1", parentId: "1"}
-        ]}]);
+        const ownState = state([{
+            stepId: "1", parentId: "root", steps: [
+                {stepId: "1-1", parentId: "1"}
+            ]
+        }]);
         const stepId = "1-1";
         expectation(ownState, stepId, false);
     });

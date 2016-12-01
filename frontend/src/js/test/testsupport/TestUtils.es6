@@ -1,4 +1,3 @@
-
 export const consoleThrowingBefore = (realConsole) => {
     const consoleThrowing = {
         error: (...args) => {

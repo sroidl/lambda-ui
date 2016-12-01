@@ -16,7 +16,8 @@ describe("TriggerDialog", () => {
         TestUtils.consoleThrowingAfter(realConsole);
     });
 
-    const component = (showTrigger = true, parms = [], fn = () => {}, url = "") =>
+    const component = (showTrigger = true, parms = [], fn = () => {
+    }, url = "") =>
         shallow(<TriggerDialog closeTriggerDialog={fn} parameter={parms} showTrigger={showTrigger} url={url}/>);
 
     it("should render triggerDialog div if parameter available", () => {

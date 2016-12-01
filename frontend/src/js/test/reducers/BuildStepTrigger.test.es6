@@ -3,7 +3,7 @@ import TriggerReducer from "reducers/BuildStepTrigger.es6";
 import {OPEN_TRIGGER_DIALOG, CLOSE_TRIGGER_DIALOG} from "actions/BuildStepTriggerActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
-describe("BuildStepTrigger Reducer",() => {
+describe("BuildStepTrigger Reducer", () => {
 
     let realConsole;
 
@@ -36,7 +36,12 @@ describe("BuildStepTrigger Reducer",() => {
         it("should change showTrigger by true", () => {
             const oldState = {};
 
-            const newState = TriggerReducer(oldState, {type: OPEN_TRIGGER_DIALOG, url:"url", parameter: [], triggerName: "name"});
+            const newState = TriggerReducer(oldState, {
+                type: OPEN_TRIGGER_DIALOG,
+                url: "url",
+                parameter: [],
+                triggerName: "name"
+            });
 
             expect(newState).toEqual({showTrigger: true, url: "url", parameter: [], triggerName: "name"});
         });

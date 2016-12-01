@@ -31,14 +31,14 @@ describe("getInterestingStepId", () => {
     });
 
     it("should return failure stepId", () => {
-        expect(getInterestingStepId(state("failure", "__showInterestingStep"),buildId)).toEqual("root2");
+        expect(getInterestingStepId(state("failure", "__showInterestingStep"), buildId)).toEqual("root2");
     });
 
     it("should return running stepId", () => {
-        expect(getInterestingStepId(state("running", "__showInterestingStep"),buildId)).toEqual("root2");
+        expect(getInterestingStepId(state("running", "__showInterestingStep"), buildId)).toEqual("root2");
     });
 
     it("should return last waiting stepId", () => {
-        expect(getInterestingStepId(state("waiting", "__showInterestingStep"),buildId)).toEqual("root2");
+        expect(getInterestingStepId(state("waiting", "__showInterestingStep"), buildId)).toEqual("root2");
     });
 });

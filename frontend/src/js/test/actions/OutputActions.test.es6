@@ -21,24 +21,30 @@ describe("OutputActions", () => {
     });
 
     it("should return an action object", () => {
-        const newAction = subject.addBuildstepOutput(1,1,"Output");
-        expect(newAction).toEqual({type: "addBuildstepOutput",
-                                buildId: 1,
-                                stepId: 1,
-                                output: "Output"});
+        const newAction = subject.addBuildstepOutput(1, 1, "Output");
+        expect(newAction).toEqual({
+            type: "addBuildstepOutput",
+            buildId: 1,
+            stepId: 1,
+            output: "Output"
+        });
     });
 
-    it("should return outputConnectionState action object", () =>{
+    it("should return outputConnectionState action object", () => {
         const newAction = subject.outputConnectionState({});
-        expect(newAction).toEqual({type: "outputConnectionState",
-                                state: {}});
+        expect(newAction).toEqual({
+            type: "outputConnectionState",
+            state: {}
+        });
     });
 
     it("should return showBuildOutput action object", () => {
-        const newAction = subject.showBuildOutput(1,2);
-        expect(newAction).toEqual({type: "showOutput",
-                                buildId: 1,
-                                stepId: 2});
+        const newAction = subject.showBuildOutput(1, 2);
+        expect(newAction).toEqual({
+            type: "showOutput",
+            buildId: 1,
+            stepId: 2
+        });
     });
 });
 

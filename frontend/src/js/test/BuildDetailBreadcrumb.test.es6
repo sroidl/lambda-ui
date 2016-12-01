@@ -37,9 +37,11 @@ describe("Beadcrumb", () => {
     describe("Breadcrumb presentation", () => {
         const component = (steps = []) => shallow(
             <BuildDetailBreadcrumb steps={steps}
-                                   viewStepFn={() =>{}}
+                                   viewStepFn={() => {
+                                   }}
                                    buildId={1}
-                                   closeBuildDetailsFn={() => {}}
+                                   closeBuildDetailsFn={() => {
+                                   }}
 
             />);
 
@@ -98,7 +100,11 @@ describe("Beadcrumb", () => {
         });
 
         it("should calculate current breadcrumb without parallel steps", () => {
-            const input = {stepId: "root", name: "root", steps: [{stepId: "1", name: "substep", type: "parallel", steps: [{stepId: "1-1", name: "subsubstep"}]}]};
+            const input = {
+                stepId: "root",
+                name: "root",
+                steps: [{stepId: "1", name: "substep", type: "parallel", steps: [{stepId: "1-1", name: "subsubstep"}]}]
+            };
 
             const actual = subject.calculateBreadcrumb(input, "1");
 

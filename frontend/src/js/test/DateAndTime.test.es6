@@ -54,14 +54,14 @@ describe("Duration", () => {
 
         it("should display only minutes and seconds if less than one houre", () => {
             expectDuration(2, "00:02");
-            expectDuration(minutes(1)+43, "01:43");
-            expectDuration(minutes(43)+23, "43:23");
+            expectDuration(minutes(1) + 43, "01:43");
+            expectDuration(minutes(43) + 23, "43:23");
         });
 
         it("should display hours if more than one houre", () => {
             expectDuration(hours(1), "01:00:00");
             expectDuration(hours(5) + minutes(23) + 57, "05:23:57");
-            expectDuration(hours(23)+minutes(5), "23:05:00");
+            expectDuration(hours(23) + minutes(5), "23:05:00");
         });
     });
 });

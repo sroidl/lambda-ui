@@ -2,19 +2,19 @@
 import subject from "ComponentUtils.es6";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
-describe("ComponentUtils test",() => {
+describe("ComponentUtils test", () => {
 
-  let realConsole;
+    let realConsole;
 
-  beforeEach(() => {
-    TestUtils.consoleThrowingBefore(realConsole);
-  });
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
 
-  afterEach(() => {
-    TestUtils.consoleThrowingAfter(realConsole);
-  });
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
 
-  it("should concatenate class names", ()=>{
-    expect(subject.classes("foo", "bar")).toEqual("foo bar");
-  });
+    it("should concatenate class names", ()=> {
+        expect(subject.classes("foo", "bar")).toEqual("foo bar");
+    });
 });
