@@ -1,8 +1,20 @@
-/* globals describe it expect */
+/* globals describe it expect beforeEach afterEach */
 import TriggerReducer from "reducers/BuildStepTrigger.es6";
 import {OPEN_TRIGGER_DIALOG, CLOSE_TRIGGER_DIALOG} from "actions/BuildStepTriggerActions.es6";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStepTrigger Reducer",() => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     describe("Close Trigger Dialog", () => {
         it("should change showTrigger by false", () => {
             const oldState = {showTrigger: true};
