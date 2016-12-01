@@ -1,12 +1,25 @@
+/* globals describe it expect beforeEach afterEach */
 import {BuildSummaryList} from "BuildSummaryList.es6";
 import {shallow} from "enzyme";
+import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
-describe("BuildSummaryList", () =>{
-  it("should render two summaries", ()=>{
-    let state = {builds: {1: {buildId: 1}, 2: {buildId:2}}}
+describe("BuildSummaryList", () => {
 
-    let subject = shallow(BuildSummaryList(state));
+    let realConsole;
 
-    expect(subject.find(".buildSummaryList").children().length).toEqual(2);
-  })
-})
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
+    it("should render two summaries", () => {
+        let state = {builds: {1: {buildId: 1}, 2: {buildId: 2}}};
+
+        let subject = shallow(BuildSummaryList(state));
+
+        expect(subject.find(".buildSummaryList").children().length).toEqual(2);
+    });
+});
