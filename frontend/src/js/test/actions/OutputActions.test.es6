@@ -1,7 +1,19 @@
-/* globals describe it expect  */
+/* globals describe it expect beforeEach afterEach */
 import * as subject from "actions/OutputActions.es6";
-
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 describe("OutputActions", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
+
     it("should return an action object", () => {
         const newAction = subject.hideBuildOutput();
 

@@ -1,7 +1,19 @@
-/* globals describe it expect */
+/* globals describe it expect beforeEach afterEach */
 import * as subject from "actions/BuildSummaryActions";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildSummaryActions", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     it("should return addBuildSummary action object", () => {
         const newAction = subject.addBuildSummary({});
         expect(newAction).toEqual({type: "addBuildSummaries",
@@ -13,6 +25,5 @@ describe("BuildSummaryActions", () => {
         expect(newAction).toEqual({type: "changeBuildSummary",
                                 buildId: 1,
                                 newAttributes: {}});
-
     });
 });

@@ -1,7 +1,19 @@
-/* globals describe it expect */
+/* globals describe it expect beforeEach afterEach */
 import * as subject from "actions/BuildStepActions.es6";
+import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStepActions", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     it("should return toggleToolbox action object", () => {
         const newAction = subject.toggleStepToolbox(1, "1");
         expect(newAction).toEqual({type: "toggleStepToolbox",
