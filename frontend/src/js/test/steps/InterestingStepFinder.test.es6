@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import {getInterestingStepId, findParentOfFailedSubstep} from "steps/InterestingStepFinder.es6";
+import {getInterestingStepId, findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("getInterestingStepId", () => {
@@ -209,6 +209,42 @@ describe("getInterestingStepId", () => {
             // TODO: Show correct failed step if several failed steps available
             const result = findParentOfFailedSubstep(complexState, 1, "2");
             expect(result).toEqual("2");
+        });
+    });
+
+    describe("findParentOfRunningSubstep", () => {
+        it("should return running substep", () => {
+            const state = {
+                buildDetails: {
+                    1: {
+                        buildId: 1,
+                        steps: [{
+                            stepId: "1",
+                            state: "running",
+                            parentId: "root",
+                            steps: [{
+                                stepId: "1-1",
+                                state: "running",
+                                parentId: "1",
+                                steps: [{
+                                    stepId: "1-1-1",
+                                    state: "running",
+                                    parentId: "1-1",
+                                    steps: [{
+                                        stepId: "1-1-1-1",
+                                        state: "running",
+                                        parentId: "1-1-1",
+                                        steps: []
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }
+                }
+            };
+
+            const result = findParentOfRunningSubstep(state, 1, "1");
+            expect(result).toEqual("1-1-1");
         });
     });
 });

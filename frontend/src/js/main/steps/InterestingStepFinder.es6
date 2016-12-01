@@ -34,27 +34,35 @@ export const getInterestingStepId = (state, buildId) => {
     return null;
 };
 
-
 const filterStepsById = stepId => R.filter(step => step.stepId === stepId);
-const getFailedStep = R.filter(step => step.state === "failure");
-const findAndFilterFailedStep = stepId => R.pipe(filterStepsById(stepId), getFailedStep());
+const getStepWithState = (stepState) => R.filter(step => step.state === stepState);
+const findAndFilterStepWithState = (stepId, stepState) => R.pipe(filterStepsById(stepId), getStepWithState(stepState));
 const getSubSteps = R.pipe(R.view(R.lensIndex(0)), R.view(R.lensProp("steps")));
 const getParentStep = R.pipe(R.view(R.lensIndex(0)), R.view(R.lensProp("parentId")));
 
-export const findParentOfFailedSubstep = (state, buildId, stepId) => {
+export const findParentOfSubstep = (state, buildId, stepId, stepState) => {
     if (!state.buildDetails) {
         return null;
     }
     const flatSteps = getFlatSteps(state, buildId);
-    let foundSteps = findAndFilterFailedStep(stepId)(flatSteps);
+    let foundSteps = findAndFilterStepWithState(stepId, stepState)(flatSteps);
     if (!foundSteps || foundSteps.length < 1 || !getSubSteps(foundSteps)) {
         return null;
     }
 
     let subSteps = getSubSteps(foundSteps);
     while (subSteps.length > 0) {
-        foundSteps = getFailedStep(subSteps);
+        foundSteps = getStepWithState(stepState)(subSteps);
         subSteps = getSubSteps(foundSteps) || [];
     }
     return getParentStep(foundSteps);
 };
+
+export const findParentOfFailedSubstep = (state, buildId, stepId) => {
+    return findParentOfSubstep(state, buildId, stepId, "failure");
+};
+
+export const findParentOfRunningSubstep = (state, buildId, stepId) => {
+    return findParentOfSubstep(state, buildId, stepId, "running");
+}
+
