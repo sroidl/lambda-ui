@@ -25,4 +25,12 @@ describe("getStateForFavivon", () => {
 
         expect(buildState).toEqual("failure");
     });
+
+    it("should return highest state of summaries", () => {
+        const newState = {1:{state: "success"}, 3:{state: "failure"}, 2:{state: "running"}};
+
+        const buildState = getStateForFavicon(newState);
+
+        expect(buildState).toEqual("failure");
+    });
 });
