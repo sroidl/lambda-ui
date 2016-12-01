@@ -1,8 +1,20 @@
-/* globals describe it expect */
+/* globals describe it expect afterEach beforeEach */
 import {StateIcon} from "StateIcon.es6";
 import React from "react";
+import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
 describe("State Icon", () => {
+
+    let realConsole;
+
+    beforeEach(() => {
+        TestUtils.consoleThrowingBefore(realConsole);
+    });
+
+    afterEach(() => {
+        TestUtils.consoleThrowingAfter(realConsole);
+    });
+
     it("should return div with success icon and hint", () => {
         const state = "success";
         const expected = <div className="buildIcon" title="Success"><i className="fa fa-check"/></div>;
