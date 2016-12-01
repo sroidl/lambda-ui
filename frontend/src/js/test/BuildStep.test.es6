@@ -6,6 +6,7 @@ import React from "react";
 import {shallow} from "enzyme";
 import {BuildStep, getStepDuration, duration, StepInfos} from "BuildStep.es6";
 import DevToggles from "DevToggles.es6";
+import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
 DevToggles.handleTriggerSteps = true;
 
@@ -16,21 +17,11 @@ describe("BuildStep", () => {
     let realConsole;
 
     beforeEach(() => {
-        const consoleThrowing = {
-            error: (...args) => {
-                realConsole.error("Got errors on console: ", args);
-                throw new Error(args);
-            },
-            log: (...args) => {
-                realConsole.log(args);
-            }
-        };
-        realConsole = window.console;
-        window.console = consoleThrowing;
+        TestUtils.consoleThrowingBefore(realConsole);
     });
 
     afterEach(() => {
-        window.console = realConsole;
+        TestUtils.consoleThrowingAfter(realConsole);
     });
 
     describe("BuildStep rendering", () => {
