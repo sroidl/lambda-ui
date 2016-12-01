@@ -4,7 +4,7 @@ import Moment from "moment";
 import R from "ramda";
 import Utils from "./ComponentUtils.es6";
 import "moment-duration-format";
-import {findParentOfFailedSubstep} from "steps/FailureStepFinder.es6";
+import {findParentOfFailedSubstep} from "steps/InterestingStepFinder.es6";
 import {isStepInParallel} from "steps/InParallelChecker.es6";
 import {StateIcon} from "StateIcon.es6";
 import Tools from "steps/Tools.es6";
