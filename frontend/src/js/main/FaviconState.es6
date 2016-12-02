@@ -54,7 +54,7 @@ export const getStateForFavicon = summaries => {
         return null;
     }
 
-    const getLastState = R.pipe(Object.values, R.last, R.view(R.lensProp("state")));
+    const getLastState = R.pipe(R.values, R.last, R.view(R.lensProp("state")));
 
     return getLastState(summaries);
 };
