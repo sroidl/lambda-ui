@@ -1,17 +1,25 @@
 (ns lambdaui.polling
-  (:require [compojure.core :refer [routes GET]]
-            [ring.util.response :refer [response]]
-            [ring.middleware.json])
-  )
+  (:use [lambdaui.common.summaries])
+  (:require [compojure.core :as comp :refer [routes GET]]
+            [ring.util.response :refer [header response]]
+            [ring.middleware.json :refer [wrap-json-response]]
+            [lambdacd.internal.pipeline-state :as state]))
+
+(defn state-from-pipeline [pipeline]
+  (state/get-all (:pipeline-state-component (:context pipeline))))
+
+(defn- cross-origin-response [data]
+  (header (response data) "Access-Control-Allow-Origin" "*"))
 
 
+(defn summary-response [pipeline]
+  (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
 
+(defn polling-routes [pipeline]
+  (routes
+    (GET "/builds" _ (cross-origin-response (summary-response pipeline)))
+    ;(GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
+    ;(GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id))
+    ))
 
-
-(defn api-routes [pipeline]
-  (wrap-json-response
-    (routes
-      (GET "/builds" request (response (summary-response request pipeline)))
-      (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
-      (GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id)))))
 

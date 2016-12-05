@@ -9,6 +9,7 @@
     [compojure.route :as route]
     [clojure.tools.logging :as logger]
     [lambdaui.trigger :as runner]
+    [lambdaui.polling :as polling]
 
     )
   (:gen-class)
@@ -43,7 +44,10 @@
         (context "/lambdaui/api" [] (new-api/api-routes pipeline))
         (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
         (GET "/" [] (old-ui/ui-page pipeline))
-        (context "/api" [] (old-api/rest-api pipeline))
+        (context "/polling" [] (polling/polling-routes pipeline))
+        )
+      (context "/api" []
+        (old-api/rest-api pipeline)
         ))))
 
 
