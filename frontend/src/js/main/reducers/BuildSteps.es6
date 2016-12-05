@@ -1,4 +1,4 @@
-import {TOGGLE_STEP_TOOLBOX, TOGGLE_PARALLEL_STEP} from "actions/BuildStepActions.es6";
+import {TOGGLE_STEP_TOOLBOX, TOGGLE_PARALLEL_STEP, TOGGLE_SUBSTEPS} from "actions/BuildStepActions.es6";
 import R from "ramda";
 
 export const toggleState = (oldState, buildId, stepId) => {
@@ -29,6 +29,16 @@ export default (oldState = {}, action) => {
 export const ParallelStepsReducer = (oldState = {}, action) => {
     switch (action.type) {
         case TOGGLE_PARALLEL_STEP: {
+            return toggleState(oldState, action.buildId, action.stepId);
+        }
+        default:
+            return oldState;
+    }
+};
+
+export const showSubstepReducer = (oldState = {}, action) => {
+    switch (action.type) {
+        case TOGGLE_SUBSTEPS: {
             return toggleState(oldState, action.buildId, action.stepId);
         }
         default:

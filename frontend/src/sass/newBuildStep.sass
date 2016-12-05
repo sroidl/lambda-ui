@@ -6,13 +6,19 @@
   padding: 10px 0px 10px 30px
   white-space: nowrap
 
-.nBuildStep, .nBuildStepParallel, .nBuildStepWithSubsteps
+.nBuildStep, .nBuildStepInParallel, .nBuildStepWithSubsteps, .nBuildStepParallel
   display: inline-block
   vertical-align: top
   border: 1px solid $grey
 
+.nBuildStepInParallel
+  display: block
+
 .nBuildStepSubsteps, .nBuildStepWithSubsteps
   margin: 5px
+
+
+
 
 .nBuildStepWithSubsteps
   background-color: #eeeeee
@@ -41,15 +47,15 @@
 .nBuildStep
   background: $white
   border: 1px solid $grey
-  width: 130px
   height: 60px
   margin: 10px 10px 10px 10px
+  max-width: 250px
     
 .nBuildStepWithSubsteps
   >.nBuildStep
     width: calc(100% - 20px)
 
-.nBuildStepParallel
+.nBuildStepInParallel
   border: 1px solid $grey
 
   >.nBuildStep
