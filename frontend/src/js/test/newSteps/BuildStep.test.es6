@@ -16,12 +16,12 @@ describe("BuildStep", () => {
 
     describe("mapStateToProps", () => {
         it("should return buildStep props", () => {
-            const state = {}
+            const state = {};
             const ownProps = {buildId: 1, step: {}};
 
             const newProps = mapStateToProps(state, ownProps);
 
-            expect(newProps).toEqual({hasSubsteps: false, step: {}, isParallel: false, buildId: 1});
+            expect(newProps).toEqual({hasSubsteps: false, step: {}, isParallel: false, buildId: 1, showSubsteps: true});
         });
     });
 });
