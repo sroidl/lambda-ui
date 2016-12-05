@@ -5,11 +5,11 @@ import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
 import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
+import DevToggles from "DevToggles.es6";
 
 export class BuildDetails extends React.Component {
 
-    render() {
-
+    renderLegacy(){
         const {buildId, open, stepsToDisplay, requestDetailsFn} = this.props;
         if (!open) {
             return null;
@@ -29,7 +29,17 @@ export class BuildDetails extends React.Component {
             <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
             <div className="row ">{steps}</div>
         </div>;
+    }
 
+    renderNew(){
+        return null;
+    }
+
+    render() {
+        if(DevToggles.useNewPipelineStructure){
+            this.renderNew();
+        }
+        return this.renderLegacy();
     }
 }
 
