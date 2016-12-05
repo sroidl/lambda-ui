@@ -1,17 +1,26 @@
 (ns lambdaui.common.summaries-test
-  (:use [clojure.test])
+  (:use [clojure.test]
+        [lambdaui.fixtures.pipelines])
   (:require [lambdaui.common.summaries :as testee]
-            [lambdacd.core :as lcd]
-            [lambdacd.util :as lcd-util]
-            [lambdacd.internal.execution :as lcd-exec]
-            [lambdaui.fixtures.pipelines :refer [simple-success-pipeline]]
-            [lambdaui.fixtures.steps :as steps]))
 
-(defn assemble-pipeline [pipeline-def]
-  (let [config {:home-dir (lcd-util/create-temp-dir)}]
-    (lcd/assemble-pipeline pipeline-def config)))
+            )
+  (:import (org.joda.time DateTime)))
 
 (deftest summaries-test
-  (testing "pipeline should be green"
-    (let [{pipe-def :pipeline-def context :context} (assemble-pipeline simple-success-pipeline)]
-      (is (= :success (:status (lcd-exec/run pipe-def context)))))))
+  (testing "should calculate correct duration"
+    (let [step-1-start (DateTime/parse "2016-12-05T15:00:00Z" )
+          step-1-stop  (DateTime/parse "2016-12-05T15:10:00Z" )
+          step-2-stop  (DateTime/parse "2016-12-05T15:11:00Z" )
+
+          state {1 {`(2) {:most-recent-update-at step-2-stop
+                         :first-updated-at step-1-stop
+                         :status :success}
+                    `(1) {:most-recent-update-at step-1-stop
+                         :first-updated-at step-1-start
+                         :status :success}}}
+
+
+          actual (testee/summaries state)]
+      (is (= (str step-1-start) (:startTime (first (:summaries actual)))))
+          (is (= (str step-2-stop) (:endTime (first (:summaries actual))))))))
+

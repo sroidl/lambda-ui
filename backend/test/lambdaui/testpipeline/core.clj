@@ -8,7 +8,9 @@
             [lambdacd.internal.execution :as exec]
             [clojure.core.async :as async :refer [go <! <!! >! >!!]]
             [lambdacd.event-bus :as events]
-            [lambdacd.event-bus :as event-bus])
+            [lambdacd.event-bus :as event-bus]
+            [lambdaui.fixtures.pipelines :as fixture]
+            )
   (:use [lambdacd.runners]))
 
 (defonce server (atom nil))

@@ -18,8 +18,9 @@
   )
 
 (defn extract-start-time [build-steps]
-  (when-let [^DateTime joda-start-time (:first-updated-at (first (vals build-steps)))]
-    (str joda-start-time)))
+  (let [all-times (map :first-updated-at (vals build-steps))]
+    (when-let [joda-end-time (first (sort all-times))]
+      (str joda-end-time))))
 
 (defn extract-end-time [build-steps]
   (let [all-times (map :most-recent-update-at (vals build-steps))]
