@@ -1,3 +1,6 @@
-(ns lambdaui.fixtures.pipelines)
+(ns lambdaui.fixtures.pipelines
+  (:use [lambdaui.fixtures.steps]))
 
 
+(def simple-success-pipeline
+  `(success))
