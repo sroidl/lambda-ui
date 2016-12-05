@@ -4,17 +4,39 @@
   background-color: $lightGrey
   overflow-x: scroll
   padding: 10px 0px 10px 30px
-  height: 300px
   white-space: nowrap
 
 .nBuildStep, .nBuildStepParallel, .nBuildStepWithSubsteps
   display: inline-block
   vertical-align: top
+  border: 1px solid $grey
 
-.nBuildStepParallel
-  >.nBuildStep
-    display: block
-    margin: 10px 10px 20px 10px
+.nBuildStepSubsteps, .nBuildStepWithSubsteps
+  margin: 5px
+
+.nBuildStepWithSubsteps
+  background-color: #eeeeee
+
+  > .nBuildStep
+    background-color: #eeeeee
+    border: none
+
+  > .nBuildStepSubsteps
+    background-color: #dddddd
+    
+    > .nBuildStepWithSubsteps
+      background-color: #cccccc
+
+      > .nBuildStep
+        background-color: #cccccc
+        border: none
+    
+      > .nBuildStepSubsteps
+        background-color: #bbbbbb
+  
+        > .nBuildStepWithSubsteps
+          background-color: #aaaaaa
+
 
 .nBuildStep
   background: $white
@@ -22,9 +44,21 @@
   width: 130px
   height: 60px
   margin: 10px 10px 10px 10px
+    
+.nBuildStepWithSubsteps
+  >.nBuildStep
+    width: calc(100% - 20px)
+
+.nBuildStepParallel
+  border: 1px solid $grey
+
+  >.nBuildStep
+    display: block
+    margin: 10px 10px 20px 10px
 
 
-
+  
+  
 
 
 
