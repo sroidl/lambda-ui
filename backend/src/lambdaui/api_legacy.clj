@@ -9,15 +9,13 @@
             [clojure.data.json :as json]
             [clojure.string :as s]
             [lambdacd.util]
-            [org.httpkit.timer :as timer]
             [lambdacd.internal.pipeline-state :as state]))
 
 (defn state-from-pipeline [pipeline]
    (state/get-all (:pipeline-state-component (:context pipeline))))
 
 (defn- cross-origin-response [data]
-  (header (response data) "Access-Control-Allow-Origin" "*")
-  )
+  (header (response data) "Access-Control-Allow-Origin" "*"))
 
 (defn summaries-response [pipeline]
   (cross-origin-response (summaries (state-from-pipeline pipeline))))

@@ -1,4 +1,6 @@
-(ns lambdaui.common.summaries)
+(ns lambdaui.common.summaries
+  (:require [lambdacd.presentation.pipeline-state :as presentation])
+  )
 
 ; ------ Summaries ------
 (defn extract-state
@@ -7,15 +9,8 @@
    If last step failed, return failed
    If all steps are successful, return success"
   [build-steps]
-  (let [aggregated-state (cond
-                           (some #(= :waiting (:status %)) (vals build-steps)) :waiting
-                           (some #(= :running (:status %)) (vals build-steps)) :running
-                           (= :failure (:status (last (vals build-steps)))) :failed
-                           :default (:status (first (vals build-steps))))]
-    (case aggregated-state
-      :failure :failed
-      aggregated-state))
-  )
+  (let [failure-mapper (fn [state] (if (= :failure state) :failed state))]
+    (failure-mapper (presentation/overall-build-status build-steps))))
 
 (defn extract-start-time [build-steps]
   (let [all-times (map :first-updated-at (vals build-steps))]
@@ -26,6 +21,11 @@
   (let [all-times (map :most-recent-update-at (vals build-steps))]
     (when-let [joda-end-time (last (sort all-times))]
       (str joda-end-time))))
+
+
+
+
+
 
 (defn summaries [pipeline-state]
   {:summaries

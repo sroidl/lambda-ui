@@ -108,20 +108,16 @@
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :running}
                              '(3) {:status :waiting}}
-          multi-step-build2 {'(1) {:status :success}
-                             '(2) {:status :waiting}
-                             '(3) {:status :running}}]
+          ]
       (is (= :waiting (testee/extract-state multi-step-build1)))
-      (is (= :waiting (testee/extract-state multi-step-build2)))))
+      ))
   (testing "should be running if some step is running but none waiting"
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :running}
                              '(3) {:status :running}}
-          multi-step-build2 {'(1) {:status :success}
-                             '(2) {:status :running}
-                             '(3) {:status :success}}]
+          ]
       (is (= :running (testee/extract-state multi-step-build1)))
-      (is (= :running (testee/extract-state multi-step-build2)))))
+      ))
   (testing "should be failure if last step is failure"
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :success}
@@ -134,13 +130,18 @@
   (testing "should be success if last step is success and no step is running or waiting"
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :success}
-                             '(3) {:status :success§}}
-          multi-step-build2 {'(1) {:status :success}
-                             '(2) {:status :failure}
                              '(3) {:status :success}}
-          multi-step-build3 {'(1) {:status :running}
+          multi-step-build2 {'(1) {:status :success}
                              '(2) {:status :failure}
                              '(3) {:status :success}}]
       (is (= :success (testee/extract-state multi-step-build1)))
       (is (= :success (testee/extract-state multi-step-build2)))
-      (is (= :running (testee/extract-state multi-step-build3))))))
+      ))
+
+  (testing "should be killed if some step is killed"
+    (let [multi-step-build1 {'(1) {:status :success}
+                             '(2) {:status :killed}}
+          ]
+
+      (is (= :killed (testee/extract-state multi-step-build1)))
+      )))
