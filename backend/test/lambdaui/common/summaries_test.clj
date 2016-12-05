@@ -1,9 +1,7 @@
 (ns lambdaui.common.summaries-test
   (:use [clojure.test]
         [lambdaui.fixtures.pipelines])
-  (:require [lambdaui.common.summaries :as testee]
-
-            )
+  (:require [lambdaui.common.summaries :as testee])
   (:import (org.joda.time DateTime)))
 
 (deftest summaries-test
