@@ -1,6 +1,6 @@
 (ns lambdaui.api-test
   (:require [clojure.test :refer :all]
-            [lambdaui.api :as subject]
+            [lambdaui.api-legacy :as subject]
             [lambdacd.steps.control-flow :as ctrl-flow]
             [lambdacd.event-bus :as event-bus]
             [lambdacd.internal.pipeline-state :as state]

@@ -1,7 +1,7 @@
 (ns lambdaui.core
   (:require
     [compojure.core :refer [routes GET context POST]]
-    [lambdaui.api :as new-api]
+    [lambdaui.api-legacy :as new-api]
     [ring.middleware.json :as ring-json]
     [ring.middleware.params :refer [wrap-params]]
     [lambdacd.ui.api :as old-api]
