@@ -1,11 +1,12 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import BuildStep from "./BuildStep.es6";
+import BuildStepLegacy from "./BuildStep.es6";
 import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
 import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
 import DevToggles from "DevToggles.es6";
+import BuildStep from "newSteps/BuildStep.es6";
 
 export class BuildDetails extends React.Component {
 
@@ -23,7 +24,7 @@ export class BuildDetails extends React.Component {
         }
 
 
-        const steps = R.map(step => <BuildStep key={step.stepId} buildId={buildId} step={step}/>)(stepsToDisplay);
+        const steps = R.map(step => <BuildStepLegacy key={step.stepId} buildId={buildId} step={step}/>)(stepsToDisplay);
 
         return <div className="twelve columns buildDetails">
             <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
@@ -32,12 +33,27 @@ export class BuildDetails extends React.Component {
     }
 
     renderNew(){
-        return null;
+        const {open, stepsToDisplay, requestDetailsFn, buildId} = this.props;
+
+        if (!open) {
+            return null;
+        }
+
+        if (!stepsToDisplay) {
+            requestDetailsFn();
+            return <div className="twelve columns buildDetails">
+                <div className="row loadingMessage">Loading build details</div>
+            </div>;
+        }
+
+        return <div className="nBuildDetails">
+            {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId} />)(stepsToDisplay)}
+        </div>;
     }
 
     render() {
         if(DevToggles.useNewPipelineStructure){
-            this.renderNew();
+            return this.renderNew();
         }
         return this.renderLegacy();
     }

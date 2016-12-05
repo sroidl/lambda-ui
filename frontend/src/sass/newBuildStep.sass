@@ -1,0 +1,31 @@
+@import "colors"
+
+.nBuildDetails
+  background-color: $lightGrey
+  overflow-x: scroll
+  padding: 10px 0px 10px 30px
+  height: 300px
+  white-space: nowrap
+
+.nBuildStep, .nBuildStepParallel, .nBuildStepWithSubsteps
+  display: inline-block
+  vertical-align: top
+
+.nBuildStepParallel
+  >.nBuildStep
+    display: block
+    margin: 10px 10px 20px 10px
+
+.nBuildStep
+  background: $white
+  border: 1px solid $grey
+  width: 130px
+  height: 60px
+  margin: 10px 10px 10px 10px
+
+
+
+
+
+
+
