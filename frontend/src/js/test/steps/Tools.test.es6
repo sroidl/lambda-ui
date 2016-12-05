@@ -142,10 +142,11 @@ describe("Tools", () => {
             });
         });
 
-        describe("Wiring", () => {
+        describe("Wiring", () => {                          
             const substeps = {stepId: "1-1", state: "failure"};
             const defaultStep = {stepId: 1, state: "failure", steps: substeps};
-            const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} failureStep={"1-1"}
+            const tools = (storeMock, failureStep="1-1", step = defaultStep, runningStep = null) => <ToolsRedux buildId={1}
+                                                                         failureStep={failureStep} runningStep={runningStep}
                                                                          step={step}
                                                                          store={storeMock}/>;
 
@@ -182,6 +183,17 @@ describe("Tools", () => {
                 expect(dispatchMock).toBeCalledWith({type: "goIntoFailureStep"});
             });
 
+            it("should dispatch goIntoRunningStep", () => {
+                const dispatchMock = jest.fn();
+                const storeMock = MockStore({}, dispatchMock);
+                viewBuildStep.mockReturnValue({type: "goIntoRunningStep"});
+
+                const component = mount(tools(storeMock, null, {stepId: "1", state: "running", steps: {stepId: "1-1", state: "running"}}, "1-1"));
+                component.find(".runningStepTool").simulate("click");
+
+                expect(dispatchMock).toBeCalledWith({type: "goIntoRunningStep"});
+            });
+
             it("should dispatch toggleToolbox", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
@@ -197,7 +209,7 @@ describe("Tools", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
 
-                const component = mount(tools(storeMock, {
+                const component = mount(tools(storeMock, null, {
                     stepId: 1,
                     state: "waiting",
                     type: "trigger",

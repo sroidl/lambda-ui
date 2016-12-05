@@ -66,11 +66,11 @@ export class Tools extends React.Component {
             }
         };
 
-        const toolClasses = Utils.classes("interestingStepTool", failureStep ? "failureStepTool" : "runningStepTool");
+        const toolClasses = Utils.classes("interestingStepTool", runningStep ? "runningStepTool" : "failureStepTool");
+        const linkText = runningStep ? "Running Step" : "FailureStep";
 
         return <ToolboxLink toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
-                            linkText="Failure Step" linkFn={linkFn}/>;
-
+                            linkText={linkText} linkFn={linkFn}/>;
     }
 
     showTriggerTool(){
