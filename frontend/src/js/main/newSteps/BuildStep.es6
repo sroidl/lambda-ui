@@ -16,7 +16,7 @@ class BuildStep extends React.Component {
 
         if(showSubsteps && isParallel){
             return <div className="nBuildStepParallel">
-                    <div className="nBuildStep" onClick={toggleSubsteps}>StepId: {step.name}</div>
+                    <div className="nBuildStep" onClick={toggleSubsteps}>{step.name}</div>
                     <div className="nBuildStepInParallel">
                         {R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />)(step.steps)}
                     </div>
@@ -28,12 +28,12 @@ class BuildStep extends React.Component {
 
         if(showSubsteps && hasSubsteps){
             return <div className="nBuildStepWithSubsteps">
-                <div className="nBuildStep" onClick={toggleSubsteps}>StepId: {step.name}</div>
+                <div className="nBuildStep" onClick={toggleSubsteps}>{step.name}</div>
                 <div className="nBuildStepSubsteps">{R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />)(step.steps)}</div>
             </div>
         }
 
-        return <div className="nBuildStep" onClick={toggleSubsteps}>StepId: {step.name}</div>;
+        return <div className="nBuildStep" onClick={toggleSubsteps}>{step.name}</div>;
     }
 }
 
