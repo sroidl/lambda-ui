@@ -5,6 +5,10 @@ import "../../../sass/newBuildStep.sass";
 import {toggleSubsteps} from "actions/BuildStepActions.es6";
 import R from "ramda";
 
+export const classes = (...classes) => {
+    return R.reduce((acc, val) => acc + " n" + val, "")(classes).trim();
+};
+
 class BuildStep extends React.Component {
 
     constructor(props) {
@@ -14,28 +18,30 @@ class BuildStep extends React.Component {
     render() {
         const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
 
-        if(showSubsteps && isParallel){
-            return <div className="nBuildStepParallel">
-                    <div className="nBuildStep" onClick={toggleSubsteps}>{step.name}</div>
-                    <div className="nBuildStepInParallel">
-                        {R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />)(step.steps)}
-                    </div>
-                </div>;
-        }
+        const buildStep = <div className={classes("BuildStep")} onClick={toggleSubsteps}>StepId: {step.name}</div>;
+        const mapBuildSteps = R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />);
 
+        if(showSubsteps && (hasSubsteps || isParallel)){
+            let parentClass = classes("BuildStepWithSubsteps");
+            let childrenClass = classes("BuildStepSubsteps");
+            if(isParallel){
+                parentClass = classes("BuildStepParallel");
+                childrenClass = classes("BuildStepInParallel")
+            }
 
-
-
-        if(showSubsteps && hasSubsteps){
-            return <div className="nBuildStepWithSubsteps">
-                <div className="nBuildStep" onClick={toggleSubsteps}>{step.name}</div>
-                <div className="nBuildStepSubsteps">{R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />)(step.steps)}</div>
+            return <div className={parentClass}>
+                {buildStep}
+                <div className={childrenClass}>
+                    {mapBuildSteps(step.steps)}
+                </div>
             </div>
         }
 
-        return <div className="nBuildStep" onClick={toggleSubsteps}>{step.name}</div>;
+        return buildStep;
     }
 }
+
+
 
 BuildStep.propTypes = {
     step: PropTypes.object.isRequired,
@@ -47,9 +53,6 @@ BuildStep.propTypes = {
 };
 
 export const mapStateToProps = (state, ownProps) => {
-
-
-
 
     // const showSubsteps = state.showSubsteps[ownProps.buildId] && state.showSubsteps[ownProps.buildId][ownProps.step.stepId];
     const showSubsteps = true;
