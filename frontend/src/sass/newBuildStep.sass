@@ -6,54 +6,44 @@
   padding: 10px 0px 10px 30px
   white-space: nowrap
 
-.nBuildStep, .nBuildStepInParallel, .nBuildStepWithSubsteps, .nBuildStepParallel
+.nBuildStep
   display: inline-block
   vertical-align: top
-  border: 1px solid $grey
-
-.nBuildStepInParallel
-  display: block
-
-.nBuildStepSubsteps, .nBuildStepWithSubsteps
-  margin: 5px
-
-.nBuildStepWithSubsteps
-  background-color: #eeeeee
-
-  > .nBuildStep
-    background-color: #eeeeee
-    border: none
-
-  > .nBuildStepSubsteps
-    background-color: #dddddd
-    
-    > .nBuildStepWithSubsteps
-      background-color: #cccccc
-
-      > .nBuildStep
-        background-color: #cccccc
-        border: none
-    
-      > .nBuildStepSubsteps
-        background-color: #bbbbbb
-  
-        > .nBuildStepWithSubsteps
-          background-color: #aaaaaa
-
-.nBuildStep
-  background: $white
-  border: 1px solid $grey
   height: 60px
   margin: 10px 10px 10px 10px
   max-width: 250px
-    
+
+.nBuildStep.nLowermostStep
+  background-color: $white
+  border: 1px solid $grey
+
+.nBuildStepParallel
+  background-color: transparentize($very-dark-grey, 0.8)
+  margin: 5px
+  border: 1px solid $grey
+  display: inline-block
+  vertical-align: top
+
 .nBuildStepWithSubsteps
+  background-color: transparentize($very-dark-grey, 0.8)
+  margin: 5px
+  border: 1px solid $grey
+  display: inline-block
+  vertical-align: top
+
   >.nBuildStep
     width: calc(100% - 20px)
 
+.nBuildStepSubsteps
+  margin: 5px
+
 .nBuildStepInParallel
-  border: 1px solid $grey
+  display: block
+  vertical-align: top
 
   >.nBuildStep
     display: block
     margin: 10px 10px 20px 10px
+
+.nStepWhite
+  background-color: $white

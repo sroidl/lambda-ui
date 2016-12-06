@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import "../../../sass/newBuildStep.sass";
@@ -18,7 +17,7 @@ class BuildStep extends React.Component {
     render() {
         const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
 
-        const buildStep = <div id={"Build" + buildId + "Step" + step.stepId} className={classes("BuildStep")} onClick={toggleSubsteps}>StepId: {step.name}</div>;
+        const buildStep = <div id={"Build" + buildId + "Step" + step.stepId} className={classes("BuildStep", hasSubsteps ? "" : "LowermostStep")} onClick={toggleSubsteps}>{step.name}</div>;
         const mapBuildSteps = R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />);
 
         if(showSubsteps && (hasSubsteps || isParallel)){
@@ -26,7 +25,7 @@ class BuildStep extends React.Component {
             let childrenClass = classes("BuildStepSubsteps");
             if(isParallel){
                 parentClass = classes("BuildStepParallel");
-                childrenClass = classes("BuildStepInParallel")
+                childrenClass = classes("BuildStepInParallel");
             }
 
             return <div className={parentClass}>
@@ -34,7 +33,7 @@ class BuildStep extends React.Component {
                 <div className={childrenClass}>
                     {mapBuildSteps(step.steps)}
                 </div>
-            </div>
+            </div>;
         }
 
         return buildStep;
@@ -73,3 +72,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const BuildStepRedux = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
 
 export default BuildStepRedux;
+
+
+
+
