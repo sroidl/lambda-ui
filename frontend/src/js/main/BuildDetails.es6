@@ -7,8 +7,17 @@ import R from "ramda";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
 import DevToggles from "DevToggles.es6";
 import BuildStep from "newSteps/BuildStep.es6";
+import {makeDraggable} from "newSteps/HorizontalScroll.es6";
 
 export class BuildDetails extends React.Component {
+
+    componentDidUpdate(){
+        if(DevToggles.useNewPipelineStructure){
+            if(this.props.stepsToDisplay){
+                makeDraggable(this.props.buildId);
+            }
+        }
+    }
 
     renderLegacy(){
         const {buildId, open, stepsToDisplay, requestDetailsFn} = this.props;
@@ -46,7 +55,7 @@ export class BuildDetails extends React.Component {
             </div>;
         }
 
-        return <div className="nBuildDetails">
+        return <div id={"draggable" + buildId} className="nBuildDetails">
             {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId} />)(stepsToDisplay)}
         </div>;
     }
