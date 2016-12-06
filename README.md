@@ -1,5 +1,7 @@
 Lambda UI [![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=master)](https://travis-ci.org/sroidl/lambda-ui)[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](http://lambdaui-snapshot.herokuapp.com/lambdaui)
 ==========
+[![Clojars Project](http://clojars.org/lambdaui/latest-version.svg)](http://clojars.org/lambdaui)
+
 An alternative Graphical User Interface for [LambdaCD](https://github.com/flosell/lambdacd).
 
 See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuapp.com/lambdaui)
