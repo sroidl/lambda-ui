@@ -3,10 +3,13 @@ import {connect} from "react-redux";
 import "../../../sass/newBuildStep.sass";
 import {toggleSubsteps} from "actions/BuildStepActions.es6";
 import R from "ramda";
+import {StateIcon} from "../StateIcon.es6";
 
 export const classes = (...classes) => {
     return R.reduce((acc, val) => acc + " n" + val, "")(classes).trim();
 };
+
+const createDiv = divClass => <div className={divClass}></div>;
 
 class BuildStep extends React.Component {
 
@@ -15,29 +18,59 @@ class BuildStep extends React.Component {
     }
 
     render() {
-        const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
+        const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps, divLines} = this.props;
 
-        const buildStep = <div id={"Build" + buildId + "Step" + step.stepId} className={classes("BuildStep", hasSubsteps ? "" : "LowermostStep")} onClick={toggleSubsteps}>
-            <div className={classes("ConnectionLine")}></div>
-            {step.name}
+        const buildStepId = "Build" + buildId + "Step" + step.stepId;
+        const buildStepClasses = classes("BuildStep", hasSubsteps ? "WithSubsteps" : "LowermostStep", step.state);
+
+        const buildStepLines = () => {
+            if(divLines && divLines.length > 0){
+                return R.map(line => createDiv(classes(line)))(divLines);
+            }
+            return createDiv(classes("ConnectionLine"));
+        };
+
+        const buildStep = <div id={buildStepId} className={buildStepClasses} onClick={toggleSubsteps}>
+            <div className={classes("ConnectionLine", divLines || "")}></div>
+            <StateIcon state={step.state}/>
+            {buildStepLines()}
+            <div className={classes("StepName")}>{step.name}</div>
         </div>;
-        const mapBuildSteps = R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />);
+
+        const buildStepRedux = (step, divLines) => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} divLines={divLines} />;
 
         if(showSubsteps && (hasSubsteps || isParallel)){
-            let parentClass = classes("BuildStepWithSubsteps");
-            let childrenClass = classes("BuildStepSubsteps");
+            let parentClass, childrenClass, childrenSteps;
+            childrenSteps = () => {};
+
             if(isParallel){
                 parentClass = classes("BuildStepParallel");
                 childrenClass = classes("BuildStepInParallel");
+                childrenSteps = R.map(step => buildStepRedux(step, ["ConnectionLine ConnectionLineShort"]))(step.steps);
+            } else{
+                parentClass = classes("BuildStepWithSubsteps");
+                childrenClass = classes("BuildStepSubsteps");
+
+                let count = 1;
+                childrenSteps = R.map(step => {
+                    if(count === 1){
+                        count++;
+                        return buildStepRedux(step, ["ConnectionLine ConnectionLineShort"]);
+                    }
+                    count++;
+                    return buildStepRedux(step, []);
+                })(step.steps);
             }
 
             return <div className={parentClass}>
-                <div className={classes("ConnectionLine")}></div>
+                {createDiv(classes("ConnectionLine", divLines || ""))}
+                <div className={classes("ConnectionLineVerticalDown")}></div>
                 {buildStep}
                 <div className={childrenClass}>
-                    {mapBuildSteps(step.steps)}
+                    {childrenSteps}
                 </div>
             </div>;
+
         }
 
         return buildStep;
@@ -50,7 +83,8 @@ BuildStep.propTypes = {
     buildId: PropTypes.any.isRequired,
     hasSubsteps: PropTypes.bool.isRequired,
     toggleSubsteps: PropTypes.func.isRequired,
-    showSubsteps: PropTypes.bool.isRequired
+    showSubsteps: PropTypes.bool.isRequired,
+    divLines: PropTypes.array
 };
 
 export const mapStateToProps = (state, ownProps) => {
@@ -63,7 +97,8 @@ export const mapStateToProps = (state, ownProps) => {
         hasSubsteps: ownProps.step.steps && ownProps.step.steps.length > 0 || false,
         step: ownProps.step,
         isParallel: ownProps.step.type === "parallel",
-        buildId: ownProps.buildId
+        buildId: ownProps.buildId,
+        divLines: ownProps.divLines,
     };
 };
 
@@ -76,6 +111,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const BuildStepRedux = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
 
 export default BuildStepRedux;
+
+
+
+
+
+
+
+
 
 
 

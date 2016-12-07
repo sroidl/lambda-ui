@@ -7,7 +7,19 @@
   background-color: $very-dark-grey
   position: absolute
   margin-left: -21px
-  margin-top: 5px
+  margin-top: 10px
+
+  &.ConnectionLineShort
+    margin-left: -9px
+    width: 9px
+
+.nConnectionLineVerticalDown
+  width: 2px
+  height: 92px
+  position: absolute
+  background-color: $very-dark-grey
+  margin-top: 10px
+  margin-left: 2px
 
 .nBuildDetails
   background-color: $lightGrey
@@ -17,15 +29,15 @@
 
   >.nBuildStep:first-of-type
     >.nConnectionLine
-      background-color: transparent
+      display: none
 
   >.nBuildStepParallel:first-of-type
     >.nConnectionLine
-      background-color: transparent
+      display: none
 
   >.nBuildStepWithSubsteps:first-of-type
     >.nConnectionLine
-      background-color: transparent
+      display: none
 
 .nBuildStep
   border-radius: 3px
@@ -39,6 +51,37 @@
     background-color: $white
     border: 1px solid $grey
 
+  & .buildIcon
+    position: absolute
+    color: $white
+    margin-top: -11px
+    margin-left: -11px
+    border: 0px solid #3D3636
+    border-radius: 50%
+    width: 22px
+    height: 22px
+    text-align: center
+
+    & i
+    line-height: 22px
+    height: 22px
+
+.nBuildStep.nsuccess .buildIcon
+  background-color: $green
+.nBuildStep.nfailure .buildIcon
+  background-color: $red
+.nBuildStep.nrunning .buildIcon
+  background-color: $blue
+
+.nBuildStep.npending .buildIcon
+  background-color: $dark-grey
+
+.nBuildStep.nwaiting .buildIcon
+  background-color: $peru
+
+.nBuildStep.nkilled .buildIcon
+  background-color: $black
+
 .nBuildStepParallel
   border-radius: 3px
   background-color: transparentize($very-dark-grey, 0.8)
@@ -49,7 +92,12 @@
   
   >.nBuildStep
     >.nConnectionLine
-      background-color: transparent
+      display: none
+
+.nWithSubsteps
+  >.buildIcon
+    margin-top: -20px
+    margin-left: -18px
 
 
 .nBuildStepWithSubsteps
@@ -62,14 +110,9 @@
 
   >.nBuildStep
     width: calc(100% - 20px)
-    
-    >.nConnectionLine
-      background-color: transparent
 
-.nBuildStepSubsteps
-  >.nBuildStep:first-of-type
     >.nConnectionLine
-      background-color: transparent
+      display: none
 
 .nBuildStepInParallel
   display: block
@@ -79,9 +122,7 @@
     display: block
     margin: 10px 10px 20px 10px
 
-    >.nConnectionLine
-      background-color: transparent
 
-  >.nBuildStepWithSubsteps
-    >.nConnectionLine
-      background-color: transparent
+.nStepName
+  font-size: 11px
+  padding: 5px
