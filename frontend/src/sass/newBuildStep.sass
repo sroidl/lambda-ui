@@ -1,41 +1,75 @@
 @import "colors"
 
+.nConnectionLine
+  width: 21px
+  height: 2px
+  display: block
+  background-color: $very-dark-grey
+  position: absolute
+  margin-left: -21px
+  margin-top: 5px
+
 .nBuildDetails
   background-color: $lightGrey
   overflow-x: scroll
   padding: 10px 0px 10px 30px
   white-space: nowrap
 
+  >.nBuildStep:first-of-type
+    >.nConnectionLine
+      background-color: transparent
+
+  >.nBuildStepParallel:first-of-type
+    >.nConnectionLine
+      background-color: transparent
+
+  >.nBuildStepWithSubsteps:first-of-type
+    >.nConnectionLine
+      background-color: transparent
+
 .nBuildStep
+  border-radius: 3px
   display: inline-block
   vertical-align: top
   height: 60px
-  margin: 10px 10px 10px 10px
+  margin: 10px
   max-width: 250px
 
-.nBuildStep.nLowermostStep
-  background-color: $white
-  border: 1px solid $grey
+  &.nLowermostStep
+    background-color: $white
+    border: 1px solid $grey
 
 .nBuildStepParallel
+  border-radius: 3px
   background-color: transparentize($very-dark-grey, 0.8)
-  margin: 5px
+  margin: 10px
   border: 1px solid $grey
   display: inline-block
   vertical-align: top
+  
+  >.nBuildStep
+    >.nConnectionLine
+      background-color: transparent
+
 
 .nBuildStepWithSubsteps
+  border-radius: 3px
   background-color: transparentize($very-dark-grey, 0.8)
-  margin: 5px
+  margin: 10px
   border: 1px solid $grey
   display: inline-block
   vertical-align: top
 
   >.nBuildStep
     width: calc(100% - 20px)
+    
+    >.nConnectionLine
+      background-color: transparent
 
 .nBuildStepSubsteps
-  margin: 5px
+  >.nBuildStep:first-of-type
+    >.nConnectionLine
+      background-color: transparent
 
 .nBuildStepInParallel
   display: block
@@ -45,5 +79,9 @@
     display: block
     margin: 10px 10px 20px 10px
 
-.nStepWhite
-  background-color: $white
+    >.nConnectionLine
+      background-color: transparent
+
+  >.nBuildStepWithSubsteps
+    >.nConnectionLine
+      background-color: transparent

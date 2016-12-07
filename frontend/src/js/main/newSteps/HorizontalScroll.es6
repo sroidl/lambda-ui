@@ -1,3 +1,16 @@
+let setStyle = cssText => {
+    const sheet = document.createElement("style");
+    sheet.type = "text/css";
+    (document.head || document.getElementsByTagName("head")[0]).appendChild(sheet);
+    return (setStyle = (cssText, node) => {
+        if(!node || node.parentNode !== sheet) {
+            return sheet.appendChild(document.createTextNode(cssText));
+        }
+        node.nodeValue = cssText;
+        return node;
+    })(cssText);
+};
+
 export const makeDraggable = (buildId) => {
     const idName = "draggable" + buildId;
     const currentDiv = document.getElementById(idName);
@@ -19,6 +32,10 @@ export const makeDraggable = (buildId) => {
 
     currentDiv.addEventListener("mouseup", () => {
         curDown = false;
+    });
+
+    currentDiv.addEventListener("scroll", () => {
+        setStyle(".nConnectionLine{margin-left: -" + (currentDiv.scrollLeft + 21) + "px;}");
     });
 };
 

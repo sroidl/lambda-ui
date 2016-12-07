@@ -17,7 +17,10 @@ class BuildStep extends React.Component {
     render() {
         const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
 
-        const buildStep = <div id={"Build" + buildId + "Step" + step.stepId} className={classes("BuildStep", hasSubsteps ? "" : "LowermostStep")} onClick={toggleSubsteps}>{step.name}</div>;
+        const buildStep = <div id={"Build" + buildId + "Step" + step.stepId} className={classes("BuildStep", hasSubsteps ? "" : "LowermostStep")} onClick={toggleSubsteps}>
+            <div className={classes("ConnectionLine")}></div>
+            {step.name}
+        </div>;
         const mapBuildSteps = R.map(step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />);
 
         if(showSubsteps && (hasSubsteps || isParallel)){
@@ -29,6 +32,7 @@ class BuildStep extends React.Component {
             }
 
             return <div className={parentClass}>
+                <div className={classes("ConnectionLine")}></div>
                 {buildStep}
                 <div className={childrenClass}>
                     {mapBuildSteps(step.steps)}
