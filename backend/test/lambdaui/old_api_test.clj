@@ -11,8 +11,6 @@
 
 (def server-addr "http://localhost:8874")
 (def server-atom (atom nil))
-
-(defn server [] @server-atom)
 (defn url [path] (str server-addr path))
 
 (defn- stop-server! []
@@ -26,7 +24,7 @@
 (defn tmp-dir []
   (lambdacd.util/create-temp-dir))
 
-(defn stop-server-fixture [test]
+(defn server-fixture [test]
   (let [pipe (lambdacd.core/assemble-pipeline simple-success-pipeline {:home-dir (tmp-dir)})]
     (start-server! pipe)
     (lambdacd.internal.execution/run (:pipeline-def pipe) (:context pipe)))
@@ -36,7 +34,7 @@
 
   )
 
-(use-fixtures :each stop-server-fixture)
+(use-fixtures :each server-fixture)
 
 
 

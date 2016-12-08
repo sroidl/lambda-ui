@@ -12,7 +12,7 @@
             [lambdacd.internal.pipeline-state :as state]))
 
 (defn state-from-pipeline [pipeline]
-   (state/get-all (:pipeline-state-component (:context pipeline))))
+  (state/get-all (:pipeline-state-component (:context pipeline))))
 
 (defn- cross-origin-response [data]
   (header (response data) "Access-Control-Allow-Origin" "*"))
@@ -32,12 +32,12 @@
   (clojure.string/join "-" step-id))
 
 (defn to-output-format [step]
-  (let [status   (:status (:result step))
-        base     {:stepId    (step-id-str (:step-id step))
-                  :name      (:name step)
-                  :state     (or status :pending)
-                  :startTime (to-iso-string (:first-updated-at (:result step)))
-                  :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
+  (let [status (:status (:result step))
+        base {:stepId    (step-id-str (:step-id step))
+              :name      (:name step)
+              :state     (or status :pending)
+              :startTime (to-iso-string (:first-updated-at (:result step)))
+              :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
         type (if (:type step) (:type step) "normal")
         base-with-type (assoc base :type type)
         children (:children step)]
@@ -53,17 +53,17 @@
                  (map to-output-format))})
 
 (defn- build-details-response [pipeline build-id]
-  (let [build-state  (get (state-from-pipeline pipeline) (Integer/parseInt build-id))
+  (let [build-state (get (state-from-pipeline pipeline) (Integer/parseInt build-id))
         pipeline-def (:pipeline-def pipeline)]
     (build-details-from-pipeline pipeline-def build-state build-id)))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
-  (let [result     (async/chan)
+  (let [result (async/chan)
         transducer (comp
                      (filter #(= build-id (:build-number %)))
                      (filter #(= step-id (step-id-str (:step-id %))))
-                     (map (fn [x] {:stepId (step-id-str (:step-id x))
-                                   :buildId (:build-number x)
+                     (map (fn [x] {:stepId     (step-id-str (:step-id x))
+                                   :buildId    (:build-number x)
                                    :stepResult (:step-result x)})))]
 
     (async/pipeline 1 result transducer event-updates-ch)
@@ -75,18 +75,18 @@
 
 
 (defn finished-step? [pipeline build-id step-id]
-   (finished? (:status
-                       (-> (state-from-pipeline pipeline)
-                           (get build-id)
-                           (get (to-step-id step-id))
-                           )))
+  (finished? (:status
+               (-> (state-from-pipeline pipeline)
+                   (get build-id)
+                   (get (to-step-id step-id))
+                   )))
   )
 
 (defn output-events [pipeline ws-ch build-id step-id]
-  (let [ctx            (:context pipeline)
-        subscription   (event-bus/subscribe ctx :step-result-updated)
-        payloads       (event-bus/only-payload subscription)
-        filtered       (only-matching-step payloads build-id step-id)
+  (let [ctx (:context pipeline)
+        subscription (event-bus/subscribe ctx :step-result-updated)
+        payloads (event-bus/only-payload subscription)
+        filtered (only-matching-step payloads build-id step-id)
         sliding-window (async/pipe filtered (async/chan (async/sliding-buffer 1)))
         ]
     (on-close ws-ch (fn [_] (do (event-bus/unsubscribe ctx :step-result-updated subscription) (println "closed channel!"))))
@@ -98,46 +98,46 @@
 
     (if (not (finished-step? pipeline build-id step-id))
       (async/thread []
-        (let [event (async/<!! sliding-window)]
-          (send! ws-ch (json/write-str event))
-          (async/<!! (async/timeout 1000))
-          (if (finished? (get-in event [:stepResult :status]))
-            (close ws-ch)
-            (recur))))
+                    (let [event (async/<!! sliding-window)]
+                      (send! ws-ch (json/write-str event))
+                      (async/<!! (async/timeout 1000))
+                      (if (finished? (get-in event [:stepResult :status]))
+                        (close ws-ch)
+                        (recur))))
       (close ws-ch)
       )))
 
 (defn- output-buildstep-websocket [pipeline req build-id step-id]
   (with-channel req ws-ch
-                (output-events pipeline ws-ch (Integer/parseInt build-id) step-id)))
+    (output-events pipeline ws-ch (Integer/parseInt build-id) step-id)))
 
 (defn- subscribe-to-summary-update [request pipeline]
   (with-channel request websocket-channel
 
-                (let [ctx          (:context pipeline)
-                      ;subscription (event-bus/subscribe ctx :step-result-updated)
-                      ;payloads     (event-bus/only-payload subscription)
-                      ]
+    (let [ctx (:context pipeline)
+          ;subscription (event-bus/subscribe ctx :step-result-updated)
+          ;payloads     (event-bus/only-payload subscription)
+          ]
 
-                  (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
-                  (close websocket-channel)
+      (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
+      (close websocket-channel)
 
-                  ;(async/go-loop []
-                  ;  (if-let [event (async/<! payloads)]
-                  ;    (do
-                  ;      (println @current-count " -- " event)
-                  ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
-                  ;      (swap! current-count inc)
-                  ;      (recur))))
-                )))
+      ;(async/go-loop []
+      ;  (if-let [event (async/<! payloads)]
+      ;    (do
+      ;      (println @current-count " -- " event)
+      ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
+      ;      (swap! current-count inc)
+      ;      (recur))))
+      )))
 
 (defn websocket-connection-for-details [pipeline build-id websocket-channel]
   (send! websocket-channel (json/write-str (build-details-response pipeline build-id)))
   (close websocket-channel))
 
 (defn wrap-websocket [request handler]
-                (with-channel request channel
-                              (handler channel)))
+  (with-channel request channel
+    (handler channel)))
 
 (defn api-routes [pipeline]
   (routes
