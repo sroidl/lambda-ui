@@ -6,6 +6,7 @@
   padding: 20px 0px 10px 30px
   white-space: nowrap
 
+  /* Start: Hide Connection Line for root steps */
   >.nBuildStep
     &:first-of-type:before, &:last-of-type:after
       display: none
@@ -25,6 +26,7 @@
     &:last-of-type
       >.nBuildStep:first-of-type:after
         display: none
+  /* End: Hide Connection Line for root steps */
 
 .nBuildStep
   position: relative
@@ -44,9 +46,7 @@
     border-color: $very-dark-grey
     border-style: solid
 
-    >.buildIcon
-      margin-top: -13px
-      margin-left: -11px
+
 
   &:before , &:after
     content: ""
@@ -84,62 +84,25 @@
 .nBuildStepInParallel
   display: block
   vertical-align: top
-  border-width: 0px 2px
-  border-style: solid
-  border-color: $very-dark-grey
-  >.nBuildStep
-    &:before
-      left: -11px
-      width: 11px
-    &:after
-      right: -11px
-      width: 11px
 
-  >.nBuildStepWithSubsteps
-    >.nBuildStep:first-of-type
-      &:before
-        left: -13px
-        width: 13px
-      &:after
-        right: -13px
-        width: 13px
-
-  >.nBuildStep
+  .nBuildStep
     display: block
+
+  .nBuildStepWithSubsteps
     margin-bottom: 10px
 
-  >.nBuildStepWithSubsteps
-    margin-bottom: 10px
+.nParallelLine
+  border-style: solid
+  border-width: 0px 2px
+  border-color: $very-dark-grey
+  padding-bottom: 10px
 
+  &:last-of-type
+    border-color: transparent
 
-.nBuildStepSubsteps
-  >.nBuildStep:first-of-type:before
-    left: -10px
-    width: 10px
-
-  >.nBuildStepWithSubsteps:first-of-type
-    >.nBuildStep:first-of-type:before
-      left: -10px
-      width: 10px
-
-.nHideLineContainer
-  position: relative
-
-.nHideLineLeft
-  width: 3px
-  height: 1000px
-  position: absolute
-  background-color: $lightGrey
-  top: -68px
-  left: -3px
-
-.nHideLineRight
-  width: 3px
-  height: 1000px
-  position: absolute
-  background-color: $lightGrey
-  top: -68px
-  right: -3px
+.nLowermostStep:first-of-type:before
+  left: -11px
+  width: 11px
 
 .nStepName
   font-size: 11px
@@ -149,8 +112,6 @@
 .nBuildStep .buildIcon
   position: absolute
   color: $white
-  margin-top: -11px
-  margin-left: -11px
   border: 0px solid #3D3636
   border-radius: 50%
   width: 22px
@@ -160,6 +121,15 @@
   & i
     line-height: 22px
     height: 22px
+
+.nWithSubsteps .buildIcon
+  margin-top: -13px
+  margin-left: -9px
+
+.nLowermostStep .buildIcon
+  margin-top: -11px
+  margin-left: -8px
+
 
 .nBuildStep.nsuccess .buildIcon
   background-color: $green
@@ -176,8 +146,3 @@
 
 .nBuildStep.nkilled .buildIcon
   background-color: $black
-
-
-
-
-

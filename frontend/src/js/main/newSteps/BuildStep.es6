@@ -29,29 +29,29 @@ class BuildStep extends React.Component {
         const buildStepRedux = step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />;
 
         if(showSubsteps && (hasSubsteps || isParallel)){
-            let parentClass, childrenClass, hideLine;
-            const childrenSteps = R.map(step => buildStepRedux(step))(step.steps);
+            let parentClass, childrenClass, childrenSteps;
 
             if(isParallel){
                 parentClass = classes("BuildStepParallel");
-                childrenClass = classes("BuildStepInParallel");
-                hideLine = <div className={classes("HideLineContainer")}><div className={classes("HideLineLeft")}></div><div className={classes("HideLineRight")}></div></div>;
+                childrenClass = classes("BuildStepInParallel", buildStepId + "Steps");
+                childrenSteps = R.map(step => {
+                    return <div className={classes("ParallelLine")}>
+                        {buildStepRedux(step)}
+                    </div>;
+                })(step.steps);
             } else{
                 parentClass = classes("BuildStepWithSubsteps");
                 childrenClass = classes("BuildStepSubsteps");
-                hideLine = "";
+                childrenSteps = R.map(step => buildStepRedux(step))(step.steps);
             }
 
             return <div className={parentClass}>
                 {buildStep}
                 <div className={childrenClass}>
                     {childrenSteps}
-                    {hideLine}
                 </div>
             </div>;
-
         }
-
         return buildStep;
     }
 }
@@ -88,6 +88,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const BuildStepRedux = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
 
 export default BuildStepRedux;
+
+
+
+
 
 
 
