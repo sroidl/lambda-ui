@@ -19,9 +19,9 @@ class BuildStep extends React.Component {
         const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
 
         const buildStepId = "Build" + buildId + "Step" + step.stepId;
-        const buildStepClasses = classes("BuildStep", hasSubsteps ? "WithSubsteps" : "LowermostStep", step.state);
+        const buildStepClasses = classes("BuildStep", hasSubsteps && showSubsteps ? "WithSubsteps" : "LowermostStep", step.state);
 
-        const buildStep = <div id={buildStepId} className={buildStepClasses} onClick={toggleSubsteps}>
+        const buildStep = <div id={buildStepId} className={buildStepClasses} onClick={hasSubsteps ? toggleSubsteps : ""}>
             <StateIcon state={step.state}/>
             <div className={classes("StepName")}>{step.name}</div>
         </div>;
@@ -67,7 +67,7 @@ BuildStep.propTypes = {
 
 export const mapStateToProps = (state, ownProps) => {
 
-    // const showSubsteps = state.showSubsteps[ownProps.buildId] && state.showSubsteps[ownProps.buildId][ownProps.step.stepId];
+    //const showSubsteps = state.showSubsteps[ownProps.buildId] && state.showSubsteps[ownProps.buildId][ownProps.step.stepId];
     const showSubsteps = true;
 
     return {
