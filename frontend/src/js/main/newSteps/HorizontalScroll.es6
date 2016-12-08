@@ -44,17 +44,7 @@ export const makeDraggable = (buildId) => {
     });
 
     currentDiv.addEventListener("scroll", () => {
-        const marginLeft = -21 - currentDiv.scrollLeft;
-        const marginLeftShort = -9 - currentDiv.scrollLeft;
-        const marginLeftVertical = 2 - currentDiv.scrollLeft;
-        const marginLeftIcon = -11 - currentDiv.scrollLeft;
-        const marginLeftIconParent = -18 - currentDiv.scrollLeft;
-
-        setStyle(".nConnectionLine{margin-left: " + marginLeft + "px !important;}", "styleLine");
-        setStyle(".ConnectionLineShort{margin-left: " + marginLeftShort + "px !important;}", "styleLineShort");
-        setStyle(".nConnectionLineVerticalDown{margin-left: " + marginLeftVertical + "px !important;}", "styleLineVerticalDown");
-        setStyle(".buildIcon{margin-left: " + marginLeftIcon + "px !important;}", "styleIcon");
-        setStyle(".nWithSubsteps >.buildIcon{margin-left: " + marginLeftIconParent + "px !important;}", "styleIconParent");
+        setStyle("Test", "test");
     });
 };
 
