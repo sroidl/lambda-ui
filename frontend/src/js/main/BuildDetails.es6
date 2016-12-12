@@ -1,47 +1,20 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import BuildStepLegacy from "./BuildStep.es6";
-import BuildDetailBreadcrumb from "./BuildDetailBreadcrumb.es6";
 import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
-import DevToggles from "DevToggles.es6";
 import BuildStep from "newSteps/BuildStep.es6";
 import {makeDraggable} from "newSteps/HorizontalScroll.es6";
 
 export class BuildDetails extends React.Component {
 
     componentDidUpdate(){
-        if(DevToggles.useNewPipelineStructure){
-            if(this.props.stepsToDisplay){
-                makeDraggable(this.props.buildId);
-            }
+        if(this.props.stepsToDisplay){
+            makeDraggable(this.props.buildId);
         }
     }
 
-    renderLegacy(){
-        const {buildId, open, stepsToDisplay, requestDetailsFn} = this.props;
-        if (!open) {
-            return null;
-        }
-
-        if (!stepsToDisplay) {
-            requestDetailsFn();
-            return <div className="twelve columns buildDetails">
-                <div className="row loadingMessage">Loading build details</div>
-            </div>;
-        }
-
-
-        const steps = R.map(step => <BuildStepLegacy key={step.stepId} buildId={buildId} step={step}/>)(stepsToDisplay);
-
-        return <div className="twelve columns buildDetails">
-            <div className="row"><BuildDetailBreadcrumb buildId={buildId}/></div>
-            <div className="row ">{steps}</div>
-        </div>;
-    }
-
-    renderNew(){
+    render(){
         const {open, stepsToDisplay, requestDetailsFn, buildId} = this.props;
 
         if (!open) {
@@ -59,15 +32,7 @@ export class BuildDetails extends React.Component {
             {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId} />)(stepsToDisplay)}
         </div>;
     }
-
-    render() {
-        if(DevToggles.useNewPipelineStructure){
-            return this.renderNew();
-        }
-        return this.renderLegacy();
-    }
 }
-
 
 BuildDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
