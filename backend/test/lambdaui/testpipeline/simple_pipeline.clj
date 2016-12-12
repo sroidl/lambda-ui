@@ -48,6 +48,14 @@
                                        different-status))
                       a-lot-output)
                  )
+     (step/alias "i have substeps"
+                      (run (step/alias "2-parallel-step" (in-parallel a-lot-output a-lot-output))
+                           (step/alias "2-parallel-step" (in-parallel a-lot-output a-lot-output))
+                           (step/alias "i have more substeps"
+                                       (run a-lot-output
+                                            different-status))
+                           a-lot-output)
+                      )
      (step/alias "2-parallel-step" (in-parallel a-lot-output a-lot-output))
      (step/alias "3-parallel-steps" (in-parallel
                                       (step/alias "double-long" (run long-running-task-20s long-running-task-20s))
