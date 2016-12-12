@@ -21,6 +21,8 @@ module.exports = {
     contentBase: "./src/html",
   },
 
+  devtool: "source-map",
+
   eslint: {
      failOnError: true
    },
