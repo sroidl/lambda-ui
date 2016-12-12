@@ -52,6 +52,8 @@
                                   :state     running-status
                                   :name      "do-stuff"
                                   :startTime "2016-01-01T12:00:00.000Z"
+                                  :type :step
+                                  :steps []
                                   :endTime   nil}]}
                       (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId)))))))
   (testing "that it returns build details of a finished step"
@@ -61,6 +63,8 @@
                        :steps   [{:stepId    "1"
                                   :state     finished-status
                                   :name      "do-stuff"
+                                  :type :step
+                                  :steps []
                                   :startTime "2016-01-01T12:00:00.000Z"
                                   :endTime   "2016-01-01T14:00:00.000Z"}]}
                       (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId)))))))
@@ -75,6 +79,8 @@
                          :type      :container
                          :steps     [{:stepId    "1-1"
                                       :state     :running
+                                      :type :step
+                                      :steps []
                                       :name      "do-stuff"
                                       :startTime "2016-01-01T12:00:00.000Z"
                                       :endTime   nil}
@@ -82,6 +88,8 @@
                                      {:stepId    "2-1"
                                       :state     :pending
                                       :name      "do-stuff"
+                                      :type :step
+                                      :steps []
                                       :startTime nil
                                       :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId)))))
 
@@ -96,6 +104,8 @@
                          :endTime   nil
                          :steps     [{:stepId    "1-1"
                                       :state     :running
+                                      :type :step
+                                      :steps []
                                       :name      "do-stuff"
                                       :startTime "2016-01-01T12:00:00.000Z"
                                       :endTime   nil}
@@ -103,6 +113,8 @@
                                      {:stepId    "2-1"
                                       :state     :pending
                                       :name      "do-stuff"
+                                      :type :step
+                                      :steps []
                                       :startTime nil
                                       :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId))))))
 
@@ -185,12 +197,16 @@
                            :steps     [{:stepId    "1-1"
                                         :state     "pending"
                                         :name      "do-stuff"
+                                        :type "step"
+                                        :steps []
                                         :startTime nil
                                         :endTime   nil}
 
                                        {:stepId    "2-1"
                                         :state     "pending"
                                         :name      "do-stuff"
+                                        :type "step"
+                                        :steps []
                                         :startTime nil
                                         :endTime   nil}]}]}
 
