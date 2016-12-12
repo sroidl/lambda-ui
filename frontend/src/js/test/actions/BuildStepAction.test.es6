@@ -29,4 +29,20 @@ describe("BuildStepActions", () => {
             buildId: 1, stepId: "1"
         });
     });
+
+    it("should return toggleSubsteps action object", () => {
+        const newAction = subject.toggleSubsteps(1, "1");
+        expect(newAction).toEqual({
+            type: "toggleSubsteps",
+            buildId: 1, stepId: "1"
+        });
+    });
+
+    it("should return openSubsteps action object", () => {
+        const newAction = subject.openSubsteps(1, "1");
+        expect(newAction).toEqual({
+            type: "openSubsteps",
+            buildId: 1, stepId: "1"
+        });
+    });
 });
