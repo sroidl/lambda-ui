@@ -31,6 +31,20 @@
 (defn- step-id-str [step-id]
   (clojure.string/join "-" step-id))
 
+(defn get-type [step]
+  (when-let [type (:type step)]
+    (case type
+      :manual-trigger :trigger
+      type)
+    )
+  )
+
+(defn get-trigger-data [step]
+  (when (= :trigger (get-type step))
+    {}
+    )
+  )
+
 (defn to-output-format [step]
   (let [status (:status (:result step))
         base {:stepId    (step-id-str (:step-id step))
@@ -38,13 +52,11 @@
               :state     (or status :pending)
               :startTime (to-iso-string (:first-updated-at (:result step)))
               :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
-        type (if (:type step) (:type step) "normal")
-        base-with-type (assoc base :type type)
-        children (:children step)]
-    (if (and children
-             (not (empty? children)))
-      (assoc base-with-type :steps (map to-output-format (:children step)))
-      base)))
+        type {:type (get-type step)}
+        children (if-let [children (:children step)] {:steps (map to-output-format children)} {})
+        trigger-data (or (get-trigger-data step) {})
+        ]
+    (merge base type children trigger-data)))
 
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id]
