@@ -18,12 +18,13 @@
 (defn extract-location [location]
   (when (not (= location :backend-location)) location))
 
+; TODO -- support abritrary
 (defn create-config [pipeline]
-  (let [config (get-in pipeline [:context :config :ui-config])
-        name (or (:name config) "Pipeline")
-        location (or (extract-location (:location config))
-                     "window.location.host")
-        path-prefix (:path-prefix config)
+  (let [config (get-in pipeline [:context :config])
+        ui-config (get pipeline :ui-config)
+        name (or (:name ui-config) (:name config) "Pipeline")
+        location (or (extract-location (:location ui-config)) "window.location.host")
+        path-prefix (:path-prefix ui-config)
 
         prefix (if path-prefix (str " + '" path-prefix "'") "")
         location (str location prefix)
@@ -50,4 +51,6 @@
           (old-api/rest-api pipeline)
           )))))
 
+(defn ui-for [pipeline]
+  (pipeline-routes pipeline))
 
