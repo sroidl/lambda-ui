@@ -2,9 +2,119 @@ Lambda UI [![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=mas
 ==========
 [![Clojars Project](http://clojars.org/lambdaui/latest-version.svg)](http://clojars.org/lambdaui)
 
-An alternative Graphical User Interface for [LambdaCD](https://github.com/flosell/lambdacd).
+LambdaUI is a new User Interface for the build tool [LambdaCD](https://github.com/flosell/lambdacd). It's a SPA based on React/Redux.
 
-See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuapp.com/lambdaui)
+See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuapp.com/lambdaui). Just use the the `Start Build` button and explore all the features.
+
+## Features
+1. Quick overview of all recent builds:
+//TODO Screenshot Overview
+
+2. Explore details of your Builds:
+// TODO Screenshot Build details
+
+3. Have a look at your build step output if it's necessary:
+// TODO Screenshot output
+
+### Coming up:
+
+#### 0.1.0
+* Support main features (at least) as good as the old UI. This includes an overview of all builds, as well as the ability to see details of builds and build step output.
+
+#### 0.2.0
+* Websockets! Get your buid information asap. Instead of polling the results of a build, the server will push new events to the clients.  
+* Support all types of build step results (currently only the output)
+* Support of browser history within the app.
+
+Do you have more ideas? Open a [feature request](TODO)!
+
+## Usage
+As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.9.0`. To use LambdaUI, you'll also need to use the [http-kit]() (we tested it with v2.1.18) webserver to serve the backend of the UI.
+
+### Step-by-Step
+We'll suppose you've setup your pipeline as in the [example by LambdaCD](TODO fix link)
+
+1. In your `project.clj` require _http-kit_ and _lambdaui_:
+
+``` clojure
+; ...
+:dependencies [ ;...
+              [lambdaui "0.1.0-SNAPSHOT"]
+              [http-kit "2.1.18"]]
+; ...
+```
+
+2. In your `core.clj` switch to the new ui:
+
+``` clojure
+(ns your.pipeline.core
+  (:require [ ; [...]
+
+              ; [lambdacd.ui.ui-server :as ui] -- Replace this by
+              [lambdaui.core :as ui]
+
+              ; [ring.server.standalone :as ring-server] -- Replace by
+              [org.httpkit.server :as http-kit]
+              ; [...]
+            ]))
+
+; [...]
+
+(defn -main [args]
+  ;[...]
+
+  ; Replace
+  ; (ring-server/serve ring-handler {:open-browser? false
+  ;                                   :port 8080})
+  ; with
+  (http-kit/run-server ring-handler { :open-browser? false
+                                      :port 8080})
+)
+
+
+```
+
+That's it! Now start the pipeline as usual and have a look the new UI:
+`http://localhost:8080/lambdaui`
+
+__Note:__ As there is no feature complete version of the UI right now (Dec 12 2016), the old UI is served as a fallback for your convenience as the default UI at `http://localhost:8080`. This will change with the first stable release.
+
+
+Also, have a look at the [example-pipeline]() for a complete code example.
+
+### Configuration
+
+You can modify your UI by adding an entry to your pipeline config:
+
+``` clojure
+; in your -main function:
+
+config {:home-dir home-dir
+        :name "some pipeline"   ; Will be used in the UI header.
+        :ui-config {            ; Configure the UI here
+                    :navbar {
+                      :links [ {:url "http://localhost:8080/" :text "Old UI"}]
+                    }}
+
+       }
+```
+
+#### Supported options
+##### __:navbar__
+Configure the navigation bar (next to the Header) with custom links (see above). _:links_ is expected to be a sequence.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Contribute
 
@@ -31,10 +141,13 @@ Use the _go_ script to run the necessary build steps:
 To manipulate the dummy data of the backend, edit _dummy_data.clj_ and restart the backend server with `./go serve-backend`.
 If you're already familiar with Clojure development, you can also start the server in a REPL and edit the dummy data without restarting.
 
-
-
 Also see `./go help` for further goals.
 You can also use the NPM targets when inside the _resources/ui_ folder.
 
 ## Acknowledgements
 Many thanks to __JetBrains__ for providing our project with free open source licences for their excellent products to use during the development of LambdaUI!
+
+## License
+Copyright (c) 2016 Sebastian Roidl
+
+LambdaUI is distributed under the Apache License 2.0.
