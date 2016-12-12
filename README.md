@@ -1,10 +1,16 @@
-Lambda UI [![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=master)](https://travis-ci.org/sroidl/lambda-ui)[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](http://lambdaui-snapshot.herokuapp.com/lambdaui)
+Lambda UI
 ==========
+__Status:__
+
+[![Build Status](https://travis-ci.org/sroidl/lambda-ui.svg?branch=master)](https://travis-ci.org/sroidl/lambda-ui)[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](http://lambdaui-snapshot.herokuapp.com/lambdaui)
+
 [![Clojars Project](http://clojars.org/lambdaui/latest-version.svg)](http://clojars.org/lambdaui)
 
 LambdaUI is a new User Interface for the build tool [LambdaCD](https://github.com/flosell/lambdacd). It's a SPA based on React/Redux.
 
 See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuapp.com/lambdaui). Just use the the `Start Build` button and explore all the features.
+
+There is currently no stable version available yet. You might use the current snapshot.
 
 ## Features
 1. Quick overview of all recent builds:
@@ -26,13 +32,14 @@ See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuap
 * Support all types of build step results (currently only the output)
 * Support of browser history within the app.
 
-Do you have more ideas? Open a [feature request](TODO)!
+Do you have more ideas or feedback?
+Open a [feature request](https://github.com/sroidl/lambda-ui/issues/new)!
 
 ## Usage
 As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.9.0`. To use LambdaUI, you'll also need to use the [http-kit]() (we tested it with v2.1.18) webserver to serve the backend of the UI.
 
-### Step-by-Step
-We'll suppose you've setup your pipeline as in the [example by LambdaCD](TODO fix link)
+### Step-by-Step setup
+We'll suppose you've setup your pipeline as in the [example by LambdaCD](http://www.lambda.cd/getting-started/)
 
 1. In your `project.clj` require _http-kit_ and _lambdaui_:
 

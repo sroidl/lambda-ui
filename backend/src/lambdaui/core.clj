@@ -21,11 +21,10 @@
 ; TODO -- support abritrary
 (defn create-config [pipeline]
   (let [config (get-in pipeline [:context :config])
-        ui-config (get pipeline :ui-config)
+        ui-config (get config :ui-config)
         name (or (:name ui-config) (:name config) "Pipeline")
         location (or (extract-location (:location ui-config)) "window.location.host")
         path-prefix (:path-prefix ui-config)
-
         prefix (if path-prefix (str " + '" path-prefix "'") "")
         location (str location prefix)
         ]
