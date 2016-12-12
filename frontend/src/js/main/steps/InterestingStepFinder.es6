@@ -1,5 +1,6 @@
 import R from "ramda";
 import {getFlatSteps} from "FunctionalUtils.es6";
+import DevToggles from "../DevToggles.es6";
 
 const haveSubsteps = R.filter(step => !step.steps || step.steps.length === 0);
 const filterRunning = R.pipe(R.filter(step => step.state === "running"), haveSubsteps);
@@ -51,9 +52,14 @@ export const findParentOfSubstep = (state, buildId, stepId, stepState) => {
     }
 
     let subSteps = getSubSteps(foundSteps);
+    const steps = [];
     while (subSteps.length > 0) {
+        steps.push(foundSteps[0].stepId);
         foundSteps = getStepWithState(stepState)(subSteps);
         subSteps = getSubSteps(foundSteps) || [];
+    }
+    if(DevToggles.useNewPipelineStructure){
+        return steps;
     }
     return getParentStep(foundSteps);
 };
@@ -65,7 +71,3 @@ export const findParentOfFailedSubstep = (state, buildId, stepId) => {
 export const findParentOfRunningSubstep = (state, buildId, stepId) => {
     return findParentOfSubstep(state, buildId, stepId, "running");
 };
-
-
-
-

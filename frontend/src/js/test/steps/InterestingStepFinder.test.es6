@@ -1,4 +1,5 @@
-/* globals describe it expect beforeEach afterEach */
+/* globals jest describe it expect beforeEach afterEach */
+jest.mock("../../main/DevToggles.es6");
 import {getInterestingStepId, findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
