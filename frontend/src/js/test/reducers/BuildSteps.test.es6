@@ -1,5 +1,5 @@
 /* globals describe it expect afterEach beforeEach */
-import buildStepsReducer, {ParallelStepsReducer, toggleState} from "reducers/BuildSteps.es6";
+import buildStepsReducer, {ParallelStepsReducer, toggleState, showSubstepReducer} from "reducers/BuildSteps.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStep", () => {
@@ -62,6 +62,40 @@ describe("BuildStep", () => {
             const newState = ParallelStepsReducer(oldState, {type: "SOME_OTHER_ACTION"});
 
             expect(newState).toBe(oldState);
+        });
+    });
+
+    describe("ShowSubstepsReducer", () => {
+        it("should return oldState if action not define", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: "SOME_OTHER_ACTION"});
+
+            expect(newState).toBe(oldState);
+        });
+
+        it("should return state with value true", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
+
+            expect(newState).toEqual({1: {"1": true}});
+        });
+
+        it("should not change value if it is true", () => {
+            const oldState = {1: {"1": true}};
+
+            const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
+
+            expect(newState).toBe(oldState);
+        });
+
+        it("should change value if it is false", () => {
+            const oldState = {1: {"1": false}};
+
+            const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
+
+            expect(newState).toEqual({1: {"1": true}});
         });
     });
 });
