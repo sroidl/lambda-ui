@@ -9,7 +9,7 @@ export const classes = (...classes) => {
     return R.reduce((acc, val) => acc + " n" + val, "")(classes).trim();
 };
 
-class BuildStep extends React.Component {
+export class BuildStep extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,7 +28,7 @@ class BuildStep extends React.Component {
 
         const buildStepRedux = step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />;
 
-        if(showSubsteps && (hasSubsteps || isParallel)){
+        if(showSubsteps && hasSubsteps){
             let parentClass, childrenClass, childrenSteps;
 
             if(isParallel){
