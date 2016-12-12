@@ -5,8 +5,7 @@
             [lambdaui.core :refer [pipeline-routes]]
             [lambdaui.fixtures.pipelines :refer :all]
             [clojure.data.json :refer [read-json]]
-            [lambdaui.test-server :refer :all]
-            ))
+            [lambdaui.test-server :refer :all]))
 
 
 
@@ -17,11 +16,9 @@
   (with-server simple-success-pipeline
                (testing "availability of legacy /api/builds"
                  (let [{:keys [status headers body error] :as resp} @(http/get (url "/api/builds/"))]
-                    (println resp)
                    (is (= 200 status))
                    (is (= {:build-number 1 :status "success"}
-                          (select-keys (get-build 1 (read-json body)) [:build-number :status :out]))))))
-  )
+                          (select-keys (get-build 1 (read-json body)) [:build-number :status :out])))))))
 
 
 
