@@ -1,7 +1,8 @@
-/* globals describe it expect beforeEach afterEach */
+/* globals jest describe it expect beforeEach afterEach */
+jest.mock("../../main/DevToggles.es6");
 import React from "react";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import {mapStateToProps, BuildStep} from "newSteps/BuildStep.es6";
+import {mapStateToProps, BuildStep, getStepDuration, duration} from "newSteps/BuildStep.es6";
 import {shallow} from "enzyme";
 
 describe("BuildStep", () => {
@@ -73,5 +74,34 @@ describe("BuildStep", () => {
             expect(newComponent.find(cssClass("BuildStepInParallel")).length).toBe(1);
         });
 
+    });
+
+    describe("BuildStep duration", () => {
+        it("should return same step, when endTime available", () => {
+            const step = {startTime: "24:00:00", endTime: "24:00:32"};
+            expect(getStepDuration(step)).toBe(step);
+        });
+
+        it("should return same step, when startTime is null", () => {
+            const step = {startTime: null, endTime: null};
+            expect(getStepDuration(step)).toBe(step);
+        });
+
+        it("should return step with other endTime, when endTime is null", () => {
+            const step = {startTime: "24:00:00", endTime: null};
+            expect(getStepDuration(step).endTime).not.toEqual(null);
+        });
+
+        it("should return in mm:ss format, when duration less then one houre", () => {
+            expect(duration({startTime: "2016-11-01T14:48:16", endTime: "2016-11-01T14:48:21"})).toEqual("00:05");
+            expect(duration({startTime: "2016-11-01T14:47:16", endTime: "2016-11-01T14:48:26"})).toEqual("01:10");
+            expect(duration({startTime: "2016-11-01T14:38:16", endTime: "2016-11-01T14:48:51"})).toEqual("10:35");
+        });
+
+        it("should return in hh:mm:ss format, when duration more then one houre", () => {
+            expect(duration({startTime: "2016-11-01T13:48:16", endTime: "2016-11-01T14:48:21"})).toEqual("01:00:05");
+            expect(duration({startTime: "2016-11-01T04:47:16", endTime: "2016-11-01T14:48:26"})).toEqual("10:01:10");
+            expect(duration({startTime: "2016-11-01T00:38:16", endTime: "2016-11-01T14:48:51"})).toEqual("14:10:35");
+        });
     });
 });
