@@ -14,13 +14,14 @@ There is currently no stable version available yet. You might use the current sn
 
 ## Features
 1. Quick overview of all recent builds:
-//TODO Screenshot Overview
+![Screenshot of build summaries](/screenshots/build-summaries.png)
+
 
 2. Explore details of your Builds:
-// TODO Screenshot Build details
+![Screenshot of build details](/screenshots/build-details.png)
 
 3. Have a look at your build step output if it's necessary:
-// TODO Screenshot output
+![Screenshot of build output](/screenshots/build-output.png)
 
 ### Coming up:
 
