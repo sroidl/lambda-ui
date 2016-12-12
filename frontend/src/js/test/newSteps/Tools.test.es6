@@ -3,6 +3,7 @@ jest.mock("../../main/actions/OutputActions.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
 jest.mock("../../main/DevToggles.es6");
+jest.mock("../../main/steps/InterestingStepFinder.es6");
 import React from "react";
 import ToolsRedux, {
     Tools,
@@ -10,13 +11,13 @@ import ToolsRedux, {
     SHOW_OUTPUT_ICON_CLASS,
     SHOW_SUBSTEP_ICON_CLASS,
     SHOW_INTERESTING_STEP_ICON_CLASS
-} from "steps/Tools.es6";
+} from "newSteps/Tools.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestSupport.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
-import {viewBuildStep} from "actions/BuildDetailActions.es6";
-import {toggleStepToolbox} from "actions/BuildStepActions.es6";
+import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import DevToggles from "../../main/DevToggles.es6";
+import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
 
 DevToggles.handleTriggerSteps = true;
 
@@ -64,11 +65,10 @@ describe("Tools", () => {
             <Tools toolboxOpen={toolboxOpen}
                    hasSubsteps={hasSubsteps}
                    failureStep={failureStep}
-                   runningStep=""
+                   runningStep={[""]}
                    stepType={stepType}
                    stepTrigger={stepTrigger}
-                   goIntoInterestingStepFn={fn}
-                   goIntoStepFn={fn}
+                   openSubstepFn={fn}
                    showOutputFn={fn}
                    toggleStepToolboxFn={fn}
                    toggleParallelStepFn={fn}
@@ -105,28 +105,10 @@ describe("Tools", () => {
                 expect(component.find(".outputTool").length).toBe(1);
             });
 
-            it("should render output tool in toolbar and toolbox", () => {
-                const component = mount(tools(true));
-                expect(component.find(".outputTool").length).toBe(2);
-            });
-
             it("should render output and substep tool if step have substeps", () => {
                 const component = mount(tools(false, true));
                 expect(component.find(".outputTool").length).toBe(1);
                 expect(component.find(".substepTool").length).toBe(1);
-            });
-
-            it("should render output and substeps in toolbox and toolbar", () => {
-                const component = mount(tools(true, true));
-                expect(component.find(".outputTool").length).toBe(2);
-                expect(component.find(".substepTool").length).toBe(2);
-            });
-
-            it("should render output, substeps and failureStep tool in toolbox and toolbar", () => {
-                const component = mount(tools(true, true, "1"));
-                expect(component.find(".outputTool").length).toBe(2);
-                expect(component.find(".substepTool").length).toBe(2);
-                expect(component.find(".failureStepTool").length).toBe(2);
             });
 
             describe("trigger Tool", () => {
@@ -142,13 +124,10 @@ describe("Tools", () => {
             });
         });
 
-        describe("Wiring", () => {                          
+        describe("Wiring", () => {
             const substeps = {stepId: "1-1", state: "failure"};
-            const defaultStep = {stepId: 1, state: "failure", steps: substeps};
-            const tools = (storeMock, failureStep="1-1", step = defaultStep, runningStep = null) => <ToolsRedux buildId={1}
-                                                                         failureStep={failureStep} runningStep={runningStep}
-                                                                         step={step}
-                                                                         store={storeMock}/>;
+            const defaultStep = {stepId: "1", state: "failure", steps: substeps};
+            const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} step={step} store={storeMock} />;
 
             it("should dispatch showOutput", () => {
                 const dispatchMock = jest.fn();
@@ -164,7 +143,7 @@ describe("Tools", () => {
             it("should dispatch goIntoSubsteps", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
-                viewBuildStep.mockReturnValue({type: "goIntoStep"});
+                openSubsteps.mockReturnValue({type: "goIntoStep"});
 
                 const component = mount(tools(storeMock));
                 component.find(".substepTool").simulate("click");
@@ -173,9 +152,11 @@ describe("Tools", () => {
             });
 
             it("should dispatch goIntoFailureStep", () => {
+
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
-                viewBuildStep.mockReturnValue({type: "goIntoFailureStep"});
+                openSubsteps.mockReturnValue({type: "goIntoFailureStep"});
+                findParentOfFailedSubstep.mockReturnValue(["1"]);
 
                 const component = mount(tools(storeMock));
                 component.find(".failureStepTool").simulate("click");
@@ -186,9 +167,10 @@ describe("Tools", () => {
             it("should dispatch goIntoRunningStep", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
-                viewBuildStep.mockReturnValue({type: "goIntoRunningStep"});
+                openSubsteps.mockReturnValue({type: "goIntoRunningStep"});
+                findParentOfRunningSubstep.mockReturnValue(["1"]);
 
-                const component = mount(tools(storeMock, null, {stepId: "1", state: "running", steps: {stepId: "1-1", state: "running"}}, "1-1"));
+                const component = mount(tools(storeMock, {stepId: "1", state: "running", steps: {stepId: "1-1", state: "running"}}, "1-1"));
                 component.find(".runningStepTool").simulate("click");
 
                 expect(dispatchMock).toBeCalledWith({type: "goIntoRunningStep"});
@@ -209,7 +191,7 @@ describe("Tools", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
 
-                const component = mount(tools(storeMock, null, {
+                const component = mount(tools(storeMock, {
                     stepId: 1,
                     state: "waiting",
                     type: "trigger",

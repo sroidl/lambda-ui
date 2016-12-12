@@ -2,7 +2,6 @@ import React, {PropTypes} from "react";
 import Utils from "ComponentUtils.es6";
 import {connect} from "react-redux";
 import {showBuildOutput} from "actions/OutputActions.es6";
-import {viewBuildStep} from "actions/BuildDetailActions.es6";
 import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import R from "ramda";
@@ -135,12 +134,11 @@ export class Tools extends React.Component {
 }
 Tools.propTypes = {
     step: PropTypes.object,
-    failureStep: PropTypes.string,
-    runningStep: PropTypes.string,
+    failureStep: PropTypes.array,
+    runningStep: PropTypes.array,
     hasSubsteps: PropTypes.bool.isRequired,
     stepType: PropTypes.string.isRequired,
     toolboxOpen: PropTypes.bool.isRequired,
-    goIntoInterestingStepFn: PropTypes.func.isRequired,
     openSubstepFn: PropTypes.func.isRequired,
     showOutputFn: PropTypes.func.isRequired,
     toggleStepToolboxFn: PropTypes.func.isRequired,
@@ -172,7 +170,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         openSubstepFn: (stepId) => dispatch(openSubsteps(buildId, stepId)),
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
-        goIntoInterestingStepFn: (stepId) => dispatch(viewBuildStep(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
         showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName))
     };
