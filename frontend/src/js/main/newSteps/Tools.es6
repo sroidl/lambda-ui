@@ -146,10 +146,19 @@ Tools.propTypes = {
     stepTrigger: PropTypes.object
 };
 
+
+const enrichTriggerUrl = (triggerData, config) => {
+    if(triggerData && config) {
+        return R.merge (triggerData, {url: "http://" + config.baseUrl + triggerData.url});
+    }
+    return null;
+};
+
 const mapStateToProps = (state, ownProps) => {
     const hasSubsteps = ownProps.step.steps && ownProps.step.steps.length !== 0 || false;
     const stepType = ownProps.step.type || "";
     const stepTrigger = ownProps.step.trigger || null;
+    const enrichedTrigger = enrichTriggerUrl(stepTrigger, state.config);
 
     return {
         step: ownProps.step,
@@ -157,7 +166,7 @@ const mapStateToProps = (state, ownProps) => {
         runningStep: findParentOfRunningSubstep(state, ownProps.buildId, ownProps.step.stepId),
         hasSubsteps: hasSubsteps,
         stepType: stepType,
-        stepTrigger: stepTrigger,
+        stepTrigger: enrichedTrigger,
         toolboxOpen: R.pathOr(false, [ownProps.buildId, ownProps.step.stepId])(state.showStepToolbox)
     };
 };

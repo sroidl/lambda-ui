@@ -17,7 +17,14 @@ const initialState = {
     config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
     viewBuildSteps: {},
     output: {showOutput: false},
-    developmentToggles: { usePolling : true, showInterestingStep: false, showConnectionState: true, useAnsiCodeColors: false, handleTriggerSteps: false, useNewPipelineStructure: true},
+    developmentToggles: {
+        usePolling: true,
+        showInterestingStep: false,
+        showConnectionState: true,
+        useAnsiCodeColors: false,
+        handleTriggerSteps: true,
+        useNewPipelineStructure: true
+    },
     showStepToolbox: {},
     showInParallel: {},
     triggerDialog: {},

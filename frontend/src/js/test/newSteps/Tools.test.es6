@@ -189,7 +189,7 @@ describe("Tools", () => {
 
             it("should not call toggleToolbox if step is triggerStep", () => {
                 const dispatchMock = jest.fn();
-                const storeMock = MockStore({}, dispatchMock);
+                const storeMock = MockStore({config: {baseUrl: ""}}, dispatchMock);
 
                 const component = mount(tools(storeMock, {
                     stepId: 1,

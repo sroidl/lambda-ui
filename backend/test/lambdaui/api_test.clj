@@ -55,7 +55,7 @@
                                   :type :step
                                   :steps []
                                   :endTime   nil}]}
-                      (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId)))))))
+                      (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId nil)))))))
   (testing "that it returns build details of a finished step"
     (doall (for [finished-status [:success :failure :killed]]
              (let [buildId 1]
@@ -67,7 +67,7 @@
                                   :steps []
                                   :startTime "2016-01-01T12:00:00.000Z"
                                   :endTime   "2016-01-01T14:00:00.000Z"}]}
-                      (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId)))))))
+                      (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId nil)))))))
   (testing "that it returns build details of nested steps"
     (let [buildId 1]
       (is (= {:buildId 1
@@ -91,7 +91,7 @@
                                       :type :step
                                       :steps []
                                       :startTime nil
-                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId)))))
+                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId nil)))))
 
   (testing "that it returns build details of nested parallel step"
     (let [buildId 1]
@@ -116,7 +116,7 @@
                                       :type :step
                                       :steps []
                                       :startTime nil
-                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId))))))
+                                      :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId nil))))))
 
 (deftest output-websocket
   (testing "that a payload is sent through the ws channel"
@@ -215,3 +215,17 @@
             )))
 
     ))
+
+(deftest extract-trigger-data-test
+ (testing "should return nil on empty"
+   (is (nil? (subject/extract-trigger-data nil nil))))
+
+ (testing "should return trigger-id and convert step id"
+   (let [ui-config {}
+         input ['(1 4) {:trigger-id "abcdef"}]]
+      (is (= ["1-4" {:trigger {:url "/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input)))))
+
+ (testing "should add path-prefix from ui-config to build trigger-data"
+   (let [ui-config {:path-prefix "release-pipeline"}
+         input ['(1 4) {:trigger-id "abcdef"}]]
+     (is (= ["1-4" {:trigger {:url "release-pipeline/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input))))))

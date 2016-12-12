@@ -4,6 +4,7 @@
             [lambdacd.runners :as runners]
             [org.httpkit.server :as http]
             [lambdaui.testpipeline.simple-pipeline :as pipe]
+            [lambdaui.testpipeline.trigger-pipeline :as pipe-with-trigger]
             [lambdaui.core :as ui]
             [lambdacd.internal.execution :as exec]
             [clojure.core.async :as async :refer [go <! <!! >! >!!]]
@@ -23,7 +24,7 @@
 
 
 (defn start-server [port]
-  (let [pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir "/tmp/foo" :ui-config {:name "WURST" :location :backend-location :path-prefix ""}})]
+  (let [pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir "/tmp/foo" :ui-config {:name "WURST" :location :backend-location :path-prefix ""}})]
     (reset! current-pipeline pipeline)
     (reset! server (http/run-server (ui/pipeline-routes pipeline) {:port port}))))
 

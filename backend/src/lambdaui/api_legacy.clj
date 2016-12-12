@@ -58,16 +58,32 @@
         ]
     (merge base type children trigger-data)))
 
+(defn extract-trigger-data [ui-config [id step-state]]
+  (when-let [trigger-id (:trigger-id step-state)]
+    (let [prefix (:path-prefix ui-config "")
+          url-template (str prefix "/api/dynamic/%s")]      ; TODO -- don't use old UIs api for triggering
+      [(step-id-str id) {:trigger {:url (format url-template trigger-id)}}])))
 
-(defn build-details-from-pipeline [pipeline-def pipeline-state build-id]
-  {:buildId build-id
-   :steps   (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
-                 (map to-output-format))})
+(defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
+  (let [unified-steps-map (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
+                               (map to-output-format)
+                               (map (fn [step] [(:stepId step) step]))
+                               (into {}))
+        trigger-data (->> pipeline-state
+                          (map (partial extract-trigger-data ui-config))
+                          (remove nil?)
+                          (into {})
+                          )
+        steps (vals (merge-with merge unified-steps-map trigger-data))
+        ]
+    ; ToDo -- integration test for merging with real pipeline state
+    {:buildId build-id
+     :steps   steps}))
 
 (defn- build-details-response [pipeline build-id]
   (let [build-state (get (state-from-pipeline pipeline) (Integer/parseInt build-id))
         pipeline-def (:pipeline-def pipeline)]
-    (build-details-from-pipeline pipeline-def build-state build-id)))
+    (build-details-from-pipeline pipeline-def build-state build-id (get-in pipeline [:context :config :ui-config]))))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
   (let [result (async/chan)
@@ -121,27 +137,27 @@
 
 (defn- output-buildstep-websocket [pipeline req build-id step-id]
   (with-channel req ws-ch
-    (output-events pipeline ws-ch (Integer/parseInt build-id) step-id)))
+                (output-events pipeline ws-ch (Integer/parseInt build-id) step-id)))
 
 (defn- subscribe-to-summary-update [request pipeline]
   (with-channel request websocket-channel
 
-    (let [ctx (:context pipeline)
-          ;subscription (event-bus/subscribe ctx :step-result-updated)
-          ;payloads     (event-bus/only-payload subscription)
-          ]
+                (let [ctx (:context pipeline)
+                      ;subscription (event-bus/subscribe ctx :step-result-updated)
+                      ;payloads     (event-bus/only-payload subscription)
+                      ]
 
-      (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
-      (close websocket-channel)
+                  (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
+                  (close websocket-channel)
 
-      ;(async/go-loop []
-      ;  (if-let [event (async/<! payloads)]
-      ;    (do
-      ;      (println @current-count " -- " event)
-      ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
-      ;      (swap! current-count inc)
-      ;      (recur))))
-      )))
+                  ;(async/go-loop []
+                  ;  (if-let [event (async/<! payloads)]
+                  ;    (do
+                  ;      (println @current-count " -- " event)
+                  ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
+                  ;      (swap! current-count inc)
+                  ;      (recur))))
+                  )))
 
 (defn websocket-connection-for-details [pipeline build-id websocket-channel]
   (send! websocket-channel (json/write-str (build-details-response pipeline build-id)))
@@ -149,7 +165,7 @@
 
 (defn wrap-websocket [request handler]
   (with-channel request channel
-    (handler channel)))
+                (handler channel)))
 
 (defn api-routes [pipeline]
   (routes
