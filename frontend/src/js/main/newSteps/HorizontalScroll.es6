@@ -29,7 +29,7 @@ export const makeDraggable = (buildId) => {
 
     currentDiv.addEventListener("mousemove", (e) => {
         if (curDown === true) {
-            currentDiv.scrollLeft += (e.clientX - curClientX);
+            currentDiv.scrollLeft += (curClientX - e.clientX);
             curClientX = e.clientX;
         }
     });

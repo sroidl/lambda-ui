@@ -2,7 +2,7 @@
 
 .nBuildDetails
   background-color: $lightGrey
-  overflow-x: scroll
+  overflow-x: hidden
   padding: 20px 0px 10px 30px
   white-space: nowrap
 
@@ -33,7 +33,7 @@
   display: inline-block
   vertical-align: top
   height: 60px
-  z-index: 1
+  z-index: 0
 
   &.nLowermostStep
     background-color: $white
@@ -51,7 +51,6 @@
     height: 2px
     position: absolute
     background-color: $very-dark-grey
-    z-index: 0
 
   &:before
     left: -16px
