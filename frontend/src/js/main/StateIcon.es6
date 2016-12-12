@@ -33,7 +33,7 @@ export const StateIcon = ({state}) => {
             hintText = "Waiting";
             break;
         case "pending":
-            iconClass = DEFAULT_ICON;
+            iconClass = "";
             hintText = "Pending";
             break;
         default:

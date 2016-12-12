@@ -53,7 +53,7 @@ describe("State Icon", () => {
 
     it("should return div with pending icon and without hint", () => {
         const state = "pending";
-        const expected = <div className="buildIcon" title="Pending"><i className="fa fa-ellipsis-h"/></div>;
+        const expected = <div className="buildIcon" title="Pending"><i className="fa "/></div>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 });
