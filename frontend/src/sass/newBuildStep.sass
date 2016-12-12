@@ -59,9 +59,18 @@
     width: 16px
 
   &:after
-    right: -10px
+    right: -11px
     top: -1px
-    width: 10px
+    width: 11px
+
+  &.nWithSubsteps
+    &:before
+      width: 13px
+      left: -13px
+
+    &:after
+      width: 13px
+      right: -13px
 
 .nBuildStepParallel
   background-color: transparentize($very-dark-grey, 0.8)
@@ -83,9 +92,6 @@
   display: block
   vertical-align: top
 
-  .nBuildStep
-    display: block
-
   .nBuildStepWithSubsteps
     margin-bottom: 10px
 
@@ -97,6 +103,10 @@
 
   &:last-of-type
     border-color: transparent
+
+  // Only for direct child
+  >.nBuildStep
+    width: calc(100% - 20px)
 
 .nLowermostStep:first-of-type:before
   left: -11px
