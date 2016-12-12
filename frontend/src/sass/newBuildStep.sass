@@ -32,7 +32,6 @@
   position: relative
   display: inline-block
   vertical-align: top
-  height: 60px
   z-index: 0
 
   &.nLowermostStep
@@ -110,12 +109,16 @@
 .nLowermostStep:first-of-type:before
   left: -11px
   width: 11px
+  
 
 .nStepName
   font-size: 11px
-  padding: 5px
+  padding: 10px
   height: 100%
   font-weight: bold
+  
+  &.nHasSubsteps
+    cursor: pointer
 
 .nBuildStep .buildIcon
   position: absolute

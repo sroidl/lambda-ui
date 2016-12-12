@@ -4,6 +4,7 @@ import "../../../sass/newBuildStep.sass";
 import {toggleSubsteps} from "actions/BuildStepActions.es6";
 import R from "ramda";
 import {StateIcon} from "../StateIcon.es6";
+import Tools from "../newSteps/Tools.es6";
 
 export const classes = (...classes) => {
     return R.reduce((acc, val) => acc + " n" + val, "")(classes).trim();
@@ -21,9 +22,10 @@ export class BuildStep extends React.Component {
         const buildStepId = "Build" + buildId + "Step" + step.stepId;
         const buildStepClasses = classes("BuildStep", hasSubsteps && showSubsteps ? "WithSubsteps" : "LowermostStep", step.state);
 
-        const buildStep = <div id={buildStepId} className={buildStepClasses} onClick={hasSubsteps ? toggleSubsteps : ""}>
+        const buildStep = <div id={buildStepId} className={buildStepClasses}>
             <StateIcon state={step.state}/>
-            <div className={classes("StepName")}>{step.name}</div>
+            <div className={classes("StepName", hasSubsteps ? "HasSubsteps" : "")} onClick={hasSubsteps ? toggleSubsteps : ""}>{step.name}</div>
+            {hasSubsteps && showSubsteps ? "" :<Tools buildId={buildId} step={step}/>}
         </div>;
 
         const buildStepRedux = step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />;
@@ -67,8 +69,8 @@ BuildStep.propTypes = {
 
 export const mapStateToProps = (state, ownProps) => {
 
-    //const showSubsteps = state.showSubsteps[ownProps.buildId] && state.showSubsteps[ownProps.buildId][ownProps.step.stepId];
-    const showSubsteps = true;
+    const showSubsteps = state.showSubsteps[ownProps.buildId] && state.showSubsteps[ownProps.buildId][ownProps.step.stepId] || false;
+    //const showSubsteps = true;
 
     return {
         showSubsteps: showSubsteps,
@@ -88,10 +90,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const BuildStepRedux = connect(mapStateToProps, mapDispatchToProps)(BuildStep);
 
 export default BuildStepRedux;
-
-
-
-
-
-
-
