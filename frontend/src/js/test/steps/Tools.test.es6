@@ -11,7 +11,7 @@ import ToolsRedux, {
     SHOW_OUTPUT_ICON_CLASS,
     SHOW_SUBSTEP_ICON_CLASS,
     SHOW_INTERESTING_STEP_ICON_CLASS
-} from "newSteps/Tools.es6";
+} from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestSupport.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";

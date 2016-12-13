@@ -1,8 +1,8 @@
 /* globals jest describe it expect beforeEach afterEach */
 jest.mock("../../main/DevToggles.es6");
 import React from "react";
-import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import {mapStateToProps, BuildStep, getStepDuration, duration} from "newSteps/BuildStep.es6";
+import * as TestUtils from "../testsupport/TestUtils.es6";
+import {mapStateToProps, BuildStep, getStepDuration, duration} from "steps/BuildStep.es6";
 import {shallow} from "enzyme";
 
 describe("BuildStep", () => {

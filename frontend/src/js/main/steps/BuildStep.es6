@@ -4,7 +4,7 @@ import "../../../sass/newBuildStep.sass";
 import {toggleSubsteps} from "actions/BuildStepActions.es6";
 import R from "ramda";
 import {StateIcon} from "../StateIcon.es6";
-import Tools from "../newSteps/Tools.es6";
+import Tools from "./Tools.es6";
 import Moment from "moment";
 import "moment-duration-format";
 import DevToggle from "../DevToggles.es6";

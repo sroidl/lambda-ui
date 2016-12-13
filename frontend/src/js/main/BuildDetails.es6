@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {requestDetailsPolling} from "./actions/BackendActions.es6";
 import R from "ramda";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
-import BuildStep from "newSteps/BuildStep.es6";
-import {makeDraggable} from "newSteps/HorizontalScroll.es6";
+import BuildStep from "steps/BuildStep.es6";
+import {makeDraggable} from "steps/HorizontalScroll.es6";
 
 export class BuildDetails extends React.Component {
 

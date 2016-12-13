@@ -6,7 +6,7 @@ import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import R from "ramda";
 import DevToggle from "../DevToggles.es6";
-import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "../steps/InterestingStepFinder.es6";
+import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "./InterestingStepFinder.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
