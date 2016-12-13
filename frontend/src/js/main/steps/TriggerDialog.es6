@@ -107,10 +107,7 @@ export class TriggerDialog extends React.Component {
 
         if(!parameter || parameter.length === 0){
             this.executeTrigger(parameter, url);
-            return <div>
-                {triggerDialog("Start: " + triggerName + " ...")}
-                {setTimeout(closeTriggerDialog, 2000)}
-            </div>;
+            return null;
         }
 
         return triggerDialog(triggerName);
