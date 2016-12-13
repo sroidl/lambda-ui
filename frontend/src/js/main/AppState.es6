@@ -6,7 +6,7 @@ import {BuildDetailsReducer} from "./reducers/BuildDetails.es6";
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
 import {OutputReducer} from "./reducers/Output.es6";
 import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
-import BuildStepsReducer, {ParallelStepsReducer, showSubstepReducer} from "./reducers/BuildSteps.es6";
+import BuildStepsReducer, {showSubstepReducer} from "./reducers/BuildSteps.es6";
 import BuildStepTriggerReducer from "./reducers/BuildStepTrigger.es6";
 
 
@@ -25,7 +25,6 @@ const initialState = {
         useQuickBuildDetails: false
     },
     showStepToolbox: {},
-    showInParallel: {},
     triggerDialog: {},
     showSubsteps: {}
 };
@@ -38,7 +37,6 @@ const rootReducer = combineReducers({
     output: OutputReducer,
     developmentToggles: DevelopmentTogglesReducer,
     showStepToolbox: BuildStepsReducer,
-    showInParallel: ParallelStepsReducer,
     triggerDialog: BuildStepTriggerReducer,
     showSubsteps: showSubstepReducer
 });

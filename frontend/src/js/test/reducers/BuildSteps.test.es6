@@ -1,5 +1,5 @@
 /* globals describe it expect afterEach beforeEach */
-import buildStepsReducer, {ParallelStepsReducer, toggleState, showSubstepReducer} from "reducers/BuildSteps.es6";
+import buildStepsReducer, {toggleState, showSubstepReducer} from "reducers/BuildSteps.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStep", () => {
@@ -50,16 +50,6 @@ describe("BuildStep", () => {
             const oldState = {};
 
             const newState = buildStepsReducer(oldState, {type: "SOME_OTHER_ACTION"});
-
-            expect(newState).toBe(oldState);
-        });
-    });
-
-    describe("ParallelStepReducer", () => {
-        it("should return oldState if action not define", () => {
-            const oldState = {};
-
-            const newState = ParallelStepsReducer(oldState, {type: "SOME_OTHER_ACTION"});
 
             expect(newState).toBe(oldState);
         });

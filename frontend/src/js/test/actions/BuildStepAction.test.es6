@@ -22,14 +22,6 @@ describe("BuildStepActions", () => {
         });
     });
 
-    it("should return toggleParallelStep action object", () => {
-        const newAction = subject.toggleParallelStep(1, "1");
-        expect(newAction).toEqual({
-            type: "toggleParallelStep",
-            buildId: 1, stepId: "1"
-        });
-    });
-
     it("should return toggleSubsteps action object", () => {
         const newAction = subject.toggleSubsteps(1, "1");
         expect(newAction).toEqual({
