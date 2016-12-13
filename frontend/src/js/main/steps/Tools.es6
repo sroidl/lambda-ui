@@ -1,6 +1,7 @@
 import React, {PropTypes} from "react";
 import Utils from "ComponentUtils.es6";
 import {connect} from "react-redux";
+import "../../../sass/buildStepTools.sass";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";

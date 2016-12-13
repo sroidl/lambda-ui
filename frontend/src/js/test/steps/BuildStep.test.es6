@@ -34,12 +34,10 @@ describe("BuildStep", () => {
                        buildId={1} hasSubsteps={hasSubsteps}
                        toggleSubsteps={() => {}} showSubsteps={showSubsteps} />;
 
-        const cssClass = cssClass => ".n" + cssClass;
-
         it("should render buildStep", () => {
             const newComponent = shallow(component({stepId: "1", name: "Step", state: "success"}));
 
-            expect(newComponent.find(cssClass("BuildStep")).length).toBe(1);
+            expect(newComponent.find(".BuildStep").length).toBe(1);
         });
 
         it("should render buildStep id", () => {
@@ -57,21 +55,21 @@ describe("BuildStep", () => {
         it("should not render substeps", () => {
             const newComponent = shallow(component({stepId: "1", name: "", state: "success", steps: [{stepId: "1-1", name: "", state: "success"}]}, false, true));
 
-            expect(newComponent.find(cssClass("BuildStepWithSubsteps")).length).toBe(0);
+            expect(newComponent.find(".BuildStepWithSubsteps").length).toBe(0);
         });
 
         it("should render substeps", () => {
             const newComponent = shallow(component({stepId: "1", name: "", state: "success", steps: []}, false, true, true));
 
-            expect(newComponent.find(cssClass("BuildStepWithSubsteps")).length).toBe(1);
-            expect(newComponent.find(cssClass("BuildStepSubsteps")).length).toBe(1);
+            expect(newComponent.find(".BuildStepWithSubsteps").length).toBe(1);
+            expect(newComponent.find(".BuildStepSubsteps").length).toBe(1);
         });
 
         it("should render in parallel", () => {
             const newComponent = shallow(component({stepId: "1", name: "", state: "success", steps: []}, true, true, true));
 
-            expect(newComponent.find(cssClass("BuildStepParallel")).length).toBe(1);
-            expect(newComponent.find(cssClass("BuildStepInParallel")).length).toBe(1);
+            expect(newComponent.find(".BuildStepParallel").length).toBe(1);
+            expect(newComponent.find(".BuildStepInParallel").length).toBe(1);
         });
 
     });

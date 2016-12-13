@@ -1,157 +1,168 @@
-@import "buildStepTools"
 @import "colors"
 
-.buildStep
+.BuildDetails
+  background-color: $lightGrey
+  overflow-x: hidden
+  padding: 20px 0px 10px 30px
+  white-space: nowrap
+
+  /* Start: Hide Connection Line for root steps */
+  >.BuildStep
+    &:first-of-type:before, &:last-of-type:after
+      display: none
+
+  >.BuildStepParallel
+    &:first-of-type
+      >.BuildStep:first-of-type:before
+        display: none
+    &:last-of-type
+      >.BuildStep:first-of-type:after
+        display: none
+
+  >.BuildStepWithSubsteps
+    &:first-of-type
+      >.BuildStep:first-of-type:before
+        display: none
+    &:last-of-type
+      >.BuildStep:first-of-type:after
+        display: none
+  /* End: Hide Connection Line for root steps */
+
+.BuildStep
   position: relative
   display: inline-block
-  border: 1px solid $dark-light-grey
-  border-radius: 3px
-  padding: 16px 0px 0px 0px
-  margin: 0 30px 20px 0
-  color: $very-dark-grey
-  background-color: $white
-  min-width: 80px
-  max-width: 180px
   vertical-align: top
-
-.buildStep:first-of-type
-  margin-left: -30px
-
-.buildStep.inParallel:first-of-type
-  margin-left: 0px
-
-.buildStep:before, .buildStep:after
-  content: ''
-  position: absolute
-  top: 3px
-  height: 2px
-
-.buildStep:before
-  width: 18px
-  left: -18px
-  background-color: $dark-grey
-
-.buildStep:after
-  width: 15px
-  right: -15px
-  background-color: $dark-grey
-
-
-.buildStep:first-of-type:before, .buildStep:last-of-type:after
-  display: none
-
-.buildStep.inParallel:first-of-type:before, .buildStep.inParallel:last-of-type:after
-  display: initial
-
-.buildStep
-  & .buildIcon
-    position: absolute
-    color: $white
-    top: -12px
-    left: -12px
-    border: 0px solid #3D3636
-    border-radius: 50%
-    width: 28px
-    height: 28px
-    text-align: center
-
-    & i
-    line-height: 28px
-    height: 28px
-
-  & .stepName
-    font-size: 0.8em
-    margin: 0px 8px 0px 8px
+  z-index: 0
+  min-width: 85px
 
   & .stepDuration
     position: absolute
     font-size: 0.7em
     font-weight: 100
     right: 4px
-    top: 2px
+    top: 0px
 
-.buildStep.success .buildIcon
-  background-color: $green
-.buildStep.failure .buildIcon
-  background-color: $red
-.buildStep.running .buildIcon
-  background-color: $blue
+  &.LowermostStep
+    background-color: $white
+    border: 1px solid $grey
+    margin: 0px 10px
 
-.buildStep.pending .buildIcon
-  background-color: $dark-grey
+  &.WithSubsteps
+    width: 100%
+    border-width: 0px 2px
+    border-color: $very-dark-grey
+    border-style: solid
 
-.buildStep.waiting .buildIcon
-  background-color: $peru
+  &:before , &:after
+    content: ""
+    height: 2px
+    position: absolute
+    background-color: $very-dark-grey
 
-.buildStep.killed .buildIcon
-  background-color: $black
+  &:before
+    left: -16px
+    top: -1px
+    width: 16px
 
-/* Style for Parallel Steps */
-.buildStep.inParallel
-  display: block
-  width: 170px
-  animation-name: parallelStepExpand
-  animation-delay: 0s
-  animation-duration: 0.5s
+  &:after
+    right: -11px
+    top: -1px
+    width: 11px
 
-.buildStep.inParallel:first-of-type:before
-  width: 30px
-  left: -30px
+  &.WithSubsteps
+    &:before
+      width: 13px
+      left: -13px
 
-.buildStep.inParallel:first-of-type:after
-  width: 25px
-  right: -25px
+    &:after
+      width: 13px
+      right: -13px
 
-.parallelColumn
+.BuildStepParallel
+  background-color: transparentize($very-dark-grey, 0.8)
+  margin: 0px 10px
+  border: 1px solid $grey
   display: inline-block
-  margin-left: 10px
   vertical-align: top
 
+.BuildStepWithSubsteps
+  border-radius: 3px
+  background-color: transparentize($very-dark-grey, 0.8)
+  margin: 0px 10px
+  border: 1px solid $grey
+  display: inline-block
+  vertical-align: top
+  padding-bottom: 10px
+
+.BuildStepInParallel
+  display: block
+  vertical-align: top
+
+  .BuildStepWithSubsteps
+    margin-bottom: 10px
+
+.ParallelLine
+  border-style: solid
+  border-width: 0px 2px
+  border-color: $very-dark-grey
+  padding-bottom: 10px
+
   &:last-of-type
-    .buildStep.inParallel:after
-      display: none
+    border-color: transparent
 
-    .parallelRight
-      display: none
+  // Only for direct child
+  >.BuildStep
+    width: calc(100% - 20px)
 
-  .buildStep.inParallel:last-of-type .hideLine
-    position: absolute
-    background-color: $lightGrey
-    width: 4px
-    margin-top: -11px
-    height: 1000px
-    margin-left: 182px
+.LowermostStep:first-of-type:before
+  left: -11px
+  width: 11px
+  
 
-    &:first-of-type
-      margin-left: -20px
+.StepName
+  font-size: 11px
+  padding: 14px 10px 10px 10px
+  height: 100%
+  font-weight: bold
+  
+  &.HasSubsteps
+    cursor: pointer
 
-.parallelLeft, .parallelRight
-  width: 2px
-  height: calc(100% - 232px)
+.BuildStep .buildIcon
   position: absolute
-  background-color: $dark-grey
-  margin-top: 4px
-
-.parallelLeft
-  margin-left: -18px
-
-.parallelRight
-  margin-left: 183px
-
-.closeParallelStep
-  width: 25px
-  height: 25px
-  color: $dark-grey
-  position: absolute
+  color: $white
+  border: 0px solid #3D3636
+  border-radius: 50%
+  width: 22px
+  height: 22px
   text-align: center
-  margin-top: -19px
-  margin-left: 151px
-  cursor: pointer
 
-@keyframes parallelStepExpand
-  0%
-    width: 120px
-  100%
-    width: 170px
+  & i
+    line-height: 22px
+    height: 22px
 
+.WithSubsteps .buildIcon
+  margin-top: -13px
+  margin-left: -9px
 
+.LowermostStep .buildIcon
+  margin-top: -11px
+  margin-left: -8px
+
+.BuildStep.success .buildIcon
+  background-color: $green
+.BuildStep.failure .buildIcon
+  background-color: $red
+.BuildStep.running .buildIcon
+  background-color: $blue
+
+.BuildStep.pending .buildIcon
+  background-color: $white
+  color: $very-dark-grey !important
+  border: 1px solid $grey
+
+.BuildStep.waiting .buildIcon
+  background-color: $peru
+
+.BuildStep.killed .buildIcon
+  background-color: $black

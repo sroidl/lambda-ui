@@ -1,6 +1,6 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import "../../../sass/newBuildStep.sass";
+import "../../../sass/buildStep.sass";
 import {toggleSubsteps} from "actions/BuildStepActions.es6";
 import R from "ramda";
 import {StateIcon} from "../StateIcon.es6";
@@ -8,10 +8,7 @@ import Tools from "./Tools.es6";
 import Moment from "moment";
 import "moment-duration-format";
 import DevToggle from "../DevToggles.es6";
-
-export const classes = (...classes) => {
-    return R.reduce((acc, val) => acc + " n" + val, "")(classes).trim();
-};
+import {classes} from "../ComponentUtils.es6";
 
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
