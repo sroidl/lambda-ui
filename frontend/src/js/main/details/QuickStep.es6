@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import R from "ramda";
-import {toggleSubsteps} from "../actions/BuildStepActions.es6";
+import {scrollToStep} from "../actions/BuildDetailActions.es6";
 import {classes} from "../ComponentUtils.es6";
 
 export class QuickStep extends React.Component {
@@ -11,21 +11,20 @@ export class QuickStep extends React.Component {
     }
 
     render(){
-        const {showSubsteps, step, buildId, toggleQuickStep} = this.props;
+        const {showSubsteps, step, buildId, scrollToStep} = this.props;
 
         const quickStepClasses = classes("quickStep", step.state);
-        const onClick = step.steps && step.steps.length > 0 ? toggleQuickStep : "";
 
         if(showSubsteps && step.steps && step.steps.length > 0){
             return <div className="quickStepContainer">
-                <div className={quickStepClasses} onClick={onClick}></div>
+                <div className={quickStepClasses} onClick={scrollToStep}></div>
                 <div className="quickSubsteps">
                     {R.map(step => <QuickStepRedux key={step.stepId} buildId={buildId} step={step} />)(step.steps)}
                 </div>
             </div>;
         }
 
-        return <div className={quickStepClasses} onClick={onClick}></div>;
+        return <div className={quickStepClasses} onClick={scrollToStep}></div>;
     }
 }
 
@@ -33,7 +32,7 @@ QuickStep.propTypes = {
     buildId: PropTypes.number.isRequired,
     step: PropTypes.object.isRequired,
     showSubsteps: PropTypes.bool.isRequired,
-    toggleQuickStep: PropTypes.func.isRequired
+    scrollToStep: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -49,7 +48,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        toggleQuickStep: () => dispatch(toggleSubsteps(ownProps.buildId, ownProps.step.stepId))
+        scrollToStep: () => dispatch(scrollToStep(ownProps.buildId, ownProps.step.stepId))
     };
 };
 

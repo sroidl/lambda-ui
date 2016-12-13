@@ -52,7 +52,7 @@ export const scrollToStep = (buildId, stepId) => {
     const divId = "Build" + buildId + "Step" + stepId;
 
     document.getElementById(divId).scrollIntoView();
-    document.getElementById("draggable" + buildId).scrollLeft += 50;
+    //document.getElementById("draggable" + buildId).scrollLeft += 50;
 };
 
 

@@ -28,7 +28,7 @@ describe("BuildDetails", () => {
     const subject = (properties) => {
         const {buildId, open, requestDetailsFn, stepsToDisplay} = properties;
         return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn}
-                             stepsToDisplay={stepsToDisplay}/>;
+                             stepsToDisplay={stepsToDisplay} noScrollToStepFn={() => {}} />;
     };
 
     describe("BuildDetails Component", () => {
