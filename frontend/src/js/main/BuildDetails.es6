@@ -53,9 +53,9 @@ export class BuildDetails extends React.Component {
             quickDetails = <QuickDetails buildId={buildId} />;
         }
 
-        return <div id={"draggable" + buildId} className="BuildDetails">
+        return <div className="BuildDetails">
             {quickDetails}
-            <div className="BuildDetailSteps">
+            <div className="BuildDetailSteps" id={"draggable" + buildId}>
                 {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
             </div>
         </div>;
