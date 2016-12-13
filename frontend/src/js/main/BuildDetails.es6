@@ -7,6 +7,7 @@ import BuildStep from "steps/BuildStep.es6";
 import {makeDraggable} from "steps/HorizontalScroll.es6";
 import QuickDetails from "details/QuickDetails.es6";
 import DevToggle from "DevToggles.es6";
+import "../../sass/buildDetails.sass";
 
 export class BuildDetails extends React.Component {
 
@@ -46,7 +47,9 @@ export class BuildDetails extends React.Component {
 
         return <div id={"draggable" + buildId} className="BuildDetails">
             {quickDetails}
-            {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
+            <div className="BuildDetailSteps">
+                {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
+            </div>
         </div>;
     }
 }
