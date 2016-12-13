@@ -2,7 +2,7 @@ import {createStore, combineReducers, compose, applyMiddleware} from "redux";
 import ReduxThunk from "redux-thunk";
 import {ToggleBuildDetailsReducer} from "./reducers/ToggleBuildDetails.es6";
 import {BuildSummariesReducer} from "./reducers/BuildSummaries.es6";
-import {BuildDetailsReducer, ViewBuildStepReducer} from "./reducers/BuildDetails.es6";
+import {BuildDetailsReducer} from "./reducers/BuildDetails.es6";
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
 import {OutputReducer} from "./reducers/Output.es6";
 import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
@@ -15,7 +15,6 @@ const initialState = {
     openedBuilds: {},
     buildDetails: {},
     config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
-    viewBuildSteps: {},
     output: {showOutput: false},
     developmentToggles: {
         usePolling: true,
@@ -36,7 +35,6 @@ const rootReducer = combineReducers({
     summaries: BuildSummariesReducer,
     buildDetails: BuildDetailsReducer,
     config: PipelineConfigurationReducer,
-    viewBuildSteps: ViewBuildStepReducer,
     output: OutputReducer,
     developmentToggles: DevelopmentTogglesReducer,
     showStepToolbox: BuildStepsReducer,

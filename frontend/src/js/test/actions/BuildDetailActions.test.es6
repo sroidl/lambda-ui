@@ -30,13 +30,4 @@ describe("BuildDetailActions", () => {
             buildDetails: {}
         });
     });
-
-    it("schould return viewBuildStep action object", () => {
-        const newAction = subject.viewBuildStep(1, 2);
-        expect(newAction).toEqual({
-            type: "viewBuildStep",
-            buildId: 1,
-            stepId: 2
-        });
-    });
 });

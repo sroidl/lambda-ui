@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import BuildDetails from "./BuildDetails.es6";
-import {toggleBuildDetails as toggleAction, viewBuildStep} from "actions/BuildDetailActions.es6";
+import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
 import Toggles from "./DevToggles.es6";
@@ -103,13 +103,12 @@ export const mapStateToProps = (state, props) => {
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => {
+    // TODO: Implements new Intersting Step
     return {
         toggleBuildDetails: () => {
             dispatch(toggleAction(ownProps.build.buildId));
         },
-        showInterestingStep: () => {
-            dispatch(viewBuildStep(ownProps.build.buildId, "__showInterestingStep"));
-        }
+        showInterestingStep: () => {}
     };
 };
 
