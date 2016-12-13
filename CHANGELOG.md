@@ -1,24 +1,10 @@
 # Change Log
-All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
+All notable changes to this project will be documented in this file.
 
-## [Unreleased][unreleased]
-### Changed
-- Add a new arity to `make-widget-async` to provide a different widget shape.
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.1] - 2016-05-10
-### Changed
-- Documentation on how to make the widgets.
-
-### Removed
-- `make-widget-sync` - we're all async, all the time.
-
-### Fixed
-- Fixed widget maker to keep working when daylight savings switches over.
-
-## 0.1.0 - 2016-05-10
+## Unreleased
 ### Added
-- Files from the new template.
-- Widget maker public API - `make-widget-sync`.
-
-[unreleased]: https://github.com/your-name/lambdaui/compare/0.1.1...HEAD
-[0.1.1]: https://github.com/your-name/lambdaui/compare/0.1.0...0.1.1
+  - __:include-old-ui__ option in `core/ui-for` function. Enables by default. Will serve the old-ui as well as the new ui.
+  - ...

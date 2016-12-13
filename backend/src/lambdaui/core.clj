@@ -33,7 +33,7 @@
          "window.lambdaui.config = { name: '" name "', baseUrl: " location "};"))
   )
 
-(defn pipeline-routes [pipeline]
+(defn pipeline-routes [pipeline & {:keys [include-old-ui] :or {include-old-ui true}}]
   (ring-json/wrap-json-response
     (wrap-params
       (routes
@@ -43,13 +43,14 @@
         (GET "/lambdaui/config.js" [] (create-config pipeline))
         (context "/lambdaui/api" [] (new-api/api-routes pipeline))
         (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
-        (GET "/" [] (old-ui/ui-page pipeline))
+        (when include-old-ui
+          (GET "/" [] (old-ui/ui-page pipeline)))
         (context "/polling" [] (polling/polling-routes pipeline))
 
         (context "/api" []
           (old-api/rest-api pipeline)
           )))))
 
-(defn ui-for [pipeline]
-  (pipeline-routes pipeline))
+(defn ui-for [pipeline & opts]
+  (pipeline-routes pipeline opts))
 
