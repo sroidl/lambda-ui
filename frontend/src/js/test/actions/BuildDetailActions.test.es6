@@ -30,4 +30,20 @@ describe("BuildDetailActions", () => {
             buildDetails: {}
         });
     });
+
+    it("should return scrollToStep action object", () => {
+        const newAction = subject.scrollToStep(1,"1");
+        expect(newAction).toEqual({
+            type: "scrollToStep",
+            buildId: 1,
+            stepId: "1"
+        });
+    });
+
+    it("should return noScrollToStep action object", () => {
+        const newAction = subject.noScrollToStep();
+        expect(newAction).toEqual({
+            type: "noScrollToStep"
+        });
+    });
 });
