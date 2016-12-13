@@ -12,6 +12,12 @@
             )
   (:import (org.joda.time DateTime DateTimeZone)))
 
+(def joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC)))
+(def joda-date-12-str "2016-01-01T12:00:00.000Z")
+
+(def joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC)))
+(def joda-date-14-str "2016-01-01T14:00:00.000Z")
+
 (defn do-stuff [] {})
 
 (def foo-pipeline
@@ -24,23 +30,27 @@
   `((ctrl-flow/in-parallel do-stuff do-stuff)))
 
 (def pipeline-with-substeps-state
-  (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
-        joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))]
-    {'(1)   {:status                :running
-             :first-updated-at      joda-date-12
-             :most-recent-update-at joda-date-14
-             }
-     '(1 1) {:status                :running
-             :first-updated-at      joda-date-12
-             :most-recent-update-at joda-date-14
-             }}))
+  {'(1)   {:status                :running
+           :first-updated-at      joda-date-12
+           :most-recent-update-at joda-date-14
+           }
+   '(1 1) {:status                :running
+           :first-updated-at      joda-date-12
+           :most-recent-update-at joda-date-14
+           }})
 
 (defn foo-pipeline-build-state [status]
-  (let [joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
-        joda-date-14 (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))]
-    {'(1) {:status                status
-           :first-updated-at      joda-date-12
-           :most-recent-update-at joda-date-14}}))
+  {'(1) {:status                status
+         :first-updated-at      joda-date-12
+         :most-recent-update-at joda-date-14}})
+
+(defn pipeline-build-state-with-trigger [status]
+  {'(1) {:status                status
+         :first-updated-at      joda-date-12
+         :most-recent-update-at joda-date-14
+         :type                  :manual-trigger
+         }})
+
 
 
 (deftest build-details-from-pipeline-test
@@ -51,9 +61,9 @@
                        :steps   [{:stepId    "1"
                                   :state     running-status
                                   :name      "do-stuff"
-                                  :startTime "2016-01-01T12:00:00.000Z"
-                                  :type :step
-                                  :steps []
+                                  :startTime joda-date-12-str
+                                  :type      :step
+                                  :steps     []
                                   :endTime   nil}]}
                       (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId nil)))))))
   (testing "that it returns build details of a finished step"
@@ -63,10 +73,10 @@
                        :steps   [{:stepId    "1"
                                   :state     finished-status
                                   :name      "do-stuff"
-                                  :type :step
-                                  :steps []
-                                  :startTime "2016-01-01T12:00:00.000Z"
-                                  :endTime   "2016-01-01T14:00:00.000Z"}]}
+                                  :type      :step
+                                  :steps     []
+                                  :startTime joda-date-12-str
+                                  :endTime   joda-date-14-str}]}
                       (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId nil)))))))
   (testing "that it returns build details of nested steps"
     (let [buildId 1]
@@ -74,22 +84,22 @@
               :steps   [{:stepId    "1"
                          :state     :running
                          :name      "run"
-                         :startTime "2016-01-01T12:00:00.000Z"
+                         :startTime joda-date-12-str
                          :endTime   nil
                          :type      :container
                          :steps     [{:stepId    "1-1"
                                       :state     :running
-                                      :type :step
-                                      :steps []
+                                      :type      :step
+                                      :steps     []
                                       :name      "do-stuff"
-                                      :startTime "2016-01-01T12:00:00.000Z"
+                                      :startTime joda-date-12-str
                                       :endTime   nil}
 
                                      {:stepId    "2-1"
                                       :state     :pending
                                       :name      "do-stuff"
-                                      :type :step
-                                      :steps []
+                                      :type      :step
+                                      :steps     []
                                       :startTime nil
                                       :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId nil)))))
 
@@ -100,31 +110,31 @@
                          :state     :running
                          :name      "in-parallel"
                          :type      :parallel
-                         :startTime "2016-01-01T12:00:00.000Z"
+                         :startTime joda-date-12-str
                          :endTime   nil
                          :steps     [{:stepId    "1-1"
                                       :state     :running
-                                      :type :step
-                                      :steps []
+                                      :type      :step
+                                      :steps     []
                                       :name      "do-stuff"
-                                      :startTime "2016-01-01T12:00:00.000Z"
+                                      :startTime joda-date-12-str
                                       :endTime   nil}
 
                                      {:stepId    "2-1"
                                       :state     :pending
                                       :name      "do-stuff"
-                                      :type :step
-                                      :steps []
+                                      :type      :step
+                                      :steps     []
                                       :startTime nil
                                       :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId nil))))))
 
 (deftest output-websocket
   (testing "that a payload is sent through the ws channel"
     (let [event-channel (async/chan)
-          sent-channel  (async/chan 1)
-          ws-ch         (reify httpkit-server/Channel
-                          (on-close [& _])
-                          (send! [ws-ch data] (async/>!! sent-channel data)))]
+          sent-channel (async/chan 1)
+          ws-ch (reify httpkit-server/Channel
+                  (on-close [& _])
+                  (send! [ws-ch data] (async/>!! sent-channel data)))]
       (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
                     event-bus/only-payload (fn [subscription] event-channel)
                     state/get-all (fn [_] {})]
@@ -137,12 +147,12 @@
     (let [
 
           event-channel (async/chan)
-          sent-channel  (async/chan 1)
+          sent-channel (async/chan 1)
           closed (atom false)
-          ws-ch         (reify httpkit-server/Channel
-                          (on-close [& _])
-                          (close [ws-ch] (reset! closed true))
-                          (send! [ws-ch data] (async/>!! sent-channel data)))]
+          ws-ch (reify httpkit-server/Channel
+                  (on-close [& _])
+                  (close [ws-ch] (reset! closed true))
+                  (send! [ws-ch data] (async/>!! sent-channel data)))]
       (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
                     event-bus/only-payload (fn [subscription] event-channel)
                     state/get-all (fn [_] {})]
@@ -154,14 +164,14 @@
         (println (async/<!! sent-channel))
         ;(is (= true @closed))
         )
-        ))
-    )
+      ))
+  )
 
 (deftest only-matching-step-test
   (testing "that it filters for matching steps"
-    (let [in-ch  (async/to-chan [{:build-number 1 :step-id [2 1] :step-result {:foo :bar}}
-                                 {:build-number 2 :step-id [2 1] :step-result {:foo :bar}}
-                                 {:build-number 1 :step-id [3 1] :step-result {:foo :bar}}])
+    (let [in-ch (async/to-chan [{:build-number 1 :step-id [2 1] :step-result {:foo :bar}}
+                                {:build-number 2 :step-id [2 1] :step-result {:foo :bar}}
+                                {:build-number 1 :step-id [3 1] :step-result {:foo :bar}}])
           out-ch (subject/only-matching-step in-ch 1 "2-1")]
       (is (= [{:buildId 1 :stepId "2-1" :stepResult {:foo :bar}}] (async/<!! (async/into [] out-ch)))))))
 
@@ -183,7 +193,7 @@
     (with-redefs [lambdacd.internal.pipeline-state/get-all (fn [_] {})]
       (let [pipeline {:pipeline-def pipeline-with-substeps}
             build-id "1"
-            ws-ch    (async/chan 1)]
+            ws-ch (async/chan 1)]
         (subject/websocket-connection-for-details pipeline build-id (wrap-websocket-channel ws-ch))
         (async/close! ws-ch)
 
@@ -197,16 +207,16 @@
                            :steps     [{:stepId    "1-1"
                                         :state     "pending"
                                         :name      "do-stuff"
-                                        :type "step"
-                                        :steps []
+                                        :type      "step"
+                                        :steps     []
                                         :startTime nil
                                         :endTime   nil}
 
                                        {:stepId    "2-1"
                                         :state     "pending"
                                         :name      "do-stuff"
-                                        :type "step"
-                                        :steps []
+                                        :type      "step"
+                                        :steps     []
                                         :startTime nil
                                         :endTime   nil}]}]}
 
@@ -217,15 +227,15 @@
     ))
 
 (deftest extract-trigger-data-test
- (testing "should return nil on empty"
-   (is (nil? (subject/extract-trigger-data nil nil))))
+  (testing "should return nil on empty"
+    (is (nil? (subject/extract-trigger-data nil nil))))
 
- (testing "should return trigger-id and convert step id"
-   (let [ui-config {}
-         input ['(1 4) {:trigger-id "abcdef"}]]
+  (testing "should return trigger-id and convert step id"
+    (let [ui-config {}
+          input ['(1 4) {:trigger-id "abcdef"}]]
       (is (= ["1-4" {:trigger {:url "/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input)))))
 
- (testing "should add path-prefix from ui-config to build trigger-data"
-   (let [ui-config {:path-prefix "release-pipeline"}
-         input ['(1 4) {:trigger-id "abcdef"}]]
-     (is (= ["1-4" {:trigger {:url "release-pipeline/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input))))))
+  (testing "should add path-prefix from ui-config to build trigger-data"
+    (let [ui-config {:path-prefix "release-pipeline"}
+          input ['(1 4) {:trigger-id "abcdef"}]]
+      (is (= ["1-4" {:trigger {:url "release-pipeline/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input))))))
