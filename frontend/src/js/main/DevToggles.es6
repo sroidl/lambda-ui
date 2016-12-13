@@ -21,9 +21,6 @@ class DevToggles {
     get handleTriggerSteps() {
         return isActive("handleTriggerSteps");
     }
-    get useNewPipelineStructure() {
-        return isActive("useNewPipelineStructure");
-    }
 }
 
 export default new DevToggles();

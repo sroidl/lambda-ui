@@ -45,7 +45,7 @@ describe("getInterestingStepId", () => {
 
     describe("Find failed Substep", () => {
 
-        it("should return current step if it has failed and no substeps", () => {
+        it("should return emty array if parent step is root", () => {
             const state = {
                 buildDetails: {
                     1: {
@@ -59,7 +59,7 @@ describe("getInterestingStepId", () => {
                     }
                 }
             };
-            expect(findParentOfFailedSubstep(state, 1, "1")).toEqual("root");
+            expect(findParentOfFailedSubstep(state, 1, "1")).toEqual([]);
         });
         it("should return null if it is success", () => {
             const state = {
@@ -107,7 +107,7 @@ describe("getInterestingStepId", () => {
                 }
             };
 
-            expect(findParentOfFailedSubstep(state, 1, "1")).toEqual("1");
+            expect(findParentOfFailedSubstep(state, 1, "1")).toEqual(["1"]);
         });
 
         it("should return children children step if it failed", () => {
@@ -135,7 +135,7 @@ describe("getInterestingStepId", () => {
                 }
             };
 
-            expect(findParentOfFailedSubstep(state, 1, "1")).toEqual("1-1");
+            expect(findParentOfFailedSubstep(state, 1, "1")).toEqual(["1", "1-1"]);
         });
 
         it("should return lowermost children step if it failed", () => {
@@ -169,7 +169,7 @@ describe("getInterestingStepId", () => {
             };
 
             const result = findParentOfFailedSubstep(state, 1, "1");
-            expect(result).toEqual("1-1-1");
+            expect(result).toEqual(["1", "1-1", "1-1-1"]);
         });
 
         const complexState = {
@@ -203,13 +203,7 @@ describe("getInterestingStepId", () => {
 
         it("should return first failure substep", () => {
             const result = findParentOfFailedSubstep(complexState, 1, "1");
-            expect(result).toEqual("1");
-        });
-
-        xit("should return second failure substep", () => {
-            // TODO: Show correct failed step if several failed steps available
-            const result = findParentOfFailedSubstep(complexState, 1, "2");
-            expect(result).toEqual("2");
+            expect(result).toEqual(["1"]);
         });
     });
 
@@ -245,7 +239,7 @@ describe("getInterestingStepId", () => {
             };
 
             const result = findParentOfRunningSubstep(state, 1, "1");
-            expect(result).toEqual("1-1-1");
+            expect(result).toEqual(["1", "1-1", "1-1-1"]);
         });
     });
 });
