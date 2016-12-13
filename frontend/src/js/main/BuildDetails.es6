@@ -8,13 +8,22 @@ import {makeDraggable} from "newSteps/HorizontalScroll.es6";
 
 export class BuildDetails extends React.Component {
 
-    componentDidUpdate(){
-        if(this.props.stepsToDisplay){
+    constructor(props) {
+        super(props);
+        this.registeredEventHandler = false;
+    }
+
+    componentDidUpdate() {
+        if (this.props.open && !this.registeredEventHandler) {
             makeDraggable(this.props.buildId);
+            this.registeredEventHandler = true;
+        }
+        if (!this.props.open) {
+            this.registeredEventHandler = false;
         }
     }
 
-    render(){
+    render() {
         const {open, stepsToDisplay, requestDetailsFn, buildId} = this.props;
 
         if (!open) {
@@ -29,7 +38,7 @@ export class BuildDetails extends React.Component {
         }
 
         return <div id={"draggable" + buildId} className="nBuildDetails">
-            {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId} />)(stepsToDisplay)}
+            {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
         </div>;
     }
 }
