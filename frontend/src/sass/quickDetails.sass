@@ -1,0 +1,71 @@
+@import "colors"
+
+.quickDetails
+  margin-bottom: 20px
+
+  >.quickStep:first-of-type:before
+    display: none
+
+.quickStep
+  display: inline-block
+  width: 14px
+  height: 14px
+  border-radius: 7px
+  margin-left: 5px
+  position: relative
+
+  &:before
+    content: ""
+    width: 5px
+    height: 2px
+    background-color: $dark-grey
+    position: absolute
+    left: -5px
+    top: 6px
+
+  &.success
+    background-color: $green
+
+  &.failure
+    background-color: $red
+
+  &.waiting
+    background-color: $peru
+
+  &.pending
+    background-color: $white
+
+  &.killed
+    background-color: $black
+
+  &.running
+    background-color: $blue
+    
+
+.quickStepContainer
+  display: inline-block
+  vertical-align: top
+
+  &:first-of-type
+    > .quickStep:before
+      width: 2px
+      height: 10px
+      top: -10px
+      left: 6px
+
+
+.quickSubsteps
+  >.quickStep:first-of-type:before
+    width: 2px
+    height: 10px
+    top: -10px
+    left: 6px
+
+  >.quickStep:last-of-type:after
+    position: absolute
+    content: ""
+    background-color: $dark-grey
+    width: 2px
+    height: 25px
+    right: -2px
+    top: -18px

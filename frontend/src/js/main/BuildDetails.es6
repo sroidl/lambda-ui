@@ -5,6 +5,8 @@ import R from "ramda";
 import {getInterestingStepId, shouldShowInterestingStep} from "steps/InterestingStepFinder.es6";
 import BuildStep from "steps/BuildStep.es6";
 import {makeDraggable} from "steps/HorizontalScroll.es6";
+import QuickDetails from "details/QuickDetails.es6";
+import DevToggle from "DevToggles.es6";
 
 export class BuildDetails extends React.Component {
 
@@ -37,7 +39,13 @@ export class BuildDetails extends React.Component {
             </div>;
         }
 
+        let quickDetails = "";
+        if(DevToggle.useQuickBuildDetails){
+            quickDetails = <QuickDetails buildId={buildId} />;
+        }
+
         return <div id={"draggable" + buildId} className="BuildDetails">
+            {quickDetails}
             {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
         </div>;
     }

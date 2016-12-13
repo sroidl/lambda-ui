@@ -21,6 +21,9 @@ class DevToggles {
     get handleTriggerSteps() {
         return isActive("handleTriggerSteps");
     }
+    get useQuickBuildDetails() {
+        return isActive("useQuickBuildDetails");
+    }
 }
 
 export default new DevToggles();

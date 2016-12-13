@@ -22,7 +22,8 @@ const initialState = {
         showInterestingStep: false,
         showConnectionState: true,
         useAnsiCodeColors: false,
-        handleTriggerSteps: true
+        handleTriggerSteps: true,
+        useQuickBuildDetails: false
     },
     showStepToolbox: {},
     showInParallel: {},
