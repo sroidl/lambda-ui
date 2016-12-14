@@ -34,27 +34,21 @@ export class Tools extends React.Component {
         super(props);
     }
 
-    showOutputTool() {
-        return <ToolboxLink toolClass="outputTool" iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output"
+    toolOutput() {
+        return <ToolboxLink key="outputTool" toolClass="outputTool" iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output"
                             linkFn={this.props.showOutputFn}/>;
     }
 
-    showSubstepTool() {
-        const {step, hasSubsteps, openSubstepFn} = this.props;
-        if (hasSubsteps) {
-            const linkFn = () => openSubstepFn(step.stepId);
-            return <ToolboxLink toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS}
+    toolSubstep() {
+        const {step, openSubstepFn} = this.props;
+
+        const linkFn = () => openSubstepFn(step.stepId);
+        return <ToolboxLink key="substepTool" toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS}
                                 linkText="Substeps" linkFn={linkFn}/>;
-        }
-        return "";
     }
 
-    showInterestingStepTool() {
-        const {failureStep, runningStep, hasSubsteps, openSubstepFn} = this.props;
-
-        if((!failureStep && !runningStep) || !hasSubsteps){
-            return "";
-        }
+    toolInterestingStep() {
+        const {failureStep, runningStep, openSubstepFn} = this.props;
 
         const linkFn = () => {
             if(runningStep){
@@ -67,72 +61,89 @@ export class Tools extends React.Component {
         const toolClasses = Utils.classes("interestingStepTool", runningStep ? "runningStepTool" : "failureStepTool");
         const linkText = runningStep ? "Running Step" : "Failure Step";
 
-        return <ToolboxLink toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
+        return <ToolboxLink key="interestingStepTool" toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
                             linkText={linkText} linkFn={linkFn}/>;
     }
 
-    showTriggerTool(){
+    toolTrigger(){
         const {stepTrigger, showTriggerDialogFn} = this.props;
-        if(stepTrigger && stepTrigger.url){
-            const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
-            return <ToolboxLink iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;
-        }
-        return "";
+
+        const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
+        return <ToolboxLink key="triggerStepTool" iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;
     }
 
-    showToolbar() {
+    getToolsForRendering() {
+        const {stepTrigger, failureStep, runningStep, hasSubsteps} = this.props;
+
+        const toolsForRendering = [];
+
         if(DevToggle.handleTriggerSteps){
-            if(this.props.stepType === "trigger"){
-                return <div className="toolbar">
-                    {this.showTriggerTool()}
-                </div>;
+            if(stepTrigger && stepTrigger.url){
+                toolsForRendering.push(this.toolTrigger());
+                return toolsForRendering;
             }
         }
+        toolsForRendering.push(this.toolOutput());
+        if((failureStep || runningStep) && hasSubsteps){
+            toolsForRendering.push(this.toolInterestingStep());
+        }
+        if(hasSubsteps){
+            toolsForRendering.push(this.toolSubstep());
+        }
+        return toolsForRendering;
+    }
 
-        return <div className="toolbar">
-            {this.showOutputTool()}
-            {this.showSubstepTool()}
-            {this.showInterestingStepTool()}
+    showToolbar(toolsForRendering) {
+        const classes = Utils.classes("toolbar", toolsForRendering.length <= 3 ? "withoutExpand" : "");
+
+        return <div className={classes}>
+            {R.view(R.lensIndex(0))(toolsForRendering)}
+            {R.view(R.lensIndex(1))(toolsForRendering)}
+            {R.view(R.lensIndex(2))(toolsForRendering)}
         </div>;
     }
 
-    showToolbox() {
-        if (this.props.toolboxOpen) {
-            return <div className="toolbox">
-
-            </div>;
+    showToolbox(toolsForRendering) {
+        if (!this.props.toolboxOpen) {
+            return null;
         }
-        return "";
+
+        return <div className="toolbox">
+            {R.view(R.lensIndex(3))(toolsForRendering)}
+            {R.view(R.lensIndex(4))(toolsForRendering)}
+            {R.view(R.lensIndex(5))(toolsForRendering)}
+        </div>;
     }
 
-    showToggleToolbox() {
-        let triggerClass, toggleOnClick;
+    showToggleToolbox(toolsForRendering) {
+        const {toggleStepToolboxFn, toolboxOpen} = this.props;
 
-        if(DevToggle.handleTriggerSteps){
-            triggerClass = this.props.stepTrigger ? "showNoIcon" : "";
-            toggleOnClick = this.props.stepTrigger ? "" : this.props.toggleStepToolboxFn;
-        } else {
-            triggerClass = "";
-            toggleOnClick = this.props.toggleStepToolboxFn;
+        if(toolsForRendering.length <= 3) {
+            return null;
         }
 
-        const toggleToolboxClasses = Utils.classes("expandTools", triggerClass, "showNoIcon");
-        const toggleToolboxIconClasses = Utils.classes("fa", (this.props.toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
+        const toggleToolboxClasses = Utils.classes("expandTools", "showNoIcon");
+        const toggleToolboxIconClasses = Utils.classes("fa", (toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
 
-        return <div className={toggleToolboxClasses} onClick={toggleOnClick}>
+        return <div className={toggleToolboxClasses} onClick={toggleStepToolboxFn}>
             <i className={toggleToolboxIconClasses} aria-hidden="true"/>
         </div>;
     }
 
     render() {
+        const toolsForRendering = this.getToolsForRendering();
 
         return <div className="tools">
-            {this.showToolbar()}
-            {this.showToolbox()}
-            {this.showToggleToolbox()}
+            {this.showToolbar(toolsForRendering)}
+            {this.showToolbox(toolsForRendering)}
+            {this.showToggleToolbox(toolsForRendering)}
         </div>;
     }
 }
+
+
+
+
 Tools.propTypes = {
     step: PropTypes.object,
     failureStep: PropTypes.array,

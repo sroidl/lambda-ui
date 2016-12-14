@@ -17,17 +17,20 @@
   border-radius: 0px 0px 3px 3px
   overflow: hidden
 
-  > .toolbar
+  & .toolbar
     border-top: 1px solid $dark-grey
     border-bottom: 1px solid $dark-grey
     background-color: $white
     overflow: auto
 
+    &.withoutExpand
+      border-bottom: none
+
     > .tool
       width: 33.33333%
       text-align: center
 
-      > .linkText
+      & .linkText
         display: none
         padding: initial
 
@@ -42,7 +45,7 @@
     overflow: hidden
 
 
-    > .toolIcon
+    & .toolIcon
       width: 28px
       height: 28px
       text-align: center
@@ -50,7 +53,7 @@
 
 
 
-    > .linkText
+    & .linkText
       height: 28px
       font-size: 12px
       float: left
@@ -97,12 +100,3 @@
 
 .tool.triggerStepTool
   margin-left: 33%
-
-.expandTools.showNoIcon
-  cursor: inherit
-
-  &:hover
-    background-color: $white
-
-  >.fa
-    display: none
