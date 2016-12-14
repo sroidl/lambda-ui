@@ -46,7 +46,7 @@ export class BuildStep extends React.Component {
             stepDuration = <div className="stepDuration">{duration(getStepDuration(step))}</div>;
         }
 
-        const buildStep = <div id={buildStepId} className={buildStepClasses}>
+        const buildStep = <div id={hasSubsteps && showSubsteps ? "" : buildStepId} className={buildStepClasses}>
             <StateIcon state={step.state}/>
             <div className={classes("StepName", hasSubsteps ? "HasSubsteps" : "")} onClick={hasSubsteps ? toggleSubsteps : ""}>{step.name}</div>
             {stepDuration}
@@ -67,12 +67,12 @@ export class BuildStep extends React.Component {
                     </div>;
                 })(step.steps);
             } else{
-                parentClass = classes("BuildStepWithSubsteps");
+                parentClass = classes("BuildStepWithSubsteps", buildStepId);
                 childrenClass = classes("BuildStepSubsteps");
                 childrenSteps = R.map(step => buildStepRedux(step))(step.steps);
             }
 
-            return <div className={parentClass}>
+            return <div id={buildStepId} className={parentClass}>
                 {buildStep}
                 <div className={childrenClass}>
                     {childrenSteps}

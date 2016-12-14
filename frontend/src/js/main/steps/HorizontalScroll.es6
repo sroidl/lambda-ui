@@ -48,11 +48,21 @@ export const makeDraggable = (buildId) => {
     });
 };
 
+const highlightStep = (buildId, stepId) => {
+    const currentStep = document.getElementById("Build" + buildId + "Step" + stepId);
+    const classString = currentStep.className;
+    const newClass = classString.concat(" active");
+    currentStep.className = newClass;
+    setTimeout(() => {
+        currentStep.className = classString;
+    }, 1000);
+};
+
 export const scrollToStep = (buildId, stepId) => {
     const divId = "Build" + buildId + "Step" + stepId;
 
     document.getElementById(divId).scrollIntoView();
-    //document.getElementById("draggable" + buildId).scrollLeft += 50;
+    highlightStep(buildId, stepId);
 };
 
 

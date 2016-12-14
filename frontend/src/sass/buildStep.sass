@@ -49,6 +49,10 @@
     border-color: $very-dark-grey
     border-style: solid
 
+    &.active
+      background-color: $blue
+
+
   &:before , &:after
     content: ""
     height: 2px
@@ -114,6 +118,8 @@
   left: -11px
   width: 11px
   
+.active
+  box-shadow: 0px 0px 5px 5px $blue
 
 .StepName
   font-size: 11px
