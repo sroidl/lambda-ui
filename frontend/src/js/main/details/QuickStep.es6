@@ -11,20 +11,19 @@ export class QuickStep extends React.Component {
     }
 
     render(){
-        const {showSubsteps, step, buildId, scrollToStep} = this.props;
+        const {showSubsteps, step, buildId, scrollToStep, maxDepth, curDepth} = this.props;
 
         const quickStepClasses = classes("quickStep", step.state);
 
-        if(showSubsteps && step.steps && step.steps.length > 0){
-            return <div className="quickStepContainer">
-                <div className={quickStepClasses} onClick={scrollToStep}></div>
-                <div className="quickSubsteps">
-                    {R.map(step => <QuickStepRedux key={step.stepId} buildId={buildId} step={step} />)(step.steps)}
-                </div>
-            </div>;
+        if(!showSubsteps || !step.steps || step.steps.length === 0 || maxDepth === curDepth){
+            return <div title={step.name} className={quickStepClasses} onClick={scrollToStep}></div>;
         }
 
-        return <div className={quickStepClasses} onClick={scrollToStep}></div>;
+        return <div className="quickStepContainer">
+            <div className={quickStepClasses} onClick={scrollToStep}></div>
+            <div className="quickSubsteps">
+                {R.map(step => <QuickStepRedux maxDepth={maxDepth} curDepth={curDepth + 1} key={step.stepId} buildId={buildId} step={step} />)(step.steps)}</div>
+        </div>;
     }
 }
 
@@ -32,7 +31,9 @@ QuickStep.propTypes = {
     buildId: PropTypes.number.isRequired,
     step: PropTypes.object.isRequired,
     showSubsteps: PropTypes.bool.isRequired,
-    scrollToStep: PropTypes.func.isRequired
+    scrollToStep: PropTypes.func.isRequired,
+    maxDepth: PropTypes.number.isRequired,
+    curDepth: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -42,7 +43,9 @@ const mapStateToProps = (state, ownProps) => {
     return {
         buildId: ownProps.buildId,
         step: ownProps.step,
-        showSubsteps: showSubsteps
+        showSubsteps: showSubsteps,
+        maxDepth: ownProps.maxDepth,
+        curDepth: ownProps.curDepth
     };
 };
 

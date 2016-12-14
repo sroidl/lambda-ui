@@ -23,12 +23,12 @@
 
   &:before
     content: ""
-    width: 6px
+    width: 7px
     height: 2px
     background-color: $dark-grey
     position: absolute
-    left: -6px
-    top: 6px
+    left: -7px
+    top: 5px
 
   &.success
     background-color: $green
@@ -68,6 +68,9 @@
 
 
 .quickSubsteps
+  background-color: transparentize($very-dark-grey, 0.9)
+  border-radius: 5px
+
   >.quickStep:first-of-type:before
     width: 2px
     height: 10px

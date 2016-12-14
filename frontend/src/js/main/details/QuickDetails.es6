@@ -11,18 +11,19 @@ export class QuickDetails extends React.Component {
     }
 
     render(){
-        const {steps, buildId} = this.props;
+        const {steps, buildId, maxDepth} = this.props;
 
         return <div className="quickDetails">
             <div className="quickTitle">Quick Access</div>
-            {R.map(step => <QuickStep key={step.stepId} buildId={buildId} step={step} />)(steps)}
+            {R.map(step => <QuickStep key={step.stepId} curDepth={1} maxDepth={maxDepth} buildId={buildId} step={step} />)(steps)}
         </div>;
     }
 }
 
 QuickDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
-    steps: PropTypes.array.isRequired
+    steps: PropTypes.array.isRequired,
+    maxDepth: PropTypes.number
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -30,14 +31,9 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         buildId: ownProps.buildId,
-        steps: steps
+        steps: steps,
+        maxDepth: ownProps.maxDepth
     };
 };
 
-/*
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {};
-};*/
-
 export default connect(mapStateToProps)(QuickDetails);
-
