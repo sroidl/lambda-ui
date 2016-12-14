@@ -1,4 +1,4 @@
-const BUILDSTEP_HIGHLIGHT_DURATION_IN_MS = 500;
+import {BUILDSTEP_HIGHLIGHT_DURATION_IN_MS} from "../steps/BuildStep.es6";
 
 const createElement = id => {
     const style = document.createElement("style");

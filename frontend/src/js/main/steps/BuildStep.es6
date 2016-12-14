@@ -10,6 +10,8 @@ import "moment-duration-format";
 import DevToggle from "../DevToggles.es6";
 import {classes} from "../ComponentUtils.es6";
 
+export const BUILDSTEP_HIGHLIGHT_DURATION_IN_MS = 500;
+
 export const duration = ({startTime, endTime}) => {
     const start = Moment(startTime);
     const end = Moment(endTime);
@@ -33,53 +35,65 @@ export class BuildStep extends React.Component {
         super(props);
     }
 
-    render() {
-        const {step, isParallel, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
+    getBuildStepId(){
+        const {buildId, step} = this.props;
+        return "Build" + buildId + "Step" + step.stepId;
+    }
 
-        const buildStepId = "Build" + buildId + "Step" + step.stepId;
+    renderStepDuration() {
+        const {step} = this.props;
+
+        if(DevToggle.handleTriggerSteps){
+            return typeof step.trigger === "object" ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
+        } else {
+            return <div className="stepDuration">{duration(getStepDuration(step))}</div>;
+        }
+    }
+
+    renderBuildStep() {
+        const {step, buildId, hasSubsteps, toggleSubsteps, showSubsteps} = this.props;
+
         const buildStepClasses = classes("BuildStep", hasSubsteps && showSubsteps ? "WithSubsteps" : "LowermostStep", step.state);
 
-        let stepDuration;
-        if(DevToggle.handleTriggerSteps){
-            stepDuration = typeof step.trigger === "object" ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
-        } else {
-            stepDuration = <div className="stepDuration">{duration(getStepDuration(step))}</div>;
-        }
-
-        const buildStep = <div id={hasSubsteps && showSubsteps ? "" : buildStepId} className={buildStepClasses}>
+        return <div id={hasSubsteps && showSubsteps ? "" : this.getBuildStepId()} className={buildStepClasses}>
             <StateIcon state={step.state}/>
             <div className={classes("StepName", hasSubsteps ? "HasSubsteps" : "")} onClick={hasSubsteps ? toggleSubsteps : ""}>{step.name}</div>
-            {stepDuration}
+            {this.renderStepDuration()}
             {hasSubsteps && showSubsteps ? "" :<Tools buildId={buildId} step={step}/>}
         </div>;
+    }
+
+    render() {
+        const {step, isParallel, buildId, hasSubsteps, showSubsteps} = this.props;
+
+        if(!showSubsteps || !hasSubsteps){
+            return this.renderBuildStep();
+        }
 
         const buildStepRedux = step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />;
+        let parentClass, childrenClass, childrenSteps;
 
-        if(showSubsteps && hasSubsteps){
-            let parentClass, childrenClass, childrenSteps;
-
-            if(isParallel){
-                parentClass = classes("BuildStepParallel");
-                childrenClass = classes("BuildStepInParallel", buildStepId + "Steps");
-                childrenSteps = R.map(step => {
-                    return <div className={classes("ParallelLine")}>
-                        {buildStepRedux(step)}
-                    </div>;
-                })(step.steps);
-            } else{
-                parentClass = classes("BuildStepWithSubsteps", buildStepId);
-                childrenClass = classes("BuildStepSubsteps");
-                childrenSteps = R.map(step => buildStepRedux(step))(step.steps);
-            }
-
-            return <div id={buildStepId} className={parentClass}>
-                {buildStep}
-                <div className={childrenClass}>
-                    {childrenSteps}
-                </div>
-            </div>;
+        if(isParallel){
+            parentClass = classes("BuildStepParallel");
+            childrenClass = classes("BuildStepInParallel", this.getBuildStepId() + "Steps");
+            childrenSteps = R.map(step => {
+                return <div className={classes("ParallelLine")}>
+                    {buildStepRedux(step)}
+                </div>;
+            })(step.steps);
+        } else{
+            parentClass = classes("BuildStepWithSubsteps", this.getBuildStepId());
+            childrenClass = classes("BuildStepSubsteps");
+            childrenSteps = R.map(step => buildStepRedux(step))(step.steps);
         }
-        return buildStep;
+
+        return <div id={this.getBuildStepId()} className={parentClass}>
+            {this.renderBuildStep()}
+            <div className={childrenClass}>
+                {childrenSteps}
+            </div>
+        </div>;
+
     }
 }
 
