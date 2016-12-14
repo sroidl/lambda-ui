@@ -26,7 +26,7 @@ QuickDetails.propTypes = {
     maxDepth: PropTypes.number
 };
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
     const steps = state.buildDetails[ownProps.buildId].steps;
 
     return {

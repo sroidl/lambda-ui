@@ -36,7 +36,7 @@ QuickStep.propTypes = {
     curDepth: PropTypes.number.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
 
     const showSubsteps = state.showSubsteps[ownProps.buildId] && state.showSubsteps[ownProps.buildId][ownProps.step.stepId] || false;
 
