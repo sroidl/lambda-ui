@@ -14,6 +14,7 @@ export class QuickDetails extends React.Component {
         const {steps, buildId} = this.props;
 
         return <div className="quickDetails">
+            <div className="quickTitle">Quick Access</div>
             {R.map(step => <QuickStep key={step.stepId} buildId={buildId} step={step} />)(steps)}
         </div>;
     }

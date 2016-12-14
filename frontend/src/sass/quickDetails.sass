@@ -2,12 +2,16 @@
 
 .quickDetails
   margin-left: 30px
-  margin-bottom: 20px
+  margin-bottom: 10px
   white-space: nowrap
   overflow-x: hidden
 
-  >.quickStep:first-of-type:before
+  // First QuickStep before should not display -> First of Typ is quickTitle
+  >.quickStep:nth-of-type(2):before
     display: none
+
+.quickTitle
+  margin-left: 5px
 
 .quickStep
   display: inline-block
