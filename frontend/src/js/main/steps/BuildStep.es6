@@ -45,9 +45,9 @@ export class BuildStep extends React.Component {
 
         if(DevToggle.handleTriggerSteps){
             return typeof step.trigger === "object" ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
-        } else {
-            return <div className="stepDuration">{duration(getStepDuration(step))}</div>;
         }
+        return <div className="stepDuration">{duration(getStepDuration(step))}</div>;
+
     }
 
     renderBuildStep() {
@@ -93,7 +93,6 @@ export class BuildStep extends React.Component {
                 {childrenSteps}
             </div>
         </div>;
-
     }
 }
 
