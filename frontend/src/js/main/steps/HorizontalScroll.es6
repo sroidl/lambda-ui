@@ -1,3 +1,5 @@
+const BUILDSTEP_HIGHLIGHT_DURATION_IN_MS = 500;
+
 const createElement = id => {
     const style = document.createElement("style");
     style.type = "text/css";
@@ -48,20 +50,23 @@ export const makeDraggable = (buildId) => {
     });
 };
 
-const highlightStep = (buildId, stepId) => {
+export const highlightStep = (buildId, stepId) => {
     const currentStep = document.getElementById("Build" + buildId + "Step" + stepId);
     const classString = currentStep.className;
     const newClass = classString.concat(" active");
     currentStep.className = newClass;
     setTimeout(() => {
         currentStep.className = classString;
-    }, 1000);
+    }, BUILDSTEP_HIGHLIGHT_DURATION_IN_MS);
 };
 
 export const scrollToStep = (buildId, stepId) => {
     const divId = "Build" + buildId + "Step" + stepId;
 
-    document.getElementById(divId).scrollIntoView();
+    const offsetLeft = document.getElementById(divId).offsetLeft;
+
+    document.getElementById("draggable" + buildId).scrollLeft = offsetLeft - 20;
+
     highlightStep(buildId, stepId);
 };
 
