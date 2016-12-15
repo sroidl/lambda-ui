@@ -24,6 +24,9 @@ class DevToggles {
     get useQuickBuildDetails() {
         return isActive("useQuickBuildDetails");
     }
+    get showPipelineTour() {
+        return isActive("showPipelineTour");
+    }
 }
 
 export default new DevToggles();
