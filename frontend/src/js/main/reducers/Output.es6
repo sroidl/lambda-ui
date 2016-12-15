@@ -19,6 +19,5 @@ export const OutputReducer = (oldState = {showOutput: false}, action) => {
         }
         default:
             return oldState;
-
     }
 };
