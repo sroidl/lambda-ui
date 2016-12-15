@@ -94,18 +94,5 @@ describe("BuildStepOutput", () => {
 
             expect(dispatchMock).toBeCalledWith({type: HIDE_BUILD_OUTPUT});
         });
-
     });
-
-    describe("Output scrollbar", () => {
-        xit("should check, that output text is scroll down", () => {
-
-            const component = shallow(<BuildStepOutput showOutput={true} buildId={1} stepName={"meinStep"}
-                                                       stepId={"stepId"} requestFn={() => {
-            }}/>);
-            // TODO: Implement with real browser testing
-
-        });
-    });
-
 });
