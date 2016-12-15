@@ -1,6 +1,6 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import BuildDetails from "./BuildDetails.es6";
+import BuildDetails from "./details/BuildDetails.es6";
 import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";

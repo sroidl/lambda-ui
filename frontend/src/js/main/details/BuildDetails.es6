@@ -1,12 +1,12 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import {requestDetailsPolling} from "./actions/BackendActions.es6";
-import {noScrollToStep} from "./actions/BuildDetailActions.es6";
+import {requestDetailsPolling} from "../actions/BackendActions.es6";
+import {noScrollToStep} from "../actions/BuildDetailActions.es6";
 import R from "ramda";
-import BuildStep from "steps/BuildStep.es6";
-import {makeDraggable, scrollToStep} from "steps/HorizontalScroll.es6";
-import QuickDetails from "details/QuickDetails.es6";
-import "../../sass/buildDetails.sass";
+import BuildStep from "../steps/BuildStep.es6";
+import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
+import QuickDetails from "../details/QuickDetails.es6";
+import "../../../sass/buildDetails.sass";
 
 export class BuildDetails extends React.Component {
 
