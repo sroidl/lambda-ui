@@ -1,10 +1,10 @@
 /* globals describe it xit expect jest beforeEach afterEach */
-jest.mock("../main/DevToggles.es6");
-import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "BuildStepOutput.es6"
+jest.mock("../../main/DevToggles.es6");
+import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "steps/BuildStepOutput.es6";
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "actions/OutputActions.es6";
 import React from "react";
-import * as TestUtils from "../test/testsupport/TestUtils.es6";
+import * as TestUtils from "../testsupport/TestUtils.es6";
 
 describe("BuildStepOutput", () => {
 

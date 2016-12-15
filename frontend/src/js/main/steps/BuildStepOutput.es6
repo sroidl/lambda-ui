@@ -1,8 +1,8 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
-import {requestOutput} from "actions/BackendActions.es6";
-import "../../sass/buildStepOutput.sass";
+import {requestOutput} from "../actions/BackendActions.es6";
+import "../../../sass/buildStepOutput.sass";
 import {hideBuildOutput} from "actions/OutputActions.es6";
 import DevToggles from "DevToggles.es6";
 
