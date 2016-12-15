@@ -20,7 +20,6 @@ const initialState = {
         usePolling: true,
         showInterestingStep: false,
         showConnectionState: true,
-        useAnsiCodeColors: false,
         handleTriggerSteps: true,
         showPipelineTour: false
     },

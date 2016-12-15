@@ -29,47 +29,6 @@ export class BuildStepOutput extends React.Component {
         }
     }
 
-
-
-    ansiCodeToHexCode(ansiCode){
-        switch(ansiCode){
-            case "0":
-                return "rgb(0,0,0)";
-            case "1":
-                return "rgb(255,0,0)";
-            case "2":
-                return "rgb(0,255,0)";
-            case "3":
-                return "rgb(255,255,0)";
-            case "4":
-                return "rgb(0,0,255)";
-            case "5":
-                return "rgb(255,0,255)";
-            case "6":
-                return "rgb(0,255,255)";
-            case "7":
-                return "rgb(255,255,255)";
-            default:
-                return "";
-        }
-    }
-
-    matchAnsiCode(text){
-        const changeColorResult = text.match(/\[[0-7]+;[0-7]+m/g);
-        if(changeColorResult && changeColorResult.length > 0){
-            /* eslint-disable */
-            // TODO: Use new color code
-            const fontColorCode = this.ansiCodeToHexCode(changeColorResult[0].substring(2,3));
-            const backgroundColorCode = this.ansiCodeToHexCode(changeColorResult[0].substring(5,6));
-            /* eslint-enable */
-            return text.replace(/\[[0-7]+;[0-7]+m/g, "");
-        }
-        const resetColorResult = text.match(/\[0m/g);
-        if(resetColorResult && resetColorResult.length > 0){
-            return text.replace(/\[0m/g, "");
-        }
-        return text;
-    }
     outputLines() {
         const {buildId, requestFn, stepId} = this.props;
         let {output} = this.props;
@@ -83,17 +42,8 @@ export class BuildStepOutput extends React.Component {
         const mapIndexed = R.addIndex(R.map);
 
 
-        return (mapIndexed((line, index) => {
-            let formatLine;
-            if(DevToggles.useAnsiCodeColors){
-                formatLine = formattingLine(this.matchAnsiCode(line));
-            } else{
-                formatLine = formattingLine(line);
-            }
-
-            return <div key={lineKey(index)}
-                        className="outputLine">{formatLine}</div>;
-        })(output));
+        return (mapIndexed((line, index) => <div key={lineKey(index)} className="outputLine">
+            {formattingLine(line)}</div>)(output));
     }
 
 

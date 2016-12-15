@@ -15,9 +15,6 @@ class DevToggles {
     get showConnectionState () {
         return isActive("showConnectionState");
     }
-    get useAnsiCodeColors () {
-        return isActive("useAnsiCodeColors");
-    }
     get handleTriggerSteps() {
         return isActive("handleTriggerSteps");
     }
