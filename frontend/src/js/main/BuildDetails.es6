@@ -6,7 +6,6 @@ import R from "ramda";
 import BuildStep from "steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "steps/HorizontalScroll.es6";
 import QuickDetails from "details/QuickDetails.es6";
-import DevToggle from "DevToggles.es6";
 import "../../sass/buildDetails.sass";
 
 export class BuildDetails extends React.Component {
@@ -26,11 +25,9 @@ export class BuildDetails extends React.Component {
         if (!open) {
             this.registeredEventHandler = false;
         }
-        if(DevToggle.useQuickBuildDetails){
-            if (stepToScroll){
-                scrollToStep(buildId, stepToScroll);
-                noScrollToStepFn();
-            }
+        if (stepToScroll){
+            scrollToStep(buildId, stepToScroll);
+            noScrollToStepFn();
         }
     }
 
@@ -48,10 +45,7 @@ export class BuildDetails extends React.Component {
             </div>;
         }
 
-        let quickDetails = "";
-        if(DevToggle.useQuickBuildDetails){
-            quickDetails = <QuickDetails buildId={buildId} />;
-        }
+        const quickDetails = <QuickDetails buildId={buildId} />;
 
         return <div className="BuildDetails">
             {quickDetails}

@@ -21,9 +21,6 @@ class DevToggles {
     get handleTriggerSteps() {
         return isActive("handleTriggerSteps");
     }
-    get useQuickBuildDetails() {
-        return isActive("useQuickBuildDetails");
-    }
     get showPipelineTour() {
         return isActive("showPipelineTour");
     }

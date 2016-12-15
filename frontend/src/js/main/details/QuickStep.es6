@@ -32,7 +32,7 @@ QuickStep.propTypes = {
     step: PropTypes.object.isRequired,
     showSubsteps: PropTypes.bool.isRequired,
     scrollToStep: PropTypes.func.isRequired,
-    maxDepth: PropTypes.number.isRequired,
+    maxDepth: PropTypes.number,
     curDepth: PropTypes.number.isRequired
 };
 

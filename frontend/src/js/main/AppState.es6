@@ -22,7 +22,6 @@ const initialState = {
         showConnectionState: true,
         useAnsiCodeColors: false,
         handleTriggerSteps: true,
-        useQuickBuildDetails: true,
         showPipelineTour: false
     },
     showStepToolbox: {},
