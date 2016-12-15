@@ -20,6 +20,7 @@
   border-radius: 7px
   margin-left: 5px
   position: relative
+  cursor: pointer
 
   &:before
     content: ""
@@ -58,6 +59,8 @@
 .quickStepContainer
   display: inline-block
   vertical-align: top
+  background-color: transparentize($very-dark-grey, 0.9)
+  border-radius: 5px
 
   &:first-of-type
     > .quickStep:before
@@ -68,9 +71,6 @@
 
 
 .quickSubsteps
-  background-color: transparentize($very-dark-grey, 0.9)
-  border-radius: 5px
-
   >.quickStep:first-of-type:before
     width: 2px
     height: 10px
