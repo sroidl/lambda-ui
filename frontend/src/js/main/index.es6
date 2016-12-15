@@ -12,3 +12,6 @@ LambdaUI.startUp(config);
 
 console.log("UsePolling ", Toggles.usePolling);
 console.log("ShowInterestingStep ", Toggles.showInterestingStep);
+console.log("HandleTriggerSteps ", Toggles.handleTriggerSteps);
+console.log("ShowPipelineTour ", Toggles.showPipelineTour);
+console.log("ShowConnectionState ", Toggles.showConnectionState);
