@@ -7,7 +7,9 @@
                  [lambdacd "0.9.3"]
                  [compojure "1.5.0"]
                  [http-kit "2.1.18"]
-                 [org.clojure/data.json "0.2.6"]]
+                 [org.clojure/data.json "0.2.6"]
+                 [org.slf4j/slf4j-simple "1.7.22"]
+                 ]
   :test-paths ["test"]
   :repositories [["snapshots" { :url "https://clojars.org/repo"
                                 :username "sroidl"
