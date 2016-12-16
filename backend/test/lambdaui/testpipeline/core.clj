@@ -1,6 +1,7 @@
 (ns lambdaui.testpipeline.core
   (:require [lambdacd-git.core :as git]
             [lambdacd.core :as lambdacd]
+            [lambdacd.util :as util]
             [lambdacd.runners :as runners]
             [org.httpkit.server :as http]
             [lambdaui.testpipeline.simple-pipeline :as pipe]
@@ -24,7 +25,7 @@
 
 
 (defn start-server [port]
-  (let [pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir "/tmp/foo" :ui-config {:name "WURST" :location :backend-location :path-prefix ""}})]
+  (let [pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TEST PIPELINE" :location :backend-location :path-prefix ""}})]
     (reset! current-pipeline pipeline)
     (reset! server (http/run-server (ui/pipeline-routes pipeline) {:port port}))))
 
@@ -55,3 +56,9 @@
         (let [update (<! @ch)] (when (is-finished? update) (println update)))
         (recur))))
 
+(defn stop []
+  (when @server (@server)))
+
+(defn start []
+  (stop)
+  (-main))

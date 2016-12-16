@@ -11,6 +11,13 @@
             [lambdacd.util]
             [lambdacd.internal.pipeline-state :as state]))
 
+(defn deep-merge
+  "Recursively merges maps. If vals are not maps, the last value wins."
+  [& vals]
+  (if (every? map? vals)
+    (apply merge-with deep-merge vals)
+    (last vals)))
+
 (defn state-from-pipeline [pipeline]
   (state/get-all (:pipeline-state-component (:context pipeline))))
 
@@ -62,7 +69,12 @@
   (when-let [trigger-id (:trigger-id step-state)]
     (let [prefix (:path-prefix ui-config "")
           url-template (str prefix "/api/dynamic/%s")]      ; TODO -- don't use old UIs api for triggering
-      [(step-id-str id) {:trigger {:url (format url-template trigger-id)}}])))
+      [id {:trigger {:url (format url-template trigger-id)}}])))
+
+(defn transform-to-nested-map [trigger-vector]
+  (let [stepid->string (fn [[id val]] [(step-id-str id) val])]
+    (map stepid->string trigger-vector)))
+
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
   (let [unified-steps-map (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
@@ -72,9 +84,10 @@
         trigger-data (->> pipeline-state
                           (map (partial extract-trigger-data ui-config))
                           (remove nil?)
+                          transform-to-nested-map
                           (into {})
                           )
-        steps (vals (merge-with merge unified-steps-map trigger-data))
+        steps (vals (deep-merge unified-steps-map trigger-data))
         ]
     ; ToDo -- integration test for merging with real pipeline state
     {:buildId build-id

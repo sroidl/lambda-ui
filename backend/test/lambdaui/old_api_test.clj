@@ -15,7 +15,7 @@
 (deftest legacy-ui-routes
   (with-server simple-success-pipeline
                (testing "availability of legacy /api/builds"
-                 (let [{:keys [status headers body error] :as resp} @(http/get (url "/api/builds/"))]
+                 (let [{:keys [status headers body error] :as resp} @(http/get (test-url "/api/builds/"))]
                    (is (= 200 status))
                    (is (= {:build-number 1 :status "success"}
                           (select-keys (get-build 1 (read-json body)) [:build-number :status :out])))))))

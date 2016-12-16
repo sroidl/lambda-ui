@@ -49,12 +49,11 @@
 
 (def pipeline-structure
   `(
-     spy-step
      wait-for-manual-trigger
-      spy-step
      a-lot-output
      (step/alias "i have substeps"
                  (run successfullStep
+                      wait-for-manual-trigger
                       successfullStep
                       (step/alias "i have more substeps"
                                   (run a-lot-output
@@ -63,6 +62,7 @@
                  )
      (step/alias "i have substeps"
                       (run (step/alias "2-parallel-step" (in-parallel a-lot-output a-lot-output))
+                           wait-for-manual-trigger
                            (step/alias "2-parallel-step" (in-parallel a-lot-output a-lot-output))
                            (step/alias "i have more substeps"
                                        (run a-lot-output
