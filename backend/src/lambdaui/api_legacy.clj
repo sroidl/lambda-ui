@@ -9,7 +9,9 @@
             [clojure.data.json :as json]
             [clojure.string :as s]
             [lambdacd.util]
-            [lambdacd.internal.pipeline-state :as state]))
+            [lambdacd.internal.pipeline-state :as state]
+            [lambdacd.presentation.unified :as presentation]
+            [clojure.tools.logging :as log]))
 
 (defn deep-merge
   "Recursively merges maps. If vals are not maps, the last value wins."
@@ -46,50 +48,34 @@
     )
   )
 
-(defn get-trigger-data [step]
-  (when (= :trigger (get-type step))
-    {}
-    )
+(defn get-trigger-data [trigger-path-prefix step]
+  (let [url-template "%s/api/dynamic/%s"]
+    (if (= :trigger (get-type step))
+      {:trigger {:url (format url-template trigger-path-prefix (get-in step [:result :trigger-id]))}}
+      {}
+      ))
   )
 
-(defn to-output-format [step]
+(defn to-output-format [trigger-path-prefix step]
   (let [status (:status (:result step))
+        trigger (get-trigger-data trigger-path-prefix step)
         base {:stepId    (step-id-str (:step-id step))
               :name      (:name step)
               :state     (or status :pending)
               :startTime (to-iso-string (:first-updated-at (:result step)))
               :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
         type {:type (get-type step)}
-        children (if-let [children (:children step)] {:steps (map to-output-format children)} {})
-        trigger-data (or (get-trigger-data step) {})
-        ]
-    (merge base type children trigger-data)))
-
-(defn extract-trigger-data [ui-config [id step-state]]
-  (when-let [trigger-id (:trigger-id step-state)]
-    (let [prefix (:path-prefix ui-config "")
-          url-template (str prefix "/api/dynamic/%s")]      ; TODO -- don't use old UIs api for triggering
-      [id {:trigger {:url (format url-template trigger-id)}}])))
-
-(defn transform-to-nested-map [trigger-vector]
-  (let [stepid->string (fn [[id val]] [(step-id-str id) val])]
-    (map stepid->string trigger-vector)))
-
+        children (if-let [children (:children step)] {:steps (map (partial to-output-format trigger-path-prefix) children)} {})]
+    (merge base type children trigger)))
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
-  (let [unified-steps-map (->> (lambdacd.presentation.unified/unified-presentation pipeline-def pipeline-state)
-                               (map to-output-format)
+  (let [trigger-path-prefix (:path-prefix ui-config "")
+        unified-steps-map (->> (presentation/unified-presentation pipeline-def pipeline-state)
+                               (map (partial to-output-format trigger-path-prefix))
                                (map (fn [step] [(:stepId step) step]))
                                (into {}))
-        trigger-data (->> pipeline-state
-                          (map (partial extract-trigger-data ui-config))
-                          (remove nil?)
-                          transform-to-nested-map
-                          (into {})
-                          )
-        steps (vals (deep-merge unified-steps-map trigger-data))
+        steps (vals unified-steps-map)
         ]
-    ; ToDo -- integration test for merging with real pipeline state
     {:buildId build-id
      :steps   steps}))
 

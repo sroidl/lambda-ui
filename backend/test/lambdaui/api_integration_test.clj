@@ -16,7 +16,6 @@
        json/read-json
        ))
 
-
 (deftest test-manual-trigger
   (with-redefs [clj-time.core/now (fn [] (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC)))]
 
@@ -26,18 +25,33 @@
                            (let [build-details (request-build-details)
                                  steps (:steps build-details)]
                              (is (= 1 (count steps)))
-
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger] (keys (first steps))))))))
 
-    #_(testing "should merge trigger id with state information for top level trigger"
+    (testing "should merge trigger id with state information for top level trigger"
       (let [test-pipeline `((in-parallel wait-for-manual-trigger))]
         (with-server-async test-pipeline
                            (let [build-details (request-build-details)
                                  steps (:steps build-details)
                                  first-substep (comp first :steps)
+
+                                 expected {:buildId "1"
+                                           :steps   [{:endTime   nil
+                                                      :name      "in-parallel"
+                                                      :startTime "2016-01-01T12:00:00.000Z"
+                                                      :state     "running"
+                                                      :stepId    "1"
+                                                      :steps     [{:endTime   nil
+                                                                   :name      "wait-for-manual-trigger"
+                                                                   :startTime nil
+                                                                   :state     "pending"
+                                                                   :stepId    "1-1"
+                                                                   :steps     []
+                                                                   :trigger {:url "/api/dynamic/7edb1e04-73cf-4207-9cca-e72a8f1d09ee"}
+                                                                   :type      "trigger"}]
+                                                      :type      "parallel"}]}
+
                                  ]
                              (is (= 1 (count steps)))
-
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                     (keys (first-substep (first-substep build-details)))
                                     ))))))

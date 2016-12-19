@@ -225,17 +225,3 @@
             )))
 
     ))
-
-(deftest extract-trigger-data-test
-  (testing "should return nil on empty"
-    (is (nil? (subject/extract-trigger-data nil nil))))
-
-  (testing "should return trigger-id and convert step id"
-    (let [ui-config {}
-          input ['(1 4) {:trigger-id "abcdef"}]]
-      (is (= ['(1 4) {:trigger {:url "/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input)))))
-
-  (testing "should add path-prefix from ui-config to build trigger-data"
-    (let [ui-config {:path-prefix "release-pipeline"}
-          input ['(1 4) {:trigger-id "abcdef"}]]
-      (is (= ['(1 4) {:trigger {:url "release-pipeline/api/dynamic/abcdef"}}] (subject/extract-trigger-data ui-config input))))))
