@@ -10,16 +10,11 @@
     [clojure.tools.logging :as logger]
     [lambdaui.trigger :as runner]
     [lambdaui.polling :as polling]
-    [lambdaui.config :refer [create-config-legacy]]
+    [lambdaui.config :as config]
 
     )
   (:gen-class)
   )
-
-
-
-; TODO -- support abritrary
-
 
 (defn pipeline-routes [pipeline & {:keys [include-old-ui show-new-build-button] :or {include-old-ui true
                                                                                      show-new-build-button false}}]
@@ -29,7 +24,7 @@
         (route/resources "/lambdaui" {:root "public"})
         (route/resources "/" {:root "public"})
         (GET "/lambdaui" [] (ring.util.response/redirect "lambdaui/index.html"))
-        (GET "/lambdaui/config.js" [] (create-config-legacy pipeline :show-new-build-button show-new-build-button))
+        (GET "/lambdaui/config.js" [] (config/create-config-legacy pipeline :show-new-build-button show-new-build-button))
         (context "/lambdaui/api" [] (new-api/api-routes pipeline))
         (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
         (when include-old-ui
