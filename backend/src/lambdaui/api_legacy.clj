@@ -48,30 +48,29 @@
     )
   )
 
-(defn get-trigger-data [trigger-path-prefix step]
-  (let [url-template "%s/api/dynamic/%s"]
+(defn get-trigger-data [step]
+  (let [url-template "/api/dynamic/%s"]
     (if (= :trigger (get-type step))
-      {:trigger {:url (format url-template trigger-path-prefix (get-in step [:result :trigger-id]))}}
+      {:trigger {:url (format url-template (get-in step [:result :trigger-id]))}}
       {}
       ))
   )
 
-(defn to-output-format [trigger-path-prefix step]
+(defn to-output-format [step]
   (let [status (:status (:result step))
-        trigger (get-trigger-data trigger-path-prefix step)
+        trigger (get-trigger-data step)
         base {:stepId    (step-id-str (:step-id step))
               :name      (:name step)
               :state     (or status :pending)
               :startTime (to-iso-string (:first-updated-at (:result step)))
               :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
         type {:type (get-type step)}
-        children (if-let [children (:children step)] {:steps (map (partial to-output-format trigger-path-prefix) children)} {})]
+        children (if-let [children (:children step)] {:steps (map (partial to-output-format) children)} {})]
     (merge base type children trigger)))
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
-  (let [trigger-path-prefix (:path-prefix ui-config "")
-        unified-steps-map (->> (presentation/unified-presentation pipeline-def pipeline-state)
-                               (map (partial to-output-format trigger-path-prefix))
+  (let [unified-steps-map (->> (presentation/unified-presentation pipeline-def pipeline-state)
+                               (map (partial to-output-format))
                                (map (fn [step] [(:stepId step) step]))
                                (into {}))
         steps (vals unified-steps-map)

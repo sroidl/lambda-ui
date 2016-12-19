@@ -32,25 +32,7 @@
         (with-server-async test-pipeline
                            (let [build-details (request-build-details)
                                  steps (:steps build-details)
-                                 first-substep (comp first :steps)
-
-                                 expected {:buildId "1"
-                                           :steps   [{:endTime   nil
-                                                      :name      "in-parallel"
-                                                      :startTime "2016-01-01T12:00:00.000Z"
-                                                      :state     "running"
-                                                      :stepId    "1"
-                                                      :steps     [{:endTime   nil
-                                                                   :name      "wait-for-manual-trigger"
-                                                                   :startTime nil
-                                                                   :state     "pending"
-                                                                   :stepId    "1-1"
-                                                                   :steps     []
-                                                                   :trigger {:url "/api/dynamic/7edb1e04-73cf-4207-9cca-e72a8f1d09ee"}
-                                                                   :type      "trigger"}]
-                                                      :type      "parallel"}]}
-
-                                 ]
+                                 first-substep (comp first :steps)]
                              (is (= 1 (count steps)))
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                     (keys (first-substep (first-substep build-details)))

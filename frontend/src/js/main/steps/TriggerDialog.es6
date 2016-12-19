@@ -42,7 +42,7 @@ export class TriggerDialog extends React.Component {
 
     executeTrigger(parameter, url) {
         const inputValues = R.map((param) => param.key + "=" + document.getElementById(param.key).value);
-        const formatToUrlParm = R.pipe(inputValues, R.toString,R.replace("\", \"", "&"), R.replace("[\"", ""), R.replace("\"]", ""));
+        const formatToUrlParm = R.pipe(inputValues, R.toString, R.replace("\", \"", "&"), R.replace("[\"", ""), R.replace("\"]", ""));
 
         let urlParameter = "";
         if (this.hasParameter()){
