@@ -10,7 +10,7 @@
 (defn extract-location [location]
   (when (not (= location :backend-location)) location))
 
-(defn create-config-legacy [pipeline & {:keys [showNewBuildButton]}]
+(defn create-config-legacy [pipeline & {:keys [showStartBuildButton]}]
   (let [config (get-in pipeline [:context :config])
         ui-config (get config :ui-config)
         name (or (:name ui-config) (:name config) "Pipeline")
@@ -54,7 +54,7 @@
     (merge ui-config name)))
 
 (defn pipeline->config [pipeline & [additional-config]]
-  (let [default-config {:showNewBuildButton false}
+  (let [default-config {:showStartBuildButton false}
         extracted (extract-config pipeline)
         additional-config (or additional-config {})
         lambdaui-navbar (if (:showDefaultNavbar additional-config true) default-lambdaui-navbar {})

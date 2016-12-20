@@ -53,10 +53,10 @@
     (with-redefs [subject/create-config-js (fn [input] (reset! config-atom input))]
       (testing "should merge default config, extracted config and additionals"
         (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
-              actual (subject/pipeline->config pipe {:showNewBuildButton false})]
+              actual (subject/pipeline->config pipe {:showStartBuildButton false})]
 
           (is (= "LAMBDAUI PIPELINE" (:name actual)))
-          (is (= false (:showNewBuildButton actual)))
+          (is (= false (:showStartBuildButton actual)))
           (is (= (:navbar lambdaui.config/default-lambdaui-navbar) (:navbar actual)))
           ))
 

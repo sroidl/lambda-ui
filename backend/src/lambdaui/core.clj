@@ -12,17 +12,17 @@
   (:gen-class))
 
 (defn pipeline-routes
-  ([pipeline & {:keys [showNewBuildButton contextPath]
-                :or   {showNewBuildButton false
-                       contextPath        ""}}]
+  ([pipeline & {:keys [showStartBuildButton contextPath]
+                :or   {showStartBuildButton false
+                       contextPath          ""}}]
    (ring-json/wrap-json-response
      (wrap-params
        (routes
          (route/resources "/lambdaui" {:root "public"})
          (route/resources "/" {:root "public"})
          (GET "/lambdaui" [] (ring.util.response/redirect "lambdaui/index.html"))
-         (GET "/lambdaui/config.js" [] (config/pipeline->config pipeline {:showNewBuildButton showNewBuildButton
-                                                                          :path-prefix contextPath}))
+         (GET "/lambdaui/config.js" [] (config/pipeline->config pipeline {:showStartBuildButton showStartBuildButton
+                                                                          :path-prefix          contextPath}))
          (context "/lambdaui/api" [] (new-api/api-routes pipeline))
          (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
          (GET "/" [] (old-ui/ui-page pipeline))
