@@ -10,30 +10,15 @@
 (defn extract-location [location]
   (when (not (= location :backend-location)) location))
 
-(defn create-config-legacy [pipeline & {:keys [showStartBuildButton]}]
-  (let [config (get-in pipeline [:context :config])
-        ui-config (get config :ui-config)
-        name (or (:name ui-config) (:name config) "Pipeline")
-        location (or (extract-location (:location ui-config)) "window.location.host")
-        path-prefix (:path-prefix ui-config)
-        prefix (if path-prefix (str " + '" path-prefix "'") "")
-        location (str location prefix)
-        ]
-
-    (str "window.lambdaui = window.lambdaui || {}; "
-         "window.lambdaui.config = { name: '" name "', baseUrl: " location "};"))
-  )
-
-(defn escape [s]
+(defn escape-string [s]
   (str "\"" s "\""))
 
 (defn clj-map->json-string [m]
-  (json/write-str m)
-  )
+  (json/write-str m))
 
 (defn config->string-vec [config]
   (let [l (extract-location (:location config))
-        location (if l (escape l) "window.location.host")
+        location (if l (escape-string l) "window.location.host")
         path-prefix (:path-prefix config "")
         config (dissoc config :location :path-prefix)
         ]
@@ -49,8 +34,7 @@
 (defn extract-config [pipeline]
   (let [ui-config (get-in pipeline [:context :config :ui-config] {})
         pipeline-config (get-in pipeline  [:context :config] {})
-        name {:name (or (:name ui-config) (:name pipeline-config) "PIPELINE")}
-        ]
+        name {:name (or (:name ui-config) (:name pipeline-config) "PIPELINE")}]
     (merge ui-config name)))
 
 (defn pipeline->config [pipeline & [additional-config]]
