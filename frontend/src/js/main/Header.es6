@@ -33,7 +33,14 @@ HeaderLinks.propTypes = {
     links: PropTypes.array
 };
 
-export const Header = ({pipelineName, links}) => {
+const startBuildButton = (showStartBuildButton, triggerNewFn) => {
+    if(showStartBuildButton) {
+        return <button className="runButton" onClick={triggerNewFn}>Start Build</button>;
+    }
+    return null;
+};
+
+export const Header = ({pipelineName, links, showStartBuildButton}) => {
     const triggerNewFn = () => App.backend().triggerNewBuild();
 
     let headerLinks;
@@ -57,7 +64,7 @@ export const Header = ({pipelineName, links}) => {
             <span className="logoText">{pipelineName}</span>
         </div>
         {headerLinks}
-        <button className="runButton" onClick={triggerNewFn}>Start Build</button>
+        {startBuildButton(showStartBuildButton, triggerNewFn)}
         {pipelineTour}
     </div>;
 };
@@ -65,14 +72,16 @@ export const Header = ({pipelineName, links}) => {
 
 Header.propTypes = {
     pipelineName: PropTypes.string.isRequired,
+    showStartBuildButton: PropTypes.bool.isRequired,
     links: PropTypes.array
 };
 
 export const mapStateToProps = (state) => {
-    const headerLinks = R.view(R.lensPath(["config", "navbar", "links"]))(state) || [];
+    const headerLinks = R.pathOr([], ["config", "navbar", "links"])(state);
     return {
         pipelineName: state.config.name,
-        links: headerLinks
+        links: headerLinks,
+        showStartBuildButton: R.pathOr(true, ["config", "showStartBuildButton"])(state)
     };
 };
 
