@@ -6,9 +6,10 @@
             [lambdacd.core :as lambdacd]
             [org.httpkit.server :as server]
             [lambdacd.ui.api]
-            [lambdacd.runners :as runners]
-            [clojure.java.io :as io]
-            [lambdaui.core :as ui]))
+            [lambdacd.util :as file-util]
+            [lambdaui.core :as ui]
+            [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
+            [lambdacd.runners :as pipeline-runners]))
 
 (defonce lastStatus (atom nil))
 
@@ -17,26 +18,24 @@
     :success :failure
     :failure :waiting
     :waiting :success
-    :success)
-  )
+    :success))
 
 (defn successfullStep [args ctx]
   {:status :success :out "Wohoo!"})
 
 (defn a-lot-output [args context]
-  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; done")
-  )
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; done"))
 
 
 (defn long-running-task-20s [args context]
-  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; sleep 0.1s; done")
-  )
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; sleep 0.1s; done"))
 
 (defn different-status [_ _]
   {:status (swap! lastStatus swapStatus)})
 
 (def pipeline-structure
-  `( a-lot-output
+  `( (step/alias "press \u25B6 to start build" wait-for-manual-trigger)
+     a-lot-output
      (step/alias "i have substeps"
                  (run successfullStep
                       successfullStep
@@ -59,15 +58,18 @@
     (try
       (Integer/parseInt input) (catch RuntimeException e (doall (println "cannot parse int " input) default)))
     (do
-      (println "No argument given. Fallback to default")
-      default)
-    ))
+      (println "No argument given. Fallback to default port " default)
+      default)))
 
 (defn -main [& args]
-  (let [home-dir (io/file "/tmp/foo")
-        config {:home-dir home-dir}
+  (let [home-dir (file-util/create-temp-dir)
+        config {:home-dir home-dir
+                :name     "Example Pipeline"
+                :ui-config {:navbar {:links [{:text "Configure Link to github" :url "https://github.com/sroidl/lambda-ui"}]}}}
         port (try-parse (System/getenv "PORT") 8082)
         pipeline (lambdacd/assemble-pipeline pipeline-structure config)]
+
+    (pipeline-runners/start-one-run-after-another pipeline)
     (server/run-server (routes
                          (ui/pipeline-routes pipeline))
                        {:open-browser? false
