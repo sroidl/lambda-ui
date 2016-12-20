@@ -12,6 +12,7 @@
             [lambdacd.event-bus :as events]
             [lambdacd.event-bus :as event-bus]
             [lambdaui.fixtures.pipelines :as fixture]
+            [compojure.core :refer [routes GET context POST]]
             )
   (:use [lambdacd.runners]))
 
@@ -27,7 +28,12 @@
 (defn start-server [port]
   (let [pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TEST PIPELINE" :location :backend-location :path-prefix ""}})]
     (reset! current-pipeline pipeline)
-    (reset! server (http/run-server (ui/pipeline-routes pipeline) {:port port}))))
+    (reset! server (http/run-server
+                     (routes
+                              (ui/pipeline-routes pipeline)
+                              (context "/prefix-test" []
+                                       (ui/pipeline-routes pipeline)))
+                     {:port port}))))
 
 
 (defn -main [& [portArg]]
