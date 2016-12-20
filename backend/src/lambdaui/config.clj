@@ -10,7 +10,7 @@
 (defn extract-location [location]
   (when (not (= location :backend-location)) location))
 
-(defn create-config-legacy [pipeline & {:keys [show-new-build-button]}]
+(defn create-config-legacy [pipeline & {:keys [showNewBuildButton]}]
   (let [config (get-in pipeline [:context :config])
         ui-config (get config :ui-config)
         name (or (:name ui-config) (:name config) "Pipeline")
