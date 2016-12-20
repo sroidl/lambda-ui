@@ -34,12 +34,13 @@
 (defn config->string-vec [config]
   (let [l (extract-location (:location config))
         location (if l (escape l) "window.location.host")
-        config (dissoc config :location)
+        path-prefix (:path-prefix config "")
+        config (dissoc config :location :path-prefix)
         ]
     (-> []
         (conj "window.lambdaui = window.lambdaui || {}")
         (conj (str "window.lambdaui.config = " (clj-map->json-string config)))
-        (conj (str "window.lambdaui.config.baseUrl = " location))
+        (conj (str "window.lambdaui.config.baseUrl = " location " + \"" path-prefix "\""))
         )))
 
 (defn create-config-js [config]

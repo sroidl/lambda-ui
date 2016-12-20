@@ -35,7 +35,5 @@
                                  first-substep (comp first :steps)]
                              (is (= 1 (count steps)))
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
-                                    (keys (first-substep (first-substep build-details)))
-                                    ))))))
-    ))
+                                    (keys (first-substep (first-substep build-details)))))))))))
 

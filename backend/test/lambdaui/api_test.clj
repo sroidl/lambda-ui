@@ -222,6 +222,4 @@
 
 
                (debug (json/read-json (async/<!! ws-ch))))
-            )))
-
-    ))
+            )))))

@@ -17,20 +17,20 @@
   (testing "should create javascript-string for config-map and use default location"
     (is (= [window-def
             "window.lambdaui.config = {\"name\":\"My Pipeline\"}"
-            "window.lambdaui.config.baseUrl = window.location.host"
+            "window.lambdaui.config.baseUrl = window.location.host + \"\""
             ]
            (subject/config->string-vec {:name "My Pipeline"}))))
   (testing "should use custom location"
     (is (= [window-def
             "window.lambdaui.config = {\"name\":\"My Pipeline\"}"
-            "window.lambdaui.config.baseUrl = \"My Location\""]
-           (subject/config->string-vec {:name "My Pipeline" :location "My Location"})))
+            "window.lambdaui.config.baseUrl = \"My Location\" + \"/somePath\""]
+           (subject/config->string-vec {:name "My Pipeline" :location "My Location" :path-prefix "/somePath"})))
     )
 
   (testing "should join config-vector to string"
     (is (= (str window-def ";\n"
                 "window.lambdaui.config = {\"name\":\"My Pipeline\"}" ";\n"
-                "window.lambdaui.config.baseUrl = \"My Location\"")
+                "window.lambdaui.config.baseUrl = \"My Location\" + \"\"")
            (subject/create-config-js {:name "My Pipeline" :location "My Location"})))
     ))
 
@@ -70,6 +70,4 @@
               link-from-default-navbar (first (:links (:navbar lambdaui.config/default-lambdaui-navbar)))
               actual (subject/pipeline->config pipe)
               ]
-          (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual)))))
-
-      )))
+          (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual))))))))

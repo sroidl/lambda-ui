@@ -7,34 +7,28 @@
     [lambdacd.ui.api :as old-api]
     [lambdacd.ui.ui-page :as old-ui]
     [compojure.route :as route]
-    [clojure.tools.logging :as logger]
     [lambdaui.trigger :as runner]
-    [lambdaui.polling :as polling]
-    [lambdaui.config :as config]
+    [lambdaui.config :as config])
+  (:gen-class))
 
-    )
-  (:gen-class)
-  )
-
-(defn pipeline-routes [pipeline & {:keys [include-old-ui show-new-build-button] :or {include-old-ui true
-                                                                                     show-new-build-button false}}]
-  (ring-json/wrap-json-response
-    (wrap-params
-      (routes
-        (route/resources "/lambdaui" {:root "public"})
-        (route/resources "/" {:root "public"})
-        (GET "/lambdaui" [] (ring.util.response/redirect "lambdaui/index.html"))
-        (GET "/lambdaui/config.js" [] (config/create-config-legacy pipeline :show-new-build-button show-new-build-button))
-        (context "/lambdaui/api" [] (new-api/api-routes pipeline))
-        (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
-        (when include-old-ui
-          (GET "/" [] (old-ui/ui-page pipeline)))
-        (context "/polling" [] (polling/polling-routes pipeline))
-
-        (context "/api" []
-          (old-api/rest-api pipeline)
-          )))))
+(defn pipeline-routes
+  ([pipeline & {:keys [showNewBuildButton contextPath]
+                :or   {showNewBuildButton false
+                       contextPath        ""}}]
+   (ring-json/wrap-json-response
+     (wrap-params
+       (routes
+         (route/resources "/lambdaui" {:root "public"})
+         (route/resources "/" {:root "public"})
+         (GET "/lambdaui" [] (ring.util.response/redirect "lambdaui/index.html"))
+         (GET "/lambdaui/config.js" [] (config/pipeline->config pipeline {:showNewBuildButton showNewBuildButton
+                                                                          :path-prefix contextPath}))
+         (context "/lambdaui/api" [] (new-api/api-routes pipeline))
+         (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
+         (GET "/" [] (old-ui/ui-page pipeline))
+         (context "/api" []
+           (old-api/rest-api pipeline)
+           ))))))
 
 (defn ui-for [pipeline & opts]
   (pipeline-routes pipeline opts))
-
