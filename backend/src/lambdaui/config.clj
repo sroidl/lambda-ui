@@ -1,7 +1,11 @@
 (ns lambdaui.config
   (:require [clojure.data.json :as json]
-            [clojure.string :as string])
+            [clojure.string :as string]
+            [lambdaui.common.collections :refer [combine]])
   )
+
+(def default-lambdaui-navbar {:navbar {:links [{:url "https://github.com/sroidl/lambda-ui/labels/bug"
+                                        :text        "Known Issues/Report Bug"}]}})
 
 (defn extract-location [location]
   (when (not (= location :backend-location)) location))
@@ -49,10 +53,12 @@
     (merge ui-config name)))
 
 (defn pipeline->config [pipeline & [additional-config]]
-  (let [default-config {:navbar {:links [{:url  "https://github.com/sroidl/lambda-ui/labels/bug"
-                                          :text "Known Issues/Report Bug"}]}}
+  (let [default-config {:showNewBuildButton false}
         extracted (extract-config pipeline)
-        config (merge default-config extracted (or additional-config {}))]
+        additional-config (or additional-config {})
+        lambdaui-navbar (if (:showDefaultNavbar additional-config true) default-lambdaui-navbar {})
+        config (combine default-config extracted additional-config lambdaui-navbar)]
+
     (create-config-js config)))
 
 
