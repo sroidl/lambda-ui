@@ -1,4 +1,4 @@
-/* globals describe it expect afterEach beforeEach */
+/* globals describe it expect afterEach beforeEach jest */
 jest.mock("../main/DevToggles.es6");
 import React from "react";
 import {Header, HeaderLinks, mapStateToProps} from "Header.es6";
@@ -14,11 +14,11 @@ describe("Header", () => {
     let realConsole;
 
     beforeEach(() => {
-        // TestUtils.consoleThrowingBefore(realConsole);
+        TestUtils.consoleThrowingBefore(realConsole);
     });
 
     afterEach(() => {
-        // TestUtils.consoleThrowingAfter(realConsole);
+        TestUtils.consoleThrowingAfter(realConsole);
     });
 
     const wrapDefaultValues = (input) => R.merge({showStartBuildButton: true}, input);
