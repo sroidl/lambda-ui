@@ -20,7 +20,7 @@ export class QuickDetails extends React.Component {
 
     collapseAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <a href="#" className="quickDetails__collapse-all" onClick={this.props.collapseAllFn}>Expand All</a>;
+            return <a href="#" className="quickDetails__collapse-all" onClick={this.props.collapseAllFn}>Collapse All</a>;
         }
         return null;
     }

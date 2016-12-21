@@ -1,4 +1,4 @@
-/* globals describe it expect beforeEach afterEach */
+/* globals describe it expect beforeEach afterEach jest */
 jest.mock("../../main/DevToggles.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {MockStore} from "../../test/testsupport/TestSupport.es6";
@@ -41,12 +41,26 @@ describe("QuickDetails", () => {
         });
 
         it("should render expand and collapse link", () => {
-            expect(component.find(".quickDetails__expand-all").length).toBe(1);
-            expect(component.find(".quickDetails__collapse-all").length).toBe(1);
+            const expandAll = component.find(".quickDetails__expand-all");
+
+            expect(expandAll.length).toBe(1);
+            expect(expandAll.text()).toEqual("Expand All");
+
+
+            const collapseAll = component.find(".quickDetails__collapse-all");
+            expect(collapseAll.length).toBe(1);
+            expect(collapseAll.text()).toEqual("Collapse All");
+
         });
     });
 
     describe("Redux wiring", () => {
+
+        const createComponent = ({}) => {
+
+        }
+
+
 
         it("map stateToProps return ownProps", () => {
             const oldState = {buildDetails: {1: {steps: [{some: "step"}]}}};
