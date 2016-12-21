@@ -1,5 +1,4 @@
-export const MockStore = (state, dispatch = () => {
-}) => {
+export const MockStore = (state, dispatch = () => {}) => {
     return {
         getState: () => state,
         dispatch: dispatch,

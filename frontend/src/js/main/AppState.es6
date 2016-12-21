@@ -14,14 +14,15 @@ const initialState = {
     summaries: {},
     openedBuilds: {},
     buildDetails: {},
-    config: {name: "PIPELINE_NAME", baseUrl: "localhost:8081"},
+    config: {name: "PIPELINE_NAME"},
     output: {showOutput: false},
     developmentToggles: {
         usePolling: true,
         showInterestingStep: false,
         showConnectionState: true,
         handleTriggerSteps: true,
-        showPipelineTour: false
+        showPipelineTour: false,
+        quickDetails_expandCollapse: false
     },
     showStepToolbox: {},
     triggerDialog: {},

@@ -15,7 +15,7 @@ DevToggles.handleTriggerSteps = true;
 
 describe("BuildDetails", () => {
 
-    let realConsole;
+    const realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);

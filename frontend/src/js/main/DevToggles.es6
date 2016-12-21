@@ -21,6 +21,10 @@ class DevToggles {
     get showPipelineTour() {
         return isActive("showPipelineTour");
     }
+
+    get quickDetails_expandCollapse() {
+        return isActive("quickDetails_expandCollapse");
+    }
 }
 
 export default new DevToggles();
