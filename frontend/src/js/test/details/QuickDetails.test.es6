@@ -2,7 +2,7 @@
 jest.mock("../../main/DevToggles.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {MockStore} from "../../test/testsupport/TestSupport.es6";
-import {QuickDetails, mapStateToProps, mapDispatchToProps} from "details/QuickDetails.es6";
+import ConnectQuickDetails, {QuickDetails, mapStateToProps, mapDispatchToProps} from "details/QuickDetails.es6";
 import {shallow} from "enzyme";
 import React from "react";
 import DevToggles from "DevToggles.es6";
@@ -23,13 +23,15 @@ describe("QuickDetails", () => {
 
     describe("Presentation", () => {
         const steps = [{stepId: 1}];
-        let expandCollapseMock;
+        let expandMock;
+        let collapseMock;
         let component;
 
         beforeEach(() => {
-            expandCollapseMock = jest.fn();
-            component = shallow(<QuickDetails buildId={1} steps={steps} expandAllFn={expandCollapseMock}
-                                              collapseAllFn={expandCollapseMock}/>);
+            expandMock = jest.fn();
+            collapseMock = jest.fn();
+            component = shallow(<QuickDetails buildId={1} steps={steps} expandAllFn={expandMock}
+                                              collapseAllFn={collapseMock}/>);
         });
 
         it("should render QuickDetails", () => {
@@ -40,28 +42,37 @@ describe("QuickDetails", () => {
             expect(component.find(".quickTitle").length).toBe(1);
         });
 
-        it("should render expand and collapse link", () => {
+        it("should render expand link", () => {
             const expandAll = component.find(".quickDetails__expand-all");
 
             expect(expandAll.length).toBe(1);
             expect(expandAll.text()).toEqual("Expand All");
 
+        });
 
+        it("should render collapse link", () => {
             const collapseAll = component.find(".quickDetails__collapse-all");
+
             expect(collapseAll.length).toBe(1);
             expect(collapseAll.text()).toEqual("Collapse All");
 
         });
+
+        it("should connect expandFn to expand link", () => {
+            component.find(".quickDetails__expand-all").simulate("click");
+
+            expect(expandMock).toHaveBeenCalled();
+        });
+
+        it("should connect collapseFn to collapse link", () => {
+            component.find(".quickDetails__collapse-all").simulate("click");
+
+            expect(collapseMock).toHaveBeenCalled();
+        });
+
     });
 
     describe("Redux wiring", () => {
-
-        const createComponent = ({}) => {
-
-        }
-
-
-
         it("map stateToProps return ownProps", () => {
             const oldState = {buildDetails: {1: {steps: [{some: "step"}]}}};
 
