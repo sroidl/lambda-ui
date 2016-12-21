@@ -6,7 +6,7 @@ export const toggleStepToolbox = (buildId, stepId) => {
     return {type: TOGGLE_STEP_TOOLBOX, buildId: buildId, stepId: stepId};
 };
 
-export const toggleSubsteps = (buildId, stepId) => {
+export const toggleSubstep = (buildId, stepId) => {
     return {type: TOGGLE_SUBSTEPS, buildId: buildId, stepId: stepId};
 };
 

@@ -1,9 +1,11 @@
 /* globals jest describe it expect beforeEach afterEach */
 jest.mock("../../main/DevToggles.es6");
+jest.mock("../../main/actions/BuildStepActions.es6");
 import React from "react";
 import * as TestUtils from "../testsupport/TestUtils.es6";
-import {mapStateToProps, BuildStep, getStepDuration, duration} from "steps/BuildStep.es6";
+import {mapStateToProps, mapDispatchToProps, BuildStep, getStepDuration, duration} from "steps/BuildStep.es6";
 import {shallow} from "enzyme";
+import * as Actions from "actions/BuildStepActions.es6";
 
 describe("BuildStep", () => {
 
@@ -17,22 +19,43 @@ describe("BuildStep", () => {
         TestUtils.consoleThrowingAfter(realConsole);
     });
 
-    describe("mapStateToProps", () => {
+    describe("Redux Wiring", () => {
         it("should return buildStep props", () => {
-            const state = {showSubsteps:{}};
+            const state = {showSubsteps: {}};
             const ownProps = {buildId: 1, step: {}};
 
             const newProps = mapStateToProps(state, ownProps);
 
-            expect(newProps).toEqual({hasSubsteps: false, step: {}, isParallel: false, buildId: 1, showSubsteps: false});
+            expect(newProps).toEqual({
+                hasSubsteps: false,
+                step: {},
+                isParallel: false,
+                buildId: 1,
+                showSubsteps: false
+            });
         });
+
+        it("should wire togglesubsteps function", () => {
+            const props = {buildId: 1, step: {stepId: 2}};
+            const dispatchMock = jest.fn();
+            Actions.toggleSubstep.mockReturnValue({toggle: "substeps"});
+
+
+            const newProps = mapDispatchToProps(dispatchMock, props);
+            newProps.toggleSubsteps();
+
+            expect(dispatchMock).toHaveBeenCalledWith({toggle: "substeps"});
+            expect(Actions.toggleSubstep).toHaveBeenCalledWith(1, 2);
+        });
+
     });
 
     describe("BuildStep rendering", () => {
         const component = (step, isParallel = false, hasSubsteps = false, showSubsteps = false) =>
             <BuildStep step={step} isParallel={isParallel}
                        buildId={1} hasSubsteps={hasSubsteps}
-                       toggleSubsteps={() => {}} showSubsteps={showSubsteps} />;
+                       toggleSubsteps={() => {
+                       }} showSubsteps={showSubsteps}/>;
 
         it("should render buildStep", () => {
             const newComponent = shallow(component({stepId: "1", name: "Step", state: "success"}));
@@ -53,20 +76,35 @@ describe("BuildStep", () => {
         });
 
         it("should not render substeps", () => {
-            const newComponent = shallow(component({stepId: "1", name: "", state: "success", steps: [{stepId: "1-1", name: "", state: "success"}]}, false, true));
+            const newComponent = shallow(component({
+                stepId: "1",
+                name: "",
+                state: "success",
+                steps: [{stepId: "1-1", name: "", state: "success"}]
+            }, false, true));
 
             expect(newComponent.find(".BuildStepWithSubsteps").length).toBe(0);
         });
 
         it("should render substeps", () => {
-            const newComponent = shallow(component({stepId: "1", name: "", state: "success", steps: []}, false, true, true));
+            const newComponent = shallow(component({
+                stepId: "1",
+                name: "",
+                state: "success",
+                steps: []
+            }, false, true, true));
 
             expect(newComponent.find(".BuildStepWithSubsteps").length).toBe(1);
             expect(newComponent.find(".BuildStepSubsteps").length).toBe(1);
         });
 
         it("should render in parallel", () => {
-            const newComponent = shallow(component({stepId: "1", name: "", state: "success", steps: []}, true, true, true));
+            const newComponent = shallow(component({
+                stepId: "1",
+                name: "",
+                state: "success",
+                steps: []
+            }, true, true, true));
 
             expect(newComponent.find(".BuildStepParallel").length).toBe(1);
             expect(newComponent.find(".BuildStepInParallel").length).toBe(1);

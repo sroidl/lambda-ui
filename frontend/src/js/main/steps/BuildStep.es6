@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import "../../../sass/buildStep.sass";
-import {toggleSubsteps} from "actions/BuildStepActions.es6";
+import {toggleSubstep} from "actions/BuildStepActions.es6";
 import R from "ramda";
 import {StateIcon} from "../StateIcon.es6";
 import Tools from "./Tools.es6";
@@ -118,9 +118,9 @@ export const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+export const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        toggleSubsteps: () => dispatch(toggleSubsteps(ownProps.buildId, ownProps.step.stepId))
+        toggleSubsteps: () => dispatch(toggleSubstep(ownProps.buildId, ownProps.step.stepId))
     };
 };
 

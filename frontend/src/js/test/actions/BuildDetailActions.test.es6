@@ -47,3 +47,8 @@ describe("BuildDetailActions", () => {
         });
     });
 });
+
+
+describe("BuildDetailActions > expandAll", () => {
+
+});

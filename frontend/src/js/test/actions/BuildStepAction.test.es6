@@ -22,8 +22,8 @@ describe("BuildStepActions", () => {
         });
     });
 
-    it("should return toggleSubsteps action object", () => {
-        const newAction = subject.toggleSubsteps(1, "1");
+    it("should return toggleSubstep action object", () => {
+        const newAction = subject.toggleSubstep(1, "1");
         expect(newAction).toEqual({
             type: "toggleSubsteps",
             buildId: 1, stepId: "1"
