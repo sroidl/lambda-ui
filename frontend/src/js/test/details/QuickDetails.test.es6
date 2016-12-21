@@ -1,7 +1,8 @@
 /* globals describe it expect beforeEach afterEach jest */
 jest.mock("../../main/DevToggles.es6");
+jest.mock("../../main/actions/BuildDetailActions.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import {MockStore} from "../../test/testsupport/TestSupport.es6";
+import * as Actions from "actions/BuildDetailActions.es6";
 import ConnectQuickDetails, {QuickDetails, mapStateToProps, mapDispatchToProps} from "details/QuickDetails.es6";
 import {shallow} from "enzyme";
 import React from "react";
@@ -84,22 +85,28 @@ describe("QuickDetails", () => {
         it("should map expandAll Action to expand All fn", () => {
             const dispatch = jest.fn();
             const oldProps = {buildId: 1};
+            Actions.expandAllSteps.mockReturnValue({expand: "all"});
 
             const newProps = mapDispatchToProps(dispatch, oldProps);
             newProps.expandAllFn();
 
-            expect(dispatch).toHaveBeenCalled();
+            expect(dispatch).toHaveBeenCalledWith({expand: "all"});
+            expect(Actions.expandAllSteps).toHaveBeenCalledWith(1);
         });
 
         it("should map collapseAll Action to collapse All fn", () => {
             const dispatch = jest.fn();
             const oldProps = {buildId: 1};
+            Actions.collapseAllSteps.mockReturnValue({collapse: "all"});
 
             const newProps = mapDispatchToProps(dispatch, oldProps);
             newProps.collapseAllFn();
 
-            expect(dispatch).toHaveBeenCalled();
+            expect(dispatch).toHaveBeenCalledWith({collapse: "all"});
+            expect(Actions.collapseAllSteps).toHaveBeenCalledWith(1);
         });
+
+
     });
 
 });
