@@ -29,7 +29,7 @@ There is currently no stable version available yet. You might use the current sn
 * Support main features (at least) as good as the old UI. This includes an overview of all builds, as well as the ability to see details of builds and build step output.
 
 #### 0.2.0
-* Websockets! Get your buid information asap. Instead of polling the results of a build, the server will push new events to the clients.  
+* Websockets! Get your build information asap. Instead of polling the results of a build, the server will push new events to the clients.  
 * Support all types of build step results (currently only the output)
 * Support of browser history within the app.
 
@@ -37,7 +37,7 @@ Do you have more ideas or feedback?
 Open a [feature request](https://github.com/sroidl/lambda-ui/issues/new)!
 
 ## Usage
-As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.9.0`. To use LambdaUI, you'll also need to use the [http-kit]() (we tested it with v2.1.18) webserver to serve the backend of the UI.
+As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.9.0`. To use LambdaUI, you'll also need to use the [http-kit](http://www.http-kit.org/) (we tested it with v2.1.18) webserver to serve the backend of the UI.
 
 ### Step-by-Step setup
 We'll suppose you've setup your pipeline as in the [example by LambdaCD](http://www.lambda.cd/getting-started/)
@@ -88,7 +88,7 @@ That's it! Now start the pipeline as usual and have a look the new UI:
 __Note:__ As there is no feature complete version of the UI right now (Dec 12 2016), the old UI is served as a fallback for your convenience as the default UI at `http://localhost:8080`. This will change with the first stable release.
 
 
-Also, have a look at the [example-pipeline]() for a complete code example.
+Also, have a look at the [example-pipeline](https://github.com/sroidl/lambda-ui/tree/master/example-pipeline) for a complete code example.
 
 ### Configuration
 
