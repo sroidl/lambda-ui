@@ -85,7 +85,11 @@ describe("BackendActions", () => {
             beforeEach(() => {
                 delayMock = jest.fn();
                 setupDelayMock();
-                dispatchMock.mockImplementation(cb => cb(dispatchMock));
+                dispatchMock.mockImplementation(cb => {
+                    if (typeof cb === "function") {
+                        cb(dispatchMock);
+                    }
+                });
 
             });
 
@@ -97,6 +101,11 @@ describe("BackendActions", () => {
                 subject.requestDetailsPolling(BUILD_ID)(dispatchMock);
 
                 expect(backendMock.requestDetails).toHaveBeenCalledTimes(ONCE);
+                expect(dispatchMock).toHaveBeenCalledWith({
+                    type: "pollingBuildDetails",
+                    buildId: BUILD_ID,
+                    active: false
+                });
             });
 
             it("should poll if build is open and running", () => {
@@ -108,6 +117,20 @@ describe("BackendActions", () => {
                 expect(backendMock.requestDetails).toHaveBeenCalledTimes(POLLING);
             });
 
+            it("should dispatch polling active if build is open and running", () => {
+                setupOpenedBuild();
+                setupRunning();
+
+                subject.requestDetailsPolling(BUILD_ID)(dispatchMock);
+
+                expect(dispatchMock).toHaveBeenCalledWith({
+                    type: "pollingBuildDetails",
+                    buildId: BUILD_ID,
+                    active: true
+                });
+
+            });
+
             it("should poll if build is open and running", () => {
                 setupOpenedBuild();
                 setupFinished();
@@ -115,8 +138,14 @@ describe("BackendActions", () => {
                 subject.requestDetailsPolling(BUILD_ID)(dispatchMock);
 
                 expect(backendMock.requestDetails).toHaveBeenCalledTimes(ONCE);
+                expect(dispatchMock).toHaveBeenCalledWith({
+                    type: "pollingBuildDetails",
+                    buildId: BUILD_ID,
+                    active: false
+                });
             });
 
         });
     }
-);
+)
+;

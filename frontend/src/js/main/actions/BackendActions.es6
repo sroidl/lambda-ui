@@ -7,6 +7,10 @@ export const SUMMARIES_CONNECTION_STATE = "summariesConnectionState";
 export const POLLING_BUILD_DETAILS = "pollingBuildDetails";
 
 
+export const pollingBuildDetails = (buildId, pollingActive) => {
+    return {type: POLLING_BUILD_DETAILS, buildId: buildId, active: pollingActive};
+};
+
 
 export const requestOutput = (buildId, stepId) =>
     dispatch => {
@@ -23,7 +27,7 @@ export const requestDetails = buildId =>
 export const requestDetailsPolling = (buildId) =>
     dispatch => {
         const store = LambdaUI.appStore();
-
+        dispatch(pollingBuildDetails(buildId, true));
         dispatch(requestDetails(buildId));
 
         Utils.delay(1000).then(() => {
@@ -31,8 +35,11 @@ export const requestDetailsPolling = (buildId) =>
             const isOpen = R.pathOr(false, ["openedBuilds", buildId])(state);
             const build = R.path(["buildDetails", buildId])(state);
 
-            if (isOpen && Utils.isBuildRunning(build)) {
+            if (isOpen && Utils.isBuildRunning(build) ) {
                 dispatch(requestDetailsPolling(buildId));
+            }
+            else {
+                dispatch(pollingBuildDetails(buildId, false));
             }
         });
     };
@@ -53,8 +60,4 @@ export const outputConnectionInfo = (state) => {
 
 export const summariesConnectionState = state => {
     return {type: SUMMARIES_CONNECTION_STATE, state: state};
-};
-
-export const pollingBuildDetails = (buildId, pollingActive) => {
-    return {type: POLLING_BUILD_DETAILS, buildId: buildId, active: pollingActive};
 };
