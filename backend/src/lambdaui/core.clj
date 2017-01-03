@@ -8,7 +8,9 @@
     [lambdacd.ui.ui-page :as old-ui]
     [compojure.route :as route]
     [lambdaui.trigger :as runner]
-    [lambdaui.config :as config])
+    [lambdaui.config :as config]
+    [trptcolin.versioneer.core :as version]
+    )
   (:gen-class))
 
 (defn pipeline-routes
@@ -27,8 +29,9 @@
          (POST "/lambdaui/api/triggerNew" request (do (runner/trigger-new-build pipeline request) {}))
          (GET "/" [] (old-ui/ui-page pipeline))
          (context "/api" []
-           (old-api/rest-api pipeline)
-           ))))))
+           (old-api/rest-api pipeline))
+         (GET "/lambdaui/version" [] (ring.util.response/response (str "Lambdaui-Version: " (version/get-version "lambdaui" "lambdaui"))))
+         )))))
 
 (defn ui-for [pipeline & opts]
   (pipeline-routes pipeline opts))

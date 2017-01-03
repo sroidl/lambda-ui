@@ -9,6 +9,7 @@
                  [http-kit "2.1.18"]
                  [org.clojure/data.json "0.2.6"]
                  [org.slf4j/slf4j-simple "1.7.22"]
+                 [trptcolin/versioneer "0.2.0"]
                  ]
   :test-paths ["test"]
   :repositories [["snapshots" { :url "https://clojars.org/repo"
