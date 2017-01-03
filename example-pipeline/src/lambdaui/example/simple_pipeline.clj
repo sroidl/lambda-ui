@@ -9,7 +9,8 @@
             [lambdacd.util :as file-util]
             [lambdaui.core :as ui]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger parameterized-trigger]]
-            [lambdacd.runners :as pipeline-runners]))
+            [lambdacd.runners :as pipeline-runners]
+            [lambdacd.steps.support :as support]))
 
 (defonce lastStatus (atom nil))
 
@@ -33,9 +34,24 @@
 (defn different-status [_ _]
   {:status (swap! lastStatus swapStatus)})
 
-(defn wait-for-git-revision [_ ctx]
+(defn output-parameters [args ctx]
+  (let [p (support/new-printer)
+        out #(support/print-to-output ctx p %)
+        revision (get args :revision)
 
-  (parameterized-trigger {:revision {:desc "Input git revision"}} ctx))
+        ]
+    (out (str "result from previous step \n" (clojure.pprint/write args :stream nil)))
+
+    (if revision (out (str "Revision entered: " revision))
+                 (out "You did not use the parameterized trigger."))
+    {:status :success}
+    ))
+
+(defn wait-for-git-revision [_ ctx]
+  (let [result
+        (parameterized-trigger {:revision {:desc "Input git revision"}} ctx)]
+
+    (update result :global #(assoc % :revision (:revision result)))))
 
 
 
@@ -45,6 +61,8 @@
                   wait-for-manual-trigger
                   wait-for-git-revision
                   ))
+     output-parameters
+     output-parameters
      a-lot-output
      (step/alias "i have substeps"
                  (run successfullStep
@@ -89,8 +107,7 @@
     (reset! server
             (server/run-server (routes
 
-                                 (context "/pipeline" []
-                                   (ui/pipeline-routes pipeline :contextPath "/pipeline")))
+                                 (ui/pipeline-routes pipeline))
                                {:open-browser? false
                                 :port          port}))))
 
