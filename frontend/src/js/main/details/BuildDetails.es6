@@ -7,6 +7,7 @@ import BuildStep from "../steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
 import QuickDetails from "../details/QuickDetails.es6";
 import "../../../sass/buildDetails.sass";
+import * as Utils from "../Utils.es6";
 
 export class BuildDetails extends React.Component {
 
@@ -32,7 +33,7 @@ export class BuildDetails extends React.Component {
     }
 
     render() {
-        const {open, stepsToDisplay, requestDetailsFn, buildId} = this.props;
+        const {open, stepsToDisplay, requestDetailsFn, buildId, isFinished, isPolling} = this.props;
 
         if (!open) {
             return null;
@@ -43,6 +44,9 @@ export class BuildDetails extends React.Component {
             return <div className="twelve columns buildDetails">
                 <div className="row loadingMessage">Loading build details</div>
             </div>;
+        }
+        if(!isFinished && !isPolling) {
+            requestDetailsFn();
         }
 
         const quickDetails = <QuickDetails buildId={buildId} />;
@@ -62,13 +66,18 @@ BuildDetails.propTypes = {
     requestDetailsFn: PropTypes.func.isRequired,
     stepsToDisplay: PropTypes.array,
     stepToScroll: PropTypes.string,
-    noScrollToStepFn: PropTypes.func.isRequired
+    noScrollToStepFn: PropTypes.func.isRequired,
+    isFinished: PropTypes.bool.isRequired,
+    isPolling: PropTypes.bool.isRequired
 };
 
 export const mapStateToProps = (state, ownProps) => {
     const details = state.buildDetails[ownProps.buildId] || {};
     const stepsToDisplay = details.steps || null;
     const stateScroll = state.scrollToStep;
+    const isBuildFinished = !Utils.isBuildRunning(details);
+
+
     let stepToScroll = null;
     if(stateScroll && stateScroll.scrollToStep && stateScroll.buildId === ownProps.buildId){
         stepToScroll = stateScroll.stepId;
@@ -79,7 +88,9 @@ export const mapStateToProps = (state, ownProps) => {
         details: state.buildDetails[ownProps.buildId],
         stepsToDisplay: stepsToDisplay,
         open: state.openedBuilds[ownProps.buildId] || false,
-        stepToScroll: stepToScroll
+        stepToScroll: stepToScroll,
+        isFinished: isBuildFinished,
+        isPolling: R.propOr(false, ownProps.buildId)(state.polling)
     };
 };
 
