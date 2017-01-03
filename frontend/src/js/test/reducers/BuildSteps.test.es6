@@ -1,5 +1,5 @@
 /* globals describe it expect afterEach beforeEach */
-import buildStepsReducer, {toggleState, showSubstepReducer} from "reducers/BuildSteps.es6";
+import {toggleState, showSubstepReducer, buildStepsReducer} from "reducers/BuildSteps.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStep", () => {
@@ -20,6 +20,7 @@ describe("BuildStep", () => {
             const newState = toggleState(oldState, 1, "1");
 
             expect(newState).toEqual({1: {"1": true}});
+            expect(newState).not.toBe(oldState);
         });
 
         it("should add new entry and don't change exist entries", () => {
@@ -27,6 +28,7 @@ describe("BuildStep", () => {
             const newState = toggleState(oldState, 2, "1");
 
             expect(newState).toEqual({1: {"1": true}, 2: {"1": true}});
+            expect(newState).not.toBe(oldState);
         });
 
         it("should add new entry into existent build", () => {
@@ -34,6 +36,7 @@ describe("BuildStep", () => {
             const newState = toggleState(oldState, 1, "2");
 
             expect(newState).toEqual({1: {"1": true, "2": true}});
+            expect(newState).not.toBe(oldState);
         });
 
         it("should toggle existent entry", () => {
@@ -42,6 +45,7 @@ describe("BuildStep", () => {
             const newState = toggleState(oldState, 1, "1");
 
             expect(newState).toEqual({1: {"1": false}});
+            expect(newState).not.toBe(oldState);
         });
     });
 
@@ -70,14 +74,8 @@ describe("BuildStep", () => {
             const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
 
             expect(newState).toEqual({1: {"1": true}});
-        });
+            expect(newState).not.toBe(oldState);
 
-        it("should not change value if it is true", () => {
-            const oldState = {1: {"1": true}};
-
-            const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
-
-            expect(newState).toBe(oldState);
         });
 
         it("should change value if it is false", () => {
@@ -86,6 +84,8 @@ describe("BuildStep", () => {
             const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
 
             expect(newState).toEqual({1: {"1": true}});
+            expect(newState).not.toBe(oldState);
+
         });
     });
 });

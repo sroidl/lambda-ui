@@ -6,7 +6,7 @@ import {BuildDetailsReducer, ScrollToStepReducer} from "./reducers/BuildDetails.
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
 import {OutputReducer} from "./reducers/Output.es6";
 import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
-import BuildStepsReducer, {showSubstepReducer} from "./reducers/BuildSteps.es6";
+import {buildStepsReducer, showSubstepReducer} from "./reducers/BuildSteps.es6";
 import BuildStepTriggerReducer from "./reducers/BuildStepTrigger.es6";
 
 
@@ -37,7 +37,7 @@ const rootReducer = combineReducers({
     config: PipelineConfigurationReducer,
     output: OutputReducer,
     developmentToggles: DevelopmentTogglesReducer,
-    showStepToolbox: BuildStepsReducer,
+    showStepToolbox: buildStepsReducer,
     triggerDialog: BuildStepTriggerReducer,
     showSubsteps: showSubstepReducer,
     scrollToStep: ScrollToStepReducer
