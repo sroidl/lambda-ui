@@ -14,9 +14,7 @@
   (:gen-class))
 
 (defn pipeline-routes
-  ([pipeline & {:keys [showStartBuildButton contextPath]
-                :or   {showStartBuildButton false
-                       contextPath          ""}}]
+  ([pipeline & {:keys [showStartBuildButton contextPath]}]
    (ring-json/wrap-json-response
      (wrap-params
        (routes

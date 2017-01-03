@@ -7,7 +7,7 @@
             [clojure.core.async :as async]
             [org.httpkit.client :as http]
             [clojure.data.json :as json]
-            )
+            [lambdaui.testpipeline.trigger-pipeline :refer [git-revision-trigger]])
   (:import (org.joda.time DateTime DateTimeZone)))
 
 (defn- request-build-details []
@@ -37,3 +37,17 @@
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                     (keys (first-substep (first-substep build-details)))))))))))
 
+(deftest parameterized-trigger-test
+  (testing "should contain revision parameter"
+    (with-server-async `(git-revision-trigger)
+                       (let [build-details (request-build-details)
+                             steps (:steps build-details)
+                             first-substep (comp first :steps)
+
+                             parameters (:parameter (:trigger (first-substep build-details)))
+                             ]
+                         (is (= 1 (count steps)))
+                         (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
+                                (keys (first-substep build-details))))
+
+                         (is (= [{:key "revision" :name "Please enter git revision to build"}] parameters))))))

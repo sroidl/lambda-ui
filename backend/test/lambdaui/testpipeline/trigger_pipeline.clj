@@ -1,7 +1,7 @@
 (ns lambdaui.testpipeline.trigger-pipeline
   (:use [compojure.core])
   (:require [lambdacd.steps.shell :as shell]
-            [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
+            [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger] :as triggers]
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run] :as step]
             [lambdacd.steps.support :refer [capture-output]]
 
@@ -47,9 +47,15 @@
   {:status :success}
   )
 
+(defn git-revision-trigger [_ ctx]
+  (triggers/parameterized-trigger {:revision {:desc "Please enter git revision to build"}
+                                   :secondParam {:desc "Another paramater"}} ctx))
+
 (def pipeline-structure
   `(
-     wait-for-manual-trigger
+     (either wait-for-manual-trigger
+             git-revision-trigger
+             )
      a-lot-output
      (step/alias "i have substeps"
                  (run successfullStep

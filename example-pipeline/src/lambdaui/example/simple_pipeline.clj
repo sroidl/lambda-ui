@@ -8,7 +8,7 @@
             [lambdacd.ui.api]
             [lambdacd.util :as file-util]
             [lambdaui.core :as ui]
-            [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
+            [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger parameterized-trigger]]
             [lambdacd.runners :as pipeline-runners]))
 
 (defonce lastStatus (atom nil))
@@ -33,8 +33,18 @@
 (defn different-status [_ _]
   {:status (swap! lastStatus swapStatus)})
 
+(defn wait-for-git-revision [_ ctx]
+
+  (parameterized-trigger {:revision {:desc "Input git revision"}} ctx))
+
+
+
 (def pipeline-structure
-  `( (step/alias "press \u25B6 to start build" wait-for-manual-trigger)
+  `((step/alias "press \u25B6 to start build"
+                (either
+                  wait-for-manual-trigger
+                  wait-for-git-revision
+                  ))
      a-lot-output
      (step/alias "i have substeps"
                  (run successfullStep
@@ -61,16 +71,32 @@
       (println "No argument given. Fallback to default port " default)
       default)))
 
+(defonce server (atom nil))
+
 (defn -main [& args]
   (let [home-dir (file-util/create-temp-dir)
-        config {:home-dir home-dir
-                :name     "Example Pipeline"
-                :ui-config {:navbar {:links [{:text "Configure Link to github" :url "https://github.com/sroidl/lambda-ui"}]}}}
+        config {:home-dir  home-dir
+                :name      "Example Pipeline"
+                :ui-config {
+                            :navbar               {:links [{:text "Configure Link to github" :url "https://github.com/sroidl/lambda-ui"}]}
+                            :showStartBuildButton false}
+
+                }
         port (try-parse (System/getenv "PORT") 8082)
         pipeline (lambdacd/assemble-pipeline pipeline-structure config)]
 
     (pipeline-runners/start-one-run-after-another pipeline)
-    (server/run-server (routes
-                         (ui/pipeline-routes pipeline))
-                       {:open-browser? false
-                        :port          port})))
+    (reset! server
+            (server/run-server (routes
+
+                                 (context "/pipeline" []
+                                   (ui/pipeline-routes pipeline :contextPath "/pipeline")))
+                               {:open-browser? false
+                                :port          port}))))
+
+(defn stop []
+  (when-let [shutdown @server] (shutdown) (reset! server nil)))
+
+(defn start []
+  (stop)
+  (-main))

@@ -48,29 +48,34 @@
     )
   )
 
-(defn get-trigger-data [step]
-  (let [url-template "/api/dynamic/%s"]
-    (if (= :trigger (get-type step))
-      {:trigger {:url (format url-template (get-in step [:result :trigger-id]))}}
-      {}
-      ))
-  )
+(defn- to-ui-params [params]
+  (let [f (fn [[p-name props]] {:key (name p-name) :name (:desc props)})]
+    (map f params)))
 
-(defn to-output-format [step]
+(defn get-trigger-data [trigger-path-prefix step]
+  (let [trigger-id (get-in step [:result :trigger-id])
+        url-template "%s/api/dynamic/%s"
+        parameters (if-let [params (:parameters (:result step))] {:parameter (to-ui-params params)} {})
+        url {:url (format url-template trigger-path-prefix trigger-id)}]
+    (if (seq trigger-id)
+      {:trigger (merge url parameters)}
+      {})))
+
+(defn to-output-format [trigger-path-prefix step]
   (let [status (:status (:result step))
-        trigger (get-trigger-data step)
+        trigger (get-trigger-data trigger-path-prefix step)
         base {:stepId    (step-id-str (:step-id step))
               :name      (:name step)
               :state     (or status :pending)
               :startTime (to-iso-string (:first-updated-at (:result step)))
               :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
-        type {:type (get-type step)}
-        children (if-let [children (:children step)] {:steps (map (partial to-output-format) children)} {})]
+        type (if (empty? trigger) {:type (get-type step)} {:type :trigger})
+        children (if-let [children (:children step)] {:steps (map (partial to-output-format trigger-path-prefix) children)} {})]
     (merge base type children trigger)))
 
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
   (let [unified-steps-map (->> (presentation/unified-presentation pipeline-def pipeline-state)
-                               (map (partial to-output-format))
+                               (map (partial to-output-format (:path-prefix ui-config "")))
                                (map (fn [step] [(:stepId step) step]))
                                (into {}))
         steps (vals unified-steps-map)

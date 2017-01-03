@@ -92,12 +92,17 @@ export class Backend {
     }
 
     triggerStep(url, body) {
+
+        /* eslint-disable no-console */
+        console.log ("requesting ", url, " with ", JSON.stringify(body))
+
+
         const fetchOptions = {
             method: "POST",
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-            body: body
+            headers: new Headers({
+                "Content-Type": "application/json"
+            }),
+            body: JSON.stringify(body)
         };
 
         fetch(url, fetchOptions).catch((error) => {
