@@ -4,6 +4,7 @@ import * as Utils from "Utils.es6";
 
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 export const SUMMARIES_CONNECTION_STATE = "summariesConnectionState";
+export const POLLING_BUILD_DETAILS = "pollingBuildDetails";
 
 
 
@@ -22,7 +23,9 @@ export const requestDetails = buildId =>
 export const requestDetailsPolling = (buildId) =>
     dispatch => {
         const store = LambdaUI.appStore();
+
         dispatch(requestDetails(buildId));
+
         Utils.delay(1000).then(() => {
             const state = store.getState();
             const isOpen = R.pathOr(false, ["openedBuilds", buildId])(state);
@@ -50,4 +53,8 @@ export const outputConnectionInfo = (state) => {
 
 export const summariesConnectionState = state => {
     return {type: SUMMARIES_CONNECTION_STATE, state: state};
+};
+
+export const pollingBuildDetails = (buildId, pollingActive) => {
+    return {type: POLLING_BUILD_DETAILS, buildId: buildId, active: pollingActive};
 };
