@@ -1,7 +1,6 @@
 /* global describe it expect  */
 import * as subject from "reducers/PollingReducer.es6";
 import {POLLING_BUILD_DETAILS} from "actions/BackendActions.es6";
-import R from "ramda";
 
 describe("PollingReducer", () => {
 
