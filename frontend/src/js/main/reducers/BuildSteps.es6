@@ -1,4 +1,6 @@
 import {TOGGLE_STEP_TOOLBOX, TOGGLE_SUBSTEPS, OPEN_SUBSTEPS} from "actions/BuildStepActions.es6";
+import {ADD_BUILD_DETAILS} from "../actions/BuildDetailActions.es6";
+
 import R from "ramda";
 
 export const toggleState = (oldState, buildId, stepId) => {
@@ -18,6 +20,11 @@ export const buildStepsReducer = (oldState = {}, action) => {
     }
 };
 
+//TODO: continue work here for expand/collapse fn
+const addNonExistentSteps = (oldState) => {
+    return oldState;
+};
+
 export const showSubstepReducer = (oldState = {}, action) => {
     switch (action.type) {
         case TOGGLE_SUBSTEPS: {
@@ -27,6 +34,9 @@ export const showSubstepReducer = (oldState = {}, action) => {
             const stepLens = R.lensPath([action.buildId, action.stepId]);
             return R.set(stepLens, true, oldState);
         }
+        case ADD_BUILD_DETAILS:
+            return addNonExistentSteps(oldState, action.buildDetails);
+
         default:
             return oldState;
     }
