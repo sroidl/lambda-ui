@@ -50,4 +50,7 @@
                          (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                 (keys (first-substep build-details))))
 
-                         (is (= [{:key "revision" :name "Please enter git revision to build"}] parameters))))))
+                         (is (= [{:key  "revision"
+                                  :name "Please enter git revision to build"}
+                                 {:key  "secondParam"
+                                  :name "Another paramater"}] parameters))))))
