@@ -28,7 +28,9 @@
          (GET "/" [] (old-ui/ui-page pipeline))
          (context "/api" []
            (old-api/rest-api pipeline))
-         (GET "/lambdaui/version" [] (ring.util.response/response (str "Lambdaui-Version: " (version/get-version "lambdaui" "lambdaui"))))
+         (GET "/lambdaui/version" [] (ring.util.response/response
+                                       (str "Lambdaui-Version: " (version/get-version "lambdaui" "lambdaui")
+                                            "\nRevision: " (version/get-revision "lambdaui" "lambdaui"))))
          )))))
 
 (defn ui-for [pipeline & opts]

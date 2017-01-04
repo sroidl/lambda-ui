@@ -33,6 +33,8 @@
                            (let [build-details (request-build-details)
                                  steps (:steps build-details)
                                  first-substep (comp first :steps)]
+
+                             (clojure.pprint/pprint build-details)
                              (is (= 1 (count steps)))
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                     (keys (first-substep (first-substep build-details)))))))))))
