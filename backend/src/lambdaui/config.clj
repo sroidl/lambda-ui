@@ -4,8 +4,8 @@
             [lambdaui.common.collections :refer [combine]]))
 
 
-(def default-lambdaui-navbar {:navbar {:links [{:url "https://github.com/sroidl/lambda-ui/labels/bug"}]
-                                        :text        "Known Issues/Report Bug"}})
+(def default-lambdaui-navbar {:navbar {:links [{:url  "https://github.com/sroidl/lambda-ui/labels/bug"
+                                                :text "Known Issues/Report Bug"}]}})
 
 
 

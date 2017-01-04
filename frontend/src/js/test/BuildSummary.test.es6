@@ -78,6 +78,12 @@ describe("Build Summary", () => {
             expect(formattedDuration.text()).toBe("03:20");
         });
 
+        it("should render hours correctly", () => {
+            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:50:00Z", "2017-01-04T17:53:20Z"));
+            const formattedDuration = actual.find(".buildDuration").childAt(2).shallow();
+
+            expect(formattedDuration.text()).toBe("03:03:20");
+        });
     });
 
 });
