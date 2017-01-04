@@ -34,7 +34,11 @@
                                  steps (:steps build-details)
                                  first-substep (comp first :steps)]
 
+                             (println "build-details: ")
                              (clojure.pprint/pprint build-details)
+                             (println "(first-substep (first-substep build-details))")
+                             (clojure.pprint/pprint (first-substep (first-substep build-details)))
+
                              (is (= 1 (count steps)))
                              (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                     (keys (first-substep (first-substep build-details)))))))))))
