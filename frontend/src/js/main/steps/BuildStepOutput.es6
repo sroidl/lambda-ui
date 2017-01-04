@@ -85,7 +85,7 @@ export class BuildStepOutput extends React.Component {
                     <span id="outputHeader__stepName">{stepName}</span>
                     {connectionState}
                 </div>
-                <div className="layerClose" onClick={closeLayerFn}><i className="fa fa-times" aria-hidden="true"></i>
+                <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span><i className="fa fa-times" aria-hidden="true"></i>
                 </div>
                 <div ref={(div) => {
                     this.layerText = div;
