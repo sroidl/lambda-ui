@@ -62,7 +62,7 @@
 
       (testing "should not display default navbar"
         (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
-              actual (subject/pipeline->config pipe {:showDefaultNavbar false })]
+              actual (subject/pipeline->config pipe {:showDefaultNavbar false})]
           (is (= nil (:navbar actual)))))
 
       (testing "should merge user navbar and lambdaui navbar"

@@ -13,8 +13,8 @@
 (defn- request-build-details []
   (->> @(http/get (test-url "/lambdaui/api/builds/1"))
        :body
-       json/read-json
-       ))
+       json/read-json))
+
 
 (deftest test-manual-trigger
   (with-redefs [clj-time.core/now (fn [] (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC)))]
@@ -50,8 +50,8 @@
                              steps (:steps build-details)
                              first-substep (comp first :steps)
 
-                             parameters (:parameter (:trigger (first-substep build-details)))
-                             ]
+                             parameters (:parameter (:trigger (first-substep build-details)))]
+
                          (is (= 1 (count steps)))
                          (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
                                 (keys (first-substep build-details))))

@@ -1,4 +1,5 @@
 /* globals describe it expect beforeEach afterEach jest */
+/* eslint-disable */
 jest.mock("../main/DevToggles.es6");
 import {BuildSummary, mapStateToProps} from "BuildSummary.es6";
 import {shallow} from "enzyme";
@@ -8,10 +9,11 @@ import * as TestUtils from "../test/testsupport/TestUtils.es6";
 const fn = () => {
 };
 
-const buildSummary = (buildId = 1, toggleBuildDetails = fn, state = "running", startTime = "time") => {
+const buildSummary = (buildId = 1, toggleBuildDetails = fn, state = "running", startTime = "time", endTime) => {
     return <BuildSummary buildId={buildId} state={state}
                          startTime={startTime}
                          toggleBuildDetails={toggleBuildDetails}
+                         endTime={endTime}
                          buildNumber={1}/>;
 };
 
@@ -66,6 +68,16 @@ describe("Build Summary", () => {
             });
 
         });
+    });
+
+    describe("Duration", () => {
+        it("should render minutes correctly", () => {
+            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:50:00Z", "2017-01-04T14:53:20Z"));
+            const formattedDuration = actual.find(".buildDuration").childAt(2).shallow();
+
+            expect(formattedDuration.text()).toBe("03:20");
+        });
+
     });
 
 });

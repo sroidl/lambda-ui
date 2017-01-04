@@ -8,8 +8,8 @@
             [shrubbery.core :refer :all]
             [clojure.core.async :as async]
             [clojure.data.json :as json]
-            [lambdacd.internal.default-pipeline-state :as default-state]
-            )
+            [lambdacd.internal.default-pipeline-state :as default-state])
+
   (:import (org.joda.time DateTime DateTimeZone)))
 
 (def joda-date-12 (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC)))
@@ -32,12 +32,12 @@
 (def pipeline-with-substeps-state
   {'(1)   {:status                :running
            :first-updated-at      joda-date-12
-           :most-recent-update-at joda-date-14
-           }
+           :most-recent-update-at joda-date-14}
+
    '(1 1) {:status                :running
            :first-updated-at      joda-date-12
-           :most-recent-update-at joda-date-14
-           }})
+           :most-recent-update-at joda-date-14}})
+
 
 (defn foo-pipeline-build-state [status]
   {'(1) {:status                status
@@ -48,8 +48,8 @@
   {'(1) {:status                status
          :first-updated-at      joda-date-12
          :most-recent-update-at joda-date-14
-         :type                  :manual-trigger
-         }})
+         :type                  :manual-trigger}})
+
 
 
 
@@ -161,11 +161,11 @@
         (async/>!! event-channel {:build-number 1 :step-id [2 1] :stepResult {:status :success}})
 
         (println (async/<!! sent-channel))                  ;ignore first msg. not part of test
-        (println (async/<!! sent-channel))
+        (println (async/<!! sent-channel))))))
         ;(is (= true @closed))
-        )
-      ))
-  )
+
+
+
 
 (deftest only-matching-step-test
   (testing "that it filters for matching steps"
@@ -180,8 +180,8 @@
   (reify httpkit-server/Channel
     (on-close [& _])
     (send! [_ data] (println "sending " data) (async/>!! sent-channel data))
-    (close [_] nil))
-  )
+    (close [_] nil)))
+
 
 (defn debug [x]
   ;(println x)
@@ -221,5 +221,4 @@
                                         :endTime   nil}]}]}
 
 
-               (debug (json/read-json (async/<!! ws-ch))))
-            )))))
+               (debug (json/read-json (async/<!! ws-ch)))))))))

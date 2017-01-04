@@ -22,7 +22,7 @@ export const renderSummary = (properties) => {
     const timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
-    const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).seconds();
+    const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).as("seconds");
 
     const openInterestingStep = () => {
         if (open) {
