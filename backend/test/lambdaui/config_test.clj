@@ -70,4 +70,13 @@
               link-from-default-navbar (first (:links (:navbar lambdaui.config/default-lambdaui-navbar)))
               actual (subject/pipeline->config pipe)
               ]
-          (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual))))))))
+          (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual)))))
+
+      (testing "should not merge nil values into map "
+        (let [pipe (pipeline-map {:ui-config {:key :with-value}})
+              actual (subject/pipeline->config pipe {:key nil})]
+
+          (is (= :with-value (:key actual)))))
+
+      )))
+

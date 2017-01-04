@@ -7,6 +7,9 @@
 (def default-lambdaui-navbar {:navbar {:links [{:url "https://github.com/sroidl/lambda-ui/labels/bug"
                                         :text        "Known Issues/Report Bug"}]}})
 
+
+
+
 (defn extract-location [location]
   (when (not (= location :backend-location)) location))
 
@@ -37,10 +40,16 @@
         name {:name (or (:name ui-config) (:name pipeline-config) "PIPELINE")}]
     (merge ui-config name)))
 
+(defn filter-nil-value [[k v]]
+  (not (nil? v)))
+
+(defn filter-nil-values [m]
+  (into {} (filter filter-nil-value m)))
+
 (defn pipeline->config [pipeline & [additional-config]]
   (let [default-config {:showStartBuildButton false}
-        extracted (extract-config pipeline)
-        additional-config (or additional-config {})
+        extracted (filter-nil-values (extract-config pipeline))
+        additional-config (filter-nil-values (or additional-config {}))
         lambdaui-navbar (if (:showDefaultNavbar additional-config true) default-lambdaui-navbar {})
         config (combine default-config extracted additional-config lambdaui-navbar)]
 
