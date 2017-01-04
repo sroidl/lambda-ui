@@ -4,23 +4,23 @@
   (:require [lambdaui.common.summaries :as testee])
   (:import (org.joda.time DateTime DateTimeZone)))
 
-(deftest summaries-test
+(deftest summaries-test-duration
   (testing "should calculate correct duration"
-    (let [step-1-start (DateTime/parse "2016-12-05T15:00:00Z" )
-          step-1-stop  (DateTime/parse "2016-12-05T15:10:00Z" )
-          step-2-stop  (DateTime/parse "2016-12-05T15:11:00Z" )
+    (let [step-1-start (DateTime/parse "2016-12-05T15:00:00Z")
+          step-1-stop  (DateTime/parse "2016-12-05T15:10:00Z")
+          step-2-stop  (DateTime/parse "2016-12-05T15:11:00Z")
 
           state {1 {`(2) {:most-recent-update-at step-2-stop
-                         :first-updated-at step-1-stop
-                         :status :success}
+                          :first-updated-at step-1-stop
+                          :status :success}
                     `(1) {:most-recent-update-at step-1-stop
-                         :first-updated-at step-1-start
-                         :status :success}}}
+                          :first-updated-at step-1-start
+                          :status :success}}}
 
 
           actual (testee/summaries state)]
       (is (= (str step-1-start) (:startTime (first (:summaries actual)))))
-          (is (= (str step-2-stop) (:endTime (first (:summaries actual))))))))
+      (is (= (str step-2-stop) (:endTime (first (:summaries actual))))))))
 
 
 (deftest summaries-test
@@ -31,8 +31,8 @@
                            :buildId     1
                            :state       :waiting
                            :startTime   nil
-                           :endTime     nil
-                           }]}
+                           :endTime     nil}]}
+
              (testee/summaries simple-waiting-pipeline-state)))
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
@@ -96,8 +96,8 @@
                             '(2)   {:first-updated-at      joda-date-12
                                     :most-recent-update-at joda-date-14}
                             '(1)   {:first-updated-at      joda-date-12
-                                    :most-recent-update-at joda-date-14}
-                            }]
+                                    :most-recent-update-at joda-date-14}}]
+
       (is (= "2016-01-01T16:00:00.000Z" (testee/extract-end-time multi-step-build)))))
   (testing "should return nil if no time found"
     (let [single-empty-step {'(1) {}}]
@@ -107,17 +107,17 @@
   (testing "should be waiting if some step is waiting"
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :running}
-                             '(3) {:status :waiting}}
-          ]
-      (is (= :waiting (testee/extract-state multi-step-build1)))
-      ))
+                             '(3) {:status :waiting}}]
+
+      (is (= :waiting (testee/extract-state multi-step-build1)))))
+
   (testing "should be running if some step is running but none waiting"
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :running}
-                             '(3) {:status :running}}
-          ]
-      (is (= :running (testee/extract-state multi-step-build1)))
-      ))
+                             '(3) {:status :running}}]
+
+      (is (= :running (testee/extract-state multi-step-build1)))))
+
   (testing "should be failure if last step is failure"
     (let [multi-step-build1 {'(1) {:status :success}
                              '(2) {:status :success}
@@ -135,13 +135,12 @@
                              '(2) {:status :failure}
                              '(3) {:status :success}}]
       (is (= :success (testee/extract-state multi-step-build1)))
-      (is (= :success (testee/extract-state multi-step-build2)))
-      ))
+      (is (= :success (testee/extract-state multi-step-build2)))))
+
 
   (testing "should be killed if some step is killed"
     (let [multi-step-build1 {'(1) {:status :success}
-                             '(2) {:status :killed}}
-          ]
+                             '(2) {:status :killed}}]
 
-      (is (= :killed (testee/extract-state multi-step-build1)))
-      )))
+
+      (is (= :killed (testee/extract-state multi-step-build1))))))

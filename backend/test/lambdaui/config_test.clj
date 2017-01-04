@@ -1,7 +1,7 @@
 (ns lambdaui.config-test
   (:require [clojure.test :refer :all]
-            [lambdaui.config :as subject])
-  )
+            [lambdaui.config :as subject]))
+
 
 (defn- pipe-with-config [ui-config]
   {:context {:config {:ui-config ui-config}}})
@@ -17,22 +17,22 @@
   (testing "should create javascript-string for config-map and use default location"
     (is (= [window-def
             "window.lambdaui.config = {\"name\":\"My Pipeline\"}"
-            "window.lambdaui.config.baseUrl = window.location.host + \"\""
-            ]
+            "window.lambdaui.config.baseUrl = window.location.host + \"\""]
+
            (subject/config->string-vec {:name "My Pipeline"}))))
   (testing "should use custom location"
     (is (= [window-def
             "window.lambdaui.config = {\"name\":\"My Pipeline\"}"
             "window.lambdaui.config.baseUrl = \"My Location\" + \"/somePath\""]
-           (subject/config->string-vec {:name "My Pipeline" :location "My Location" :path-prefix "/somePath"})))
-    )
+           (subject/config->string-vec {:name "My Pipeline" :location "My Location" :path-prefix "/somePath"}))))
+
 
   (testing "should join config-vector to string"
     (is (= (str window-def ";\n"
                 "window.lambdaui.config = {\"name\":\"My Pipeline\"}" ";\n"
                 "window.lambdaui.config.baseUrl = \"My Location\" + \"\"")
-           (subject/create-config-js {:name "My Pipeline" :location "My Location"})))
-    ))
+           (subject/create-config-js {:name "My Pipeline" :location "My Location"})))))
+
 
 (defn- pipeline-map [config]
   {:context {:config config}})
@@ -57,8 +57,8 @@
 
           (is (= "LAMBDAUI PIPELINE" (:name actual)))
           (is (= false (:showStartBuildButton actual)))
-          (is (= (:navbar lambdaui.config/default-lambdaui-navbar) (:navbar actual)))
-          ))
+          (is (= (:navbar lambdaui.config/default-lambdaui-navbar) (:navbar actual)))))
+
 
       (testing "should not display default navbar"
         (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
@@ -68,15 +68,15 @@
       (testing "should merge user navbar and lambdaui navbar"
         (let [pipe (pipeline-map {:ui-config {:navbar {:links [{:text "mylink"}]}}})
               link-from-default-navbar (first (:links (:navbar lambdaui.config/default-lambdaui-navbar)))
-              actual (subject/pipeline->config pipe)
-              ]
+              actual (subject/pipeline->config pipe)]
+
           (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual)))))
 
       (testing "should not merge nil values into map "
         (let [pipe (pipeline-map {:ui-config {:key :with-value}})
               actual (subject/pipeline->config pipe {:key nil})]
 
-          (is (= :with-value (:key actual)))))
+          (is (= :with-value (:key actual))))))))
 
-      )))
+
 

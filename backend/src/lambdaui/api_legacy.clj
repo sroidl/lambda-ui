@@ -44,9 +44,9 @@
   (when-let [type (:type step)]
     (case type
       :manual-trigger :trigger
-      type)
-    )
-  )
+      type)))
+
+
 
 (defn- to-ui-params [params]
   (let [f (fn [[p-name props]] {:key (name p-name) :name (:desc props)})]
@@ -78,8 +78,8 @@
                                (map (partial to-output-format (:path-prefix ui-config "")))
                                (map (fn [step] [(:stepId step) step]))
                                (into {}))
-        steps (vals unified-steps-map)
-        ]
+        steps (vals unified-steps-map)]
+
     {:buildId build-id
      :steps   steps}))
 
@@ -109,17 +109,17 @@
   (finished? (:status
                (-> (state-from-pipeline pipeline)
                    (get build-id)
-                   (get (to-step-id step-id))
-                   )))
-  )
+                   (get (to-step-id step-id))))))
+
+
 
 (defn output-events [pipeline ws-ch build-id step-id]
   (let [ctx (:context pipeline)
         subscription (event-bus/subscribe ctx :step-result-updated)
         payloads (event-bus/only-payload subscription)
         filtered (only-matching-step payloads build-id step-id)
-        sliding-window (async/pipe filtered (async/chan (async/sliding-buffer 1)))
-        ]
+        sliding-window (async/pipe filtered (async/chan (async/sliding-buffer 1)))]
+
     (on-close ws-ch (fn [_] (do (event-bus/unsubscribe ctx :step-result-updated subscription) (println "closed channel!"))))
     (send! ws-ch (lambdacd.util/to-json {:stepResult (-> (state-from-pipeline pipeline)
                                                          (get build-id)
@@ -135,8 +135,8 @@
                       (if (finished? (get-in event [:stepResult :status]))
                         (close ws-ch)
                         (recur))))
-      (close ws-ch)
-      )))
+      (close ws-ch))))
+
 
 (defn- output-buildstep-websocket [pipeline req build-id step-id]
   (with-channel req ws-ch
@@ -145,13 +145,13 @@
 (defn- subscribe-to-summary-update [request pipeline]
   (with-channel request websocket-channel
 
-                (let [ctx (:context pipeline)
+                (let [ctx (:context pipeline)]
                       ;subscription (event-bus/subscribe ctx :step-result-updated)
                       ;payloads     (event-bus/only-payload subscription)
-                      ]
+
 
                   (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
-                  (close websocket-channel)
+                  (close websocket-channel))))
 
                   ;(async/go-loop []
                   ;  (if-let [event (async/<! payloads)]
@@ -160,7 +160,7 @@
                   ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
                   ;      (swap! current-count inc)
                   ;      (recur))))
-                  )))
+
 
 (defn websocket-connection-for-details [pipeline build-id websocket-channel]
   (send! websocket-channel (json/write-str (build-details-response pipeline build-id)))

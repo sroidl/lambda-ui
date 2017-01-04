@@ -1,11 +1,11 @@
 (ns lambdaui.config
   (:require [clojure.data.json :as json]
             [clojure.string :as string]
-            [lambdaui.common.collections :refer [combine]])
-  )
+            [lambdaui.common.collections :refer [combine]]))
 
-(def default-lambdaui-navbar {:navbar {:links [{:url "https://github.com/sroidl/lambda-ui/labels/bug"
-                                        :text        "Known Issues/Report Bug"}]}})
+
+(def default-lambdaui-navbar {:navbar {:links [{:url "https://github.com/sroidl/lambda-ui/labels/bug"}]
+                                        :text        "Known Issues/Report Bug"}})
 
 
 
@@ -23,13 +23,13 @@
   (let [l (extract-location (:location config))
         location (if l (escape-string l) "window.location.host")
         path-prefix (:path-prefix config "")
-        config (dissoc config :location :path-prefix)
-        ]
+        config (dissoc config :location :path-prefix)]
+
     (-> []
         (conj "window.lambdaui = window.lambdaui || {}")
         (conj (str "window.lambdaui.config = " (clj-map->json-string config)))
-        (conj (str "window.lambdaui.config.baseUrl = " location " + \"" path-prefix "\""))
-        )))
+        (conj (str "window.lambdaui.config.baseUrl = " location " + \"" path-prefix "\"")))))
+
 
 (defn create-config-js [config]
   (string/join ";\n" (config->string-vec config)))

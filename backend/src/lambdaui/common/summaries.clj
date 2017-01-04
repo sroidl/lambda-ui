@@ -1,6 +1,6 @@
 (ns lambdaui.common.summaries
-  (:require [lambdacd.presentation.pipeline-state :as presentation])
-  )
+  (:require [lambdacd.presentation.pipeline-state :as presentation]))
+
 
 ; ------ Summaries ------
 (defn extract-state
@@ -33,7 +33,10 @@
                                           :buildId     build-number
                                           :state       (extract-state build-steps)
                                           :startTime   (extract-start-time build-steps)
-                                          :endTime     (extract-end-time build-steps)
-                                          })
+                                          :endTime     (extract-end-time build-steps)})
+
         pipeline-state)})
 
+
+{:step1 {:most-recent-update-at 123
+         :first-updated-at      12321}}
