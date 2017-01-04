@@ -6,14 +6,15 @@
             [org.httpkit.server :as http]
             [lambdaui.testpipeline.simple-pipeline :as pipe]
             [lambdaui.testpipeline.trigger-pipeline :as pipe-with-trigger]
+            [lambdaui.testpipeline.long-running :as long-running-pipe]
             [lambdaui.core :as ui]
             [lambdacd.internal.execution :as exec]
             [clojure.core.async :as async :refer [go <! <!! >! >!!]]
             [lambdacd.event-bus :as events]
             [lambdacd.event-bus :as event-bus]
             [lambdaui.fixtures.pipelines :as fixture]
-            [compojure.core :refer [routes GET context POST]]
-            )
+            [compojure.core :refer [routes GET context POST]])
+
   (:use [lambdacd.runners]))
 
 (defonce server (atom nil))
@@ -26,13 +27,13 @@
 
 
 (defn start-server [port]
-  (let [pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TEST PIPELINE" :location :backend-location :path-prefix ""}})]
+  (let [pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TEST PIPELINE" :location :backend-location :path-prefix ""}})]
     (reset! current-pipeline pipeline)
     (reset! server (http/run-server
                      (routes
-                       (ui/pipeline-routes pipeline)
-                       #_(context "/prefix-test" []
-                         (ui/pipeline-routes pipeline :contextPath "/prefix-test")))
+                       (ui/pipeline-routes pipeline :showStartBuildButton true)
+                       #_(context "/prefix-test" [])
+                         (ui/pipeline-routes pipeline :contextPath "/prefix-test"))
                      {:port port}))))
 
 
