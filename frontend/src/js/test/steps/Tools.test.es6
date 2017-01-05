@@ -4,6 +4,7 @@ jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/steps/InterestingStepFinder.es6");
+jest.mock("../../main/App.es6");
 import React from "react";
 import ToolsRedux, {
     Tools,
@@ -19,6 +20,7 @@ import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import DevToggles from "../../main/DevToggles.es6";
 import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
+import LambdaUIMock from "App.es6";
 
 DevToggles.handleTriggerSteps = true;
 DevToggles.showKillStep = true;
@@ -124,7 +126,7 @@ describe("Tools", () => {
                 const step = {state: "running"};
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
                                                  showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
-                                                 toolboxOpen={false} />);
+                                                 toolboxOpen={false} killStepFn={jest.fn()}/>);
 
                 expect(component.find({toolClass: "killStepTool"}).length).toBe(1);
             });
@@ -133,10 +135,24 @@ describe("Tools", () => {
                 const step = {state: "success"};
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
                                                  showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
-                                                 toolboxOpen={false} />);
+                                                 toolboxOpen={false}/>);
 
                 expect(component.find({toolClass: "killStepTool"}).length).toBe(0);
             });
+
+            it("should call kill fn if clicked", () => {
+                const step = {state: "running"};
+                const killStepMockFn = jest.fn();
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} killStepFn={killStepMockFn}/>);
+
+                component.find({toolClass: "killStepTool"}).shallow().simulate("click");
+
+                expect(killStepMockFn).toBeCalled();
+
+            });
+
 
             it("should render output and substep tool if step have substeps", () => {
                 const component = mount(tools(false, true));
@@ -153,7 +169,8 @@ describe("Tools", () => {
         describe("Wiring", () => {
             const substeps = {stepId: "1-1", state: "failure"};
             const defaultStep = {stepId: "1", state: "failure", steps: substeps};
-            const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} step={step} store={storeMock} />;
+            const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} step={step} store={storeMock}
+                                                                         killStepFn={jest.fn()}/>;
 
             it("should dispatch showOutput", () => {
                 const dispatchMock = jest.fn();
@@ -196,11 +213,33 @@ describe("Tools", () => {
                 openSubsteps.mockReturnValue({type: "goIntoRunningStep"});
                 findParentOfRunningSubstep.mockReturnValue(["1"]);
 
-                const component = mount(tools(storeMock, {stepId: "1", state: "running", steps: {stepId: "1-1", state: "running"}}, "1-1"));
+                const component = mount(tools(storeMock, {
+                    stepId: "1",
+                    state: "running",
+                    steps: {stepId: "1-1", state: "running"}
+                }, "1-1"));
                 component.find(".runningStepTool").simulate("click");
 
                 expect(dispatchMock).toBeCalledWith({type: "goIntoRunningStep"});
             });
+
+
+            it ("should call killStepFn in backend on killStep click", () => {
+                    const backendMock = {killStep: jest.fn()};
+                    LambdaUIMock.backend.mockReturnValue(backendMock);
+
+                    const dispatchMock = jest.fn();
+                    const storeMock = MockStore({}, dispatchMock);
+                    const component = mount(tools(storeMock, {
+                        stepId: "1",
+                        state: "running",
+                        steps: []
+                    }));
+                    component.find(".killStepTool").simulate("click");
+
+                    expect(backendMock.killStep).toHaveBeenCalledWith(1, "1");
+
+                });
 
             xit("should dispatch toggleToolbox", () => {
                 // TODO: toggle test if steps with more then 3 tools available

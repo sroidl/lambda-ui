@@ -5,6 +5,7 @@ import * as Utils from "Utils.es6";
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 export const SUMMARIES_CONNECTION_STATE = "summariesConnectionState";
 export const POLLING_BUILD_DETAILS = "pollingBuildDetails";
+export const KILL_STEP = "killStep";
 
 
 export const pollingBuildDetails = (buildId, pollingActive) => {

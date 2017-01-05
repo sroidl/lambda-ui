@@ -8,6 +8,7 @@ import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import R from "ramda";
 import DevToggle from "../DevToggles.es6";
 import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "./InterestingStepFinder.es6";
+import LamdbdaUI from "App.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
@@ -49,9 +50,9 @@ export class Tools extends React.Component {
     }
 
     toolKillStep() {
-        const {step} = this.props;
+        const {step, killStepFn} = this.props;
 
-        const linkFn = () => {};
+        const linkFn = killStepFn;
 
         if(DevToggle.showKillStep && step.state === "running") {
             return <ToolboxLink iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"} linkText="Kill Step" linkFn={linkFn}/>;
@@ -88,9 +89,6 @@ export class Tools extends React.Component {
         const {stepTrigger, failureStep, runningStep, hasSubsteps} = this.props;
 
         const toolsForRendering = [];
-
-        toolsForRendering.push(this.toolKillStep());
-
         if(DevToggle.handleTriggerSteps){
             if(stepTrigger && stepTrigger.url){
                 toolsForRendering.push(this.toolTrigger());
@@ -104,6 +102,8 @@ export class Tools extends React.Component {
         if(hasSubsteps){
             toolsForRendering.push(this.toolSubstep());
         }
+
+        toolsForRendering.push(this.toolKillStep());
 
         const notNil = R.pipe(R.isNil, R.not);
         return R.filter(notNil)(toolsForRendering);
@@ -168,7 +168,8 @@ Tools.propTypes = {
     showOutputFn: PropTypes.func.isRequired,
     toggleStepToolboxFn: PropTypes.func.isRequired,
     showTriggerDialogFn: PropTypes.func.isRequired,
-    stepTrigger: PropTypes.object
+    stepTrigger: PropTypes.object,
+    killStepFn: PropTypes.func
 };
 
 
@@ -205,7 +206,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         openSubstepFn: (stepId) => dispatch(openSubsteps(buildId, stepId)),
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
-        showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName))
+        showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName)),
+        killStepFn: () => LamdbdaUI.backend().killStep(buildId, stepId)
     };
 };
 

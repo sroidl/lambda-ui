@@ -110,4 +110,8 @@ export class Backend {
         });
     }
 
+    killStep(buildId, stepId) {
+        alert("Kill Step " + buildId + " " + stepId);
+    }
+
 }
