@@ -23,7 +23,8 @@ const initialState = {
         showConnectionState: true,
         handleTriggerSteps: true,
         showPipelineTour: false,
-        quickDetails_expandCollapse: false
+        quickDetails_expandCollapse: false,
+        showKillStep: false
     },
     showStepToolbox: {},
     triggerDialog: {},

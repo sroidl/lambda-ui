@@ -12,6 +12,7 @@ import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "./Interesti
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
 export const SHOW_INTERESTING_STEP_ICON_CLASS = "fa-arrow-circle-down";
+export const KILL_STEP_ICON_CLASS = " fa-stop-circle-o";
 export const TRIGGER_STEP_ICON = "fa-play";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
@@ -47,6 +48,17 @@ export class Tools extends React.Component {
                                 linkText="Substeps" linkFn={linkFn}/>;
     }
 
+    toolKillStep() {
+        const {step} = this.props;
+
+        const linkFn = () => {};
+
+        if(DevToggle.showKillStep && step.state === "running") {
+            return <ToolboxLink iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"} linkText="Kill Step" linkFn={linkFn}/>;
+        }
+        return null;
+    }
+
     toolInterestingStep() {
         const {failureStep, runningStep, openSubstepFn} = this.props;
 
@@ -77,6 +89,8 @@ export class Tools extends React.Component {
 
         const toolsForRendering = [];
 
+        toolsForRendering.push(this.toolKillStep());
+
         if(DevToggle.handleTriggerSteps){
             if(stepTrigger && stepTrigger.url){
                 toolsForRendering.push(this.toolTrigger());
@@ -90,7 +104,9 @@ export class Tools extends React.Component {
         if(hasSubsteps){
             toolsForRendering.push(this.toolSubstep());
         }
-        return toolsForRendering;
+
+        const notNil = R.pipe(R.isNil, R.not);
+        return R.filter(notNil)(toolsForRendering);
     }
 
     showToolbar(toolsForRendering) {
@@ -141,11 +157,8 @@ export class Tools extends React.Component {
     }
 }
 
-
-
-
 Tools.propTypes = {
-    step: PropTypes.object,
+    step: PropTypes.object.isRequired,
     failureStep: PropTypes.array,
     runningStep: PropTypes.array,
     hasSubsteps: PropTypes.bool.isRequired,

@@ -11,7 +11,10 @@
             [lambdacd.util]
             [lambdacd.internal.pipeline-state :as state]
             [lambdacd.presentation.unified :as presentation]
-            [clojure.tools.logging :as log]))
+            [clojure.tools.logging :as log]
+            [lambdacd.util :as util]
+            [lambdacd.core :as core]
+            [clojure.string :as string]))
 
 (defn deep-merge
   "Recursively merges maps. If vals are not maps, the last value wins."
@@ -170,8 +173,20 @@
   (with-channel request channel
                 (handler channel)))
 
+(defn- to-internal-step-id [dash-seperated-step-id]
+  (map util/parse-int (string/split dash-seperated-step-id #"-")))
+
 (defn api-routes [pipeline]
-  (routes
-    (GET "/builds" [:as request] (subscribe-to-summary-update request pipeline))
-    (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
-    (GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id))))
+  (let [{pipeline-def :pipeline-def ctx :context} pipeline]
+    (routes
+      (GET "/builds" [:as request] (subscribe-to-summary-update request pipeline))
+      (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
+      (GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id))
+      (POST "/builds/:buildnumber/:step-id/retrigger" [buildnumber step-id]
+        (let [new-buildnumber (core/retrigger pipeline-def ctx (util/parse-int buildnumber) (to-internal-step-id step-id))]
+          (util/json {:build-number new-buildnumber})))
+      (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id]
+        (do
+          (core/kill-step ctx (util/parse-int buildnumber) (to-internal-step-id step-id))
+          "OK")))))
+

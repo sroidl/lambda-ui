@@ -25,6 +25,10 @@ class DevToggles {
     get quickDetails_expandCollapse() {
         return isActive("quickDetails_expandCollapse");
     }
+
+    get showKillStep() {
+        return isActive("showKillStep");
+    }
 }
 
 export default new DevToggles();

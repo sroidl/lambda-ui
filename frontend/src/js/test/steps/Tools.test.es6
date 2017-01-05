@@ -21,13 +21,16 @@ import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/Inter
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 DevToggles.handleTriggerSteps = true;
+DevToggles.showKillStep = true;
 
 const fn = () => {
 };
 
+const defaultStep = {stepId: 1};
+
 describe("Tools", () => {
 
-    let realConsole;
+    let realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);
@@ -72,8 +75,9 @@ describe("Tools", () => {
     });
 
     describe("Tools", () => {
-        const tools = (toolboxOpen = false, hasSubsteps = false, failureStep = null, stepType = "", stepTrigger = null) =>
-            <Tools toolboxOpen={toolboxOpen}
+        const tools = (toolboxOpen = false, hasSubsteps = false, failureStep = null, stepType = "", stepTrigger = null, step = defaultStep) =>
+            <Tools step={step}
+                   toolboxOpen={toolboxOpen}
                    hasSubsteps={hasSubsteps}
                    failureStep={failureStep}
                    runningStep={[""]}
@@ -96,7 +100,7 @@ describe("Tools", () => {
                 expect(component.find(".toolbar").length).toBe(1);
             });
 
-            it("should not render Toolbox, if tollboxOpen is false", () => {
+            it("should not render Toolbox, if toolboxOpen is false", () => {
                 const component = shallow(tools());
                 expect(component.find(".toolbox").length).toBe(0);
             });
@@ -114,6 +118,24 @@ describe("Tools", () => {
             it("should render only show output tool", () => {
                 const component = mount(tools());
                 expect(component.find(".outputTool").length).toBe(1);
+            });
+
+            it("should render kill step tool if step is running", () => {
+                const step = {state: "running"};
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} />);
+
+                expect(component.find({toolClass: "killStepTool"}).length).toBe(1);
+            });
+
+            it("should not render kill step tool if step is not running", () => {
+                const step = {state: "success"};
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} />);
+
+                expect(component.find({toolClass: "killStepTool"}).length).toBe(0);
             });
 
             it("should render output and substep tool if step have substeps", () => {
