@@ -13,6 +13,7 @@ const outputUrl = (baseUrl, buildId, stepId) => "ws://" + baseUrl + "/lambdaui/a
 const detailsUrl = (baseUrl, buildId) => "ws://" + baseUrl + "/lambdaui/api/builds/" + buildId;
 const summariesUrl = baseUrl => "ws://" + baseUrl + "/lambdaui/api/builds";
 const triggerNewUrl = baseUrl => "http://" + baseUrl + "/lambdaui/api/triggerNew";
+const killStepUrl = (baseUrl, buildId, stepId) => "http://" + baseUrl + "/lambdaui/api/builds/" + buildId + "/" + stepId + "/kill";
 
 export class Backend {
     constructor(baseUrl) {
@@ -111,7 +112,11 @@ export class Backend {
     }
 
     killStep(buildId, stepId) {
-        alert("Kill Step " + buildId + " " + stepId);
+        const fetchOptions = {
+            method: "POST"
+        };
+
+        fetch(killStepUrl(this.baseUrl, buildId, stepId), fetchOptions);
     }
 
 }

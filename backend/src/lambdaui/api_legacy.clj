@@ -187,6 +187,7 @@
           (util/json {:build-number new-buildnumber})))
       (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id]
         (do
+          (println "Kill Step " buildnumber " - " step-id)
           (core/kill-step ctx (util/parse-int buildnumber) (to-internal-step-id step-id))
           "OK")))))
 

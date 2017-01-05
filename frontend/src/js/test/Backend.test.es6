@@ -7,6 +7,7 @@ describe("Backend", () => {
     let subject;
     let dispatchMock;
     let websocketMock;
+    let fetchMock;
 
     const OPEN_STATE = 1;
 
@@ -16,10 +17,18 @@ describe("Backend", () => {
         websocketMock = {close: jest.fn(), readystate: OPEN_STATE};
         webSocket.mockClear();
         webSocket.mockReturnValue(websocketMock);
+        fetchMock = jest.fn();
+        window.fetch = fetchMock;
     });
 
     it("should extract baseUrl", () => {
         expect(subject.baseUrl).toBe("baseUrl");
+    });
+
+    it("kill step", () => {
+        subject.killStep(1, "3");
+
+        expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/kill", {method: "POST"});
     });
 
     describe("outputConnection", () => {
