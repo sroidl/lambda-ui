@@ -176,6 +176,20 @@
 (defn- to-internal-step-id [dash-seperated-step-id]
   (map util/parse-int (string/split dash-seperated-step-id #"-")))
 
+(def killed-steps (atom #{}))
+
+(defn kill-step [build-id step-id ctx]
+  (let [identifier (str build-id "/" step-id)]
+    (if-not (contains? @killed-steps identifier)
+      (do
+        (println "Kill Step " build-id " - " step-id)
+        (swap! killed-steps (fn [old-value] (conj old-value identifier)))
+        (core/kill-step ctx (util/parse-int build-id) (to-internal-step-id step-id))
+        (response "OK"))
+      (do (println "Already killed step " identifier) (response "OK")))))
+
+
+
 (defn api-routes [pipeline]
   (let [{pipeline-def :pipeline-def ctx :context} pipeline]
     (routes
@@ -185,9 +199,6 @@
       (POST "/builds/:buildnumber/:step-id/retrigger" [buildnumber step-id]
         (let [new-buildnumber (core/retrigger pipeline-def ctx (util/parse-int buildnumber) (to-internal-step-id step-id))]
           (util/json {:build-number new-buildnumber})))
-      (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id]
-        (do
-          (println "Kill Step " buildnumber " - " step-id)
-          (core/kill-step ctx (util/parse-int buildnumber) (to-internal-step-id step-id))
-          "OK")))))
+      (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id] (kill-step buildnumber step-id ctx)))))
+
 

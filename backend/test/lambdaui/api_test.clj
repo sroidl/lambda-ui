@@ -222,3 +222,21 @@
 
 
                (debug (json/read-json (async/<!! ws-ch)))))))))
+
+(defn- clear-killed-atom []
+  (reset! subject/killed-steps #{}))
+
+(deftest kill-step-test
+  (testing "should call kill step only once"
+
+    (clear-killed-atom)
+
+    (let [kill-counter (atom 0)]
+      (with-redefs [lambdacd.core/kill-step (fn [& _] (swap! kill-counter inc))]
+        (subject/kill-step "1" "1" nil)
+        (subject/kill-step "1" "1" nil)
+
+        (is (= 1 @kill-counter))))))
+
+
+
