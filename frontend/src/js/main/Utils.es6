@@ -17,10 +17,13 @@ export const flatSteps = (input) => {
     return R.pipe(R.filter((i) => i), R.map(allSteps), R.flatten, R.filter(isStep))([input]);
 };
 
+export const isRunning = state => {
+    return state === "waiting" || state === "running";
+};
+
 export const isBuildRunning = buildDetails => {
     const steps = flatSteps(buildDetails);
-    const runningOrWaiting = state => state === "waiting" || state === "running";
 
-    const runningOrWaitingSteps = R.pipe(R.map(step => step.state), R.filter(runningOrWaiting))(steps);
+    const runningOrWaitingSteps = R.pipe(R.map(step => step.state), R.filter(isRunning))(steps);
     return ! R.isEmpty(runningOrWaitingSteps);
 };
