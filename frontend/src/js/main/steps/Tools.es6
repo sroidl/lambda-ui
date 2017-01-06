@@ -1,5 +1,5 @@
 import React, {PropTypes} from "react";
-import Utils from "ComponentUtils.es6";
+import ComponentUtils from "../ComponentUtils.es6";
 import {connect} from "react-redux";
 import "../../../sass/buildStepTools.sass";
 import {showBuildOutput} from "actions/OutputActions.es6";
@@ -17,8 +17,8 @@ export const KILL_STEP_ICON_CLASS = " fa-stop-circle-o";
 export const TRIGGER_STEP_ICON = "fa-play";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
-    return <div className={Utils.classes(toolClass, "tool")} onClick={linkFn}>
-        <div className="toolIcon" title={linkText}><i className={Utils.classes("fa", iconClass)}/></div>
+    return <div className={ComponentUtils.classes(toolClass, "tool")} onClick={linkFn}>
+        <div className="toolIcon" title={linkText}><i className={ComponentUtils.classes("fa", iconClass)}/></div>
         <div className="linkText">{linkText}</div>
     </div>;
 };
@@ -71,7 +71,7 @@ export class Tools extends React.Component {
             }
         };
 
-        const toolClasses = Utils.classes("interestingStepTool", runningStep ? "runningStepTool" : "failureStepTool");
+        const toolClasses = ComponentUtils.classes("interestingStepTool", runningStep ? "runningStepTool" : "failureStepTool");
         const linkText = runningStep ? "Running Step" : "Failure Step";
 
         return <ToolboxLink key="interestingStepTool" toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
@@ -79,7 +79,8 @@ export class Tools extends React.Component {
     }
 
     toolTrigger(){
-        const {stepTrigger, showTriggerDialogFn} = this.props;
+        const {stepTrigger, showTriggerDialogFn, step} = this.props;
+
 
         const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
         return <ToolboxLink key="triggerStepTool" iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;
@@ -110,7 +111,7 @@ export class Tools extends React.Component {
     }
 
     showToolbar(toolsForRendering) {
-        const classes = Utils.classes("toolbar", toolsForRendering.length <= 3 ? "withoutExpand" : "");
+        const classes = ComponentUtils.classes("toolbar", toolsForRendering.length <= 3 ? "withoutExpand" : "");
 
         return <div className={classes}>
             {R.view(R.lensIndex(0))(toolsForRendering)}
@@ -138,8 +139,8 @@ export class Tools extends React.Component {
             return null;
         }
 
-        const toggleToolboxClasses = Utils.classes("expandTools", "showNoIcon");
-        const toggleToolboxIconClasses = Utils.classes("fa", (toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
+        const toggleToolboxClasses = ComponentUtils.classes("expandTools", "showNoIcon");
+        const toggleToolboxIconClasses = ComponentUtils.classes("fa", (toolboxOpen ? "fa-angle-up" : "fa-angle-down"));
 
         return <div className={toggleToolboxClasses} onClick={toggleStepToolboxFn}>
             <i className={toggleToolboxIconClasses} aria-hidden="true"/>
