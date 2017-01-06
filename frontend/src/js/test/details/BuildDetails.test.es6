@@ -5,7 +5,7 @@ jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/Utils.es6");
 import BuildDetailsRedux, {BuildDetails, mapStateToProps} from "details/BuildDetails.es6";
 import {shallow, mount} from "enzyme";
-import {MockStore} from "../testsupport/TestSupport.es6";
+import {MockStore} from "../testsupport/TestUtils.es6";
 import React from "react";
 import {Provider} from "react-redux";
 import {requestDetailsPolling as requestDetailsAction} from "actions/BackendActions.es6";

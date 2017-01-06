@@ -15,3 +15,11 @@ export const consoleThrowingBefore = (realConsole) => {
 export const consoleThrowingAfter = (realConsole) => {
     window.console = realConsole;
 };
+
+export const MockStore = (state, dispatch = () => {}) => {
+    return {
+        getState: () => state,
+        dispatch: dispatch,
+        subscribe: () => {}
+    };
+};

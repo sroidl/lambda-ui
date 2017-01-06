@@ -15,7 +15,7 @@ import ToolsRedux, {
     TRIGGER_STEP_ICON
 } from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
-import {MockStore} from "../testsupport/TestSupport.es6";
+import {MockStore} from "../testsupport/TestUtils.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import DevToggles from "../../main/DevToggles.es6";

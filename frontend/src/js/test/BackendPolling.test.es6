@@ -4,7 +4,7 @@ jest.mock("../main/WebSocketFactory.es6");
 
 import {BackendPolling} from "backend/BackendPolling.es6";
 import {webSocket} from "WebSocketFactory.es6";
-import {MockStore} from "./testsupport/TestSupport.es6";
+import {MockStore} from "./testsupport/TestUtils.es6";
 
 const mockFetchResponse = (response) => {
     fetch.mockReturnValue(Promise.resolve({json: () => response}));

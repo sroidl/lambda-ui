@@ -6,7 +6,7 @@ import LambdaUI from "App.es6";
 import {Backend} from "Backend.es6";
 import * as subject from "actions/BackendActions.es6";
 import * as UtilsMock from "Utils.es6";
-import {MockStore} from "../testsupport/TestSupport.es6";
+import {MockStore} from "../testsupport/TestUtils.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BackendActions", () => {
