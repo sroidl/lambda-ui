@@ -9,6 +9,7 @@ import R from "ramda";
 import DevToggle from "../DevToggles.es6";
 import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "./InterestingStepFinder.es6";
 import LamdbdaUI from "App.es6";
+import * as Utils from "../Utils.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
@@ -81,9 +82,13 @@ export class Tools extends React.Component {
     toolTrigger(){
         /* eslint-disable */
         const {stepTrigger, showTriggerDialogFn, step} = this.props;
+        const baseToolClass = "triggerStepTool";
+        const enabled = null;
+        const disabled = "disabled";
+        const toolClasses = ComponentUtils.classes(baseToolClass, Utils.isRunning(R.prop("state", step)) ? enabled : disabled);
 
         const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
-        return <ToolboxLink key="triggerStepTool" iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;
+        return <ToolboxLink key="triggerStepTool" iconClass={TRIGGER_STEP_ICON} toolClass={toolClasses} linkText="Trigger" linkFn={linkFn}/>;
     }
 
     getToolsForRendering() {

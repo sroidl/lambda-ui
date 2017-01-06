@@ -11,7 +11,8 @@ import ToolsRedux, {
     ToolboxLink,
     SHOW_OUTPUT_ICON_CLASS,
     SHOW_SUBSTEP_ICON_CLASS,
-    SHOW_INTERESTING_STEP_ICON_CLASS
+    SHOW_INTERESTING_STEP_ICON_CLASS,
+    TRIGGER_STEP_ICON
 } from "steps/Tools.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestSupport.es6";
@@ -160,10 +161,37 @@ describe("Tools", () => {
                 expect(component.find(".substepTool").length).toBe(1);
             });
 
-            it("should render TriggerTool", () => {
-                const component = mount(tools(false, false, null, "trigger", {url: "someURL"}));
-                expect(component.find(".triggerStepTool").length).toBe(1);
+            describe("Trigger Tool", () => {
+
+                it("should render TriggerTool", () => {
+                    const component = mount(tools(false, false, null, "trigger", {url: "someURL"}));
+                    expect(component.find(".triggerStepTool").length).toBe(1);
+                });
+
+                it("should enable Trigger Tool if step is running", () => {
+                    const component = shallow(tools(false, false, null, "trigger", {url: "someURL"}, {state: "running"}));
+                    const triggerTool = component.find({iconClass: TRIGGER_STEP_ICON}).shallow();
+
+                    expect(triggerTool.find(".tool").hasClass("disabeld")).toBe(false);
+                });
+
+                it("should enable Trigger Tool if step is waiting", () => {
+                    const component = shallow(tools(false, false, null, "trigger", {url: "someURL"}, {state: "waiting"}));
+                    const triggerTool = component.find({iconClass: TRIGGER_STEP_ICON}).shallow();
+
+                    expect(triggerTool.find(".tool").hasClass("disabeld")).toBe(false);
+                });
+
+                it("should disable Trigger Tool if step is not running or waiting", () => {
+                    const component = shallow(tools(false, false, null, "trigger", {url: "someURL"}, {state: "success"}));
+                    const triggerTool = component.find({iconClass: TRIGGER_STEP_ICON}).shallow();
+
+                    expect(triggerTool.find(".tool").hasClass("disabled")).toBe(true);
+                });
+
             });
+
+
         });
 
         describe("Wiring", () => {
@@ -224,22 +252,22 @@ describe("Tools", () => {
             });
 
 
-            it ("should call killStepFn in backend on killStep click", () => {
-                    const backendMock = {killStep: jest.fn()};
-                    LambdaUIMock.backend.mockReturnValue(backendMock);
+            it("should call killStepFn in backend on killStep click", () => {
+                const backendMock = {killStep: jest.fn()};
+                LambdaUIMock.backend.mockReturnValue(backendMock);
 
-                    const dispatchMock = jest.fn();
-                    const storeMock = MockStore({}, dispatchMock);
-                    const component = mount(tools(storeMock, {
-                        stepId: "1",
-                        state: "running",
-                        steps: []
-                    }));
-                    component.find(".killStepTool").simulate("click");
+                const dispatchMock = jest.fn();
+                const storeMock = MockStore({}, dispatchMock);
+                const component = mount(tools(storeMock, {
+                    stepId: "1",
+                    state: "running",
+                    steps: []
+                }));
+                component.find(".killStepTool").simulate("click");
 
-                    expect(backendMock.killStep).toHaveBeenCalledWith(1, "1");
+                expect(backendMock.killStep).toHaveBeenCalledWith(1, "1");
 
-                });
+            });
 
             xit("should dispatch toggleToolbox", () => {
                 // TODO: toggle test if steps with more then 3 tools available
