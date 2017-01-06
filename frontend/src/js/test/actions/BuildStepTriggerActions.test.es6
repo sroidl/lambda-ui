@@ -1,5 +1,5 @@
 /* globals describe it expect afterEach beforeEach */
-import {openTriggerDialog, closeTriggerDialog} from "actions/BuildStepTriggerActions.es6";
+import {openTriggerDialog, closeTriggerDialog} from "../../main/actions/BuildStepTriggerActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStepTriggerActions", () => {

@@ -1,6 +1,6 @@
 /* globals describe it expect beforeEach afterEach */
 import TriggerReducer from "reducers/BuildStepTrigger.es6";
-import {OPEN_TRIGGER_DIALOG, CLOSE_TRIGGER_DIALOG} from "actions/BuildStepTriggerActions.es6";
+import {OPEN_TRIGGER_DIALOG, CLOSE_TRIGGER_DIALOG} from "../../main/actions/BuildStepTriggerActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStepTrigger Reducer", () => {
