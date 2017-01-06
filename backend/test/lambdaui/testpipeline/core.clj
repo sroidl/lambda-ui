@@ -27,9 +27,9 @@
 
 
 (defn start-server [port]
-  (let [simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "SIMPLE PIPELINE" :location :backend-location :path-prefix ""}})
-        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TRIGGER PIPELINE" :location :backend-location :path-prefix ""}})
-        long-running-pipe (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "LONG-RUNNING PIPELINE" :location :backend-location :path-prefix ""}})]
+  (let [simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "SIMPLE PIPELINE" :location :backend-location }})
+        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TRIGGER PIPELINE" :location :backend-location }})
+        long-running-pipe (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "LONG-RUNNING PIPELINE" :location :backend-location }})]
     (reset! current-pipeline simple-pipeline)
     (reset! server (http/run-server
                      (routes
