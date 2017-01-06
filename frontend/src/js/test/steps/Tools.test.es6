@@ -265,7 +265,7 @@ describe("Tools", () => {
                 }));
                 component.find(".killStepTool").simulate("click");
 
-                expect(backendMock.killStep).toHaveBeenCalledWith(1, "1");
+                expect(backendMock.killStep).toHaveBeenCalledWith(dispatchMock, 1, "1");
 
             });
 

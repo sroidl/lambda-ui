@@ -5,6 +5,7 @@ import {addBuildSummary} from "actions/BuildSummaryActions.es6";
 import {addBuildstepOutput, outputConnectionState} from "./actions/OutputActions.es6";
 import {summariesConnectionState} from "./actions/BackendActions.es6";
 import {addBuildDetails} from "./actions/BuildDetailActions.es6";
+import {killedStep} from "./actions/BuildStepTriggerActions.es6";
 
 const CLOSED = 3;
 const OPEN = 1;
@@ -95,7 +96,7 @@ export class Backend {
     triggerStep(url, body) {
 
         /* eslint-disable no-console */
-        console.log ("requesting ", url, " with ", JSON.stringify(body))
+        console.log("requesting ", url, " with ", JSON.stringify(body))
 
 
         const fetchOptions = {
@@ -107,16 +108,19 @@ export class Backend {
         };
 
         fetch(url, fetchOptions).catch((error) => {
-            console.error("Request failed: " , error);
+            console.error("Request failed: ", error);
         });
     }
 
-    killStep(buildId, stepId) {
+    killStep(dispatch, buildId, stepId) {
         const fetchOptions = {
             method: "POST"
         };
 
-        fetch(killStepUrl(this.baseUrl, buildId, stepId), fetchOptions);
+        fetch(killStepUrl(this.baseUrl, buildId, stepId), fetchOptions)
+            .then(() => {
+                dispatch(killedStep(buildId, stepId));
+            });
     }
 
 }

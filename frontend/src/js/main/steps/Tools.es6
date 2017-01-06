@@ -213,7 +213,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
         showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName)),
-        killStepFn: () => LamdbdaUI.backend().killStep(buildId, stepId)
+        killStepFn: () => LamdbdaUI.backend().killStep(dispatch, buildId, stepId)
     };
 };
 

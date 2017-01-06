@@ -2,6 +2,7 @@
 jest.mock("../main/WebSocketFactory.es6");
 import {Backend} from "Backend.es6";
 import {webSocket} from "WebSocketFactory.es6";
+import * as Actions from "../main/actions/BuildStepTriggerActions.es6";
 
 describe("Backend", () => {
     let subject;
@@ -18,6 +19,7 @@ describe("Backend", () => {
         webSocket.mockClear();
         webSocket.mockReturnValue(websocketMock);
         fetchMock = jest.fn();
+        fetchMock.mockReturnValue({then: (cb) => cb()});
         window.fetch = fetchMock;
     });
 
@@ -26,9 +28,17 @@ describe("Backend", () => {
     });
 
     it("kill step", () => {
-        subject.killStep(1, "3");
+        subject.killStep(dispatchMock, 1, "3");
 
         expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/kill", {method: "POST"});
+    });
+
+    it("kill step should dispatch killedStep action on success", () => {
+        const buildId = 1;
+        const stepId = "3";
+        subject.killStep(dispatchMock, buildId, stepId);
+
+        expect(dispatchMock).toHaveBeenCalledWith(Actions.killedStep(buildId, stepId));
     });
 
     describe("outputConnection", () => {

@@ -10,6 +10,6 @@ export const closeTriggerDialog = () => {
     return {type: CLOSE_TRIGGER_DIALOG};
 };
 
-export const triggerStep = (buildId, stepId) => {
+export const killedStep = (buildId, stepId) => {
     return {type: KILLED_STEP, buildId: buildId, stepId: stepId};
 };
