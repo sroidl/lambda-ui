@@ -4,9 +4,15 @@ import "../../thirdparty/skeleton.css";
 import "../../thirdparty/normalize.css";
 import Toggles from "./DevToggles.es6";
 
+const updateTitle = (pipelineName) => {
+    document.title = pipelineName;
+};
 
 const config = window.lambdaui.config;
-/* eslint-disable */
+updateTitle(config.name);
+
+
+/* eslint-disable no-console */
 console.log("Using configuration", config);
 LambdaUI.startUp(config);
 
