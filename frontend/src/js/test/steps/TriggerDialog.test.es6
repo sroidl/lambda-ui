@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* globals describe it expect beforeEach afterEach */
 jest.mock("../../main/App.es6");
 import React from "react";
