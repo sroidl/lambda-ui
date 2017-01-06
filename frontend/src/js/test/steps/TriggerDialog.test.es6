@@ -1,15 +1,22 @@
 /* globals describe it expect beforeEach afterEach */
+jest.mock("../../main/App.es6");
 import React from "react";
-import {TriggerDialog} from "steps/TriggerDialog.es6";
+import ConnectedTriggerDialog, {TriggerDialog} from "../../main/steps/TriggerDialog.es6";
 import {shallow} from "enzyme";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
+import {MockStore} from "../testsupport/TestUtils.es6";
+import appMock from "../../main/App.es6";
+
 
 describe("TriggerDialog", () => {
 
-    let realConsole;
+    let realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);
+
+
+        appMock.backend.mockReturnValue({triggerStep: () => {}});
     });
 
     afterEach(() => {
@@ -29,4 +36,35 @@ describe("TriggerDialog", () => {
         const newComponent = component(false);
         expect(newComponent.find(".triggerDialog").length).toBe(0);
     });
+
+    xdescribe("React/Redux Wiring", () => {
+
+        it("should not show trigger dialog if state is empty", () => {
+            const store = MockStore({triggers: {}}, jest.fn());
+            const component = shallow(<ConnectedTriggerDialog store={store}/>).find(TriggerDialog).shallow();
+
+            expect(component.html()).toBe(null);
+        });
+
+        it("should show trigger dialog if state is empty", () => {
+            const dialog = {
+                showTrigger: true,
+                triggerName: "Trigger-Name",
+                closeTriggerDialog: () => {
+                },
+                parameter: []
+            }
+            const store = MockStore({triggers: {triggerDialog: dialog}}, jest.fn());
+            const component = shallow(<ConnectedTriggerDialog store={store}/>).find(TriggerDialog).shallow();
+
+            expect(component.find(".triggerTitle").text()).toBe("Trigger-Name");
+        });
+    });
 });
+/*
+ parameter: PropTypes.array,
+ url: PropTypes.string,
+ closeTriggerDialog: PropTypes.func.isRequired,
+ showTrigger: PropTypes.bool,
+ triggerName: PropTypes.string
+ */
