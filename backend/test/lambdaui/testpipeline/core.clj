@@ -27,13 +27,20 @@
 
 
 (defn start-server [port]
-  (let [pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TEST PIPELINE" :location :backend-location :path-prefix ""}})]
-    (reset! current-pipeline pipeline)
+  (let [simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "SIMPLE PIPELINE" :location :backend-location :path-prefix ""}})
+        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TRIGGER PIPELINE" :location :backend-location :path-prefix ""}})
+        long-running-pipe (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "LONG-RUNNING PIPELINE" :location :backend-location :path-prefix ""}})]
+    (reset! current-pipeline simple-pipeline)
     (reset! server (http/run-server
                      (routes
-                       (ui/pipeline-routes pipeline :showStartBuildButton true)
-                       #_(context "/prefix-test" [])
-                         (ui/pipeline-routes pipeline :contextPath "/prefix-test"))
+                       (ui/pipeline-routes simple-pipeline :showStartBuildButton true)
+                       (context "/long-running" []
+                         (ui/pipeline-routes long-running-pipe :showStartBuildButton true :contextPath "/long-running")
+                         )
+                       (context "/trigger-pipeline" []
+                         (ui/pipeline-routes trigger-pipeline :showStartBuildButton true :contextPath "/trigger-pipeline")
+                         )
+                       )
                      {:port port}))))
 
 

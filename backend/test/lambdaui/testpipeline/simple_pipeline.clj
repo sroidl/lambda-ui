@@ -30,6 +30,12 @@
   (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; done"))
 
 
+(defn long-running [_ ctx]
+  (let [p  (lambdacd.steps.support/new-printer)]
+    (lambdacd.steps.support/print-to-output ctx p "Waiting for 20 seconds before step finishes..."))
+
+  (Thread/sleep (* 20 1000))
+  {:status :success})
 
 (defn long-running-task-20s [args context]
   (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; echo \"Outputline ${i}\"; echo \"Outputline ${i}\"; echo \"Outputline ${i}\"; sleep 0.1s; done; echo \"..done \""))
@@ -46,6 +52,8 @@
                       (step/alias "i have more substeps"
                                   a-lot-output)
                       a-lot-output))
+
+     long-running
 
      (step/alias "i have substeps"
                       (run (step/alias "2-parallel-step" (in-parallel a-lot-output a-lot-output))
