@@ -13,7 +13,8 @@
             [lambdacd.event-bus :as events]
             [lambdacd.event-bus :as event-bus]
             [lambdaui.fixtures.pipelines :as fixture]
-            [compojure.core :refer [routes GET context POST]])
+            [compojure.core :refer [routes GET context POST]]
+            [ring.middleware.cors :refer [wrap-cors]])
 
   (:use [lambdacd.runners]))
 
@@ -27,21 +28,28 @@
 
 
 (defn start-server [port]
-  (let [simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "SIMPLE PIPELINE" :location :backend-location }})
-        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TRIGGER PIPELINE" :location :backend-location }})
-        long-running-pipe (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "LONG-RUNNING PIPELINE" :location :backend-location }})]
+  (let [simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "SIMPLE PIPELINE" :location :backend-location}})
+        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "TRIGGER PIPELINE" :location :backend-location}})
+        long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :ui-config {:name "LONG-RUNNING PIPELINE" :location :backend-location}})]
     (reset! current-pipeline simple-pipeline)
-    (reset! server (http/run-server
-                     (routes
-                       (ui/pipeline-routes simple-pipeline :showStartBuildButton true)
-                       (context "/long-running" []
-                         (ui/pipeline-routes long-running-pipe :showStartBuildButton true :contextPath "/long-running")
-                         )
-                       (context "/trigger-pipeline" []
-                         (ui/pipeline-routes trigger-pipeline :showStartBuildButton true :contextPath "/trigger-pipeline")
-                         )
-                       )
-                     {:port port}))))
+    (reset! server
+
+            (let [routes
+
+                  (routes
+                    (ui/ui-for trigger-pipeline :showStartBuildButton true)
+                    (context "/long-running" []
+                      (ui/ui-for long-running-pipeline :showStartBuildButton true :contextPath "/long-running")
+                      )
+                    (context "/trigger-pipeline" []
+                      (ui/ui-for trigger-pipeline :showStartBuildButton true :contextPath "/trigger-pipeline")
+                      )
+                    )]
+              (http/run-server
+                (wrap-cors routes :access-control-allow-origin [#".*"]
+                           :access-control-allow-methods [:get :put :post :delete])
+
+                {:port port})))))
 
 
 (defn -main [& [portArg]]

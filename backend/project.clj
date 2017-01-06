@@ -19,6 +19,7 @@
                                                :username "sroidl"
                                                :password [:gpg :env]}]]
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
-                                  [com.gearswithingears/shrubbery "0.4.1"]]
+                                  [com.gearswithingears/shrubbery "0.4.1"]
+                                  [ring-cors "0.1.8"]]
                    :aot          [lambdaui.testpipeline.core]
                    :main         lambdaui.testpipeline.core}})

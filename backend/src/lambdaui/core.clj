@@ -14,7 +14,7 @@
   (:gen-class))
 
 (defn pipeline-routes
-  ([pipeline & {:keys [showStartBuildButton contextPath]}]
+  ([pipeline & {:keys [showStartBuildButton contextPath] }]
    (ring-json/wrap-json-response
      (wrap-params
        (routes
@@ -34,4 +34,4 @@
 
 
 (defn ui-for [pipeline & opts]
-  (pipeline-routes pipeline opts))
+  (apply pipeline-routes pipeline opts))

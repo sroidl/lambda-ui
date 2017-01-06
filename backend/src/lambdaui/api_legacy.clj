@@ -26,11 +26,8 @@
 (defn state-from-pipeline [pipeline]
   (state/get-all (:pipeline-state-component (:context pipeline))))
 
-(defn- cross-origin-response [data]
-  (header (response data) "Access-Control-Allow-Origin" "*"))
-
 (defn summaries-response [pipeline]
-  (cross-origin-response (summaries (state-from-pipeline pipeline))))
+  (summaries (state-from-pipeline pipeline)))
 
 
 (defn- to-iso-string [timestamp]
@@ -185,8 +182,8 @@
         (println "Kill Step " build-id " - " step-id)
         (swap! killed-steps (fn [old-value] (conj old-value identifier)))
         (core/kill-step ctx (util/parse-int build-id) (to-internal-step-id step-id))
-        (response "OK"))
-      (do (println "Already killed step " identifier) (response "OK")))))
+        {:status 200})
+      (do (println "Already killed step " identifier) {:status 403} ))))
 
 
 
