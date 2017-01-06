@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* globals describe it jest expect beforeEach Promise */
 jest.mock("../main/WebSocketFactory.es6");
 

@@ -6,6 +6,7 @@ set -e
 goal_test-frontend() {
   echo "Start frontend tests"
   pushd ${SCRIPT_DIR}/frontend > /dev/null
+    npm run lint
     npm test
   popd > /dev/null
 }

@@ -1,5 +1,5 @@
-/* globals Map */
 /* eslint-disable */
+/* globals Map */
 import * as R from "ramda";
 import {webSocket} from "WebSocketFactory.es6";
 import {addBuildSummary} from "actions/BuildSummaryActions.es6";

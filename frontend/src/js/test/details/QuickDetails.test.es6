@@ -3,7 +3,7 @@ jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import * as Actions from "actions/BuildDetailActions.es6";
-import ConnectQuickDetails, {QuickDetails, mapStateToProps, mapDispatchToProps} from "details/QuickDetails.es6";
+import {QuickDetails, mapStateToProps, mapDispatchToProps} from "details/QuickDetails.es6";
 import {shallow} from "enzyme";
 import React from "react";
 import DevToggles from "DevToggles.es6";

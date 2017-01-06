@@ -79,8 +79,8 @@ export class Tools extends React.Component {
     }
 
     toolTrigger(){
+        /* eslint-disable */
         const {stepTrigger, showTriggerDialogFn, step} = this.props;
-
 
         const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
         return <ToolboxLink key="triggerStepTool" iconClass={TRIGGER_STEP_ICON} toolClass="triggerStepTool" linkText="Trigger" linkFn={linkFn}/>;

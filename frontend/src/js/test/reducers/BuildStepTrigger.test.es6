@@ -71,7 +71,7 @@ describe("BuildStepTrigger Reducer", () => {
                 triggeredSteps: {1: ["1", "2"]}
             };
             const expected = { other: "key",
-                triggeredSteps: {1: ["1", "2", "1-2"]}}
+                triggeredSteps: {1: ["1", "2", "1-2"]}};
 
             const newState = TriggerReducer(oldState, {type: "triggerStep", buildId: 1, stepId: "1-2"});
 

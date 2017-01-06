@@ -1,4 +1,4 @@
-/* globals describe it xit expect jest beforeEach afterEach */
+/* globals describe it expect jest beforeEach afterEach */
 jest.mock("../../main/DevToggles.es6");
 import {BuildStepOutput, mapStateToProps, mapDispatchToProps} from "steps/BuildStepOutput.es6";
 import {shallow} from "enzyme";

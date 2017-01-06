@@ -1,1 +1,2 @@
+/* globals module */
 module.exports = {};
