@@ -15,7 +15,8 @@ export default (oldState = {}, action) => {
             return R.merge(oldState, {showTrigger: false});
         }
         case Actions.TRIGGER_STEP: {
-            return oldState;
+            const lens = R.lensPath(["triggeredSteps", action.buildId]);
+            return R.over(lens, R.append(action.stepId))(oldState);
         }
         default:
             return oldState;

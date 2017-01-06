@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import TriggerReducer from "reducers/BuildStepTrigger.es6";
+import TriggerReducer from "../../main/reducers/BuildStepTrigger.es6";
 import {OPEN_TRIGGER_DIALOG, CLOSE_TRIGGER_DIALOG} from "../../main/actions/BuildStepTriggerActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
@@ -53,5 +53,30 @@ describe("BuildStepTrigger Reducer", () => {
         const newState = TriggerReducer(oldState, {type: "som_other_typ"});
 
         expect(oldState).toBe(newState);
+    });
+
+    describe("trigger step", () => {
+        it("should add trigger step to empty state", () => {
+            const oldState = {};
+
+            const newState = TriggerReducer(oldState, {type: "triggerStep", buildId: 1, stepId: "1-2"});
+
+            expect(newState).toEqual({triggeredSteps: {1: ["1-2"]}});
+            expect(newState).not.toBe(oldState);
+        });
+
+        it("should append trigger step to previous state", () => {
+            const oldState = {
+                other: "key",
+                triggeredSteps: {1: ["1", "2"]}
+            };
+            const expected = { other: "key",
+                triggeredSteps: {1: ["1", "2", "1-2"]}}
+
+            const newState = TriggerReducer(oldState, {type: "triggerStep", buildId: 1, stepId: "1-2"});
+
+            expect(newState).toEqual(expected);
+            expect(newState).not.toBe(oldState);
+        });
     });
 });
