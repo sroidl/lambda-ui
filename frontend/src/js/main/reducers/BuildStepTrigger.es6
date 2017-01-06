@@ -14,8 +14,8 @@ export default (oldState = {}, action) => {
         case Actions.CLOSE_TRIGGER_DIALOG: {
             return R.merge(oldState, {showTrigger: false});
         }
-        case Actions.TRIGGER_STEP: {
-            const lens = R.lensPath(["triggeredSteps", action.buildId]);
+        case Actions.KILLED_STEP: {
+            const lens = R.lensPath(["killedSteps", action.buildId]);
             return R.over(lens, R.append(action.stepId))(oldState);
         }
         default:

@@ -59,21 +59,21 @@ describe("BuildStepTrigger Reducer", () => {
         it("should add trigger step to empty state", () => {
             const oldState = {};
 
-            const newState = TriggerReducer(oldState, {type: "triggerStep", buildId: 1, stepId: "1-2"});
+            const newState = TriggerReducer(oldState, {type: "killedStep", buildId: 1, stepId: "1-2"});
 
-            expect(newState).toEqual({triggeredSteps: {1: ["1-2"]}});
+            expect(newState).toEqual({killedSteps: {1: ["1-2"]}});
             expect(newState).not.toBe(oldState);
         });
 
         it("should append trigger step to previous state", () => {
             const oldState = {
                 other: "key",
-                triggeredSteps: {1: ["1", "2"]}
+                killedSteps: {1: ["1", "2"]}
             };
             const expected = { other: "key",
-                triggeredSteps: {1: ["1", "2", "1-2"]}};
+                killedSteps: {1: ["1", "2", "1-2"]}};
 
-            const newState = TriggerReducer(oldState, {type: "triggerStep", buildId: 1, stepId: "1-2"});
+            const newState = TriggerReducer(oldState, {type: "killedStep", buildId: 1, stepId: "1-2"});
 
             expect(newState).toEqual(expected);
             expect(newState).not.toBe(oldState);
