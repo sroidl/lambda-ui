@@ -9,6 +9,7 @@ import {Backend} from "./Backend.es6";
 import {requestSummariesPolling} from "./actions/BackendActions.es6";
 import {addConfiguration} from "actions/ConfigActions.es6";
 import TriggerDialog from "steps/TriggerDialog.es6";
+import {buildDetailsPolling} from "./Polling.es6";
 
 let backend;
 let appStore;
@@ -32,6 +33,8 @@ export class LambdaUI {
         backend = new Backend(config.baseUrl);
 
         appStore.dispatch(requestSummariesPolling());
+
+        buildDetailsPolling(backend, appStore);
 
         const rootElement = document.getElementById("entryPoint");
         ReactDOM.render(<Provider store={this.appStore()}>

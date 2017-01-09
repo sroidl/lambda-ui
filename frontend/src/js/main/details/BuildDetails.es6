@@ -1,13 +1,11 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import {requestDetailsPolling} from "../actions/BackendActions.es6";
 import {noScrollToStep} from "../actions/BuildDetailActions.es6";
 import R from "ramda";
 import BuildStep from "../steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
 import QuickDetails from "../details/QuickDetails.es6";
 import "../../../sass/buildDetails.sass";
-import * as Utils from "../Utils.es6";
 
 export class BuildDetails extends React.Component {
 
@@ -33,20 +31,16 @@ export class BuildDetails extends React.Component {
     }
 
     render() {
-        const {open, stepsToDisplay, requestDetailsFn, buildId, isFinished, isPolling} = this.props;
+        const {open, stepsToDisplay, buildId} = this.props;
 
         if (!open) {
             return null;
         }
 
         if (!stepsToDisplay) {
-            requestDetailsFn();
             return <div className="twelve columns buildDetails">
                 <div className="row loadingMessage">Loading build details</div>
             </div>;
-        }
-        if(!isFinished && !isPolling) {
-            requestDetailsFn();
         }
 
         const quickDetails = <QuickDetails buildId={buildId} />;
@@ -63,20 +57,15 @@ export class BuildDetails extends React.Component {
 BuildDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
     open: PropTypes.bool.isRequired,
-    requestDetailsFn: PropTypes.func.isRequired,
     stepsToDisplay: PropTypes.array,
     stepToScroll: PropTypes.string,
     noScrollToStepFn: PropTypes.func.isRequired,
-    isFinished: PropTypes.bool.isRequired,
-    isPolling: PropTypes.bool.isRequired
 };
 
 export const mapStateToProps = (state, ownProps) => {
     const details = state.buildDetails[ownProps.buildId] || {};
     const stepsToDisplay = details.steps || null;
     const stateScroll = state.scrollToStep;
-    const isBuildFinished = !Utils.isBuildRunning(details);
-
 
     let stepToScroll = null;
     if(stateScroll && stateScroll.scrollToStep && stateScroll.buildId === ownProps.buildId){
@@ -89,14 +78,11 @@ export const mapStateToProps = (state, ownProps) => {
         stepsToDisplay: stepsToDisplay,
         open: state.openedBuilds[ownProps.buildId] || false,
         stepToScroll: stepToScroll,
-        isFinished: isBuildFinished,
-        isPolling: R.propOr(false, ownProps.buildId)(state.polling)
     };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        requestDetailsFn: () => dispatch(requestDetailsPolling(ownProps.buildId)),
         noScrollToStepFn: () => dispatch(noScrollToStep())
     };
 };

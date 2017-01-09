@@ -10,13 +10,13 @@ const callRequestDetails = (backend, dispatchFn) => {
     return innerFn;
 };
 
-export const polling = (backend, store) => {
+export const buildDetailsPolling = (backend, store) => {
     const state = store.getState().openedBuilds;
     const openedBuilds = R.pipe(R.keys, R.filter((key) => state[key]))(state);
     const requestDetails = callRequestDetails(backend, store.dispatch);
     R.forEach(requestDetails, openedBuilds);
 
-    Utils.delay(DELAY_MS).then(() => polling(backend, store));
+    Utils.delay(DELAY_MS).then(() => buildDetailsPolling(backend, store));
 };
 
 

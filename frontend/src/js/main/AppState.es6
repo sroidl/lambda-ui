@@ -8,8 +8,6 @@ import {OutputReducer} from "./reducers/Output.es6";
 import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
 import {buildStepsReducer, showSubstepReducer} from "./reducers/BuildSteps.es6";
 import BuildStepTriggerReducer from "./reducers/BuildStepTrigger.es6";
-import {pollingReducer} from "./reducers/PollingReducer.es6";
-
 
 const initialState = {
     summaries: {},
@@ -30,7 +28,6 @@ const initialState = {
     triggerDialog: {},
     showSubsteps: {},
     scrollToStep: {},
-    polling: {}
 };
 
 const rootReducer = combineReducers({
@@ -44,7 +41,6 @@ const rootReducer = combineReducers({
     triggerDialog: BuildStepTriggerReducer,
     showSubsteps: showSubstepReducer,
     scrollToStep: ScrollToStepReducer,
-    polling: pollingReducer
 });
 
 const middleware = compose(
