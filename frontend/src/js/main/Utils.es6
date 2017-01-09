@@ -1,7 +1,7 @@
 /* global Promise */
 import R from "ramda";
 
-export const delay = ms => new Promise((resolve) => setTimeout(resolve, ms));
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const allSteps = step => {
     if (!step.steps || step.steps.length === 0) {
