@@ -38,39 +38,47 @@ export class Tools extends React.Component {
         super(props);
     }
 
-    toolOutput() {
-        return <ToolboxLink key="outputTool" toolClass="outputTool" iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output"
+    outputButton() {
+        return <ToolboxLink key="outputButton" toolClass="outputTool" iconClass={SHOW_OUTPUT_ICON_CLASS} linkText="Show Output"
                             linkFn={this.props.showOutputFn}/>;
     }
 
-    toolSubstep() {
-        const {step, openSubstepFn} = this.props;
+    substepButton() {
+        const {step, openSubstepFn, hasSubsteps} = this.props;
+
+        if (!hasSubsteps) {
+            return null;
+        }
 
         const linkFn = () => openSubstepFn(step.stepId);
-        return <ToolboxLink key="substepTool" toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS}
+        return <ToolboxLink key="substepButton" toolClass="substepTool" iconClass={SHOW_SUBSTEP_ICON_CLASS}
                                 linkText="Substeps" linkFn={linkFn}/>;
     }
 
-    toolKillStep() {
+    killButton() {
         const {step, killStepFn} = this.props;
 
         if(DevToggle.showKillStep && step.state === "running") {
-            return <ToolboxLink iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"} linkText="Kill Step" linkFn={killStepFn}/>;
+            return <ToolboxLink key="killButton" iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"} linkText="Kill Step" linkFn={killStepFn}/>;
         }
         return null;
     }
 
-    toolRetriggerStep() {
+    retriggerButton() {
         const {step, retriggerStepFn} = this.props;
 
         if(DevToggle.showRetriggerStep && Utils.isFinished(step.state)){
-            return <ToolboxLink iconClass={RETRIGGER_STEP_ICON_CLASS} toolClass={"retriggerStepTool"} linkText={"Retrigger Step"} linkFn={retriggerStepFn}/>;
+            return <ToolboxLink key="retriggerButton" iconClass={RETRIGGER_STEP_ICON_CLASS} toolClass={"retriggerStepTool"} linkText={"Retrigger Step"} linkFn={retriggerStepFn}/>;
         }
         return null;
     }
 
-    toolInterestingStep() {
-        const {failureStep, runningStep, openSubstepFn} = this.props;
+    jumpToMostInterestingStepButton() {
+        const {failureStep, runningStep, openSubstepFn, hasSubsteps} = this.props;
+
+        if((!failureStep && !runningStep) || !hasSubsteps) {
+            return null;
+        }
 
         const linkFn = () => {
             if(runningStep){
@@ -83,12 +91,11 @@ export class Tools extends React.Component {
         const toolClasses = ComponentUtils.classes("interestingStepTool", runningStep ? "runningStepTool" : "failureStepTool");
         const linkText = runningStep ? "Running Step" : "Failure Step";
 
-        return <ToolboxLink key="interestingStepTool" toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
+        return <ToolboxLink key="jumpToMostInterestingStepButton" toolClass={toolClasses} iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
                             linkText={linkText} linkFn={linkFn}/>;
     }
 
-    toolTrigger(){
-        /* eslint-disable */
+    triggerButton(){
         const {stepTrigger, showTriggerDialogFn, step} = this.props;
         const baseToolClass = "triggerStepTool";
         const enabled = null;
@@ -96,60 +103,50 @@ export class Tools extends React.Component {
         const toolClasses = ComponentUtils.classes(baseToolClass, Utils.isRunning(R.prop("state", step)) ? enabled : disabled);
 
         const linkFn = () => showTriggerDialogFn(stepTrigger.url, stepTrigger.parameter || []);
-        return <ToolboxLink key="triggerStepTool" iconClass={TRIGGER_STEP_ICON} toolClass={toolClasses} linkText="Trigger" linkFn={linkFn}/>;
+        return <ToolboxLink key="triggerButton" iconClass={TRIGGER_STEP_ICON} toolClass={toolClasses} linkText="Trigger" linkFn={linkFn}/>;
     }
 
-    getToolsForRendering() {
-        const {stepTrigger, failureStep, runningStep, hasSubsteps} = this.props;
+    buttonList() {
+        const {stepTrigger} = this.props;
 
-        const toolsForRendering = [];
         if(DevToggle.handleTriggerSteps){
             if(stepTrigger && stepTrigger.url){
-                toolsForRendering.push(this.toolTrigger());
-                return toolsForRendering;
+                return [this.triggerButton()];
             }
         }
-        toolsForRendering.push(this.toolOutput());
-        if((failureStep || runningStep) && hasSubsteps){
-            toolsForRendering.push(this.toolInterestingStep());
-        }
-        if(hasSubsteps){
-            toolsForRendering.push(this.toolSubstep());
-        }
 
-        toolsForRendering.push(this.toolKillStep());
-        toolsForRendering.push(this.toolRetriggerStep());
+        const buttonList = [this.outputButton(),
+            this.jumpToMostInterestingStepButton(),
+            this.substepButton(),
+            this.killButton(),
+            this.retriggerButton()];
 
         const notNil = R.pipe(R.isNil, R.not);
-        return R.filter(notNil)(toolsForRendering);
+        return R.filter(notNil)(buttonList);
     }
 
-    showToolbar(toolsForRendering) {
-        const classes = ComponentUtils.classes("toolbar", toolsForRendering.length <= 3 ? "withoutExpand" : "");
+    smallButtonBar(buttonList) {
+        const classes = ComponentUtils.classes("toolbar", buttonList.length <= 3 ? "withoutExpand" : "");
 
         return <div className={classes}>
-            {R.view(R.lensIndex(0))(toolsForRendering)}
-            {R.view(R.lensIndex(1))(toolsForRendering)}
-            {R.view(R.lensIndex(2))(toolsForRendering)}
+            {R.take(3, buttonList)}
         </div>;
     }
 
-    showToolbox(toolsForRendering) {
+    extendedButtonBar(buttonList) {
         if (!this.props.toolboxOpen) {
             return null;
         }
 
         return <div className="toolbox">
-            {R.view(R.lensIndex(3))(toolsForRendering)}
-            {R.view(R.lensIndex(4))(toolsForRendering)}
-            {R.view(R.lensIndex(5))(toolsForRendering)}
+            {R.slice(3, buttonList)}
         </div>;
     }
 
-    showToggleToolbox(toolsForRendering) {
+    toggleButtonBarButton(buttonsToRender) {
         const {toggleStepToolboxFn, toolboxOpen} = this.props;
 
-        if(toolsForRendering.length <= 3) {
+        if(buttonsToRender.length <= 3) {
             return null;
         }
 
@@ -162,12 +159,11 @@ export class Tools extends React.Component {
     }
 
     render() {
-        const toolsForRendering = this.getToolsForRendering();
-
+        const buttonList = this.buttonList();
         return <div className="tools">
-            {this.showToolbar(toolsForRendering)}
-            {this.showToolbox(toolsForRendering)}
-            {this.showToggleToolbox(toolsForRendering)}
+            {this.smallButtonBar(buttonList)}
+            {this.extendedButtonBar(buttonList)}
+            {this.toggleButtonBarButton(buttonList)}
         </div>;
     }
 }

@@ -11,7 +11,6 @@ const allSteps = step => {
     return [step, subs];
 };
 
-
 export const flatSteps = (input) => {
     const isStep = (step) => step.stepId;
     return R.pipe(R.filter((i) => i), R.map(allSteps), R.flatten, R.filter(isStep))([input]);

@@ -155,6 +155,7 @@ describe("Tools", () => {
 
             });
 
+
             it("should render retrigger tool if step is success", () => {
                 const step = {state: "success"};
                 const retriggerStepMockFn = jest.fn();
@@ -174,7 +175,6 @@ describe("Tools", () => {
 
                 expect(component.find({toolClass: "retriggerStepTool"}).length).toBe(1);
             });
-
 
             it("should render output and substep tool if step have substeps", () => {
                 const component = mount(tools(false, true));
