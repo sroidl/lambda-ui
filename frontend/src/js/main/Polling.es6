@@ -11,3 +11,8 @@ export const pollBuildDetails = (backend, store) => {
     R.forEach(requestDetails, openedBuilds);
     Utils.delay(DELAY_MS).then(() => pollBuildDetails(backend, store));
 };
+
+export const pollSummaries = (backend, store) => {
+    backend.requestSummaries(store.dispatch);
+    Utils.delay(DELAY_MS).then(() => pollSummaries(backend, store));
+};

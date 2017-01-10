@@ -12,30 +12,48 @@ describe("Polling", () => {
     let backend;
 
     beforeEach(() => {
-        backend = { requestDetails: jest.fn()};
+        backend = {requestDetails: jest.fn(), requestSummaries: jest.fn()};
 
         UtilsMock.delay.mockReturnValue({then: jest.fn()});
     });
 
     it("should call requestDetails", () => {
-        const store = createStore({openedBuilds : {1: true, 2: false, 3: true}});
+        const store = createStore({openedBuilds: {1: true, 2: false, 3: true}});
 
         subject.pollBuildDetails(backend, store);
 
         expect(backend.requestDetails).toHaveBeenCalledWith(store.dispatch, "1");
         expect(backend.requestDetails).not.toHaveBeenCalledWith(store.dispatch, "2");
         expect(backend.requestDetails).toHaveBeenCalledWith(store.dispatch, "3");
-
-        expect(UtilsMock.delay().then).toHaveBeenCalled();
     });
 
-    it("should loop after 1 second", () => {
-        const store = createStore({openedBuilds : {1: true, 2: false, 3: true}});
+    it("pollBuildDetails should loop after 1 second", () => {
+        const store = createStore({openedBuilds: {1: true, 2: false, 3: true}});
 
         const thenFn = UtilsMock.delay().then;
         thenFn.mockImplementationOnce(cb => cb());
 
         subject.pollBuildDetails(backend, store);
+
+        expect(thenFn).toHaveBeenCalledTimes(2);
+        expect(UtilsMock.delay).toHaveBeenCalledWith(1000);
+    });
+
+    it("should call requestSummaries", () => {
+        const store = createStore();
+
+        subject.pollSummaries(backend, store);
+
+        expect(backend.requestSummaries).toHaveBeenCalledWith(store.dispatch);
+    });
+
+    it("pollSummaries should loop after 1 second", () => {
+        const store = createStore();
+
+        const thenFn = UtilsMock.delay().then;
+        thenFn.mockImplementationOnce(cb => cb());
+
+        subject.pollSummaries(backend, store);
 
         expect(thenFn).toHaveBeenCalledTimes(2);
         expect(UtilsMock.delay).toHaveBeenCalledWith(1000);
