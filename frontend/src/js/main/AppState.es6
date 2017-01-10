@@ -22,7 +22,8 @@ const initialState = {
         handleTriggerSteps: true,
         showPipelineTour: false,
         quickDetails_expandCollapse: false,
-        showKillStep: true
+        showKillStep: true,
+        showRetriggerStep: false
     },
     showStepToolbox: {},
     triggerDialog: {},

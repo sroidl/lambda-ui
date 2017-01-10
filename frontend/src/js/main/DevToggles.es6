@@ -2,22 +2,26 @@ import App from "App.es6";
 import R from "ramda";
 
 const isActive = (toggleName) => {
-    return R.pathOr(false, ["developmentToggles", toggleName]) (App.appStore().getState());
+    return R.pathOr(false, ["developmentToggles", toggleName])(App.appStore().getState());
 };
 
 class DevToggles {
-    get usePolling () {
+    get usePolling() {
         return isActive("usePolling");
     }
-    get showInterestingStep () {
+
+    get showInterestingStep() {
         return isActive("showInterestingStep");
     }
-    get showConnectionState () {
+
+    get showConnectionState() {
         return isActive("showConnectionState");
     }
+
     get handleTriggerSteps() {
         return isActive("handleTriggerSteps");
     }
+
     get showPipelineTour() {
         return isActive("showPipelineTour");
     }
@@ -28,6 +32,10 @@ class DevToggles {
 
     get showKillStep() {
         return isActive("showKillStep");
+    }
+
+    get showRetriggerStep() {
+        return isActive("showRetriggerStep");
     }
 }
 
