@@ -25,6 +25,7 @@ import LambdaUIMock from "App.es6";
 
 DevToggles.handleTriggerSteps = true;
 DevToggles.showKillStep = true;
+DevToggles.showRetriggerStep = true;
 
 const fn = () => {
 };
@@ -136,7 +137,7 @@ describe("Tools", () => {
                 const step = {state: "success"};
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
                                                  showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
-                                                 toolboxOpen={false}/>);
+                                                 toolboxOpen={false} retriggerStepFn={jest.fn()}/>);
 
                 expect(component.find({toolClass: "killStepTool"}).length).toBe(0);
             });
@@ -152,6 +153,26 @@ describe("Tools", () => {
 
                 expect(killStepMockFn).toBeCalled();
 
+            });
+
+            it("should render retrigger tool if step is success", () => {
+                const step = {state: "success"};
+                const retriggerStepMockFn = jest.fn();
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} retriggerStepFn={retriggerStepMockFn}/>);
+
+                expect(component.find({toolClass: "retriggerStepTool"}).length).toBe(1);
+            });
+
+            it("should render retrigger tool if step is failed", () => {
+                const step = {state: "failed"};
+                const retriggerStepMockFn = jest.fn();
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} retriggerStepFn={retriggerStepMockFn}/>);
+
+                expect(component.find({toolClass: "retriggerStepTool"}).length).toBe(1);
             });
 
 

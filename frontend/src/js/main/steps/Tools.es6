@@ -15,6 +15,7 @@ export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
 export const SHOW_INTERESTING_STEP_ICON_CLASS = "fa-arrow-circle-down";
 export const KILL_STEP_ICON_CLASS = " fa-stop-circle-o";
+export const RETRIGGER_STEP_ICON_CLASS = " fa-repeat";
 export const TRIGGER_STEP_ICON = "fa-play";
 
 export const ToolboxLink = ({iconClass, toolClass, linkText, linkFn}) => {
@@ -53,10 +54,17 @@ export class Tools extends React.Component {
     toolKillStep() {
         const {step, killStepFn} = this.props;
 
-        const linkFn = killStepFn;
-
         if(DevToggle.showKillStep && step.state === "running") {
-            return <ToolboxLink iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"} linkText="Kill Step" linkFn={linkFn}/>;
+            return <ToolboxLink iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"} linkText="Kill Step" linkFn={killStepFn}/>;
+        }
+        return null;
+    }
+
+    toolRetriggerStep() {
+        const {step, retriggerStepFn} = this.props;
+
+        if(DevToggle.showRetriggerStep && Utils.isFinished(step.state)){
+            return <ToolboxLink iconClass={RETRIGGER_STEP_ICON_CLASS} toolClass={"retriggerStepTool"} linkText={"Retrigger Step"} linkFn={retriggerStepFn}/>;
         }
         return null;
     }
@@ -110,6 +118,7 @@ export class Tools extends React.Component {
         }
 
         toolsForRendering.push(this.toolKillStep());
+        toolsForRendering.push(this.toolRetriggerStep());
 
         const notNil = R.pipe(R.isNil, R.not);
         return R.filter(notNil)(toolsForRendering);
@@ -175,7 +184,8 @@ Tools.propTypes = {
     toggleStepToolboxFn: PropTypes.func.isRequired,
     showTriggerDialogFn: PropTypes.func.isRequired,
     stepTrigger: PropTypes.object,
-    killStepFn: PropTypes.func
+    killStepFn: PropTypes.func,
+    retriggerStepFn: PropTypes.func
 };
 
 
