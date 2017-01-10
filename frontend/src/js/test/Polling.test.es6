@@ -20,7 +20,7 @@ describe("Polling", () => {
     it("should call requestDetails", () => {
         const store = createStore({openedBuilds : {1: true, 2: false, 3: true}});
 
-        subject.buildDetailsPolling(backend, store);
+        subject.pollBuildDetails(backend, store);
 
         expect(backend.requestDetails).toHaveBeenCalledWith(store.dispatch, "1");
         expect(backend.requestDetails).not.toHaveBeenCalledWith(store.dispatch, "2");
@@ -35,7 +35,7 @@ describe("Polling", () => {
         const thenFn = UtilsMock.delay().then;
         thenFn.mockImplementationOnce(cb => cb());
 
-        subject.buildDetailsPolling(backend, store);
+        subject.pollBuildDetails(backend, store);
 
         expect(thenFn).toHaveBeenCalledTimes(2);
         expect(UtilsMock.delay).toHaveBeenCalledWith(1000);
