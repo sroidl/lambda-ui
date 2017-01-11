@@ -10,11 +10,11 @@ import DevToggle from "../DevToggles.es6";
 import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "./InterestingStepFinder.es6";
 import LamdbdaUI from "App.es6";
 import * as Utils from "../Utils.es6";
+import {KILLED_ICON} from "../StateIcon.es6";
 
 export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
 export const SHOW_INTERESTING_STEP_ICON_CLASS = "fa-arrow-circle-down";
-export const KILL_STEP_ICON_CLASS = " fa-stop-circle-o";
 export const RETRIGGER_STEP_ICON_CLASS = " fa-repeat";
 export const TRIGGER_STEP_ICON = "fa-play";
 
@@ -68,7 +68,7 @@ export class Tools extends React.Component {
         const {step, killStepFn} = this.props;
 
         if (DevToggle.showKillStep && Utils.isRunning(step.state)) {
-            return <ToolboxLink key="killButton" iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"}
+            return <ToolboxLink key="killButton" iconClass={KILLED_ICON} toolClass={"killStepTool"}
                                 linkText="Kill Step" linkFn={killStepFn}/>;
         }
         return null;
