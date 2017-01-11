@@ -2,7 +2,6 @@
 jest.mock("../../main/actions/OutputActions.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
-jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/steps/InterestingStepFinder.es6");
 jest.mock("../../main/App.es6");
 import React from "react";
@@ -18,14 +17,9 @@ import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
-import DevToggles from "../../main/DevToggles.es6";
 import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import LambdaUIMock from "App.es6";
-
-DevToggles.handleTriggerSteps = true;
-DevToggles.showKillStep = true;
-DevToggles.showRetriggerStep = true;
 
 const fn = () => {
 };
@@ -235,7 +229,7 @@ describe("Tools", () => {
             const substeps = {stepId: "1-1", state: "failure"};
             const defaultStep = {stepId: "1", state: "failure", steps: substeps};
             const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} step={step} store={storeMock}
-                                                                         killStepFn={jest.fn()}/>;
+                                                                         killStepFn={jest.fn()} retriggerStepFn={jest.fn()}/>;
 
             it("should dispatch showOutput", () => {
                 const dispatchMock = jest.fn();
@@ -304,6 +298,22 @@ describe("Tools", () => {
 
                 expect(backendMock.killStep).toHaveBeenCalledWith(dispatchMock, 1, "1");
 
+            });
+
+            it("should call triggerStepFn in backend on retriggerStep click", () => {
+                const backendMock = {retriggerStep: jest.fn()};
+                LambdaUIMock.backend.mockReturnValue(backendMock);
+
+                const dispatchMock = jest.fn();
+                const storeMock = MockStore({}, dispatchMock);
+                const component = mount(tools(storeMock, {
+                    stepId: "1",
+                    state: "failed",
+                    steps: []
+                }));
+                component.find(".retriggerStepTool").simulate("click");
+
+                expect(backendMock.retriggerStep).toHaveBeenCalledWith(dispatchMock, 1, "1");
             });
 
             xit("should dispatch toggleToolbox", () => {

@@ -6,7 +6,6 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
 import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import R from "ramda";
-import DevToggle from "../DevToggles.es6";
 import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "./InterestingStepFinder.es6";
 import LamdbdaUI from "App.es6";
 import * as Utils from "../Utils.es6";
@@ -67,7 +66,7 @@ export class Tools extends React.Component {
     killButton() {
         const {step, killStepFn} = this.props;
 
-        if (DevToggle.showKillStep && Utils.isRunning(step.state)) {
+        if (Utils.isRunning(step.state)) {
             return <ToolboxLink key="killButton" iconClass={KILLED_ICON} toolClass={"killStepTool"}
                                 linkText="Kill Step" linkFn={killStepFn}/>;
         }
@@ -77,7 +76,7 @@ export class Tools extends React.Component {
     retriggerButton() {
         const {step, retriggerStepFn} = this.props;
 
-        if (DevToggle.showRetriggerStep && Utils.isFinished(step.state)) {
+        if (Utils.isFinished(step.state)) {
             return <ToolboxLink key="retriggerButton" iconClass={RETRIGGER_STEP_ICON_CLASS}
                                 toolClass={"retriggerStepTool"} linkText={"Retrigger Step"} linkFn={retriggerStepFn}/>;
         }
@@ -234,7 +233,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         showOutputFn: () => dispatch(showBuildOutput(buildId, stepId)),
         toggleStepToolboxFn: () => dispatch(toggleStepToolbox(buildId, stepId)),
         showTriggerDialogFn: (url, parameter) => dispatch(openTriggerDialog(url, parameter, stepName)),
-        killStepFn: () => LamdbdaUI.backend().killStep(dispatch, buildId, stepId)
+        killStepFn: () => LamdbdaUI.backend().killStep(dispatch, buildId, stepId),
+        retriggerStepFn: () => LamdbdaUI.backend().retriggerStep(dispatch, buildId, stepId)
     };
 };
 

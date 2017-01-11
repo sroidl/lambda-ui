@@ -19,11 +19,8 @@ const initialState = {
         usePolling: true,
         showInterestingStep: false,
         showConnectionState: true,
-        handleTriggerSteps: true,
         showPipelineTour: false,
-        quickDetails_expandCollapse: false,
-        showKillStep: true,
-        showRetriggerStep: false
+        quickDetails_expandCollapse: false
     },
     showStepToolbox: {},
     triggerDialog: {},

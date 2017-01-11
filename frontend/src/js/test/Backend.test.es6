@@ -41,6 +41,12 @@ describe("Backend", () => {
         expect(dispatchMock).toHaveBeenCalledWith(Actions.killedStep(buildId, stepId));
     });
 
+    it("retrigger step", () => {
+        subject.retriggerStep(dispatchMock, 1, "3");
+
+        expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/retrigger", {method: "POST"});
+    });
+
     describe("outputConnection", () => {
         it("should request output", () => {
             subject.requestOutput(dispatchMock, 1, 2);

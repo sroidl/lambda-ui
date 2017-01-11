@@ -1,6 +1,7 @@
 export const OPEN_TRIGGER_DIALOG = "openTriggerDialog";
 export const CLOSE_TRIGGER_DIALOG = "closeTriggerDialog";
 export const KILLED_STEP = "killedStep";
+export const RETRIGGERED_STEP = "retriggeredStep";
 
 export const openTriggerDialog = (url, parameter, name) => {
     return {type: OPEN_TRIGGER_DIALOG, url: url, parameter: parameter, triggerName: name};

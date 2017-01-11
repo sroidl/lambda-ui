@@ -15,6 +15,7 @@ const detailsUrl = (baseUrl, buildId) => "ws://" + baseUrl + "/lambdaui/api/buil
 const summariesUrl = baseUrl => "ws://" + baseUrl + "/lambdaui/api/builds";
 const triggerNewUrl = baseUrl => "http://" + baseUrl + "/lambdaui/api/triggerNew";
 const killStepUrl = (baseUrl, buildId, stepId) => "http://" + baseUrl + "/lambdaui/api/builds/" + buildId + "/" + stepId + "/kill";
+const retriggerStepUrl = (baseUrl, buildId, stepId) => "http://" + baseUrl + "/lambdaui/api/builds/" + buildId + "/" + stepId + "/retrigger";
 
 export class Backend {
     constructor(baseUrl) {
@@ -123,4 +124,11 @@ export class Backend {
             });
     }
 
+    retriggerStep(dispatch, buildId, stepId) {
+        const fetchOptions = {
+            method: "POST"
+        };
+
+        fetch(retriggerStepUrl(this.baseUrl, buildId, stepId), fetchOptions);
+    }
 }

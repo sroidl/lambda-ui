@@ -21,7 +21,7 @@ export const isRunning = state => {
 };
 
 export const isFinished = state => {
-    return state === "success" || state === "failed";
+    return state === "success" || state === "failed" || state === "killed";
 };
 
 export const isBuildRunning = buildDetails => {

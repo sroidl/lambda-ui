@@ -9,11 +9,8 @@ import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
 import React from "react";
 import {Provider} from "react-redux";
-import DevToggles from "../../main/DevToggles.es6";
 import * as TestUtils from "../testsupport/TestUtils.es6";
 import * as UtilMock from "Utils.es6";
-
-DevToggles.handleTriggerSteps = true;
 
 describe("BuildDetails", () => {
 

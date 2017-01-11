@@ -7,7 +7,6 @@ import {StateIcon} from "../StateIcon.es6";
 import Tools from "./Tools.es6";
 import Moment from "moment";
 import "moment-duration-format";
-import DevToggle from "../DevToggles.es6";
 import {classes} from "../ComponentUtils.es6";
 
 export const BUILDSTEP_HIGHLIGHT_DURATION_IN_MS = 500;
@@ -42,12 +41,7 @@ export class BuildStep extends React.Component {
 
     renderStepDuration() {
         const {step} = this.props;
-
-        if(DevToggle.handleTriggerSteps){
-            return typeof step.trigger === "object" ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
-        }
-        return <div className="stepDuration">{duration(getStepDuration(step))}</div>;
-
+        return typeof step.trigger === "object" ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
     }
 
     renderBuildStep() {
