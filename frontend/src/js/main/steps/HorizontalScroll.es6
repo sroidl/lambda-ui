@@ -2,7 +2,12 @@ import {BUILDSTEP_HIGHLIGHT_DURATION_IN_MS} from "../steps/BuildStep.es6";
 
 export const makeDraggable = (buildId) => {
     const idName = "draggable" + buildId;
+
     const currentDiv = document.getElementById(idName);
+
+    if (currentDiv === null) {
+        return;
+    }
 
     let curDown = false,
         curClientX;
