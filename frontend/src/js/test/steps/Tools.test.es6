@@ -135,7 +135,16 @@ describe("Tools", () => {
                 expect(component.find({toolClass: "killStepTool"}).length).toBe(1);
             });
 
-            it("should not render kill step tool if step is not running", () => {
+            it("should render kill step tool if step is waiting", () => {
+                const step = {state: "waiting"};
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} killStepFn={jest.fn()}/>);
+
+                expect(component.find({toolClass: "killStepTool"}).length).toBe(1);
+            });
+
+            it("should not render kill step tool if step is not running or waiting", () => {
                 const step = {state: "success"};
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
                                                  showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}

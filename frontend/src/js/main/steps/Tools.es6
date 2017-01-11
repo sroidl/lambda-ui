@@ -67,7 +67,7 @@ export class Tools extends React.Component {
     killButton() {
         const {step, killStepFn} = this.props;
 
-        if (DevToggle.showKillStep && step.state === "running") {
+        if (DevToggle.showKillStep && Utils.isRunning(step.state)) {
             return <ToolboxLink key="killButton" iconClass={KILL_STEP_ICON_CLASS} toolClass={"killStepTool"}
                                 linkText="Kill Step" linkFn={killStepFn}/>;
         }
