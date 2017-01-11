@@ -87,6 +87,8 @@ describe("Tools", () => {
                    runningStep={[""]}
                    stepType={stepType}
                    stepTrigger={stepTrigger}
+                   killStepFn={fn}
+                   retriggerStepFn={fn}
                    openSubstepFn={fn}
                    showOutputFn={fn}
                    toggleStepToolboxFn={fn}
@@ -187,6 +189,11 @@ describe("Tools", () => {
                 it("should render TriggerTool", () => {
                     const component = mount(tools(false, false, null, "trigger", {url: "someURL"}));
                     expect(component.find(".triggerStepTool").length).toBe(1);
+                });
+
+                it("should not render output button if step has trigger button", () => {
+                    const component = mount(tools(false, false, null, "trigger", {url: "someURL"}));
+                    expect(component.find(".outputTool").length).toBe(0);
                 });
 
                 it("should enable Trigger Tool if step is running", () => {

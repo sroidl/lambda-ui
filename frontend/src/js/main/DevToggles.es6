@@ -18,10 +18,6 @@ class DevToggles {
         return isActive("showConnectionState");
     }
 
-    get handleTriggerSteps() {
-        return isActive("handleTriggerSteps");
-    }
-
     get showPipelineTour() {
         return isActive("showPipelineTour");
     }
