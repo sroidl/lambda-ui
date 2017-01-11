@@ -18,7 +18,7 @@ const initialState = {
     developmentToggles: {
         usePolling: true,
         showInterestingStep: false,
-        showConnectionState: true,
+        showConnectionState: false,
         showPipelineTour: false,
         quickDetails_expandCollapse: false
     },
