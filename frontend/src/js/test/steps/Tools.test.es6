@@ -17,7 +17,7 @@ import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
 import {showBuildOutput} from "actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
-import {findParentOfFailedSubstep, findParentOfRunningSubstep} from "steps/InterestingStepFinder.es6";
+import {findPathToDeepestFailureStep, findPathToDeepestRunningStep} from "../../main/steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import LambdaUIMock from "App.es6";
 
@@ -258,7 +258,7 @@ describe("Tools", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
                 openSubsteps.mockReturnValue({type: "goIntoFailureStep"});
-                findParentOfFailedSubstep.mockReturnValue(["1"]);
+                findPathToDeepestFailureStep.mockReturnValue(["1"]);
 
                 const component = mount(tools(storeMock));
                 component.find(".failureStepTool").simulate("click");
@@ -270,7 +270,7 @@ describe("Tools", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
                 openSubsteps.mockReturnValue({type: "goIntoRunningStep"});
-                findParentOfRunningSubstep.mockReturnValue(["1"]);
+                findPathToDeepestRunningStep.mockReturnValue(["1"]);
 
                 const component = mount(tools(storeMock, {
                     stepId: "1",

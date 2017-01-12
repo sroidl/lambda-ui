@@ -4,6 +4,7 @@ jest.mock("../../main/Backend.es6");
 jest.mock("../../main/actions/BackendActions.es6");
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/Utils.es6");
+jest.mock("../../main/steps/InterestingStepFinder.es6");
 import BuildDetailsRedux, {BuildDetails, mapStateToProps} from "../../main/details/BuildDetails.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
@@ -55,7 +56,7 @@ describe("BuildDetails", () => {
             });
         });
 
-        it("should render all buildSteps on first level", () => {
+        it.only("should render all buildSteps on first level", () => {
             const steps = [{stepId: 1}, {stepId: 2}];
             const storeMock = MockStore({
                 buildDetails: {1: {buildId: 1, steps: steps}},
