@@ -24,6 +24,10 @@ export const isFinished = state => {
     return state === "success" || state === "failure" || state === "killed";
 };
 
+export const isPending = state => {
+    return state === "pending";
+};
+
 export const isBuildRunning = buildDetails => {
     const steps = flatSteps(buildDetails);
 

@@ -120,6 +120,16 @@ describe("Tools", () => {
                 expect(component.find(".outputTool").length).toBe(1);
             });
 
+            it.only("should not render output tool if step is pending", () => {
+                const step = {state: "pending"};
+                const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
+                                                 showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
+                                                 toolboxOpen={false} killStepFn={jest.fn()}/>);
+
+                expect(component.find({toolClass: "outputTool"}).length).toBe(0);
+
+            });
+
             it("should render kill step tool if step is running", () => {
                 const step = {state: "running"};
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}

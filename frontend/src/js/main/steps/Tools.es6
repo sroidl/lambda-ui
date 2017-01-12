@@ -40,7 +40,11 @@ export class Tools extends React.Component {
     }
 
     outputButton() {
-        const {stepTrigger} = this.props;
+        const {step, stepTrigger} = this.props;
+
+        if (Utils.isPending(step.state)) {
+            return null;
+        }
 
         if (stepTrigger && stepTrigger.url) {
             return null;
