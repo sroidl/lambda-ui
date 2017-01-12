@@ -5,6 +5,7 @@ import {requestOutput} from "../actions/BackendActions.es6";
 import "../../../sass/buildStepOutput.sass";
 import {hideBuildOutput} from "actions/OutputActions.es6";
 import DevToggles from "DevToggles.es6";
+import * as Utils from "../Utils.es6";
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
@@ -24,7 +25,7 @@ export class BuildStepOutput extends React.Component {
 
     componentDidUpdate() {
         const element = this.layerText;
-        if(element){
+        if (element) {
             element.scrollTop = element.scrollHeight;
         }
     }
@@ -34,7 +35,7 @@ export class BuildStepOutput extends React.Component {
         let {output} = this.props;
         if (!output) {
             requestFn(buildId, stepId);
-            output = ["Requesting Output from Server"];
+            output = ["No output."];
         }
 
         const formattingLine = line => line.replace(/ /g, "\u00a0");
@@ -47,7 +48,7 @@ export class BuildStepOutput extends React.Component {
     }
 
 
-    closeOnEscClick(){
+    closeOnEscClick() {
         document.onkeydown = (evt) => {
             evt = evt || window.event;
             let isEscape = false;
@@ -85,7 +86,8 @@ export class BuildStepOutput extends React.Component {
                     <span id="outputHeader__stepName">{stepName}</span>
                     {connectionState}
                 </div>
-                <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span><i className="fa fa-times" aria-hidden="true"></i>
+                <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span><i
+                    className="fa fa-times" aria-hidden="true"></i>
                 </div>
                 <div ref={(div) => {
                     this.layerText = div;
@@ -107,22 +109,32 @@ BuildStepOutput.propTypes = {
 };
 
 
-
 const outputHiddenProps = {showOutput: false};
 
 const outputVisibleProps = (state) => {
     const buildId = state.output.buildId;
     const stepId = state.output.stepId;
-    const stepNameLens = R.lensPath(["buildDetails", buildId, "steps", stepId, "name"]);
-    const outputLens = R.lensPath(["output", "content", buildId, stepId]);
+
+    const flatSteps = Utils.flatSteps(R.path(["buildDetails", buildId], state));
+    const step = R.find(step => step.stepId === stepId)(flatSteps);
+
+
+    const stepName = R.propOr("", "name") (step);
+    const output = R.path(["content", buildId, stepId])(state.output);
+
 
     return {
         buildId: buildId,
         stepId: stepId,
         showOutput: true,
-        stepName: R.view(stepNameLens, state),
-        output: R.view(outputLens, state),
+        stepName: stepName,
+        output: output
     };
+
+
+
+
+
 };
 
 export const mapStateToProps = (state) => {
