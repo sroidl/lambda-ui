@@ -49,7 +49,7 @@ describe("Utils", () => {
 
     describe("BuildFinished", () => {
         it("should recognize a finished build with one step", () => {
-            const input = {steps: [{stepId: "1", state: "failed"}]};
+            const input = {steps: [{stepId: "1", state: "failure"}]};
 
             expect(subject.isBuildRunning(input)).toBe(false);
         });

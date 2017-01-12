@@ -172,7 +172,7 @@ describe("Tools", () => {
             });
 
             it("should render retrigger tool if step is failed", () => {
-                const step = {state: "failed"};
+                const step = {state: "failure"};
                 const retriggerStepMockFn = jest.fn();
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
                                                  showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
@@ -308,7 +308,7 @@ describe("Tools", () => {
                 const storeMock = MockStore({}, dispatchMock);
                 const component = mount(tools(storeMock, {
                     stepId: "1",
-                    state: "failed",
+                    state: "failure",
                     steps: []
                 }));
                 component.find(".retriggerStepTool").simulate("click");
