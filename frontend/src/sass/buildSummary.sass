@@ -28,9 +28,10 @@
     background-color: $green
   &.failed:before
     background-color: $red
-
   &.running:before
     background-color: $blue
+  &.unknown:before
+    background-color: $dark-grey
 
 // Success
 .buildSummary.success:before
@@ -69,9 +70,17 @@
 .buildSummary.killed:before
   background-color: $black
 
-.buildSummary.running
+.buildSummary.killed
   & .buildNumber, .buildIcon
     color: $black
+
+// Unknown
+.buildSummary.killed:before
+  background-color: $dark-light-grey
+
+.buildSummary.killed
+  & .buildNumber, .buildIcon
+    color: $dark-grey
 
 
 // Open

@@ -21,7 +21,8 @@ export const isValidBuild = build => {
         || build.state === "success"
         || build.state === "pending"
         || build.state === "waiting"
-        || build.state === "killed";
+        || build.state === "killed"
+        || build.state === "unknown";
 
     const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
     if (!keepBuild) {

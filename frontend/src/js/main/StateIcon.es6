@@ -6,6 +6,7 @@ export const FAILURE_ICON = "fa-times";
 export const RUNNING_ICON = "fa-cog rotate";
 export const KILLED_ICON = "fa-ban";
 export const DEFAULT_ICON = "fa-ellipsis-h";
+export const UNKNOWN_ICON = "fa-question";
 
 export const StateIcon = ({state}) => {
     let iconClass;
@@ -35,6 +36,10 @@ export const StateIcon = ({state}) => {
         case "pending":
             iconClass = "";
             hintText = "Pending";
+            break;
+        case "unknown":
+            iconClass = UNKNOWN_ICON;
+            hintText = "Unknown";
             break;
         default:
             iconClass = DEFAULT_ICON;
