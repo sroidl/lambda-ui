@@ -71,7 +71,7 @@ export class BuildStep extends React.Component {
             parentClass = classes("BuildStepParallel");
             childrenClass = classes("BuildStepInParallel", this.getBuildStepId() + "Steps");
             childrenSteps = R.map(step => {
-                return <div className={classes("ParallelLine")}>
+                return <div key={`${buildId}-${step.stepId} `} className={classes("ParallelLine")}>
                     {buildStepRedux(step)}
                 </div>;
             })(step.steps);
