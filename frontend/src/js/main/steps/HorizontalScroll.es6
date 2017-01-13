@@ -1,12 +1,13 @@
 import {BUILDSTEP_HIGHLIGHT_DURATION_IN_MS} from "../steps/BuildStep.es6";
-
+/* eslint-disable */
 export const makeDraggable = (buildId) => {
     const idName = "draggable" + buildId;
 
     const currentDiv = document.getElementById(idName);
 
+    console.log("MakeDraggable called on ", currentDiv);
     if (currentDiv === null) {
-        return;
+        return false;
     }
 
     let curDown = false,
@@ -27,6 +28,8 @@ export const makeDraggable = (buildId) => {
     currentDiv.addEventListener("mouseup", () => {
         curDown = false;
     });
+
+    return true;
 };
 
 export const highlightStep = (buildId, stepId) => {

@@ -6,7 +6,7 @@ import BuildStep from "../steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
 import QuickDetails from "../details/QuickDetails.es6";
 import "../../../sass/buildDetails.sass";
-
+/* eslint-disable */
 export class BuildDetails extends React.Component {
 
     constructor(props) {
@@ -18,8 +18,9 @@ export class BuildDetails extends React.Component {
         const {open, buildId, stepToScroll, noScrollToStepFn} = this.props;
 
         if (open && !this.registeredEventHandler) {
-            makeDraggable(buildId);
-            this.registeredEventHandler = true;
+            if (makeDraggable(buildId)) {
+                this.registeredEventHandler = true;
+            }
         }
         if (!open) {
             this.registeredEventHandler = false;
