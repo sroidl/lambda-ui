@@ -11,11 +11,11 @@ describe("InterestingStep Finder", () => {
     let realConsole;
 
     beforeEach(() => {
-        // TestUtils.consoleThrowingBefore(realConsole);
+        TestUtils.consoleThrowingBefore(realConsole);
     });
 
     afterEach(() => {
-        // TestUtils.consoleThrowingAfter(realConsole);
+        TestUtils.consoleThrowingAfter(realConsole);
     });
 
     describe("Find failed Substep", () => {
@@ -33,7 +33,7 @@ describe("InterestingStep Finder", () => {
                     }
                 }
             };
-            expect(findPathToDeepestFailureStep(state, 1, "1")).toEqual([]);
+            expect(findPathToDeepestFailureStep(state, 1, "1")).toBeUndefined();
         });
 
         it("should return null if it is success", () => {
@@ -50,7 +50,7 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            expect(findPathToDeepestFailureStep(state, 1, "1")).toEqual([]);
+            expect(findPathToDeepestFailureStep(state, 1, "1")).toBeUndefined();
         });
 
         it("should find killed step although it has pending substeps", () => {
@@ -234,8 +234,7 @@ describe("InterestingStep Finder", () => {
                     } } };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual([]);
-
+            expect(result).toBeUndefined();
         });
 
         it("should find prioritize running over failure step", () => {
@@ -350,7 +349,7 @@ describe("InterestingStep Finder", () => {
 
             const result = findPathToMostInterestingStep(state, 1, "root");
             expect(result).toEqual([]);
-        })
+        });
 
     });
 });

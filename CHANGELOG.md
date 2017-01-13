@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+
 ### Fixed
 - Also show pipelines in 'unknown' state
 - Fix scroll by drag bug
