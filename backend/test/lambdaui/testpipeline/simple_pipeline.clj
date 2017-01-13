@@ -69,3 +69,14 @@
                                       long-running-task-20s
                                       long-running-task-20s
                                       long-running-task-20s))))
+
+(defn  small-step [args context]
+  (shell/bash context (:cwd args) "echo 'Moinsen!'"))
+
+(defn wait-20-seconds [args context]
+  (Thread/sleep (* 20 1000))
+  {:status :success}
+  )
+
+(def small-pipeline
+  `((either wait-for-manual-trigger wait-20-seconds)))

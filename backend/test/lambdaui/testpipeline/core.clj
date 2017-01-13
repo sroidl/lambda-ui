@@ -14,7 +14,8 @@
             [lambdacd.event-bus :as event-bus]
             [lambdaui.fixtures.pipelines :as fixture]
             [compojure.core :refer [routes GET context POST]]
-            [ring.middleware.cors :refer [wrap-cors]])
+            [ring.middleware.cors :refer [wrap-cors]]
+            [lambdacd.presentation.unified :as presentation])
 
   (:use [lambdacd.runners]))
 
@@ -28,7 +29,8 @@
 
 
 (defn start-server [port]
-  (let [simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "SIMPLE PIPELINE"})
+  (let [small-pipeline (lambdacd/assemble-pipeline pipe/small-pipeline {:home-dir (util/create-temp-dir) :name "SMALL_PIPELINE"})
+        simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "SIMPLE PIPELINE"})
         trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE" })
         long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})]
 
@@ -65,3 +67,7 @@
 (defn start []
   (stop)
   (-main))
+
+(let [pipeline-def (:pipeline-def @current-pipeline)
+      pipeline-state (:pipeline-state-component (:context @current-pipeline))]
+  (presentation/unified-presentation pipeline-def pipeline-state))
