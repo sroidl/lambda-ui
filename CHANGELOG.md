@@ -4,14 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
-
-### Added
-
+## [0.1.1]
 
 ### Fixed
 - Also show pipelines in 'unknown' state
 - Fix scroll by drag bug
+- Do not include trigger waiting time in duration calculation of build summaries
 
 ## [0.1.0]
 First release.
