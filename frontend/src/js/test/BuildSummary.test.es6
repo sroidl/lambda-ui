@@ -1,7 +1,7 @@
 /* globals describe it expect beforeEach afterEach jest */
 /* eslint-disable */
 jest.mock("../main/DevToggles.es6");
-import {BuildSummary, mapStateToProps} from "BuildSummary.es6";
+import {BuildSummary, mapStateToProps} from "../main/BuildSummary.es6";
 import {shallow} from "enzyme";
 import React from "react";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
@@ -9,12 +9,13 @@ import * as TestUtils from "../test/testsupport/TestUtils.es6";
 const fn = () => {
 };
 
-const buildSummary = (buildId = 1, toggleBuildDetails = fn, state = "running", startTime = "time", endTime) => {
+const buildSummary = (buildId = 1, toggleBuildDetails = fn, state, startTime, endTime, duration) => {
     return <BuildSummary buildId={buildId} state={state}
                          startTime={startTime}
                          toggleBuildDetails={toggleBuildDetails}
                          endTime={endTime}
-                         buildNumber={1}/>;
+                         buildNumber={1}
+                         duration={duration}/>;
 };
 
 describe("Build Summary", () => {
@@ -33,7 +34,7 @@ describe("Build Summary", () => {
         it("should call the toggle details function on click", () => {
             const toggleFnMock = jest.fn();
 
-            const component = shallow(buildSummary(1, toggleFnMock));
+            const component = shallow(buildSummary(1, toggleFnMock, "latte", "schnuppe", "peter", 1));
             component.find(".buildInfo").simulate("click");
 
             expect(toggleFnMock).toBeCalled();
@@ -43,7 +44,7 @@ describe("Build Summary", () => {
     describe("BuildSummary redux mapping", () => {
         it("should map to props properly", () => {
             const state = {
-                summaries: {1: {buildId: 1, buildNumber: 12, state: "running", endTime: "10min", startTime: "12sec"}},
+                summaries: {},
                 openedBuilds: {1: true},
                 buildDetails: {}
             };
@@ -54,7 +55,8 @@ describe("Build Summary", () => {
                     buildNumber: 12,
                     state: "success",
                     endTime: "10min",
-                    startTime: "12sec"
+                    startTime: "12sec",
+                    duration: 42
                 }
             });
 
@@ -64,6 +66,7 @@ describe("Build Summary", () => {
                 state: "success",
                 endTime: "10min",
                 startTime: "12sec",
+                duration: 42,
                 open: true
             });
 
@@ -72,14 +75,14 @@ describe("Build Summary", () => {
 
     describe("Duration", () => {
         it("should render minutes correctly", () => {
-            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:50:00Z", "2017-01-04T14:53:20Z"));
+            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:50:00Z", "2017-01-04T14:53:20Z", 200));
             const formattedDuration = actual.find(".buildDuration").childAt(2).shallow();
 
             expect(formattedDuration.text()).toBe("03:20");
         });
 
         it("should render hours correctly", () => {
-            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:50:00Z", "2017-01-04T17:53:20Z"));
+            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:50:00Z", "2017-01-04T17:53:20Z", 11000));
             const formattedDuration = actual.find(".buildDuration").childAt(2).shallow();
 
             expect(formattedDuration.text()).toBe("03:03:20");

@@ -30,6 +30,7 @@
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
                            :state       :waiting
+                           :duration 0
                            :startTime   nil
                            :endTime     nil}]}
 
@@ -37,6 +38,7 @@
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
                            :state       :running
+                           :duration 0
                            :startTime   nil
                            :endTime     nil}]}
              (testee/summaries simple-running-pipeline-state)))))
@@ -46,17 +48,16 @@
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
                            :state       :waiting
+                           :duration 0
                            :startTime   nil
                            :endTime     nil}
                           {:buildNumber 2
                            :buildId     2
                            :state       :running
+                           :duration 0
                            :startTime   nil
                            :endTime     nil}]}
              (testee/summaries waiting-and-running-pipeline-state))))))
-
-
-
 
 (deftest extract-start-time-test
   (testing "should extract time from single step build"
@@ -74,8 +75,14 @@
                                     :most-recent-update-at joda-date-14}
                             '(1 1) {:first-updated-at      joda-date-15
                                     :most-recent-update-at joda-date-16}}]
-      (is (= "2016-01-01T12:00:00.000Z" (testee/extract-start-time multi-step-build)))))
-  (testing "should return nil if no time found"
+      (is (= "2016-01-01T12:00:00.000Z" (testee/extract-start-time multi-step-build)))
+
+      (is (= 10800 (-> (testee/summaries {1 multi-step-build})
+                       :summaries
+                       first
+                       :duration)))))
+
+   (testing "should return nil if no time found"
     (let [single-empty-step {'(1) {}}]
       (is (= nil (testee/extract-start-time single-empty-step))))))
 
@@ -92,11 +99,14 @@
           joda-date-15     (DateTime. 2016 01 01 15 00 (DateTimeZone/UTC))
           joda-date-16     (DateTime. 2016 01 01 16 00 (DateTimeZone/UTC))
           multi-step-build {'(1 1) {:first-updated-at      joda-date-15
-                                    :most-recent-update-at joda-date-16}
+                                    :most-recent-update-at joda-date-16
+                                    :status :success}
                             '(2)   {:first-updated-at      joda-date-12
-                                    :most-recent-update-at joda-date-14}
+                                    :most-recent-update-at joda-date-14
+                                    :status :success}
                             '(1)   {:first-updated-at      joda-date-12
-                                    :most-recent-update-at joda-date-14}}]
+                                    :most-recent-update-at joda-date-14
+                                    :status :success}}]
 
       (is (= "2016-01-01T16:00:00.000Z" (testee/extract-end-time multi-step-build)))))
   (testing "should return nil if no time found"

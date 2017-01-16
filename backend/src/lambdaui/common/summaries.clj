@@ -23,16 +23,19 @@
       (str joda-end-time))))
 
 
+(defn pipeline-state-entry->summaries-entry [build-number build-steps]
+  {:buildNumber build-number
+   :buildId     build-number
+   :state       (extract-state build-steps)
+   :startTime   (extract-start-time build-steps)
+   :endTime     (extract-end-time build-steps)
+   :duration    (presentation/build-duration build-steps)}
+  )
+
+
+
 (defn summaries [pipeline-state]
   {:summaries
-   (map (fn [[build-number build-steps]] {:buildNumber build-number
-                                          :buildId     build-number
-                                          :state       (extract-state build-steps)
-                                          :startTime   (extract-start-time build-steps)
-                                          :endTime     (extract-end-time build-steps)})
-
-        pipeline-state)})
+   (map #(pipeline-state-entry->summaries-entry (first %) (last %)) pipeline-state)})
 
 
-{:step1 {:most-recent-update-at 123
-         :first-updated-at      12321}}

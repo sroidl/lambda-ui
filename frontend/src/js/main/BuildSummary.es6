@@ -9,7 +9,7 @@ import Toggles from "./DevToggles.es6";
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep} = properties;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep, duration} = properties;
     let classesForState = "row buildSummary " + state;
     if (open) {
         classesForState += " open";
@@ -22,7 +22,6 @@ export const renderSummary = (properties) => {
     const timeToNow = Moment(startTime).diff(Moment(now()));
 
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
-    const duration = Moment.duration(Moment(endTime).diff(Moment(startTime))).as("seconds");
 
     const openInterestingStep = () => {
         if (open) {
@@ -84,11 +83,12 @@ BuildSummary.propTypes = {
     toggleBuildDetails: PropTypes.func.isRequired,
     showInterestingStep: PropTypes.func,
     endTime: PropTypes.string,
+    duration: PropTypes.number,
     open: PropTypes.bool
 };
 
 export const mapStateToProps = (state, props) => {
-    const {buildId, buildNumber, startTime, endTime} = props.build;
+    const {buildId, buildNumber, startTime, endTime, duration} = props.build;
     const buildState = props.build.state;
     const open = state.openedBuilds[buildId] || false;
 
@@ -98,12 +98,12 @@ export const mapStateToProps = (state, props) => {
         state: buildState,
         startTime: startTime,
         endTime: endTime,
+        duration: duration,
         open: open
     };
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => {
-    // TODO: Implements new Intersting Step
     return {
         toggleBuildDetails: () => {
             dispatch(toggleAction(ownProps.build.buildId));
