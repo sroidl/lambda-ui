@@ -1,8 +1,6 @@
 /* globals jest describe it expect beforeEach afterEach */
 jest.mock("../../main/DevToggles.es6");
 import {
-    findPathToDeepestFailureStep,
-    findPathToDeepestRunningStep,
     findPathToMostInterestingStep
 } from "../../main/steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
@@ -33,7 +31,7 @@ describe("InterestingStep Finder", () => {
                     }
                 }
             };
-            expect(findPathToDeepestFailureStep(state, 1, "1")).toBeUndefined();
+            expect(findPathToMostInterestingStep(state, 1, "1")).toBeUndefined();
         });
 
         it("should return null if it is success", () => {
@@ -50,7 +48,7 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            expect(findPathToDeepestFailureStep(state, 1, "1")).toBeUndefined();
+            expect(findPathToMostInterestingStep(state, 1, "1")).toBeUndefined();
         });
 
         it("should find killed step although it has pending substeps", () => {
@@ -74,7 +72,7 @@ describe("InterestingStep Finder", () => {
                     }
                 }
             };
-            expect(findPathToDeepestFailureStep(interesting_state, 1, "3")).toEqual(["3"]);
+            expect(findPathToMostInterestingStep(interesting_state, 1, "3")).toEqual({"failure": ["3"]});
         });
 
         it("should return parent step of deepest failure step", () => {
@@ -102,7 +100,7 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            expect(findPathToDeepestFailureStep(state, 1, "1")).toEqual(["1"]);
+            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({"failure": ["1"]});
         });
 
         it("should return children children step if it failed", () => {
@@ -127,7 +125,7 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            expect(findPathToDeepestFailureStep(state, 1, "1")).toEqual(["1", "1-1"]);
+            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({"failure": ["1", "1-1"]});
         });
 
         it("should return lowermost children step if it failed", () => {
@@ -156,8 +154,8 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            const result = findPathToDeepestFailureStep(state, 1, "1");
-            expect(result).toEqual(["1", "1-1", "1-1-1"]);
+            const result = findPathToMostInterestingStep(state, 1, "1");
+            expect(result).toEqual({"failure":["1", "1-1", "1-1-1"]});
         });
 
         const complexState = {
@@ -186,8 +184,8 @@ describe("InterestingStep Finder", () => {
         };
 
         it("should return first failure substep", () => {
-            const result = findPathToDeepestFailureStep(complexState, 1, "1");
-            expect(result).toEqual(["1"]);
+            const result = findPathToMostInterestingStep(complexState, 1, "1");
+            expect(result).toEqual({"failure": ["1"]});
         });
     });
 
@@ -218,8 +216,8 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            const result = findPathToDeepestRunningStep(state, 1, "1");
-            expect(result).toEqual(["1", "1-1", "1-1-1"]);
+            const result = findPathToMostInterestingStep(state, 1, "1");
+            expect(result).toEqual({"running": ["1", "1-1", "1-1-1"]});
         });
     });
 
@@ -270,7 +268,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual(["1", "1-1", "1-1-1"]);
+            expect(result).toEqual({"running": ["1", "1-1", "1-1-1"]});
         });
 
 
@@ -311,7 +309,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual(["2"]);
+            expect(result).toEqual({"failure": ["2"]});
         });
 
 
@@ -348,7 +346,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual([]);
+            expect(result).toEqual({"waiting": []});
         });
 
     });

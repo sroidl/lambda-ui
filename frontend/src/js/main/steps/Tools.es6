@@ -6,7 +6,7 @@ import {showBuildOutput} from "actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "../actions/BuildStepActions.es6";
 import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
 import R from "ramda";
-import {findPathToDeepestFailureStep, findPathToDeepestRunningStep} from "./InterestingStepFinder.es6";
+import {findPathToMostInterestingStep} from "./InterestingStepFinder.es6";
 import LamdbdaUI from "App.es6";
 import * as Utils from "../Utils.es6";
 import {KILLED_ICON} from "../StateIcon.es6";
@@ -218,8 +218,8 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         step: ownProps.step,
-        failureStep: findPathToDeepestFailureStep(state, ownProps.buildId, ownProps.step.stepId),
-        runningStep: findPathToDeepestRunningStep(state, ownProps.buildId, ownProps.step.stepId),
+        failureStep: R.prop("failure", R.defaultTo({}, findPathToMostInterestingStep(state, ownProps.buildId, ownProps.step.stepId))),
+        runningStep: R.prop("running", R.defaultTo({}, findPathToMostInterestingStep(state, ownProps.buildId, ownProps.step.stepId))),
         hasSubsteps: hasSubsteps,
         stepType: stepType,
         stepTrigger: enrichedTrigger,
