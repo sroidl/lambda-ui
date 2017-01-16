@@ -34,14 +34,14 @@
         trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE" })
         long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})]
 
-    (reset! current-pipeline simple-pipeline)
+    (reset! current-pipeline small-pipeline)
 
     (reset! server
 
             (let [routes
 
                   (routes
-                    (ui/ui-for simple-pipeline :showStartBuildButton true)
+                    (ui/ui-for small-pipeline :showStartBuildButton true)
                     (context "/long-running" []
                       (ui/ui-for long-running-pipeline :showStartBuildButton true :contextPath "/long-running")
                       )

@@ -23,10 +23,6 @@
       (str joda-end-time))))
 
 
-
-
-
-
 (defn summaries [pipeline-state]
   {:summaries
    (map (fn [[build-number build-steps]] {:buildNumber build-number

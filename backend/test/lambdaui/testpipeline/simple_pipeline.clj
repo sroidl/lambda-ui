@@ -78,5 +78,11 @@
   {:status :success}
   )
 
+(def first-step
+  (either wait-for-manual-trigger wait-20-seconds)
+  )
+
+
 (def small-pipeline
-  `((either wait-for-manual-trigger wait-20-seconds)))
+  `(^{:display-type :step} (either wait-for-manual-trigger wait-20-seconds) small-step)
+  )

@@ -8,92 +8,18 @@
             [clojure.core.async :as async]
             [clojure.data.json :as json]
             [clojure.string :as s]
-            [lambdacd.util]
-            [lambdacd.internal.pipeline-state :as state]
-            [lambdacd.presentation.unified :as presentation]
-            [clojure.tools.logging :as log]
             [lambdacd.util :as util]
             [lambdacd.core :as core]
-            [clojure.string :as string]))
-
-(defn deep-merge
-  "Recursively merges maps. If vals are not maps, the last value wins."
-  [& vals]
-  (if (every? map? vals)
-    (apply merge-with deep-merge vals)
-    (last vals)))
-
-(defn state-from-pipeline [pipeline]
-  (state/get-all (:pipeline-state-component (:context pipeline))))
-
-(defn summaries-response [pipeline]
-  (summaries (state-from-pipeline pipeline)))
-
-
-(defn- to-iso-string [timestamp]
-  (when timestamp
-    (str timestamp)))
-
-(defn- finished? [status]
-  (contains? #{:success :failure :killed} status))
-
-(defn- step-id-str [step-id]
-  (clojure.string/join "-" step-id))
-
-(defn get-type [step]
-  (when-let [type (:type step)]
-    (case type
-      :manual-trigger :trigger
-      type)))
-
-
-
-(defn- to-ui-params [params]
-  (let [f (fn [[p-name props]] {:key (name p-name) :name (:desc props)})]
-    (map f params)))
-
-(defn get-trigger-data [trigger-path-prefix step]
-  (let [trigger-id (get-in step [:result :trigger-id])
-        url-template "%s/api/dynamic/%s"
-        parameters (if-let [params (:parameters (:result step))] {:parameter (to-ui-params params)} {})
-        url {:url (format url-template trigger-path-prefix trigger-id)}]
-    (if (seq trigger-id)
-      {:trigger (merge url parameters)}
-      {})))
-
-(defn to-output-format [trigger-path-prefix step]
-  (let [status (:status (:result step))
-        trigger (get-trigger-data trigger-path-prefix step)
-        base {:stepId    (step-id-str (:step-id step))
-              :name      (:name step)
-              :state     (or status :pending)
-              :startTime (to-iso-string (:first-updated-at (:result step)))
-              :endTime   (when (finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
-        type (if (empty? trigger) {:type (get-type step)} {:type :trigger})
-        children (if-let [children (:children step)] {:steps (map (partial to-output-format trigger-path-prefix) children)} {})]
-    (merge base type children trigger)))
-
-(defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
-  (let [unified-steps-map (->> (presentation/unified-presentation pipeline-def pipeline-state)
-                               (map (partial to-output-format (:path-prefix ui-config "")))
-                               (map (fn [step] [(:stepId step) step]))
-                               (into {}))
-        steps (vals unified-steps-map)]
-
-    {:buildId build-id
-     :steps   steps}))
-
-(defn- build-details-response [pipeline build-id]
-  (let [build-state (get (state-from-pipeline pipeline) (Integer/parseInt build-id))
-        pipeline-def (:pipeline-def pipeline)]
-    (build-details-from-pipeline pipeline-def build-state build-id (get-in pipeline [:context :config :ui-config]))))
+            [lambdaui.common.common :refer [state-from-pipeline finished? step-id->str str->step-id]]
+            [lambdaui.common.details :as details]
+            [lambdaui.common.collections :refer [deep-merge]]))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
   (let [result (async/chan)
         transducer (comp
                      (filter #(= build-id (:build-number %)))
-                     (filter #(= step-id (step-id-str (:step-id %))))
-                     (map (fn [x] {:stepId     (step-id-str (:step-id x))
+                     (filter #(= step-id (step-id->str (:step-id %))))
+                     (map (fn [x] {:stepId     (step-id->str (:step-id x))
                                    :buildId    (:build-number x)
                                    :stepResult (:step-result x)})))]
 
@@ -163,15 +89,12 @@
 
 
 (defn websocket-connection-for-details [pipeline build-id websocket-channel]
-  (send! websocket-channel (json/write-str (build-details-response pipeline build-id)))
+  (send! websocket-channel (json/write-str (details/build-details-response pipeline build-id)))
   (close websocket-channel))
 
 (defn wrap-websocket [request handler]
   (with-channel request channel
                 (handler channel)))
-
-(defn- to-internal-step-id [dash-seperated-step-id]
-  (map util/parse-int (string/split dash-seperated-step-id #"-")))
 
 (def killed-steps (atom #{}))
 
@@ -181,7 +104,7 @@
       (do
         (println "Kill Step " build-id " - " step-id)
         (swap! killed-steps (fn [old-value] (conj old-value identifier)))
-        (core/kill-step ctx (util/parse-int build-id) (to-internal-step-id step-id))
+        (core/kill-step ctx (util/parse-int build-id) (str->step-id step-id))
         {:status 200})
       (do (println "Already killed step " identifier) {:status 403} ))))
 
@@ -194,7 +117,7 @@
       (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
       (GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id))
       (POST "/builds/:buildnumber/:step-id/retrigger" [buildnumber step-id]
-        (let [new-buildnumber (core/retrigger pipeline-def ctx (util/parse-int buildnumber) (to-internal-step-id step-id))]
+        (let [new-buildnumber (core/retrigger pipeline-def ctx (util/parse-int buildnumber) (str->step-id step-id))]
           (util/json {:build-number new-buildnumber})))
       (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id] (kill-step buildnumber step-id ctx)))))
 
