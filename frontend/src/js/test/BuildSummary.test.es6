@@ -92,10 +92,19 @@ describe("Build Summary", () => {
     describe("Start Time", () => {
         it("should show no time if startTime is nil", () => {
             const actual = shallow(buildSummary(1, fn, "running", null, "2017-01-04T14:53:20Z", 200));
-            const startTime = actual.find(".buildStartTime").text();
+            const startTime = actual.find(".buildStartTime");
 
-            expect(startTime).toBe("Started: not yet started");
+            expect(startTime.text()).toBe("Started: not yet started");
+            expect(startTime.prop("title")).toBe("not yet started");
         });
+
+        it("should show tooltip with absolute timestamp", () => {
+            const actual = shallow(buildSummary(1, fn, "running", "2017-01-04T14:00:00Z", "2017-01-04T14:53:20Z", 200));
+            const startTime = actual.find(".buildStartTime")
+
+            expect(startTime.prop("title")).toBe("Wednesday, January 4th 2017, 3:00:00 pm");
+        });
+
     });
 
 });

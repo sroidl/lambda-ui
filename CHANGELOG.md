@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Added
 - `:show-version` config item.
+- Tooltip showing the absolute start time in build summaries
 
 #### Fixed 
 - trigger time is now excluded from the build started calculation
