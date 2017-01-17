@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - `:show-version` config item.
 
+#### Fixed 
+- trigger time is now excluded from the build started calculation
+
 ## [0.1.1]
 
 #### Fixed

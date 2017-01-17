@@ -20,7 +20,7 @@ const buildSummary = (buildId = 1, toggleBuildDetails = fn, state, startTime, en
 
 describe("Build Summary", () => {
 
-    let realConsole;
+    let realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);
@@ -86,6 +86,15 @@ describe("Build Summary", () => {
             const formattedDuration = actual.find(".buildDuration").childAt(2).shallow();
 
             expect(formattedDuration.text()).toBe("03:03:20");
+        });
+    });
+
+    describe("Start Time", () => {
+        it("should show no time if startTime is nil", () => {
+            const actual = shallow(buildSummary(1, fn, "running", null, "2017-01-04T14:53:20Z", 200));
+            const startTime = actual.find(".buildStartTime").text();
+
+            expect(startTime).toBe("Started: not yet started");
         });
     });
 

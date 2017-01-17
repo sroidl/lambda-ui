@@ -1,10 +1,10 @@
 import React, {PropTypes} from "react";
+import R from "ramda";
 import {connect} from "react-redux";
 import BuildDetails from "./details/BuildDetails.es6";
 import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
-
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
@@ -16,6 +16,7 @@ export const renderSummary = (properties) => {
 
     const timeToNow = Moment(startTime).diff(Moment(now()));
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
+    const startText = R.isNil(startTime) ? "not yet started" : startMoment;
 
     return <div className={classesForState}>
 
@@ -26,7 +27,7 @@ export const renderSummary = (properties) => {
             </div>
             <div className="buildInfoRow time">
                 <div className="buildStartTime"><i className="fa fa-flag-checkered"
-                                                   aria-hidden="true"></i>Started: {startMoment}</div>
+                                                   aria-hidden="true"></i>Started: {startText}</div>
                 <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration:
                     <FormattedDuration seconds={duration}/></div>
             </div>
@@ -53,7 +54,7 @@ BuildSummary.propTypes = {
     buildId: PropTypes.number.isRequired,
     buildNumber: PropTypes.number.isRequired,
     state: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
+    startTime: PropTypes.string,
     toggleBuildDetails: PropTypes.func.isRequired,
     endTime: PropTypes.string,
     duration: PropTypes.number,
