@@ -4,6 +4,14 @@
   (:require [lambdaui.common.summaries :as testee])
   (:import (org.joda.time DateTime DateTimeZone)))
 
+(defn- joda-date [^Integer hour]
+  (DateTime. 2016 01 01 hour 00 (DateTimeZone/UTC)))
+
+(def joda-date-12 (joda-date 12))
+(def joda-date-14 (joda-date 14))
+(def joda-date-15 (joda-date 15))
+(def joda-date-16 (joda-date 16))
+
 (deftest summaries-test-duration
   (testing "should calculate correct duration"
     (let [step-1-start (DateTime/parse "2016-12-05T15:00:00Z")
@@ -61,17 +69,11 @@
 
 (deftest extract-start-time-test
   (testing "should extract time from single step build"
-    (let [joda-date-12      (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
-          joda-date-14      (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
-          single-step-build {'(1) {:first-updated-at      joda-date-12
+    (let [single-step-build {'(1) {:first-updated-at      joda-date-12
                                    :most-recent-update-at joda-date-14}}]
       (is (= "2016-01-01T12:00:00.000Z" (testee/extract-start-time single-step-build)))))
   (testing "should take time of first step from multi step build"
-    (let [joda-date-12     (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
-          joda-date-14     (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
-          joda-date-15     (DateTime. 2016 01 01 15 00 (DateTimeZone/UTC))
-          joda-date-16     (DateTime. 2016 01 01 16 00 (DateTimeZone/UTC))
-          multi-step-build {'(1)   {:first-updated-at      joda-date-12
+    (let [multi-step-build {'(1)   {:first-updated-at      joda-date-12
                                     :most-recent-update-at joda-date-14}
                             '(1 1) {:first-updated-at      joda-date-15
                                     :most-recent-update-at joda-date-16}}]
@@ -82,23 +84,23 @@
                        first
                        :duration)))))
 
+  (testing "should extract time from single step build"
+    (let [single-step-build {'(1) {:first-updated-at      joda-date-12
+                                   :most-recent-update-at joda-date-14}}]
+      (is (= "2016-01-01T12:00:00.000Z" (testee/extract-start-time single-step-build)))))
+
+
    (testing "should return nil if no time found"
     (let [single-empty-step {'(1) {}}]
       (is (= nil (testee/extract-start-time single-empty-step))))))
 
 (deftest extract-end-time-test
   (testing "should extract time from single step build"
-    (let [joda-date-12      (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
-          joda-date-14      (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
-          single-step-build {'(1) {:first-updated-at      joda-date-12
+    (let [single-step-build {'(1) {:first-updated-at      joda-date-12
                                    :most-recent-update-at joda-date-14}}]
       (is (= "2016-01-01T14:00:00.000Z" (testee/extract-end-time single-step-build)))))
   (testing "should take latest available time from multi-step build"
-    (let [joda-date-12     (DateTime. 2016 01 01 12 00 (DateTimeZone/UTC))
-          joda-date-14     (DateTime. 2016 01 01 14 00 (DateTimeZone/UTC))
-          joda-date-15     (DateTime. 2016 01 01 15 00 (DateTimeZone/UTC))
-          joda-date-16     (DateTime. 2016 01 01 16 00 (DateTimeZone/UTC))
-          multi-step-build {'(1 1) {:first-updated-at      joda-date-15
+    (let [multi-step-build {'(1 1) {:first-updated-at      joda-date-15
                                     :most-recent-update-at joda-date-16
                                     :status :success}
                             '(2)   {:first-updated-at      joda-date-12
