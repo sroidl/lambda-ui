@@ -42,7 +42,7 @@
        (let [pipeline# (start-server! server-atom# ~pipeline-definition)]
          (async/go
            (execute-pipeline pipeline#))
-         (Thread/sleep 10)
+         (Thread/sleep 100)
          ~(test-fn)
          (shutdown-pipeline pipeline#))
        (finally
