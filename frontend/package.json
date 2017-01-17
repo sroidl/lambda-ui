@@ -48,6 +48,7 @@
     "eslint-plugin-react": "^6.2.1",
     "file-loader": "^0.9.0",
     "intro.js": "^2.4.0",
+    "jasmine-expect-jsx": "^1.1.2",
     "jest-cli": "^18.1.0",
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",

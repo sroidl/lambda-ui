@@ -26,9 +26,6 @@ export const HeaderLinks = (props) => {
 
     const linkComponents = mapIndexed((link, idx) => linkComponent(link, "headerlink-" + idx))(links);
 
-    if (links.length === 1){
-        return <div className="linksHeader">{linkComponent(links[0])}</div>;
-    }
     return <div className="linksHeader">{linkComponents}</div>;
 };
 
