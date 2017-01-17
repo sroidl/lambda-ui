@@ -99,8 +99,8 @@
 
   (testing "should ignore trigger timer in extract-start-time"
     (let [three-steps (build-state ['(1) pm-12 pm-2 :has-been-waiting true] ['(2) pm-2 pm-3] ['(3) pm-3 pm-4])]
-        (is (= (iso-string pm-2) (testee/extract-start-time three-steps)))
-      ))
+        (is (= (iso-string pm-2) (testee/extract-start-time three-steps)))))
+
 
   (testing "should extract time from single step build"
     (let [single-step-build {'(1) {:first-updated-at      pm-12

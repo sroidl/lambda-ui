@@ -31,7 +31,7 @@
 (defn start-server [port]
   (let [small-pipeline (lambdacd/assemble-pipeline pipe/small-pipeline {:home-dir (util/create-temp-dir) :name "SMALL_PIPELINE"})
         simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "SIMPLE PIPELINE"})
-        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE" })
+        trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE"})
         long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})]
 
     (reset! current-pipeline trigger-pipeline)
@@ -41,14 +41,14 @@
             (let [routes
 
                   (routes
-                    (ui/ui-for small-pipeline :showStartBuildButton true)
+                    (ui/ui-for trigger-pipeline :showStartBuildButton true)
                     (context "/long-running" []
-                      (ui/ui-for long-running-pipeline :showStartBuildButton true :contextPath "/long-running")
-                      )
+                      (ui/ui-for long-running-pipeline :showStartBuildButton true :contextPath "/long-running"))
+
                     (context "/trigger-pipeline" []
-                      (ui/ui-for trigger-pipeline :showStartBuildButton true :contextPath "/trigger-pipeline")
-                      )
-                    )]
+                      (ui/ui-for trigger-pipeline :showStartBuildButton true :contextPath "/trigger-pipeline")))]
+
+
               (http/run-server
                 (wrap-cors routes :access-control-allow-origin [#".*"]
                            :access-control-allow-methods [:get :put :post :delete])

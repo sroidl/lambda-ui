@@ -1,7 +1,7 @@
 (ns lambdaui.common.summaries
   (:require [lambdacd.presentation.pipeline-state :as presentation]
-            [lambdaui.common.step-state :as steps]
-            ))
+            [lambdaui.common.step-state :as steps]))
+
 
 
 ; ------ Summaries ------
@@ -15,8 +15,7 @@
     (failure-mapper (presentation/overall-build-status build-steps))))
 
 (defn extract-start-time [build-steps]
-  (let [
-        all-but-triggers (filter #(not (steps/is-trigger? %)) (vals build-steps))
+  (let [all-but-triggers (filter #(not (steps/is-trigger? %)) (vals build-steps))
         all-times (map :first-updated-at all-but-triggers)]
     (when-let [joda-end-time (first (sort all-times))]
       (str joda-end-time))))
@@ -33,8 +32,8 @@
    :state       (extract-state build-steps)
    :startTime   (extract-start-time build-steps)
    :endTime     (extract-end-time build-steps)
-   :duration    (presentation/build-duration build-steps)}
-  )
+   :duration    (presentation/build-duration build-steps)})
+
 
 
 
