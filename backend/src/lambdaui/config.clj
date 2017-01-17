@@ -1,7 +1,9 @@
 (ns lambdaui.config
   (:require [clojure.data.json :as json]
             [clojure.string :as string]
-            [lambdaui.common.collections :refer [combine]]))
+            [lambdaui.common.collections :refer [combine]]
+
+            ))
 
 
 (def default-lambdaui-navbar {:navbar {:links [{:url  "https://github.com/sroidl/lambda-ui/labels/bug"
@@ -31,7 +33,7 @@
         (conj (str "window.lambdaui.config.baseUrl = " location " + \"" path-prefix "\"")))))
 
 
-(defn create-config-js [config]
+(defn config_edn->config_js [config]
   (string/join ";\n" (config->string-vec config)))
 
 (defn extract-config [pipeline]
@@ -47,12 +49,14 @@
   (into {} (filter filter-nil-value m)))
 
 (defn pipeline->config [pipeline & [additional-config]]
-  (let [default-config {:showStartBuildButton false}
+  (let [default-config {:showStartBuildButton false
+                        :show-version true}
         extracted (filter-nil-values (extract-config pipeline))
         additional-config (filter-nil-values (or additional-config {}))
         lambdaui-navbar (if (:showDefaultNavbar additional-config true) default-lambdaui-navbar {})
         config (combine default-config extracted additional-config lambdaui-navbar)]
+    config  ))
 
-    (create-config-js config)))
+
 
 

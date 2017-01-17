@@ -31,7 +31,7 @@
     (is (= (str window-def ";\n"
                 "window.lambdaui.config = {\"name\":\"My Pipeline\"}" ";\n"
                 "window.lambdaui.config.baseUrl = \"My Location\" + \"\"")
-           (subject/create-config-js {:name "My Pipeline" :location "My Location"})))))
+           (subject/config_edn->config_js {:name "My Pipeline" :location "My Location"})))))
 
 
 (defn- pipeline-map [config]
@@ -49,34 +49,32 @@
              (subject/extract-config pipe))))))
 
 (deftest pipe->config
-  (let [config-atom (atom nil)]
-    (with-redefs [subject/create-config-js (fn [input] (reset! config-atom input))]
-      (testing "should merge default config, extracted config and additionals"
-        (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
-              actual (subject/pipeline->config pipe {:showStartBuildButton false})]
+  (testing "should merge default config, extracted config and additionals"
+    (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
+          actual (subject/pipeline->config pipe {:showStartBuildButton false})]
 
-          (is (= "LAMBDAUI PIPELINE" (:name actual)))
-          (is (= false (:showStartBuildButton actual)))
-          (is (= (:navbar lambdaui.config/default-lambdaui-navbar) (:navbar actual)))))
+      (is (= "LAMBDAUI PIPELINE" (:name actual)))
+      (is (= false (:showStartBuildButton actual)))
+      (is (= (:navbar lambdaui.config/default-lambdaui-navbar) (:navbar actual)))))
 
 
-      (testing "should not display default navbar"
-        (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
-              actual (subject/pipeline->config pipe {:showDefaultNavbar false})]
-          (is (= nil (:navbar actual)))))
+  (testing "should not display default navbar"
+    (let [pipe (pipeline-map {:name "LAMBDAUI PIPELINE"})
+          actual (subject/pipeline->config pipe {:showDefaultNavbar false})]
+      (is (= nil (:navbar actual)))))
 
-      (testing "should merge user navbar and lambdaui navbar"
-        (let [pipe (pipeline-map {:ui-config {:navbar {:links [{:text "mylink"}]}}})
-              link-from-default-navbar (first (:links (:navbar lambdaui.config/default-lambdaui-navbar)))
-              actual (subject/pipeline->config pipe)]
+  (testing "should merge user navbar and lambdaui navbar"
+    (let [pipe (pipeline-map {:ui-config {:navbar {:links [{:text "mylink"}]}}})
+          link-from-default-navbar (first (:links (:navbar lambdaui.config/default-lambdaui-navbar)))
+          actual (subject/pipeline->config pipe)]
 
-          (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual)))))
+      (is (= {:links [{:text "mylink"} link-from-default-navbar]} (:navbar actual)))))
 
-      (testing "should not merge nil values into map "
-        (let [pipe (pipeline-map {:ui-config {:key :with-value}})
-              actual (subject/pipeline->config pipe {:key nil})]
+  (testing "should not merge nil values into map "
+    (let [pipe (pipeline-map {:ui-config {:key :with-value}})
+          actual (subject/pipeline->config pipe {:key nil})]
 
-          (is (= :with-value (:key actual))))))))
+      (is (= :with-value (:key actual))))))
 
 
 

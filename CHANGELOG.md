@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+#### Added
+- `:show-version` config item.
+
 ## [0.1.1]
 
-### Fixed
+#### Fixed
 - Also show pipelines in 'unknown' state
 - Fix scroll by drag bug
 - Do not include trigger waiting time in duration calculation of build summaries
