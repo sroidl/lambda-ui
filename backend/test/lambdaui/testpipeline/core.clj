@@ -34,7 +34,7 @@
         trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE" })
         long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})]
 
-    (reset! current-pipeline small-pipeline)
+    (reset! current-pipeline trigger-pipeline)
 
     (reset! server
 

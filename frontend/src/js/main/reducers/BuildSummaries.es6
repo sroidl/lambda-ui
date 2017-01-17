@@ -12,9 +12,9 @@ export const isValidBuild = build => {
     if (!build) {
         return false;
     }
-    const hasAllRequiredFields = build.buildId && build.buildNumber && build.startTime && build.state;
+    const hasAllRequiredFields = build.buildId && build.buildNumber && build.state;
     const buildIdIsNumber = Number.isInteger(build.buildId);
-    const startTimeIsIsoString = !Number.isNaN(Date.parse(build.startTime));
+    const startTimeIsIsoString = R.isNil(build.startTime) || !Number.isNaN(Date.parse(build.startTime));
     const durationIsANumber = !build.duration || Number.isInteger(build.duration);
     const stateIsValid = build.state === "running"
         || build.state === "failed"
@@ -24,11 +24,7 @@ export const isValidBuild = build => {
         || build.state === "killed"
         || build.state === "unknown";
 
-    const keepBuild = hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
-    if (!keepBuild) {
-        // console.log("BuildSummariesReducer: Reject ", build);
-    }
-    return keepBuild;
+    return hasAllRequiredFields && buildIdIsNumber && startTimeIsIsoString && durationIsANumber && stateIsValid;
 };
 
 const transformBuildSummaries = ([...summaries]) => {
