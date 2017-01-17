@@ -10,10 +10,6 @@ class DevToggles {
         return isActive("usePolling");
     }
 
-    get showInterestingStep() {
-        return isActive("showInterestingStep");
-    }
-
     get showConnectionState() {
         return isActive("showConnectionState");
     }

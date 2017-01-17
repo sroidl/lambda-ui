@@ -4,41 +4,18 @@ import BuildDetails from "./details/BuildDetails.es6";
 import {toggleBuildDetails as toggleAction} from "actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "StateIcon.es6";
-import Toggles from "./DevToggles.es6";
 
 import {FormattedDuration} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
-    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, showInterestingStep, duration} = properties;
+    const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, duration} = properties;
     let classesForState = "row buildSummary " + state;
     if (open) {
         classesForState += " open";
     }
-    let {endTime} = properties;
-    if (!endTime) {
-        endTime = now();
-    }
 
     const timeToNow = Moment(startTime).diff(Moment(now()));
-
     const startMoment = Moment.duration(timeToNow).humanize("minutes");
-
-    const openInterestingStep = () => {
-        if (open) {
-            toggleBuildDetails();
-        }
-        showInterestingStep();
-    };
-
-    const interestingStepLink = () => {
-        if(Toggles.showInterestingStep){
-            if(["waiting", "running", "failed"].includes(state)){
-                return <a href="#" onClick={openInterestingStep}>Show interesting step</a>;
-            }
-        }
-        return "";
-    };
-
 
     return <div className={classesForState}>
 
@@ -52,9 +29,6 @@ export const renderSummary = (properties) => {
                                                    aria-hidden="true"></i>Started: {startMoment}</div>
                 <div className="buildDuration"><i className="fa fa-clock-o" aria-hidden="true"></i>Duration:
                     <FormattedDuration seconds={duration}/></div>
-            </div>
-            <div className="buildInfoRow">
-                <div>{interestingStepLink()}</div>
             </div>
         </div>
         <BuildDetails buildId={buildId}/>
@@ -81,7 +55,6 @@ BuildSummary.propTypes = {
     state: PropTypes.string.isRequired,
     startTime: PropTypes.string.isRequired,
     toggleBuildDetails: PropTypes.func.isRequired,
-    showInterestingStep: PropTypes.func,
     endTime: PropTypes.string,
     duration: PropTypes.number,
     open: PropTypes.bool
@@ -107,8 +80,7 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         toggleBuildDetails: () => {
             dispatch(toggleAction(ownProps.build.buildId));
-        },
-        showInterestingStep: () => {}
+        }
     };
 };
 
