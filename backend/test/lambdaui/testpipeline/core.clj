@@ -27,21 +27,22 @@
   (try (Integer/parseInt port) (catch NumberFormatException e (default-fn e))))
 
 
+(def ui-config {:navbar {:links [{:url "http://localhost:8080/" :text "Link without target" :target ""}]}})
 
 (defn start-server [port]
   (let [small-pipeline (lambdacd/assemble-pipeline pipe/small-pipeline {:home-dir (util/create-temp-dir) :name "SMALL_PIPELINE"})
-        simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "SIMPLE PIPELINE"})
+        simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "SIMPLE PIPELINE" :ui-config ui-config})
         trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE"})
         long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})]
 
-    (reset! current-pipeline trigger-pipeline)
+    (reset! current-pipeline simple-pipeline)
 
     (reset! server
 
             (let [routes
 
                   (routes
-                    (ui/ui-for trigger-pipeline :showStartBuildButton true)
+                    (ui/ui-for simple-pipeline :showStartBuildButton true)
                     (context "/long-running" []
                       (ui/ui-for long-running-pipeline :showStartBuildButton true :contextPath "/long-running"))
 

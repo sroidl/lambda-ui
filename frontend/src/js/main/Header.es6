@@ -15,13 +15,16 @@ export const HeaderLinks = (props) => {
     if(!links || links.length < 1){
         return null;
     }
-    const linkComponent = (link) => {
-        return <a target="_blank" key={link.url} href={link.url}>{link.text}</a>;
+
+    const defaultTarget = R.defaultTo("_blank");
+
+    const linkComponent = (link, key) => {
+        return <a target={defaultTarget(link.target)} key={key} href={link.url}>{link.text}</a>;
     };
 
-    const linkComponents = links.map((link) => {
-        return linkComponent(link);
-    });
+    const mapIndexed = R.addIndex(R.map);
+
+    const linkComponents = mapIndexed((link, idx) => linkComponent(link, "headerlink-" + idx))(links);
 
     if (links.length === 1){
         return <div className="linksHeader">{linkComponent(links[0])}</div>;

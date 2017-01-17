@@ -6,16 +6,24 @@ window.lambdaui.config = {
     baseUrl: "localhost:8081",
     showStartBuildButton: true,
     navbar: {
-      links: [
-        {
-          url: "http://localhost:8081/",
-          text: "Old UI"
-        },
-        {
-          url: "https://github.com/sroidl/lambda-ui/issues",
-          text: "Got any Feedback?"
-        }
-      ]
+        links: [
+            {
+                url: "http://localhost:8081/",
+                text: "Old UI"
+            },
+
+            {
+                url: "http://localhost:8081/",
+                text: "Link without Target",
+                target: ""
+            },
+
+
+            {
+                url: "https://github.com/sroidl/lambda-ui/issues",
+                text: "Got any Feedback?"
+            }
+        ]
     }
 };
 

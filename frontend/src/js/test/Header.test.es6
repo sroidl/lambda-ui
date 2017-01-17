@@ -61,6 +61,19 @@ describe("Header", () => {
             const component = HeaderLinks();
             expect(component).toEqual(null);
         });
+
+        it("should set link target correct", () => {
+            const component = HeaderLinks({links: [{url: "http://", text: "Link", target: "someTarget"}]});
+            expect(component).toEqual(<div className="linksHeader"><a target="someTarget" key="http://"
+                                                                      href="http://">Link</a></div>);
+        });
+
+        it("should set link target to _blank if key does not exist", () => {
+            const component = HeaderLinks({links: [{url: "http://", text: "Link"}]});
+            expect(component).toEqual(<div className="linksHeader"><a target="_blank" key="http://"
+                                                                      href="http://">Link</a></div>);
+        });
+
     });
 
     describe("Header redux", () => {
