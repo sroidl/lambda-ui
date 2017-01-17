@@ -108,19 +108,35 @@ config {:home-dir home-dir
 ```
 
 #### Supported options
+
+##### __:contextPath__
+This option is necessary, if your UI is not served at the root path of your webserver. The easiest way to set this prefix is by passing the `:contextPath` option to the `ui-for` function.
+
+Example:
+```clojure
+
+  ;setup webserver routes with compojure
+  (def routes (routes
+                (context "/my-pipeline" []
+                  (ui/ui-for pipeline :contextPath "/my-pipeline"))))
+
+```
+
 ##### __:navbar__
-Configure the navigation bar (next to the Header) with custom links (see above). _:links_ is expected to be a sequence.
+Configure the navigation bar (next to the Header) with custom links (see above). `:links` is expected to be a sequence.
 
+`:link`
+ A link for the navigation bar in the header can have three keys:
+ - `:url`  - relative or absolute URL
+ - `:text` - Text shown
+ - `:target` (optional, since 0.2.0) - Set the target for the link. Defaults to `_blank` . Change this to `""` if you don't like your links to be opened in a new browser tab.
 
+##### __:showStartBuildButton__ _(experimental)_ - default: `false`
+If set to `true`, a button is shown in the Header that allows to trigger a new build. This is only necessary if you don't use a pipeline runner with a waiting trigger step.
+__NOTE:__ This feature is experimental and can disappear in any future version.
 
-
-
-
-
-
-
-
-
+##### __:show-version__ - default: `false`
+If set to `true`  serves another endpoint at `[prefix]/lambdaui/version` and reports the current version of LambdaUI that is used.
 
 
 
