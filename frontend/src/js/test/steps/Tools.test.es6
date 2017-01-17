@@ -28,7 +28,7 @@ const defaultStep = {stepId: 1};
 
 describe("Tools", () => {
 
-    let realConsole = window.console;
+    const realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);

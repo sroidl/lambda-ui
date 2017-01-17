@@ -15,11 +15,11 @@ describe("ComponentUtils test", () => {
         TestUtils.consoleThrowingAfter(realConsole);
     });
 
-    it("should concatenate class names", ()=> {
+    it("should concatenate class names", () => {
         expect(subject.classes("foo", "bar")).toEqual("foo bar");
     });
 
-    it("should be null safe", ()=> {
+    it("should be null safe", () => {
         expect(subject.classes("foo", null, undefined, "bar")).toEqual("foo bar");
     });
 

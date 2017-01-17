@@ -16,9 +16,9 @@ describe("BuildSummaryList", () => {
     });
 
     it("should render two summaries", () => {
-        let state = {builds: {1: {buildId: 1}, 2: {buildId: 2}}};
+        const state = {builds: {1: {buildId: 1}, 2: {buildId: 2}}};
 
-        let subject = shallow(BuildSummaryList(state));
+        const subject = shallow(BuildSummaryList(state));
 
         expect(subject.find(".buildSummaryList").children().length).toEqual(2);
     });

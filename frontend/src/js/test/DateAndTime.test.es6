@@ -18,20 +18,20 @@ describe("Duration", () => {
         TestUtils.consoleThrowingAfter(realConsole);
     });
 
-    describe("long Duration", ()=> {
+    describe("long Duration", () => {
         const expectDuration = (input, expectedOutput) => {
-            let inputProps = {seconds: input, longTime: true};
+            const inputProps = {seconds: input, longTime: true};
 
-            let component = shallow(FormattedDuration(inputProps));
+            const component = shallow(FormattedDuration(inputProps));
 
             expect(component.text()).toEqual(expectedOutput);
         };
 
-        it("should display only seconds if less than one minute", ()=> {
+        it("should display only seconds if less than one minute", () => {
             expectDuration(2, "2 seconds");
             expectDuration(59, "59 seconds");
         });
-        it("should display minutes in mm:ss format if less than one hour", ()=> {
+        it("should display minutes in mm:ss format if less than one hour", () => {
             expectDuration(60, "1 minute");
             expectDuration(61, "1 minute 1 second");
             expectDuration(630, "10 minutes 30 seconds");
@@ -39,7 +39,7 @@ describe("Duration", () => {
         });
 
 
-        it("should display hours properly", ()=> {
+        it("should display hours properly", () => {
             expectDuration(hours(1), "1 hour");
             expectDuration(hours(2) + minutes(35) + 45, "2 hours 35 minutes 45 seconds");
         });
@@ -47,8 +47,8 @@ describe("Duration", () => {
 
     describe("short Duration", () => {
         const expectDuration = (input, expectedOutput) => {
-            let inputProps = {seconds: input, longTime: false};
-            let component = shallow(FormattedDuration(inputProps));
+            const inputProps = {seconds: input, longTime: false};
+            const component = shallow(FormattedDuration(inputProps));
             expect(component.text()).toEqual(expectedOutput);
         };
 
