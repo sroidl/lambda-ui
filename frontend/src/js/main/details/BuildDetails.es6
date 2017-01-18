@@ -5,35 +5,50 @@ import R from "ramda";
 import BuildStep from "../steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
 import QuickDetails from "../details/QuickDetails.es6";
+import {findPathToMostInterestingStep} from "../steps/InterestingStepFinder.es6";
+import {openSubsteps} from "../actions/BuildStepActions.es6";
 import "../../../sass/buildDetails.sass";
-/* eslint-disable */
 export class BuildDetails extends React.Component {
 
     constructor(props) {
         super(props);
         this.registeredEventHandler = false;
+        this.initialized = false;
     }
 
     componentDidUpdate() {
-        const {open, buildId, stepToScroll, noScrollToStepFn} = this.props;
+        const {open, buildId, stepToScroll, noScrollToStepFn, stepsToDisplay, openSubstepsFn, appState} = this.props;
 
         if (open && !this.registeredEventHandler) {
             if (makeDraggable(buildId)) {
                 this.registeredEventHandler = true;
             }
+
         }
         if (!open) {
             this.registeredEventHandler = false;
         }
+
         if (stepToScroll){
             scrollToStep(buildId, stepToScroll);
             noScrollToStepFn();
         }
+
+        if (stepsToDisplay && !this.initialized) {
+
+            const interestingPath = findPathToMostInterestingStep(appState, buildId, "root");
+            if(!R.isNil(interestingPath)){
+                const {path} = interestingPath;
+                const curriedOpenSubstepsFn = R.curry(openSubstepsFn)(buildId);
+                R.forEach(curriedOpenSubstepsFn)(path);
+            }
+            this.initialized = true;
+        }
+
     }
 
     render() {
         const {open, stepsToDisplay, buildId} = this.props;
-
         if (!open) {
             return null;
         }
@@ -61,10 +76,13 @@ BuildDetails.propTypes = {
     stepsToDisplay: PropTypes.array,
     stepToScroll: PropTypes.string,
     noScrollToStepFn: PropTypes.func.isRequired,
+    openSubstepsFn: PropTypes.func.isRequired,
+    appState: PropTypes.object
 };
 
 export const mapStateToProps = (state, ownProps) => {
     const details = state.buildDetails[ownProps.buildId] || {};
+
     const stepsToDisplay = details.steps || null;
     const stateScroll = state.scrollToStep;
 
@@ -79,12 +97,15 @@ export const mapStateToProps = (state, ownProps) => {
         stepsToDisplay: stepsToDisplay,
         open: state.openedBuilds[ownProps.buildId] || false,
         stepToScroll: stepToScroll,
+        appState : state
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
+
     return {
-        noScrollToStepFn: () => dispatch(noScrollToStep())
+        noScrollToStepFn: () => dispatch(noScrollToStep()),
+        openSubstepsFn: (buildId, stepId) => dispatch(openSubsteps(buildId, stepId))
     };
 };
 

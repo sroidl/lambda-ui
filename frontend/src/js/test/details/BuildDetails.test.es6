@@ -5,13 +5,19 @@ jest.mock("../../main/actions/BackendActions.es6");
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/Utils.es6");
 jest.mock("../../main/steps/InterestingStepFinder.es6");
-import BuildDetailsRedux, {BuildDetails, mapStateToProps} from "../../main/details/BuildDetails.es6";
+jest.mock("../../main/steps/HorizontalScroll.es6");
+import BuildDetailsRedux, {
+    BuildDetails,
+    mapStateToProps,
+    mapDispatchToProps
+} from "../../main/details/BuildDetails.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
 import React from "react";
 import {Provider} from "react-redux";
 import * as TestUtils from "../testsupport/TestUtils.es6";
 import * as UtilMock from "../../main/Utils.es6";
+import * as InterestingStepFinderMock from "../../main/steps/InterestingStepFinder.es6";
 
 describe("BuildDetails", () => {
 
@@ -30,8 +36,7 @@ describe("BuildDetails", () => {
     const subject = (properties) => {
         const {buildId, open, requestDetailsFn, stepsToDisplay, isFinished, isPolling} = properties;
         return <BuildDetails buildId={buildId} open={open} requestDetailsFn={requestDetailsFn}
-                             stepsToDisplay={stepsToDisplay} noScrollToStepFn={() => {
-        }}
+                             stepsToDisplay={stepsToDisplay} noScrollToStepFn={jest.fn()} openSubstepsFn={jest.fn()}
                              isFinished={isFinished}
                              isPolling={isPolling}
         />;
@@ -70,6 +75,21 @@ describe("BuildDetails", () => {
 
             expect(component.find("BuildStep").length).toEqual(2);
         });
+
+        it("should call opensubsteps function", () => {
+
+            const openSubstepsFnMock = jest.fn();
+            const openSubstepsFn = (buildId, stepId) => openSubstepsFnMock(buildId, stepId);
+
+            InterestingStepFinderMock.findPathToMostInterestingStep.mockReturnValue({state:"running",path:["1","1-1"]});
+
+            const steps = [{stepId: 1}, {stepId: 2}];
+            const component = shallow(<BuildDetails buildId={1} open={true} stepsToDisplay={steps} noScrollToStepFn={jest.fn()} openSubstepsFn={openSubstepsFn}/>, { lifecycleExperimental: true });
+            component.setProps({});
+
+            expect(openSubstepsFnMock).toHaveBeenCalledWith(1, "1");
+            expect(openSubstepsFnMock).toHaveBeenCalledWith(1, "1-1");
+        });
     });
 
     describe("View Build details", () => {
@@ -84,6 +104,24 @@ describe("BuildDetails", () => {
             const newProps = mapStateToProps(state, {buildId: 1});
 
             expect(newProps.stepsToDisplay).toEqual([{stepId: 1}, {stepId: 2}]);
+        });
+    });
+
+
+
+    describe("Redux wiring", () => {
+        it("should dispatch open substep action", () => {
+
+            const buildId = 3;
+            const stepId = 5;
+
+            const dispatch = jest.fn();
+            const bla = mapDispatchToProps(dispatch);
+
+            bla.openSubstepsFn(buildId, stepId);
+
+            expect(dispatch).toHaveBeenCalledWith({type: "openSubsteps", buildId: buildId, stepId: stepId});
+
         });
     });
 });
