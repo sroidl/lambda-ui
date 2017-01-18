@@ -1,6 +1,6 @@
 /* globals it expect describe beforeEach afterEach */
-import {BuildSummariesReducer as subject} from "reducers/BuildSummaries.es6";
-import {addBuildSummary as action, changeBuildSummary} from "actions/BuildSummaryActions.es6";
+import {BuildSummariesReducer as subject} from "../../main/reducers/BuildSummaries.es6";
+import {addBuildSummary as action, changeBuildSummary} from "../../main/actions/BuildSummaryActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 const defaultBuildInput = buildInfo => Object.assign({

@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import {getStateForFavicon} from "FaviconState.es6";
+import {getStateForFavicon} from "../main/FaviconState.es6";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
 describe("getStateForFavivon", () => {

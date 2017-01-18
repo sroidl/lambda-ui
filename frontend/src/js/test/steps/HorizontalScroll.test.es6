@@ -1,6 +1,6 @@
 /* globals describe it expect jest */
 jest.mock("../../main/steps/HorizontalScroll.es6");
-import {makeDraggable, scrollToStep} from "steps/HorizontalScroll.es6";
+import {makeDraggable, scrollToStep} from "../../main/steps/HorizontalScroll.es6";
 
 describe("HorizontalScroll", () => {
 

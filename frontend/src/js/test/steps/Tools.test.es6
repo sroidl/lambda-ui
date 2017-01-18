@@ -12,14 +12,14 @@ import ToolsRedux, {
     SHOW_SUBSTEP_ICON_CLASS,
     SHOW_INTERESTING_STEP_ICON_CLASS,
     TRIGGER_STEP_ICON
-} from "steps/Tools.es6";
+} from "../../main/steps/Tools.es6";
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
-import {showBuildOutput} from "actions/OutputActions.es6";
-import {toggleStepToolbox, openSubsteps} from "actions/BuildStepActions.es6";
+import {showBuildOutput} from "../../main/actions/OutputActions.es6";
+import {toggleStepToolbox, openSubsteps} from "../../main/actions/BuildStepActions.es6";
 import {findPathToDeepestFailureStep, findPathToDeepestRunningStep} from "../../main/steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import LambdaUIMock from "App.es6";
+import LambdaUIMock from "../../main/App.es6";
 
 const fn = () => {
 };

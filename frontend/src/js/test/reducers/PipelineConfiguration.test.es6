@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import {PipelineConfigurationReducer as subject} from "reducers/PipelineConfiguration.es6";
+import {PipelineConfigurationReducer as subject} from "../../main/reducers/PipelineConfiguration.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("PipelineConfigurationReducer", () => {

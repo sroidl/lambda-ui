@@ -1,5 +1,5 @@
 /* globals describe it expect afterEach beforeEach */
-import {toggleState, showSubstepReducer, buildStepsReducer} from "reducers/BuildSteps.es6";
+import {toggleState, showSubstepReducer, buildStepsReducer} from "../../main/reducers/BuildSteps.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildStep", () => {

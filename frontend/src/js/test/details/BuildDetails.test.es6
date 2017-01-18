@@ -11,7 +11,7 @@ import {MockStore} from "../testsupport/TestUtils.es6";
 import React from "react";
 import {Provider} from "react-redux";
 import * as TestUtils from "../testsupport/TestUtils.es6";
-import * as UtilMock from "Utils.es6";
+import * as UtilMock from "../../main/Utils.es6";
 
 describe("BuildDetails", () => {
 

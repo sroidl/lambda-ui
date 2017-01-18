@@ -1,6 +1,6 @@
 /* globals describe it expect afterEach beforeEach */
-import {BuildDetailsReducer as subject, ScrollToStepReducer} from "reducers/BuildDetails.es6";
-import {ADD_BUILD_DETAILS, SCROLL_TO_STEP, NO_SCROLL_TO_STEP} from "actions/BuildDetailActions.es6";
+import {BuildDetailsReducer as subject, ScrollToStepReducer} from "../../main/reducers/BuildDetails.es6";
+import {ADD_BUILD_DETAILS, SCROLL_TO_STEP, NO_SCROLL_TO_STEP} from "../../main/actions/BuildDetailActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildDetails", () => {

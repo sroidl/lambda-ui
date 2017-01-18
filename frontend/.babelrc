@@ -1,9 +1,3 @@
 {
-	"presets": ["es2015", "react"],
-	"plugins": [
-      ["module-require", {
-        "baseDir" : "src/js/main",
-        "ignore" : []
-      }]
-    ]
+	"presets": ["es2015", "react"]
 }

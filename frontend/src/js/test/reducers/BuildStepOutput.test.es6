@@ -1,6 +1,6 @@
 /* globals describe it expect beforeEach afterEach */
-import {OutputReducer as subject} from "reducers/Output.es6";
-import {hideBuildOutput, showBuildOutput, ADD_BUILDSTEP_OUTPUT} from "actions/OutputActions.es6";
+import {OutputReducer as subject} from "../../main/reducers/Output.es6";
+import {hideBuildOutput, showBuildOutput, ADD_BUILDSTEP_OUTPUT} from "../../main/actions/OutputActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("Output", () => {

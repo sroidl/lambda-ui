@@ -1,5 +1,5 @@
 /* globals describe it expect afterEach beforeEach */
-import {StateIcon} from "StateIcon.es6";
+import {StateIcon} from "../main/StateIcon.es6";
 import React from "react";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 

@@ -1,6 +1,6 @@
 /* globals describe it expect beforeEach afterEach */
-import {toggleBuildDetails as action} from "actions/BuildDetailActions.es6";
-import {ToggleBuildDetailsReducer as subject} from "reducers/ToggleBuildDetails.es6";
+import {toggleBuildDetails as action} from "../../main/actions/BuildDetailActions.es6";
+import {ToggleBuildDetailsReducer as subject} from "../../main/reducers/ToggleBuildDetails.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("ToggleBuildDetails", () => {

@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import {FormattedDuration} from "DateAndTime.es6";
+import {FormattedDuration} from "../main/DateAndTime.es6";
 import {shallow} from "enzyme";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 

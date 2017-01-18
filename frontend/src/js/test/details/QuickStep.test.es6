@@ -1,6 +1,6 @@
 /* globals describe it expect beforeEach afterEach */
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import {QuickStep, mapStateToProps} from "details/QuickStep.es6";
+import {QuickStep, mapStateToProps} from "../../main/details/QuickStep.es6";
 import {shallow} from "enzyme";
 import React from "react";
 

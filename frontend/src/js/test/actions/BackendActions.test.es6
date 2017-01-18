@@ -2,9 +2,9 @@
 jest.mock("../../main/Backend.es6");
 jest.mock("../../main/App.es6");
 jest.mock("../../main/Utils.es6");
-import LambdaUI from "App.es6";
-import {Backend} from "Backend.es6";
-import * as subject from "actions/BackendActions.es6";
+import LambdaUI from "../../main/App.es6";
+import {Backend} from "../../main/Backend.es6";
+import * as subject from "../../main/actions/BackendActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BackendActions", () => {

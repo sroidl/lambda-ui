@@ -3,9 +3,9 @@ jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
 import React from "react";
 import * as TestUtils from "../testsupport/TestUtils.es6";
-import {mapStateToProps, mapDispatchToProps, BuildStep, getStepDuration, duration} from "steps/BuildStep.es6";
+import {mapStateToProps, mapDispatchToProps, BuildStep, getStepDuration, duration} from "../../main/steps/BuildStep.es6";
 import {shallow} from "enzyme";
-import * as Actions from "actions/BuildStepActions.es6";
+import * as Actions from "../../main/actions/BuildStepActions.es6";
 
 describe("BuildStep", () => {
 

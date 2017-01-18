@@ -1,6 +1,6 @@
 /* globals describe it expect beforeEach afterEach */
 /* eslint-disable no-undefined */
-import subject from "ComponentUtils.es6";
+import subject from "../main/ComponentUtils.es6";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 
 describe("ComponentUtils test", () => {

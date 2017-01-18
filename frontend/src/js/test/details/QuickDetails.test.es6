@@ -2,11 +2,11 @@
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import * as Actions from "actions/BuildDetailActions.es6";
-import {QuickDetails, mapStateToProps, mapDispatchToProps} from "details/QuickDetails.es6";
+import * as Actions from "../../main/actions/BuildDetailActions.es6";
+import {QuickDetails, mapStateToProps, mapDispatchToProps} from "../../main/details/QuickDetails.es6";
 import {shallow} from "enzyme";
 import React from "react";
-import DevToggles from "DevToggles.es6";
+import DevToggles from "../../main/DevToggles.es6";
 
 DevToggles.quickDetails_expandCollapse = true;
 

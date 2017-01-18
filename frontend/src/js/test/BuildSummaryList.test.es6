@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import {BuildSummaryList} from "BuildSummaryList.es6";
+import {BuildSummaryList} from "../main/BuildSummaryList.es6";
 import {shallow} from "enzyme";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 

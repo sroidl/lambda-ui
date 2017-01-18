@@ -1,5 +1,5 @@
 /* globals describe it expect beforeEach afterEach */
-import * as subject from "actions/BuildSummaryActions";
+import * as subject from "../../main/actions/BuildSummaryActions";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("BuildSummaryActions", () => {
