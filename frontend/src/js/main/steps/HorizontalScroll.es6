@@ -1,11 +1,11 @@
 import {BUILDSTEP_HIGHLIGHT_DURATION_IN_MS} from "../steps/BuildStep.es6";
 export const makeDraggable = (buildId) => {
-
     const DRAG_DETECTION_DISTANCE = 2;
 
     const idName = "draggable" + buildId;
 
     const currentDiv = document.getElementById(idName);
+    const scrollTarget = currentDiv.getElementsByClassName("BuildDetailSteps")[0];
 
     if (currentDiv === null) {
         return false;
@@ -23,7 +23,7 @@ export const makeDraggable = (buildId) => {
                 moving = true;
             }
 
-            currentDiv.scrollLeft += (curClientX - e.clientX);
+            scrollTarget.scrollLeft += (curClientX - e.clientX);
             curClientX = e.clientX;
         }
     });
@@ -41,7 +41,7 @@ export const makeDraggable = (buildId) => {
         moving = false;
     });
 
-    currentDiv.addEventListener("mouseout", () => {
+    currentDiv.addEventListener("mouseleave", () => {
         curDown = false;
         moving = false;
     });
