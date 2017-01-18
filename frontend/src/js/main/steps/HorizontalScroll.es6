@@ -1,11 +1,12 @@
 import {BUILDSTEP_HIGHLIGHT_DURATION_IN_MS} from "../steps/BuildStep.es6";
-/* eslint-disable */
 export const makeDraggable = (buildId) => {
+
+    const DRAG_DETECTION_DISTANCE = 2;
+
     const idName = "draggable" + buildId;
 
     const currentDiv = document.getElementById(idName);
 
-    console.log("MakeDraggable called on ", currentDiv);
     if (currentDiv === null) {
         return false;
     }
@@ -13,8 +14,15 @@ export const makeDraggable = (buildId) => {
     let curDown = false,
         curClientX;
 
+    let moving = false;
+
     currentDiv.addEventListener("mousemove", (e) => {
         if (curDown === true) {
+
+            if (Math.abs(curClientX - e.clientX) > DRAG_DETECTION_DISTANCE) {
+                moving = true;
+            }
+
             currentDiv.scrollLeft += (curClientX - e.clientX);
             curClientX = e.clientX;
         }
@@ -25,8 +33,17 @@ export const makeDraggable = (buildId) => {
         curClientX = e.clientX;
     });
 
-    currentDiv.addEventListener("mouseup", () => {
+    currentDiv.addEventListener("click", (e) => {
+        if (moving) {
+            e.stopPropagation();
+        }
         curDown = false;
+        moving = false;
+    });
+
+    currentDiv.addEventListener("mouseout", () => {
+        curDown = false;
+        moving = false;
     });
 
     return true;
