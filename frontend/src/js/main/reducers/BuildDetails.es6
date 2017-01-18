@@ -14,12 +14,10 @@ export const BuildDetailsReducer = (oldState = {}, action) => {
 export const ScrollToStepReducer = (oldState = {}, action) => {
     switch(action.type) {
         case SCROLL_TO_STEP: {
-            const newObj = {scrollToStep: true, buildId: action.buildId, stepId: action.stepId};
-            return R.merge(oldState, newObj);
+            return R.merge(oldState, {scrollToStep: true, buildId: action.buildId, stepId: action.stepId});
         }
         case NO_SCROLL_TO_STEP: {
-            const newObj = {scrollToStep: false};
-            return R.merge(oldState, newObj);
+            return R.merge(oldState, {scrollToStep: false});
         }
         default:
             return oldState;

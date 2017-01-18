@@ -60,11 +60,14 @@ export const highlightStep = (buildId, stepId) => {
 };
 
 export const scrollToStep = (buildId, stepId) => {
-    const divId = "Build" + buildId + "Step" + stepId;
+    const buildContainerDiv = document.getElementById("draggable" + buildId);
+    const scrollTarget = buildContainerDiv.getElementsByClassName("BuildDetailSteps")[0];
 
-    const offsetLeft = document.getElementById(divId).offsetLeft;
 
-    document.getElementById("draggable" + buildId).scrollLeft = offsetLeft - 20;
+    const stepDivId = "Build" + buildId + "Step" + stepId;
+    const offsetLeft = document.getElementById(stepDivId).offsetLeft;
+
+    scrollTarget.scrollLeft = offsetLeft - 20;
 
     highlightStep(buildId, stepId);
 };
