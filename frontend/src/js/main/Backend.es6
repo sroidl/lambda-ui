@@ -1,11 +1,13 @@
 /* globals Map */
 import * as R from "ramda";
 import {webSocket} from "./WebSocketFactory.es6";
-import {addBuildSummary} from "actions/BuildSummaryActions.es6";
+import {addBuildSummary} from "./actions/BuildSummaryActions.es6";
 import {addBuildstepOutput, outputConnectionState} from "./actions/OutputActions.es6";
 import {summariesConnectionState} from "./actions/BackendActions.es6";
 import {addBuildDetails} from "./actions/BuildDetailActions.es6";
 import {killedStep} from "./actions/BuildStepTriggerActions.es6";
+import "whatwg-fetch";
+
 
 const CLOSED = 3;
 const OPEN = 1;

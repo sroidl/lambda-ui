@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import BuildSummary from "./BuildSummary.es6";
-import {setStateFavicon, getStateForFavicon} from "FaviconState.es6";
+import {setStateFavicon, getStateForFavicon} from "./FaviconState.es6";
 
 export const BuildSummaryList = ({builds}) => {
     const result = [];

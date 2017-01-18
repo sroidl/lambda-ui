@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import * as R from "ramda";
 import {requestOutput} from "../actions/BackendActions.es6";
 import "../../../sass/buildStepOutput.sass";
-import {hideBuildOutput} from "actions/OutputActions.es6";
-import DevToggles from "DevToggles.es6";
+import {hideBuildOutput} from "../actions/OutputActions.es6";
+import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;

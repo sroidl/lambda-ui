@@ -1,6 +1,6 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import {closeTriggerDialog} from "actions/BuildStepTriggerActions.es6";
+import {closeTriggerDialog} from "../actions/BuildStepTriggerActions.es6";
 import "../../../sass/buildStepTrigger.sass";
 import R from "ramda";
 import App from "../App.es6";

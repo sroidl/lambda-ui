@@ -1,11 +1,11 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import App from "App.es6";
+import App from "./App.es6";
 import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 import R from "ramda";
-import {startTutorial} from "tutorial/Tutorial.es6";
-import DevToggles from "DevToggles.es6";
+import {startTutorial} from "./tutorial/Tutorial.es6";
+import DevToggles from "./DevToggles.es6";
 
 export const HeaderLinks = (props) => {
     if(!props) {

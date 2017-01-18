@@ -1,4 +1,4 @@
-import {TOGGLE_BUILD_DETAILS} from "actions/BuildDetailActions.es6";
+import {TOGGLE_BUILD_DETAILS} from "../actions/BuildDetailActions.es6";
 
 const toggleBuild = (openedBuilds, id) => {
     const newstate = {};

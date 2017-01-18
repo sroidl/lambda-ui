@@ -1,4 +1,4 @@
-import {TOGGLE_STEP_TOOLBOX, TOGGLE_SUBSTEPS, OPEN_SUBSTEPS} from "actions/BuildStepActions.es6";
+import {TOGGLE_STEP_TOOLBOX, TOGGLE_SUBSTEPS, OPEN_SUBSTEPS} from "../actions/BuildStepActions.es6";
 import {ADD_BUILD_DETAILS} from "../actions/BuildDetailActions.es6";
 
 import R from "ramda";

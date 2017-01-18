@@ -1,4 +1,4 @@
-import App from "App.es6";
+import App from "./App.es6";
 import R from "ramda";
 
 const isActive = (toggleName) => {

@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import "../../../sass/quickDetails.sass";
 import R from "ramda";
 import QuickStep from "../details/QuickStep.es6";
-import DevToggles from "DevToggles.es6";
-import * as Actions from "actions/BuildDetailActions.es6";
+import DevToggles from "../DevToggles.es6";
+import * as Actions from "../actions/BuildDetailActions.es6";
 
 export class QuickDetails extends React.Component {
 

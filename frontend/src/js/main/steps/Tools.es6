@@ -2,12 +2,12 @@ import React, {PropTypes} from "react";
 import ComponentUtils from "../ComponentUtils.es6";
 import {connect} from "react-redux";
 import "../../../sass/buildStepTools.sass";
-import {showBuildOutput} from "actions/OutputActions.es6";
+import {showBuildOutput} from "../actions/OutputActions.es6";
 import {toggleStepToolbox, openSubsteps} from "../actions/BuildStepActions.es6";
-import {openTriggerDialog} from "actions/BuildStepTriggerActions.es6";
+import {openTriggerDialog} from "../actions/BuildStepTriggerActions.es6";
 import R from "ramda";
 import {findPathToMostInterestingStep} from "./InterestingStepFinder.es6";
-import LamdbdaUI from "App.es6";
+import LamdbdaUI from "../App.es6";
 import * as Utils from "../Utils.es6";
 import {KILLED_ICON} from "../StateIcon.es6";
 

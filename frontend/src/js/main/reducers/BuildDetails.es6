@@ -1,4 +1,4 @@
-import {ADD_BUILD_DETAILS, SCROLL_TO_STEP, NO_SCROLL_TO_STEP} from "actions/BuildDetailActions.es6";
+import {ADD_BUILD_DETAILS, SCROLL_TO_STEP, NO_SCROLL_TO_STEP} from "../actions/BuildDetailActions.es6";
 import R from "ramda";
 
 export const BuildDetailsReducer = (oldState = {}, action) => {
