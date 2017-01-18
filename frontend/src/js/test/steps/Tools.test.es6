@@ -1,4 +1,4 @@
-/* globals describe expect it xit jest beforeEach afterEach */
+/* globals describe expect it jest beforeEach afterEach */
 jest.mock("../../main/actions/OutputActions.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 jest.mock("../../main/actions/BuildStepActions.es6");
@@ -16,8 +16,8 @@ import ToolsRedux, {
 import {shallow, mount} from "enzyme";
 import {MockStore} from "../testsupport/TestUtils.es6";
 import {showBuildOutput} from "../../main/actions/OutputActions.es6";
-import {toggleStepToolbox, openSubsteps} from "../../main/actions/BuildStepActions.es6";
-import {findPathToDeepestFailureStep, findPathToDeepestRunningStep} from "../../main/steps/InterestingStepFinder.es6";
+import {openSubsteps} from "../../main/actions/BuildStepActions.es6";
+import {findPathToMostInterestingStep} from "../../main/steps/InterestingStepFinder.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import LambdaUIMock from "../../main/App.es6";
 
@@ -73,12 +73,11 @@ describe("Tools", () => {
     });
 
     describe("Tools", () => {
-        const tools = (toolboxOpen = false, hasSubsteps = false, failureStep = null, stepType = "", stepTrigger = null, step = defaultStep) =>
+        const tools = (toolboxOpen = false, hasSubsteps = false, mostInterestingStep = null, stepType = "", stepTrigger = null, step = defaultStep) =>
             <Tools step={step}
                    toolboxOpen={toolboxOpen}
                    hasSubsteps={hasSubsteps}
-                   failureStep={failureStep}
-                   runningStep={[""]}
+                   mostInterestingStep={mostInterestingStep}
                    stepType={stepType}
                    stepTrigger={stepTrigger}
                    killStepFn={fn}
@@ -120,7 +119,7 @@ describe("Tools", () => {
                 expect(component.find(".outputTool").length).toBe(1);
             });
 
-            it.only("should not render output tool if step is pending", () => {
+            it("should not render output tool if step is pending", () => {
                 const step = {state: "pending"};
                 const component = shallow(<Tools step={step} hasSubsteps={false} openSubstepFn={fn} showOutputFn={fn}
                                                  showTriggerDialogFn={fn} stepType="step" toggleStepToolboxFn={fn}
@@ -239,7 +238,8 @@ describe("Tools", () => {
             const substeps = {stepId: "1-1", state: "failure"};
             const defaultStep = {stepId: "1", state: "failure", steps: substeps};
             const tools = (storeMock, step = defaultStep) => <ToolsRedux buildId={1} step={step} store={storeMock}
-                                                                         killStepFn={jest.fn()} retriggerStepFn={jest.fn()}/>;
+                                                                         killStepFn={jest.fn()}
+                                                                         retriggerStepFn={jest.fn()}/>;
 
             it("should dispatch showOutput", () => {
                 const dispatchMock = jest.fn();
@@ -264,11 +264,10 @@ describe("Tools", () => {
             });
 
             it("should dispatch goIntoFailureStep", () => {
-
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
                 openSubsteps.mockReturnValue({type: "goIntoFailureStep"});
-                findPathToDeepestFailureStep.mockReturnValue(["1"]);
+                findPathToMostInterestingStep.mockReturnValue({state: "failure", path: ["1"]});
 
                 const component = mount(tools(storeMock));
                 component.find(".failureStepTool").simulate("click");
@@ -280,7 +279,7 @@ describe("Tools", () => {
                 const dispatchMock = jest.fn();
                 const storeMock = MockStore({}, dispatchMock);
                 openSubsteps.mockReturnValue({type: "goIntoRunningStep"});
-                findPathToDeepestRunningStep.mockReturnValue(["1"]);
+                findPathToMostInterestingStep.mockReturnValue({state: "running", path: ["1"]});
 
                 const component = mount(tools(storeMock, {
                     stepId: "1",
@@ -290,6 +289,22 @@ describe("Tools", () => {
                 component.find(".runningStepTool").simulate("click");
 
                 expect(dispatchMock).toBeCalledWith({type: "goIntoRunningStep"});
+            });
+
+            it("should dispatch goIntoRunningStep", () => {
+                const dispatchMock = jest.fn();
+                const storeMock = MockStore({}, dispatchMock);
+                openSubsteps.mockReturnValue({type: "goIntoWaitingStep"});
+                findPathToMostInterestingStep.mockReturnValue({state: "waiting", path: ["1"]});
+
+                const component = mount(tools(storeMock, {
+                    stepId: "1",
+                    state: "waiting",
+                    steps: {stepId: "1-1", state: "waiting"}
+                }, "1-1"));
+                component.find(".waitingStepTool").simulate("click");
+
+                expect(dispatchMock).toBeCalledWith({type: "goIntoWaitingStep"});
             });
 
 
@@ -326,17 +341,6 @@ describe("Tools", () => {
                 expect(backendMock.retriggerStep).toHaveBeenCalledWith(dispatchMock, 1, "1");
             });
 
-            xit("should dispatch toggleToolbox", () => {
-                // TODO: toggle test if steps with more then 3 tools available
-                const dispatchMock = jest.fn();
-                const storeMock = MockStore({}, dispatchMock);
-                toggleStepToolbox.mockReturnValue({type: "toggleToolbox"});
-
-                const component = mount(tools(storeMock));
-                component.find(".expandTools").simulate("click");
-
-                expect(dispatchMock).toBeCalledWith({type: "toggleToolbox"});
-            });
         });
     });
 });

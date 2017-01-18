@@ -56,7 +56,7 @@ describe("BuildDetails", () => {
             });
         });
 
-        it.only("should render all buildSteps on first level", () => {
+        it("should render all buildSteps on first level", () => {
             const steps = [{stepId: 1}, {stepId: 2}];
             const storeMock = MockStore({
                 buildDetails: {1: {buildId: 1, steps: steps}},

@@ -15,13 +15,11 @@ describe("TriggerDialog", () => {
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);
-
-
         appMock.backend.mockReturnValue({triggerStep: () => {}});
     });
 
     afterEach(() => {
-        TestUtils.consoleThrowingAfter(realConsole);
+       TestUtils.consoleThrowingAfter(realConsole);
     });
 
     const component = (showTrigger = true, parms = [], fn = () => {
@@ -38,10 +36,10 @@ describe("TriggerDialog", () => {
         expect(newComponent.find(".triggerDialog").length).toBe(0);
     });
 
-    xdescribe("React/Redux Wiring", () => {
+    describe("React/Redux Wiring", () => {
 
         it("should not show trigger dialog if state is empty", () => {
-            const store = MockStore({triggers: {}}, jest.fn());
+            const store = MockStore({triggerDialog: {}}, jest.fn());
             const component = shallow(<ConnectedTriggerDialog store={store}/>).find(TriggerDialog).shallow();
 
             expect(component.html()).toBe(null);
@@ -53,9 +51,9 @@ describe("TriggerDialog", () => {
                 triggerName: "Trigger-Name",
                 closeTriggerDialog: () => {
                 },
-                parameter: []
-            }
-            const store = MockStore({triggers: {triggerDialog: dialog}}, jest.fn());
+                parameter: [{key: "ihaveakey"}]
+            };
+            const store = MockStore({triggerDialog: dialog}, jest.fn());
             const component = shallow(<ConnectedTriggerDialog store={store}/>).find(TriggerDialog).shallow();
 
             expect(component.find(".triggerTitle").text()).toBe("Trigger-Name");

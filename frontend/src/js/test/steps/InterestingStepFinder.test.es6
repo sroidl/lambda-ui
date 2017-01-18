@@ -72,7 +72,7 @@ describe("InterestingStep Finder", () => {
                     }
                 }
             };
-            expect(findPathToMostInterestingStep(interesting_state, 1, "3")).toEqual({"failure": ["3"]});
+            expect(findPathToMostInterestingStep(interesting_state, 1, "3")).toEqual({state: "failure", path: ["3"]});
         });
 
         it("should return parent step of deepest failure step", () => {
@@ -100,7 +100,7 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({"failure": ["1"]});
+            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({state: "failure", path: ["1"]});
         });
 
         it("should return children children step if it failed", () => {
@@ -125,7 +125,7 @@ describe("InterestingStep Finder", () => {
                 }
             };
 
-            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({"failure": ["1", "1-1"]});
+            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({state: "failure", path: ["1", "1-1"]});
         });
 
         it("should return lowermost children step if it failed", () => {
@@ -155,7 +155,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "1");
-            expect(result).toEqual({"failure":["1", "1-1", "1-1-1"]});
+            expect(result).toEqual({state: "failure", path: ["1", "1-1", "1-1-1"]});
         });
 
         const complexState = {
@@ -185,7 +185,7 @@ describe("InterestingStep Finder", () => {
 
         it("should return first failure substep", () => {
             const result = findPathToMostInterestingStep(complexState, 1, "1");
-            expect(result).toEqual({"failure": ["1"]});
+            expect(result).toEqual({state: "failure", path: ["1"]});
         });
     });
 
@@ -217,7 +217,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "1");
-            expect(result).toEqual({"running": ["1", "1-1", "1-1-1"]});
+            expect(result).toEqual({state: "running", path: ["1", "1-1", "1-1-1"]});
         });
     });
 
@@ -227,9 +227,11 @@ describe("InterestingStep Finder", () => {
             const state = {
                 buildDetails: {
                     1: {
-                        steps: [{ stepId: "1", state: "success"}]
+                        steps: [{stepId: "1", state: "success"}]
 
-                    } } };
+                    }
+                }
+            };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
             expect(result).toBeUndefined();
@@ -268,7 +270,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual({"running": ["1", "1-1", "1-1-1"]});
+            expect(result).toEqual({state: "running", path: ["1", "1-1", "1-1-1"]});
         });
 
 
@@ -309,7 +311,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual({"failure": ["2"]});
+            expect(result).toEqual({state: "failure", path: ["2"]});
         });
 
 
@@ -346,7 +348,7 @@ describe("InterestingStep Finder", () => {
             };
 
             const result = findPathToMostInterestingStep(state, 1, "root");
-            expect(result).toEqual({"waiting": []});
+            expect(result).toEqual({state: "waiting", path: []});
         });
 
     });

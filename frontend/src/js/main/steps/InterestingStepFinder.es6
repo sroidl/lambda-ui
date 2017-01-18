@@ -31,21 +31,19 @@ export const findPathToDeepestStepWithState = (appState, buildId, stepId, stepSt
     const step = stepId === "root" ? R.path(["buildDetails", buildId], appState) : findStepById(stepId)(allSteps);
     const initialPath = R.isNil(step.stepId) ? [] : [step.stepId];
     const traverse = R.curry(traverseChildren)(stepStateToFind, initialPath);
-    const interestingStep = R.find(x => !R.isNil(x))(R.map(traverse, step.steps));
+    const pathToInterestingStep = R.find(x => !R.isNil(x))(R.map(traverse, step.steps));
 
-    if (R.isNil(interestingStep)) {
+    if (R.isNil(pathToInterestingStep)) {
         return null;
     }
 
-    return {[stepStateToFind] : interestingStep};
+    return {state: stepStateToFind, path: pathToInterestingStep};
 };
-
-/* eslint-disable */
 
 export const findPathToMostInterestingStep = (appState, buildId, stepId) => {
     const priorities = ["waiting", "running", "failure"];
     const pathToDeepestStep = R.curry(findPathToDeepestStepWithState)(appState, buildId, stepId);
     const prioritizedFindings = R.map(pathToDeepestStep)(priorities);
 
-    return R.find(isNotNil)(prioritizedFindings);
+    return (R.find(isNotNil)(prioritizedFindings));
 };

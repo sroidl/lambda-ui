@@ -88,22 +88,19 @@ export class Tools extends React.Component {
     }
 
     jumpToMostInterestingStepButton() {
-        const {failureStep, runningStep, openSubstepFn, hasSubsteps} = this.props;
+        const {mostInterestingStep, openSubstepFn, hasSubsteps} = this.props;
 
-        if ((!failureStep && !runningStep) || !hasSubsteps) {
+        if (!mostInterestingStep || !hasSubsteps) {
             return null;
         }
+        const {state, path} = mostInterestingStep;
 
         const linkFn = () => {
-            if (runningStep) {
-                R.map(stepId => openSubstepFn(stepId))(runningStep);
-            } else if (failureStep) {
-                R.map(stepId => openSubstepFn(stepId))(failureStep);
-            }
+            R.map(stepId => openSubstepFn(stepId))(path);
         };
 
-        const toolClasses = ComponentUtils.classes("interestingStepTool", runningStep ? "runningStepTool" : "failureStepTool");
-        const linkText = runningStep ? "Running Step" : "Failure Step";
+        const toolClasses = ComponentUtils.classes("interestingStepTool", `${state}StepTool`);
+        const linkText = `${state} step`;
 
         return <ToolboxLink key="jumpToMostInterestingStepButton" toolClass={toolClasses}
                             iconClass={SHOW_INTERESTING_STEP_ICON_CLASS}
@@ -188,8 +185,7 @@ export class Tools extends React.Component {
 
 Tools.propTypes = {
     step: PropTypes.object.isRequired,
-    failureStep: PropTypes.array,
-    runningStep: PropTypes.array,
+    mostInterestingStep: PropTypes.object,
     hasSubsteps: PropTypes.bool.isRequired,
     stepType: PropTypes.string.isRequired,
     toolboxOpen: PropTypes.bool.isRequired,
@@ -218,8 +214,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         step: ownProps.step,
-        failureStep: R.prop("failure", R.defaultTo({}, findPathToMostInterestingStep(state, ownProps.buildId, ownProps.step.stepId))),
-        runningStep: R.prop("running", R.defaultTo({}, findPathToMostInterestingStep(state, ownProps.buildId, ownProps.step.stepId))),
+        mostInterestingStep: findPathToMostInterestingStep(state, ownProps.buildId, ownProps.step.stepId),
         hasSubsteps: hasSubsteps,
         stepType: stepType,
         stepTrigger: enrichedTrigger,
