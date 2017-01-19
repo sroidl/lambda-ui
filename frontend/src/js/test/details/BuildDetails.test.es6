@@ -27,6 +27,7 @@ describe("BuildDetails", () => {
         TestUtils.consoleThrowingBefore(realConsole);
         UtilMock.isBuildRunning.mockClear();
         UtilMock.isBuildRunning.mockReturnValue(false);
+        UtilMock.flatSteps.mockReturnValue([]);
     });
 
     afterEach(() => {
@@ -62,7 +63,7 @@ describe("BuildDetails", () => {
         });
 
         it("should render all buildSteps on first level", () => {
-            const steps = [{stepId: 1}, {stepId: 2}];
+            const steps = [{stepId: "1", steps:[]}, {stepId: "2", steps:[]}];
             const storeMock = MockStore({
                 buildDetails: {1: {buildId: 1, steps: steps}},
                 openedBuilds: {1: true},
@@ -71,7 +72,8 @@ describe("BuildDetails", () => {
                 showSubsteps: {}
             });
 
-            const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId="1"/></Provider>);
+
+            const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId={1}/></Provider>);
 
             expect(component.find("BuildStep").length).toEqual(2);
         });

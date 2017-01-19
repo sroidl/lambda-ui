@@ -1,12 +1,14 @@
 /* globals describe it expect beforeEach afterEach jest */
+/* eslint-disable no-duplicate-imports */
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
-import * as Actions from "../../main/actions/BuildDetailActions.es6";
-import {QuickDetails, mapStateToProps, mapDispatchToProps} from "../../main/details/QuickDetails.es6";
+import {QuickDetails} from "../../main/details/QuickDetails.es6";
+import * as subject from "../../main/details/QuickDetails.es6";
 import {shallow} from "enzyme";
 import React from "react";
 import DevToggles from "../../main/DevToggles.es6";
+import {openSubsteps, closeSubsteps} from "../../main/actions/BuildStepActions.es6";
 
 DevToggles.quickDetails_expandCollapse = true;
 
@@ -75,35 +77,37 @@ describe("QuickDetails", () => {
 
     describe("Redux wiring", () => {
         it("map stateToProps return ownProps", () => {
-            const oldState = {buildDetails: {1: {steps: [{some: "step"}]}}};
+            const oldState = {buildDetails: {1: {steps: [{stepId: "1", some: "step"}]}}};
 
-            const ownProps = mapStateToProps(oldState, {buildId: 1, maxDepth: 1});
+            const ownProps = subject.mapStateToProps(oldState, {buildId: 1, maxDepth: 1});
 
-            expect(ownProps).toEqual({buildId: 1, maxDepth: 1, steps: [{some: "step"}]});
+            expect(ownProps).toEqual({buildId: 1, maxDepth: 1, steps: [{some: "step", stepId: "1"}], stepIds: ["1"]});
         });
 
-        it("should map expandAll Action to expand All fn", () => {
+        it("should dispatch openSubstepsAction on all steps", () => {
             const dispatch = jest.fn();
             const oldProps = {buildId: 1};
-            Actions.expandAllSteps.mockReturnValue({expand: "all"});
+            const stateProps = {stepIds: ["1", "2"]};
+            const dispatchProps = subject.mapDispatchToProps(dispatch, oldProps);
+            const actualProps = subject.mergeProps(stateProps, dispatchProps, oldProps);
 
-            const newProps = mapDispatchToProps(dispatch, oldProps);
-            newProps.expandAllFn();
+            actualProps.expandAllFn();
 
-            expect(dispatch).toHaveBeenCalledWith({expand: "all"});
-            expect(Actions.expandAllSteps).toHaveBeenCalledWith(1);
+            expect(dispatch).toHaveBeenCalledWith(openSubsteps(1, "1"));
+            expect(dispatch).toHaveBeenCalledWith(openSubsteps(1, "2"));
         });
 
         it("should map collapseAll Action to collapse All fn", () => {
             const dispatch = jest.fn();
             const oldProps = {buildId: 1};
-            Actions.collapseAllSteps.mockReturnValue({collapse: "all"});
+            const stateProps = {stepIds: ["1", "2"]};
+            const dispatchProps = subject.mapDispatchToProps(dispatch, oldProps);
+            const actualProps = subject.mergeProps(stateProps, dispatchProps, oldProps);
 
-            const newProps = mapDispatchToProps(dispatch, oldProps);
-            newProps.collapseAllFn();
+            actualProps.collapseAllFn();
 
-            expect(dispatch).toHaveBeenCalledWith({collapse: "all"});
-            expect(Actions.collapseAllSteps).toHaveBeenCalledWith(1);
+            expect(dispatch).toHaveBeenCalledWith(closeSubsteps(1, "1"));
+            expect(dispatch).toHaveBeenCalledWith(closeSubsteps(1, "2"));
         });
 
 
