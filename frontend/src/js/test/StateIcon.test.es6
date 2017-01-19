@@ -15,45 +15,45 @@ describe("State Icon", () => {
         TestUtils.consoleThrowingAfter(realConsole);
     });
 
-    it("should return div with success icon and hint", () => {
+    it("should return span with success icon and hint", () => {
         const state = "success";
-        const expected = <div className="buildIcon" title="Success"><i className="fa fa-check"/></div>;
+        const expected = <span className="buildIcon success" title="Success"><i className="fa fa-check"/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with failure icon and hint", () => {
+    it("should return span with failure icon and hint", () => {
         const state = "failure";
-        const expected = <div className="buildIcon" title="Failure"><i className="fa fa-times"/></div>;
+        const expected = <span className="buildIcon failure" title="Failure"><i className="fa fa-times"/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with running icon and rotate class and hint", () => {
+    it("should return span with running icon and rotate class and hint", () => {
         const state = "running";
-        const expected = <div className="buildIcon" title="Running"><i className="fa fa-cog rotate"/></div>;
+        const expected = <span className="buildIcon running" title="Running"><i className="fa fa-cog rotate"/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with killed icon and hint", () => {
+    it("should return span with killed icon and hint", () => {
         const state = "killed";
-        const expected = <div className="buildIcon" title="Killed"><i className="fa fa-ban"/></div>;
+        const expected = <span className="buildIcon killed" title="Killed"><i className="fa fa-ban"/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with default icon and without hint", () => {
+    it("should return span with default icon and without hint", () => {
         const state = "";
-        const expected = <div className="buildIcon" title=""><i className="fa fa-ellipsis-h"/></div>;
+        const expected = <span className="buildIcon " title=""><i className="fa fa-ellipsis-h"/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with waiting icon and without hint", () => {
+    it("should return span with waiting icon and without hint", () => {
         const state = "waiting";
-        const expected = <div className="buildIcon" title="Waiting"><i className="fa fa-ellipsis-h"/></div>;
+        const expected = <span className="buildIcon waiting" title="Waiting"><i className="fa fa-ellipsis-h"/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 
-    it("should return div with pending icon and without hint", () => {
+    it("should return span with pending icon and without hint", () => {
         const state = "pending";
-        const expected = <div className="buildIcon" title="Pending"><i className="fa "/></div>;
+        const expected = <span className="buildIcon pending" title="Pending"><i className="fa "/></span>;
         expect(StateIcon({state: state})).toEqual(expected);
     });
 });

@@ -44,9 +44,13 @@ export const StateIcon = ({state}) => {
         default:
             iconClass = DEFAULT_ICON;
     }
-    return <div title={hintText} className="buildIcon"><i className={"fa " + iconClass}/></div>;
+    /* eslint-disable quotes */
+    return <span title={hintText} className={`buildIcon ${state}`}><i className={"fa " + iconClass}/></span>;
 };
+
 
 StateIcon.propTypes = {
     state: PropTypes.string
 };
+
+export default StateIcon;

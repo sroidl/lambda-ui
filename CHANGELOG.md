@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `:target` option in navbar links of config. 
 - opens most interesting step (waiting / running / failure) when opening a build for the first time
 - expand all steps / collapse all steps
+- include build step state in output layer
 
 #### Fixed 
 - trigger time is now excluded from the build started calculation

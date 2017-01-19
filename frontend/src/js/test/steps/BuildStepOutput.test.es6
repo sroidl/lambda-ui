@@ -68,10 +68,10 @@ describe("BuildStepOutput", () => {
 
         it("should get output from buildstep", () => {
             const state = {
-                buildDetails: {1: {buildId: 1, steps: [{stepId: "1", name: "myStep"} ]}} ,
+                buildDetails: {1: {buildId: 1, steps: [{stepId: "1",  state: "success", name: "myStep"} ]}} ,
                 output: {showOutput: true, buildId: 1, stepId: "1", content: {1: {"1": ["line1"]}}}
             };
-            const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true};
+            const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true, stepState: "success"};
 
             expect(mapStateToProps(state)).toEqual(expected);
         });
@@ -81,7 +81,7 @@ describe("BuildStepOutput", () => {
                 buildDetails: {1: {buildId: 1, steps: [{stepId: "1", name: "myStep"} ]}} ,
                 output: {showOutput: true, buildId: 1, stepId: "1", content: {}}
             };
-            const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true};
+            const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true, stepState: "unknown"};
 
             expect(mapStateToProps(state)).toEqual(expected);
         });

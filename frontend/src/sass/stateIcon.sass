@@ -1,3 +1,5 @@
+@import 'colors'
+
 .rotate
   -webkit-animation: spin 4s linear infinite
   -moz-animation: spin 4s linear infinite
@@ -19,3 +21,18 @@
     transform: rotate(360deg)
 
 
+.buildIcon
+  &.success
+    color: $green
+
+  &.failure
+    color: $red
+
+  &.running
+    color: $blue
+
+  &.waiting
+    color: $peru
+
+  &.killed
+    color: $black

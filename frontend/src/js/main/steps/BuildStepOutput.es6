@@ -6,6 +6,7 @@ import "../../../sass/buildStepOutput.sass";
 import {hideBuildOutput} from "../actions/OutputActions.es6";
 import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
+import StateIcon from "../StateIcon.es6";
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
@@ -64,7 +65,7 @@ export class BuildStepOutput extends React.Component {
     }
 
     render() {
-        const {buildId, stepName, showOutput, closeLayerFn} = this.props;
+        const {buildId, stepName, showOutput, closeLayerFn, stepState} = this.props;
 
         if (!showOutput) {
             document.body.style.overflowY = "auto";
@@ -85,6 +86,7 @@ export class BuildStepOutput extends React.Component {
                     <span> - Step: </span>
                     <span id="outputHeader__stepName">{stepName}</span>
                     {connectionState}
+                    <span className="outputHeader__stepState">Step State:<StateIcon state={stepState}/></span>
                 </div>
                 <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span><i
                     className="fa fa-times" aria-hidden="true"></i>
@@ -100,12 +102,13 @@ export class BuildStepOutput extends React.Component {
 BuildStepOutput.propTypes = {
     buildId: PropTypes.any,
     stepName: PropTypes.string,
+    stepState: PropTypes.string,
     output: PropTypes.array,
     showOutput: PropTypes.bool,
     requestFn: PropTypes.func,
     stepId: PropTypes.any,
     closeLayerFn: PropTypes.func,
-    fontColor: PropTypes.any
+    fontColor: PropTypes.any,
 };
 
 
@@ -114,12 +117,10 @@ const outputHiddenProps = {showOutput: false};
 const outputVisibleProps = (state) => {
     const buildId = state.output.buildId;
     const stepId = state.output.stepId;
-
     const flatSteps = Utils.flatSteps(R.path(["buildDetails", buildId], state));
     const step = R.find(step => step.stepId === stepId)(flatSteps);
-
-
     const stepName = R.propOr("", "name") (step);
+    const stepState = R.propOr("unknown", "state")(step);
     const output = R.path(["content", buildId, stepId])(state.output);
 
 
@@ -128,13 +129,9 @@ const outputVisibleProps = (state) => {
         stepId: stepId,
         showOutput: true,
         stepName: stepName,
-        output: output
+        output: output,
+        stepState: stepState
     };
-
-
-
-
-
 };
 
 export const mapStateToProps = (state) => {
