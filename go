@@ -95,6 +95,25 @@ goal_deploy-clojars(){
   popd > /dev/null
 }
 
+goal_deploy() {
+  echo 'Deploying'
+  goal_clean
+  goal_test
+  goal_jar
+  goal_deploy-clojars
+}
+
+goal_release() {
+  echo 'Releasing'
+  goal_clean
+  goal_test
+  goal_jar
+  pushd ${SCRIPT_DIR}/backend > /dev/null
+  ./lein release
+  popd > /dev/null
+  git push
+}
+
 if type -t "goal_$1" &>/dev/null; then
   goal_$1 ${@:2}
 else
