@@ -112,6 +112,7 @@ goal_release() {
   ./lein release
   popd > /dev/null
   git push
+  git push --tags
 }
 
 if type -t "goal_$1" &>/dev/null; then
