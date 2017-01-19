@@ -15,15 +15,18 @@ export class QuickDetails extends React.Component {
 
     expandAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <a href="#" className="quickDetails__expand-all" onClick={this.props.expandAllFn}>Expand All</a>;
+            return <a href="#" className="quickDetails__expand-all" onClick={this.props.expandAllFn} title="Open all steps">
+                <i className="fa fa-plus-square-o" ></i>
+            </a>;
         }
         return null;
     }
 
     collapseAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <a href="#" className="quickDetails__collapse-all" onClick={this.props.collapseAllFn}>Collapse
-                All</a>;
+            return <a href="#" className="quickDetails__collapse-all" onClick={this.props.collapseAllFn} title="Close all steps">
+                <i className="fa fa-minus-square-o" ></i>
+            </a>;
         }
         return null;
     }

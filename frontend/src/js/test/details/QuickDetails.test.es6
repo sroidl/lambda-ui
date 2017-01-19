@@ -49,7 +49,7 @@ describe("QuickDetails", () => {
             const expandAll = component.find(".quickDetails__expand-all");
 
             expect(expandAll.length).toBe(1);
-            expect(expandAll.text()).toEqual("Expand All");
+            expect(expandAll.prop("title")).toEqual("Open all steps");
 
         });
 
@@ -57,7 +57,7 @@ describe("QuickDetails", () => {
             const collapseAll = component.find(".quickDetails__collapse-all");
 
             expect(collapseAll.length).toBe(1);
-            expect(collapseAll.text()).toEqual("Collapse All");
+            expect(collapseAll.prop("title")).toEqual("Close all steps");
 
         });
 
