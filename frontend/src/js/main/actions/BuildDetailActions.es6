@@ -18,11 +18,3 @@ export const scrollToStep = (buildId, stepId) => {
 export const noScrollToStep = () => {
     return {type: NO_SCROLL_TO_STEP};
 };
-
-export const expandAllSteps = () => {
-
-};
-
-export const collapseAllSteps = () => {
-
-};

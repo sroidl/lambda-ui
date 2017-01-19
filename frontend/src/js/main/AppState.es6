@@ -17,10 +17,9 @@ const initialState = {
     output: {showOutput: false},
     developmentToggles: {
         usePolling: true,
-        showInterestingStep: false,
         showConnectionState: false,
         showPipelineTour: false,
-        quickDetails_expandCollapse: false
+        quickDetails_expandCollapse: true
     },
     showStepToolbox: {},
     triggerDialog: {},

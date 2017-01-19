@@ -88,4 +88,34 @@ describe("BuildStep", () => {
 
         });
     });
+
+    describe("CloseSubstep", () => {
+        it("should return oldState if action is not defined", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: "SOME_OTHER_ACTION"});
+
+            expect(newState).toBe(oldState);
+        });
+
+        it("should return state with value false", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: "closeSubstep", buildId: 1, stepId: "1"});
+
+            expect(newState).toEqual({1: {"1": false}});
+            expect(newState).not.toBe(oldState);
+
+        });
+
+        it("should change value if it is false", () => {
+            const oldState = {1: {"1": true}};
+
+            const newState = showSubstepReducer(oldState, {type: "closeSubstep", buildId: 1, stepId: "1"});
+
+            expect(newState).toEqual({1: {"1": false}});
+            expect(newState).not.toBe(oldState);
+
+        });
+    });
 });

@@ -1,7 +1,7 @@
 export const TOGGLE_STEP_TOOLBOX = "toggleStepToolbox";
 export const TOGGLE_SUBSTEPS = "toggleSubsteps";
 export const OPEN_SUBSTEPS = "openSubsteps";
-export const CLOSE_SUBSTEPS = "closeSubsteps";
+export const CLOSE_SUBSTEP = "closeSubstep";
 
 export const toggleStepToolbox = (buildId, stepId) => {
     return {type: TOGGLE_STEP_TOOLBOX, buildId: buildId, stepId: stepId};
@@ -16,5 +16,5 @@ export const openSubsteps = (buildId, stepId) => {
 };
 
 export const closeSubsteps = (buildId, stepId) => {
-    return {type: CLOSE_SUBSTEPS, buildId: buildId, stepId: stepId};
+    return {type: CLOSE_SUBSTEP, buildId: buildId, stepId: stepId};
 };
