@@ -1,4 +1,4 @@
-(defproject lambdaui "0.2.0"
+(defproject lambdaui "0.2.1-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
   :license {:name "Apache License 2.0"
@@ -16,7 +16,7 @@
                                 :username "sroidl"
                                 :password [:gpg :env]}]
                  ["releases" { :url "https://clojars.org/repo"
-                                               :username "sroidl"
+                                               :username "mediamarco"
                                                :password [:gpg :env]}]]
   :lein-release {:scm :git}
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
