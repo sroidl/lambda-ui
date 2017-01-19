@@ -5,11 +5,11 @@ export const makeDraggable = (buildId) => {
     const idName = "draggable" + buildId;
 
     const currentDiv = document.getElementById(idName);
-    const scrollTarget = currentDiv.getElementsByClassName("BuildDetailSteps")[0];
-
     if (currentDiv === null) {
         return false;
     }
+
+    const scrollTarget = currentDiv.getElementsByClassName("BuildDetailSteps")[0];
 
     let curDown = false,
         curClientX;

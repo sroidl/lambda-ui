@@ -49,6 +49,7 @@ QuickDetails.propTypes = {
     expandAllFn: PropTypes.func.isRequired,
     collapseAllFn: PropTypes.func.isRequired
 };
+
 export const mapStateToProps = (state, ownProps) => {
     const details = R.propOr({}, ownProps.buildId)(state.buildDetails);
     const steps = R.propOr([], "steps")(details);
