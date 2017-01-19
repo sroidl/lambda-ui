@@ -4,7 +4,7 @@ node_js:
 install:
 - travis_retry $TRAVIS_BUILD_DIR/go setup
 script:
-- "$TRAVIS_BUILD_DIR/go test && $TRAVIS_BUILD_DIR/go jar && cd $TRAVIS_BUILD_DIR/backend && ./lein deploy"
+- "$TRAVIS_BUILD_DIR/go test"
 
 sudo: false
 cache:
@@ -16,6 +16,7 @@ env:
     secure: ZaaxMFbGeua0aihQ4HxDBxrF3mXEPhOypEl046lQ+lTjK0yodhpRUWqEPdiWgMA48oQ7HlorwCf+etm6/oU+BcZohxcG0BRBGLn43yhE3YSB7IhrMCly9bYUTDcCF9TRe0keyQIoZQsUwwbJRsbN/QWVvCNOkoe4jV8hA1KFUdLC9pdpQ4TN/2YDgSlRRBUt8iMi6okYwJcwtC1HGYXKKAhoXLOQCLYwQ2rmBNhhyTSE6l+kZ88a79RcN4Ab9L5f6NxOQrYp/n7XdPcxx2J+wRrWYdxQov8PD5wEDu7Miai22hsTO0lirOaoB/2fuJYV7BZz3O8qaFyvlUE88yEjgieqn2lPh6mhgOp7tOiRQuDaXnysX+pd631eSvPmhWWRU4uNAixkTVD04fEpG7+bvKkwrDhqPXSFmcYpz+QkTYCu0JwYEFHqPTc4a3vRfGu/6Q7p4pWvY0eJxFl+znnNw1pVn3JkkoDe8stP7Z92ferg9m5zkkThqtaaKZ/PvHhlAYE7vNayKnKFWZljZM8PGoLJV5Sv25E52t99YlwU1VPlc+0Es1vvCcSJmdOF9ujLIJa52L9OLuWjfaQPAjewPLjgR4IcFMKtoW0VneICc2pwXFfVJ+DmpvAPfPpcTodQez3gPGuowbckeDNkA/FsdYFRmoB9yBwqfEFKqwxDzRM=
 
 before_deploy:
+- "$TRAVIS_BUILD_DIR/go jar && cd $TRAVIS_BUILD_DIR/backend && ./lein deploy"
 - cd $TRAVIS_BUILD_DIR/example-pipeline
 deploy:
   api_key:
