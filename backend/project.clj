@@ -13,10 +13,10 @@
 
   :test-paths ["test"]
   :repositories [["snapshots" { :url "https://clojars.org/repo"
-                                :username "sroidl"
+                                :username [:gpg :env]
                                 :password [:gpg :env]}]
                  ["releases" { :url "https://clojars.org/repo"
-                                               :username "mediamarco"
+                                               :username [:gpg :env]
                                                :password [:gpg :env]}]]
   :lein-release {:scm :git}
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
