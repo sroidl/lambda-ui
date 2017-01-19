@@ -60,7 +60,7 @@ describe("Tools", () => {
 
     describe("Tools Icons", () => {
         it("should get iconClass for Output Tool", () => {
-            expect(SHOW_OUTPUT_ICON_CLASS).toEqual("fa-align-justify");
+            expect(SHOW_OUTPUT_ICON_CLASS).toEqual("fa-file-text-o");
         });
 
         it("should get iconClass for Substep Tool", () => {
