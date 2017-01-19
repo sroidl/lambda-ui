@@ -11,7 +11,7 @@ import LamdbdaUI from "../App.es6";
 import * as Utils from "../Utils.es6";
 import {KILLED_ICON} from "../StateIcon.es6";
 
-export const SHOW_OUTPUT_ICON_CLASS = "fa-align-justify";
+export const SHOW_OUTPUT_ICON_CLASS = "fa-file-text-o";
 export const SHOW_SUBSTEP_ICON_CLASS = "fa-level-down";
 export const SHOW_INTERESTING_STEP_ICON_CLASS = "fa-arrow-circle-down";
 export const RETRIGGER_STEP_ICON_CLASS = " fa-repeat";
