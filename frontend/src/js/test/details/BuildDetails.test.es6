@@ -17,7 +17,6 @@ import React from "react";
 import {Provider} from "react-redux";
 import * as TestUtils from "../testsupport/TestUtils.es6";
 import * as UtilMock from "../../main/Utils.es6";
-import * as InterestingStepFinderMock from "../../main/steps/InterestingStepFinder.es6";
 
 describe("BuildDetails", () => {
 
