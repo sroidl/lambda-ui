@@ -19,204 +19,170 @@ describe("InterestingStep Finder", () => {
     describe("Find failed Substep", () => {
 
         it("should return empty array if parent step is root", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
-                        steps: [{
-                            stepId: "1",
-                            state: "failure",
-                            steps: []
-                        }]
-                    }
-                }
+            const buildDetails = {
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "failure",
+                    steps: []
+                }]
             };
-            expect(findPathToMostInterestingStep(state, 1, "1")).toBeUndefined();
+            expect(findPathToMostInterestingStep(buildDetails, "1")).toBeUndefined();
         });
 
         it("should return null if it is success", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
-                        steps: [{
-                            stepId: "1",
-                            state: "success",
-                            steps: []
-                        }]
-                    }
-                }
+            const buildDetails = {
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "success",
+                    steps: []
+                }]
             };
 
-            expect(findPathToMostInterestingStep(state, 1, "1")).toBeUndefined();
+            expect(findPathToMostInterestingStep(buildDetails, "1")).toBeUndefined();
         });
 
         it("should find killed step although it has pending substeps", () => {
             const interesting_state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
-                        steps: [
-                            {stepId: "1", state: "success"},
-                            {stepId: "2", state: "success"},
-                            {
-                                stepId: "3", state: "failure", steps: [
-                                {
-                                    stepId: "1-3", state: "failure", steps: [
-                                    {stepId: "1-1-3", state: "pending"},
-                                    {stepId: "2-1-3", state: "pending"}
-                                ]
-                                }]
-                            }
+                buildId: 1,
+                steps: [
+                    {stepId: "1", state: "success"},
+                    {stepId: "2", state: "success"},
+                    {
+                        stepId: "3", state: "failure", steps: [
+                        {
+                            stepId: "1-3", state: "failure", steps: [
+                            {stepId: "1-1-3", state: "pending"},
+                            {stepId: "2-1-3", state: "pending"}
                         ]
+                        }]
                     }
-                }
+                ]
             };
-            expect(findPathToMostInterestingStep(interesting_state, 1, "3")).toEqual({state: "failure", path: ["3"]});
+            expect(findPathToMostInterestingStep(interesting_state, "3")).toEqual({state: "failure", path: ["3"]});
         });
 
         it("should return parent step of deepest failure step", () => {
             const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
-                        steps: [{
-                            stepId: "1",
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "failure",
+                    steps: [
+                        {
+                            stepId: "1-1",
+                            state: "success",
+                            steps: []
+                        },
+                        {
+                            stepId: "1-2",
                             state: "failure",
-                            steps: [
-                                {
-                                    stepId: "1-1",
-                                    state: "success",
-                                    steps: []
-                                },
-
-                                {
-                                    stepId: "1-2",
-                                    state: "failure",
-                                    steps: []
-                                }]
+                            steps: []
                         }]
-                    }
-                }
+                }]
             };
 
-            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({state: "failure", path: ["1"]});
+            expect(findPathToMostInterestingStep(state, "1")).toEqual({state: "failure", path: ["1"]});
         });
 
         it("should return children children step if it failed", () => {
             const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
-                        steps: [{
-                            stepId: "1",
-                            state: "failure",
-                            steps: [{
-                                stepId: "1-1",
-                                state: "failure",
-                                steps: [{
-                                    stepId: "1-1-1",
-                                    state: "failure",
-                                    steps: []
-                                }]
-                            }]
-                        }]
-                    }
-                }
-            };
-
-            expect(findPathToMostInterestingStep(state, 1, "1")).toEqual({state: "failure", path: ["1", "1-1"]});
-        });
-
-        it("should return lowermost children step if it failed", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
-                        steps: [{
-                            stepId: "1",
-                            state: "failure",
-                            steps: [{
-                                stepId: "1-1",
-                                state: "failure",
-                                steps: [{
-                                    stepId: "1-1-1",
-                                    state: "failure",
-                                    steps: [{
-                                        stepId: "1-1-1-1",
-                                        state: "failure",
-                                        steps: []
-                                    }]
-                                }]
-                            }]
-                        }]
-                    }
-                }
-            };
-
-            const result = findPathToMostInterestingStep(state, 1, "1");
-            expect(result).toEqual({state: "failure", path: ["1", "1-1", "1-1-1"]});
-        });
-
-        const complexState = {
-            buildDetails: {
-                1: {
-                    buildId: 1,
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "failure",
                     steps: [{
-                        stepId: "1",
+                        stepId: "1-1",
                         state: "failure",
                         steps: [{
-                            stepId: "1-1",
-                            state: "failure",
-                            steps: []
-                        }]
-                    }, {
-                        stepId: "2",
-                        state: "failure",
-                        steps: [{
-                            stepId: "2-1",
+                            stepId: "1-1-1",
                             state: "failure",
                             steps: []
                         }]
                     }]
-                }
-            }
+                }]
+            };
+
+            expect(findPathToMostInterestingStep(state, "1")).toEqual({state: "failure", path: ["1", "1-1"]});
+        });
+
+        it("should return lowermost children step if it failed", () => {
+            const state = {
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "failure",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "failure",
+                        steps: [{
+                            stepId: "1-1-1",
+                            state: "failure",
+                            steps: [{
+                                stepId: "1-1-1-1",
+                                state: "failure",
+                                steps: []
+                            }]
+                        }]
+                    }]
+                }]
+            };
+
+            const result = findPathToMostInterestingStep(state, "1");
+            expect(result).toEqual({state: "failure", path: ["1", "1-1", "1-1-1"]});
+        });
+
+        const complexState = {
+            buildId: 1,
+            steps: [{
+                stepId: "1",
+                state: "failure",
+                steps: [{
+                    stepId: "1-1",
+                    state: "failure",
+                    steps: []
+                }]
+            }, {
+                stepId: "2",
+                state: "failure",
+                steps: [{
+                    stepId: "2-1",
+                    state: "failure",
+                    steps: []
+                }]
+            }]
         };
 
         it("should return first failure substep", () => {
-            const result = findPathToMostInterestingStep(complexState, 1, "1");
+            const result = findPathToMostInterestingStep(complexState, "1");
             expect(result).toEqual({state: "failure", path: ["1"]});
         });
     });
 
     describe("findParentOfRunningSubstep", () => {
         it("should return running substep", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
+            const buildDetails = {
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "running",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "running",
                         steps: [{
-                            stepId: "1",
+                            stepId: "1-1-1",
                             state: "running",
                             steps: [{
-                                stepId: "1-1",
+                                stepId: "1-1-1-1",
                                 state: "running",
-                                steps: [{
-                                    stepId: "1-1-1",
-                                    state: "running",
-                                    steps: [{
-                                        stepId: "1-1-1-1",
-                                        state: "running",
-                                        steps: []
-                                    }]
-                                }]
+                                steps: []
                             }]
                         }]
-                    }
-                }
+                    }]
+                }]
             };
-
-            const result = findPathToMostInterestingStep(state, 1, "1");
+            const result = findPathToMostInterestingStep(buildDetails, "1");
             expect(result).toEqual({state: "running", path: ["1", "1-1", "1-1-1"]});
         });
     });
@@ -224,130 +190,112 @@ describe("InterestingStep Finder", () => {
     describe("should find path to most interesting step", () => {
 
         it("should return empty list if no step is interesting", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        steps: [{stepId: "1", state: "success"}]
-
-                    }
-                }
+            const buildDetails = {
+                buildId: 1,
+                steps: [{stepId: "1", state: "success"}]
             };
 
-            const result = findPathToMostInterestingStep(state, 1, "root");
+            const result = findPathToMostInterestingStep(buildDetails, "root");
             expect(result).toBeUndefined();
         });
 
         it("should find prioritize running over failure step", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
+            const buildDetails = {
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "running",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "running",
                         steps: [{
-                            stepId: "1",
+                            stepId: "1-1-1",
                             state: "running",
                             steps: [{
-                                stepId: "1-1",
+                                stepId: "1-1-1-1",
                                 state: "running",
-                                steps: [{
-                                    stepId: "1-1-1",
-                                    state: "running",
-                                    steps: [{
-                                        stepId: "1-1-1-1",
-                                        state: "running",
-                                        steps: []
-                                    }]
-                                }]
+                                steps: []
                             }]
-                        },
-
-                            {
-                                stepId: "2",
-                                state: "failure"
-                            }
-                        ]
+                        }]
+                    }]
+                },
+                    {
+                        stepId: "2",
+                        state: "failure"
                     }
-                }
+                ]
             };
 
-            const result = findPathToMostInterestingStep(state, 1, "root");
+            const result = findPathToMostInterestingStep(buildDetails, "root");
             expect(result).toEqual({state: "running", path: ["1", "1-1", "1-1-1"]});
         });
 
 
         it("should find failure step", () => {
-            const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
+            const buildDetails = {
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "success",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "success",
                         steps: [{
-                            stepId: "1",
+                            stepId: "1-1-1",
                             state: "success",
                             steps: [{
-                                stepId: "1-1",
+                                stepId: "1-1-1-1",
                                 state: "success",
-                                steps: [{
-                                    stepId: "1-1-1",
-                                    state: "success",
-                                    steps: [{
-                                        stepId: "1-1-1-1",
-                                        state: "success",
-                                        steps: []
-                                    }]
-                                }]
+                                steps: []
                             }]
-                        },
-
-                            {
-                                stepId: "2",
-                                state: "failure",
-                                steps: [{
-                                    stepId: "1-2",
-                                    state: "failure",
-                                }]
-                            }
-                        ]
+                        }]
+                    }]
+                },
+                    {
+                        stepId: "2",
+                        state: "failure",
+                        steps: [{
+                            stepId: "1-2",
+                            state: "failure",
+                        }]
                     }
-                }
+                ]
             };
 
-            const result = findPathToMostInterestingStep(state, 1, "root");
+            const result = findPathToMostInterestingStep(buildDetails, "root");
             expect(result).toEqual({state: "failure", path: ["2"]});
         });
 
 
         it("should prioritize waiting over running", () => {
             const state = {
-                buildDetails: {
-                    1: {
-                        buildId: 1,
+                buildId: 1,
+                steps: [{
+                    stepId: "1",
+                    state: "running",
+                    steps: [{
+                        stepId: "1-1",
+                        state: "running",
                         steps: [{
-                            stepId: "1",
+                            stepId: "1-1-1",
                             state: "running",
                             steps: [{
-                                stepId: "1-1",
+                                stepId: "1-1-1-1",
                                 state: "running",
-                                steps: [{
-                                    stepId: "1-1-1",
-                                    state: "running",
-                                    steps: [{
-                                        stepId: "1-1-1-1",
-                                        state: "running",
-                                        steps: []
-                                    }]
-                                }]
+                                steps: []
                             }]
-                        },
+                        }]
+                    }]
+                },
 
-                            {
-                                stepId: "2",
-                                state: "waiting"
-                            }
-                        ]
+                    {
+                        stepId: "2",
+                        state: "waiting"
                     }
-                }
+                ]
             };
 
-            const result = findPathToMostInterestingStep(state, 1, "root");
+            const result = findPathToMostInterestingStep(state, "root");
             expect(result).toEqual({state: "waiting", path: []});
         });
 

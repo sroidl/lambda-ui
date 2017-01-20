@@ -1,6 +1,12 @@
-/* globals describe it expect afterEach beforeEach */
+/* globals describe it expect afterEach beforeEach jest */
+jest.mock("../../main/steps/InterestingStepFinder.es6");
+jest.mock("../../main/DevToggles.es6");
 import {toggleState, showSubstepReducer, buildStepsReducer} from "../../main/reducers/BuildSteps.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
+import {findPathToMostInterestingStep} from "../../main/steps/InterestingStepFinder.es6";
+import devToggles from "../../main/DevToggles.es6";
+
+devToggles.followBuild = true;
 
 describe("BuildStep", () => {
 
@@ -116,6 +122,30 @@ describe("BuildStep", () => {
             expect(newState).toEqual({1: {"1": false}});
             expect(newState).not.toBe(oldState);
 
+        });
+    });
+
+    describe("AddBuildDetails", () => {
+        it("should return oldState if action is not defined", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: "SOME_OTHER_ACTION"});
+
+            expect(newState).toBe(oldState);
+        });
+
+        it("should open most interesting step", () => {
+            const oldState = {42: {"1": false}, 1: {"1": true}};
+            findPathToMostInterestingStep.mockReturnValue({state: "running", path: ["1", "1-1", "1-1-1"]});
+
+            const newState = showSubstepReducer(oldState, {
+                type: "addBuildDetails",
+                buildId: 42,
+                buildDetails: {foo: "bar"}
+            });
+
+            expect(findPathToMostInterestingStep).toBeCalledWith({foo: "bar"}, "root");
+            expect(newState).toEqual({42: {"1": true, "1-1": true, "1-1-1": true}, 1: {"1": true}});
         });
     });
 });

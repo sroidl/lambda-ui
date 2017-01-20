@@ -19,7 +19,8 @@ const initialState = {
         usePolling: true,
         showConnectionState: false,
         showPipelineTour: false,
-        quickDetails_expandCollapse: true
+        quickDetails_expandCollapse: true,
+        followBuild: false
     },
     showStepToolbox: {},
     triggerDialog: {},

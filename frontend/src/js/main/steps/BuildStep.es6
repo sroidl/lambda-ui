@@ -34,14 +34,15 @@ export class BuildStep extends React.Component {
         super(props);
     }
 
-    getBuildStepId(){
+    getBuildStepId() {
         const {buildId, step} = this.props;
         return "Build" + buildId + "Step" + step.stepId;
     }
 
     renderStepDuration() {
         const {step} = this.props;
-        return typeof step.trigger === "object" ? "" : <div className="stepDuration">{duration(getStepDuration(step))}</div>;
+        return typeof step.trigger === "object" ? "" :
+            <div className="stepDuration">{duration(getStepDuration(step))}</div>;
     }
 
     renderBuildStep() {
@@ -51,23 +52,24 @@ export class BuildStep extends React.Component {
 
         return <div id={hasSubsteps && showSubsteps ? "" : this.getBuildStepId()} className={buildStepClasses}>
             <StateIcon state={step.state}/>
-            <div className={classes("StepName", hasSubsteps ? "HasSubsteps" : "")} onClick={hasSubsteps ? toggleSubsteps : ""}>{step.name}</div>
+            <div className={classes("StepName", hasSubsteps ? "HasSubsteps" : "")}
+                 onClick={hasSubsteps ? toggleSubsteps : ""}>{step.name}</div>
             {this.renderStepDuration()}
-            {hasSubsteps && showSubsteps ? "" :<Tools buildId={buildId} step={step}/>}
+            {hasSubsteps && showSubsteps ? "" : <Tools buildId={buildId} step={step}/>}
         </div>;
     }
 
     render() {
         const {step, isParallel, buildId, hasSubsteps, showSubsteps} = this.props;
 
-        if(!showSubsteps || !hasSubsteps){
+        if (!showSubsteps || !hasSubsteps) {
             return this.renderBuildStep();
         }
 
-        const buildStepRedux = step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId} />;
+        const buildStepRedux = step => <BuildStepRedux key={step.stepId} step={step} buildId={buildId}/>;
         let parentClass, childrenClass, childrenSteps;
 
-        if(isParallel){
+        if (isParallel) {
             parentClass = classes("BuildStepParallel");
             childrenClass = classes("BuildStepInParallel", this.getBuildStepId() + "Steps");
             childrenSteps = R.map(step => {
@@ -75,7 +77,7 @@ export class BuildStep extends React.Component {
                     {buildStepRedux(step)}
                 </div>;
             })(step.steps);
-        } else{
+        } else {
             parentClass = classes("BuildStepWithSubsteps", this.getBuildStepId());
             childrenClass = classes("BuildStepSubsteps");
             childrenSteps = R.map(step => buildStepRedux(step))(step.steps);

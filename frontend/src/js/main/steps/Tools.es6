@@ -211,10 +211,11 @@ const mapStateToProps = (state, ownProps) => {
     const stepType = ownProps.step.type || "";
     const stepTrigger = ownProps.step.trigger || null;
     const enrichedTrigger = enrichTriggerUrl(stepTrigger, state.config);
+    const buildDetails = R.propOr({}, ownProps.buildId) (state.buildDetails);
 
     return {
         step: ownProps.step,
-        mostInterestingStep: findPathToMostInterestingStep(state, ownProps.buildId, ownProps.step.stepId),
+        mostInterestingStep: findPathToMostInterestingStep(buildDetails, ownProps.step.stepId),
         hasSubsteps: hasSubsteps,
         stepType: stepType,
         stepTrigger: enrichedTrigger,

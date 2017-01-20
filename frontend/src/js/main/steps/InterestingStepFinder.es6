@@ -26,9 +26,9 @@ const traverseChildren = (state, path, step) => {
     return firstNonNilResult || path;
 };
 
-export const findPathToDeepestStepWithState = (appState, buildId, stepId, stepStateToFind) => {
-    const allSteps = Utils.flatSteps(R.path(["buildDetails", buildId], appState));
-    const step = stepId === "root" ? R.path(["buildDetails", buildId], appState) : findStepById(stepId)(allSteps);
+export const findPathToDeepestStepWithState = (buildDetails, stepId, stepStateToFind) => {
+    const allSteps = Utils.flatSteps(buildDetails);
+    const step = stepId === "root" ? buildDetails : findStepById(stepId)(allSteps);
     const initialPath = R.isNil(step.stepId) ? [] : [step.stepId];
     const traverse = R.curry(traverseChildren)(stepStateToFind, initialPath);
     const pathToInterestingStep = R.find(x => !R.isNil(x))(R.map(traverse, step.steps));
@@ -40,9 +40,14 @@ export const findPathToDeepestStepWithState = (appState, buildId, stepId, stepSt
     return {state: stepStateToFind, path: pathToInterestingStep};
 };
 
-export const findPathToMostInterestingStep = (appState, buildId, stepId) => {
+export const findPathToMostInterestingStep = (buildDetails, stepId) => {
+
+    if (R.isNil(stepId)) {
+        throw "findPathToMostInterestingStep has to be called with a stepId";
+    }
+
     const priorities = ["waiting", "running", "failure"];
-    const pathToDeepestStep = R.curry(findPathToDeepestStepWithState)(appState, buildId, stepId);
+    const pathToDeepestStep = R.curry(findPathToDeepestStepWithState)(buildDetails, stepId);
     const prioritizedFindings = R.map(pathToDeepestStep)(priorities);
 
     return (R.find(isNotNil)(prioritizedFindings));

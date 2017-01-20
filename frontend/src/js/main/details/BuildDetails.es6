@@ -17,27 +17,26 @@ export class BuildDetails extends React.Component {
     }
 
     componentDidUpdate() {
-        const {open, buildId, stepToScroll, noScrollToStepFn, stepsToDisplay, openSubstepsFn, appState} = this.props;
+        const {open, buildId, stepToScroll, noScrollToStepFn, stepsToDisplay, openSubstepsFn, buildDetails} = this.props;
 
         if (open && !this.registeredEventHandler) {
             if (makeDraggable(buildId)) {
                 this.registeredEventHandler = true;
             }
-
         }
         if (!open) {
             this.registeredEventHandler = false;
         }
 
-        if (stepToScroll){
+        if (stepToScroll) {
             scrollToStep(buildId, stepToScroll);
             noScrollToStepFn();
         }
 
         if (stepsToDisplay && !this.initialized) {
 
-            const interestingPath = findPathToMostInterestingStep(appState, buildId, "root");
-            if(!R.isNil(interestingPath)){
+            const interestingPath = findPathToMostInterestingStep(buildDetails, "root");
+            if (!R.isNil(interestingPath)) {
                 const {path} = interestingPath;
                 const curriedOpenSubstepsFn = R.curry(openSubstepsFn)(buildId);
                 R.forEach(curriedOpenSubstepsFn)(path);
@@ -59,11 +58,11 @@ export class BuildDetails extends React.Component {
             </div>;
         }
 
-        const quickDetails = <QuickDetails buildId={buildId} />;
+        const quickDetails = <QuickDetails buildId={buildId}/>;
 
         return <div className="BuildDetails" id={"draggable" + buildId}>
             {quickDetails}
-                <div className="BuildDetailSteps">
+            <div className="BuildDetailSteps">
                 {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
             </div>
         </div>;
@@ -77,9 +76,8 @@ BuildDetails.propTypes = {
     stepToScroll: PropTypes.string,
     noScrollToStepFn: PropTypes.func.isRequired,
     openSubstepsFn: PropTypes.func.isRequired,
-    appState: PropTypes.object
+    buildDetails: PropTypes.object
 };
-
 export const mapStateToProps = (state, ownProps) => {
     const details = state.buildDetails[ownProps.buildId] || {};
 
@@ -87,7 +85,7 @@ export const mapStateToProps = (state, ownProps) => {
     const stateScroll = state.scrollToStep;
 
     let stepToScroll = null;
-    if(stateScroll && stateScroll.scrollToStep && stateScroll.buildId === ownProps.buildId){
+    if (stateScroll && stateScroll.scrollToStep && stateScroll.buildId === ownProps.buildId) {
         stepToScroll = stateScroll.stepId;
     }
 
@@ -97,7 +95,7 @@ export const mapStateToProps = (state, ownProps) => {
         stepsToDisplay: stepsToDisplay,
         open: state.openedBuilds[ownProps.buildId] || false,
         stepToScroll: stepToScroll,
-        appState : state
+        buildDetails: state.buildDetails[ownProps.buildId]
     };
 };
 
