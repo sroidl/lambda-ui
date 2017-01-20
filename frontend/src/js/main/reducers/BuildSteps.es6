@@ -34,15 +34,25 @@ export const showSubstepReducer = (oldState = {}, action) => {
             const stepLens = R.lensPath([action.buildId, action.stepId]);
             return R.set(stepLens, false, oldState);
         }
+        case StepActions.TOGGLE_FOLLOW: {
+            const followLens = R.lensPath([action.buildId, "follow"]);
+            const isFollow = R.pathOr(true, [action.buildId, "follow"])(oldState);
+            return R.set(followLens, !isFollow, oldState);
+        }
         case BuildDetailAction.ADD_BUILD_DETAILS: {
             if (devToggles.followBuild) {
-                const mostInterestingStep = findPathToMostInterestingStep(action.buildDetails, "root");
-                const mostInsterstingStepList = R.map(stepId => ({[stepId]: true}))(mostInterestingStep.path);
+                const followLens = R.lensPath([action.buildId, "follow"]);
+                if (R.view(followLens, oldState)) {
+                    const mostInterestingStep = findPathToMostInterestingStep(action.buildDetails, "root");
 
-                const builIdLens = R.lensProp([action.buildId]);
-                const newInnerState = R.merge(R.view(builIdLens, oldState), R.mergeAll(mostInsterstingStepList));
-                return R.set(builIdLens, newInnerState)(oldState);
-            /* eslint-disable no-else-return */
+                    const builIdLens = R.lensProp([action.buildId]);
+                    const mostInsterstingStepList = R.map(stepId => ({[stepId]: true}))(mostInterestingStep.path);
+                    const newInnerState = R.merge(R.view(builIdLens, oldState), R.mergeAll(mostInsterstingStepList));
+                    return R.set(builIdLens, newInnerState)(oldState);
+                } else {
+                    return oldState;
+                }
+                /* eslint-disable no-else-return */
             } else {
                 return oldState;
             }

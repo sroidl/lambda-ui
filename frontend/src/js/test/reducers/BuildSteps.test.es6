@@ -135,6 +135,20 @@ describe("BuildStep", () => {
         });
 
         it("should open most interesting step", () => {
+            const oldState = {42: {"1": false, "follow": true}, 1: {"1": true}};
+            findPathToMostInterestingStep.mockReturnValue({state: "running", path: ["1", "1-1", "1-1-1"]});
+
+            const newState = showSubstepReducer(oldState, {
+                type: "addBuildDetails",
+                buildId: 42,
+                buildDetails: {foo: "bar"}
+            });
+
+            expect(findPathToMostInterestingStep).toBeCalledWith({foo: "bar"}, "root");
+            expect(newState).toEqual({42: {"1": true, "1-1": true, "1-1-1": true, "follow": true}, 1: {"1": true}});
+        });
+
+        it("should not open most interesting step if follow is false", () => {
             const oldState = {42: {"1": false}, 1: {"1": true}};
             findPathToMostInterestingStep.mockReturnValue({state: "running", path: ["1", "1-1", "1-1-1"]});
 
@@ -145,7 +159,31 @@ describe("BuildStep", () => {
             });
 
             expect(findPathToMostInterestingStep).toBeCalledWith({foo: "bar"}, "root");
-            expect(newState).toEqual({42: {"1": true, "1-1": true, "1-1-1": true}, 1: {"1": true}});
+            expect(newState).toEqual(oldState);
+        });
+    });
+
+    describe("toggleFollow", () => {
+        it("should add follow flag", () => {
+            const oldState = {42: {"1": false}, 1: {"1": true}};
+
+            const newState = showSubstepReducer(oldState, {
+                type: "toggleFollow",
+                buildId: 42
+            });
+
+            expect(newState).toEqual({42: {"1": false, follow: false}, 1: {"1": true}});
+        });
+
+        it("should toggle follow flag", () => {
+            const oldState = {42: {"1": false, follow: true}, 1: {"1": true}};
+
+            const newState = showSubstepReducer(oldState, {
+                type: "toggleFollow",
+                buildId: 42
+            });
+
+            expect(newState).toEqual({42: {"1": false, follow: false}, 1: {"1": true}});
         });
     });
 });

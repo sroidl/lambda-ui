@@ -1,11 +1,8 @@
-/* globals describe it xit expect beforeEach afterEach jest */
+/* globals describe it expect beforeEach afterEach jest */
 /* eslint-disable no-duplicate-imports */
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
-/* TODO: mock flatsteps
- jest.mock("../../main/Utils.es6");
- import * as UtilsMock from "../../main/Utils.es6";
- */
+jest.mock("../../main/DevToggles.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {QuickDetails} from "../../main/details/QuickDetails.es6";
 import * as subject from "../../main/details/QuickDetails.es6";
@@ -15,6 +12,7 @@ import DevToggles from "../../main/DevToggles.es6";
 import {openSubsteps, closeSubsteps} from "../../main/actions/BuildStepActions.es6";
 
 DevToggles.quickDetails_expandCollapse = true;
+DevToggles.followBuild = true;
 
 describe("QuickDetails", () => {
 
@@ -35,21 +33,12 @@ describe("QuickDetails", () => {
         let followMock;
         let component;
 
-        /* TODO follow link
-         beforeEach(() => {
-         expandMock = jest.fn();
-         collapseMock = jest.fn();
-         followMock = jest.fn();
-         component = shallow(<QuickDetails buildId={1} steps={steps} expandAllFn={expandMock}
-         collapseAllFn={collapseMock} followFn={followMock}/>);
-         });
-         */
-
         beforeEach(() => {
             expandMock = jest.fn();
             collapseMock = jest.fn();
+            followMock = jest.fn();
             component = shallow(<QuickDetails buildId={1} steps={steps} expandAllFn={expandMock}
-                                              collapseAllFn={collapseMock}/>);
+                                              collapseAllFn={collapseMock} followFn={followMock}/>);
         });
 
         it("should render QuickDetails", () => {
@@ -76,12 +65,11 @@ describe("QuickDetails", () => {
 
         });
 
-        xit("should render follow link", () => {
-            const collapseAll = component.find(".quickDetails__follow");
+        it("should render follow link", () => {
+            const follow = component.find(".quickDetails__follow");
 
-            expect(collapseAll.length).toBe(1);
-            expect(collapseAll.prop("title")).toEqual("Follow active steps");
-
+            expect(follow.length).toBe(1);
+            expect(follow.prop("title")).toEqual("Follow active steps");
         });
 
         it("should connect expandFn to expand link", () => {
@@ -96,7 +84,7 @@ describe("QuickDetails", () => {
             expect(collapseMock).toHaveBeenCalled();
         });
 
-        xit("should connect followFn to follow link", () => {
+        it("should connect followFn to follow link", () => {
             component.find(".quickDetails__follow").simulate("click");
 
             expect(followMock).toHaveBeenCalled();
@@ -110,7 +98,7 @@ describe("QuickDetails", () => {
 
             const ownProps = subject.mapStateToProps(oldState, {buildId: 1, maxDepth: 1});
 
-            expect(ownProps).toEqual({buildId: 1, maxDepth: 1, steps: [{some: "step", stepId: "1"}], stepIds: ["1"]});
+            expect(ownProps).toEqual({buildId: 1, maxDepth: 1, steps: [{some: "step", stepId: "1"}], stepIds: ["1"], isFollow: true});
         });
 
         it("should dispatch openSubstepsAction on all steps", () => {
@@ -138,23 +126,6 @@ describe("QuickDetails", () => {
             expect(dispatch).toHaveBeenCalledWith(closeSubsteps(1, "1"));
             expect(dispatch).toHaveBeenCalledWith(closeSubsteps(1, "2"));
         });
-
-
-        xit("should dispatch openSubstepAction to active substep", () => {
-            const dispatch = jest.fn();
-            const oldProps = {buildId: 1};
-            const stateProps = {stepIds: ["1", "2"]};
-            const dispatchProps = subject.mapDispatchToProps(dispatch, oldProps);
-            const actualProps = subject.mergeProps(stateProps, dispatchProps, oldProps);
-
-            //UtilsMock.delay.mockReturnValue({then: jest.fn()});
-
-            actualProps.followFn();
-
-            expect(dispatch).toHaveBeenCalledTimes(2);
-        });
-
-
     });
 
 });
