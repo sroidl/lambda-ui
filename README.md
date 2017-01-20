@@ -10,8 +10,6 @@ LambdaUI is a new User Interface for the build tool [LambdaCD](https://github.co
 
 See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuapp.com/lambdaui). Just use the the `Start Build` button and explore all the features.
 
-There is currently no stable version available yet. You might use the current snapshot.
-
 ## Features
 1. Quick overview of all recent builds:
 ![Screenshot of build summaries](/screenshots/build-summaries.png)
