@@ -7,8 +7,9 @@ import devToggles from "../DevToggles.es6";
 export const toggleState = (oldState, buildId, stepId) => {
     const stepLens = R.lensPath([buildId, stepId]);
     const newState = R.over(stepLens, R.not, oldState);
+    const followLens = R.lensPath([buildId, "follow"]);
 
-    return newState;
+    return R.set(followLens, false, newState);
 };
 
 export const buildStepsReducer = (oldState = {}, action) => {
@@ -21,28 +22,35 @@ export const buildStepsReducer = (oldState = {}, action) => {
     }
 };
 
+const disableFollow = (action) => {
+    const followLens = R.lensPath([action.buildId, "follow"]);
+    return R.set(followLens, false);
+};
+
+const setStep = (action, value) => {
+    const stepLens = R.lensPath([action.buildId, action.stepId]);
+    return R.set(stepLens, value);
+};
+
 export const showSubstepReducer = (oldState = {}, action) => {
     switch (action.type) {
         case StepActions.TOGGLE_SUBSTEPS: {
             return toggleState(oldState, action.buildId, action.stepId);
         }
         case StepActions.OPEN_SUBSTEPS: {
-            const stepLens = R.lensPath([action.buildId, action.stepId]);
-            return R.set(stepLens, true, oldState);
+            return R.pipe(setStep(action, true), disableFollow(action))(oldState);
         }
         case StepActions.CLOSE_SUBSTEP: {
-            const stepLens = R.lensPath([action.buildId, action.stepId]);
-            return R.set(stepLens, false, oldState);
+            return R.pipe(setStep(action, false), disableFollow(action))(oldState);
         }
         case StepActions.TOGGLE_FOLLOW: {
             const followLens = R.lensPath([action.buildId, "follow"]);
-            const isFollow = R.pathOr(true, [action.buildId, "follow"])(oldState);
-            return R.set(followLens, !isFollow, oldState);
+            return R.over(followLens, R.pipe(R.defaultTo(true), R.not), oldState);
         }
         case BuildDetailAction.ADD_BUILD_DETAILS: {
             if (devToggles.followBuild) {
-                const followLens = R.lensPath([action.buildId, "follow"]);
-                if (R.view(followLens, oldState)) {
+                const isFollow = R.pathOr(true, [action.buildId, "follow"], oldState);
+                if (isFollow) {
                     const mostInterestingStep = findPathToMostInterestingStep(action.buildDetails, "root");
 
                     const builIdLens = R.lensProp([action.buildId]);

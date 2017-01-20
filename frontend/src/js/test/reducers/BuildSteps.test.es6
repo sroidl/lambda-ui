@@ -25,7 +25,7 @@ describe("BuildStep", () => {
             const oldState = {};
             const newState = toggleState(oldState, 1, "1");
 
-            expect(newState).toEqual({1: {"1": true}});
+            expect(newState).toEqual({1: {"1": true, follow: false}});
             expect(newState).not.toBe(oldState);
         });
 
@@ -33,7 +33,7 @@ describe("BuildStep", () => {
             const oldState = {1: {"1": true}};
             const newState = toggleState(oldState, 2, "1");
 
-            expect(newState).toEqual({1: {"1": true}, 2: {"1": true}});
+            expect(newState).toEqual({1: {"1": true}, 2: {"1": true, follow: false}});
             expect(newState).not.toBe(oldState);
         });
 
@@ -41,7 +41,7 @@ describe("BuildStep", () => {
             const oldState = {1: {"1": true}};
             const newState = toggleState(oldState, 1, "2");
 
-            expect(newState).toEqual({1: {"1": true, "2": true}});
+            expect(newState).toEqual({1: {"1": true, "2": true, follow: false}});
             expect(newState).not.toBe(oldState);
         });
 
@@ -50,7 +50,7 @@ describe("BuildStep", () => {
 
             const newState = toggleState(oldState, 1, "1");
 
-            expect(newState).toEqual({1: {"1": false}});
+            expect(newState).toEqual({1: {"1": false, follow: false}});
             expect(newState).not.toBe(oldState);
         });
     });
@@ -79,7 +79,7 @@ describe("BuildStep", () => {
 
             const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
 
-            expect(newState).toEqual({1: {"1": true}});
+            expect(newState).toEqual({1: {"1": true, follow: false}});
             expect(newState).not.toBe(oldState);
 
         });
@@ -89,7 +89,7 @@ describe("BuildStep", () => {
 
             const newState = showSubstepReducer(oldState, {type: "openSubsteps", buildId: 1, stepId: "1"});
 
-            expect(newState).toEqual({1: {"1": true}});
+            expect(newState).toEqual({1: {"1": true, follow: false}});
             expect(newState).not.toBe(oldState);
 
         });
@@ -109,7 +109,7 @@ describe("BuildStep", () => {
 
             const newState = showSubstepReducer(oldState, {type: "closeSubstep", buildId: 1, stepId: "1"});
 
-            expect(newState).toEqual({1: {"1": false}});
+            expect(newState).toEqual({1: {"1": false, follow: false}});
             expect(newState).not.toBe(oldState);
 
         });
@@ -119,7 +119,7 @@ describe("BuildStep", () => {
 
             const newState = showSubstepReducer(oldState, {type: "closeSubstep", buildId: 1, stepId: "1"});
 
-            expect(newState).toEqual({1: {"1": false}});
+            expect(newState).toEqual({1: {"1": false, follow: false}});
             expect(newState).not.toBe(oldState);
 
         });
@@ -149,7 +149,7 @@ describe("BuildStep", () => {
         });
 
         it("should not open most interesting step if follow is false", () => {
-            const oldState = {42: {"1": false}, 1: {"1": true}};
+            const oldState = {42: {"1": false, follow: false}, 1: {"1": true, follow: false}};
             findPathToMostInterestingStep.mockReturnValue({state: "running", path: ["1", "1-1", "1-1-1"]});
 
             const newState = showSubstepReducer(oldState, {

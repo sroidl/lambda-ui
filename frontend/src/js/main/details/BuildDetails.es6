@@ -5,10 +5,11 @@ import R from "ramda";
 import BuildStep from "../steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
 import QuickDetails from "../details/QuickDetails.es6";
-import {findPathToMostInterestingStep} from "../steps/InterestingStepFinder.es6";
 import {openSubsteps} from "../actions/BuildStepActions.es6";
 import "../../../sass/buildDetails.sass";
 export class BuildDetails extends React.Component {
+
+
 
     constructor(props) {
         super(props);
@@ -17,7 +18,7 @@ export class BuildDetails extends React.Component {
     }
 
     componentDidUpdate() {
-        const {open, buildId, stepToScroll, noScrollToStepFn, stepsToDisplay, openSubstepsFn, buildDetails} = this.props;
+        const {open, buildId, stepToScroll, noScrollToStepFn} = this.props;
 
         if (open && !this.registeredEventHandler) {
             if (makeDraggable(buildId)) {
@@ -31,17 +32,6 @@ export class BuildDetails extends React.Component {
         if (stepToScroll) {
             scrollToStep(buildId, stepToScroll);
             noScrollToStepFn();
-        }
-
-        if (stepsToDisplay && !this.initialized) {
-
-            const interestingPath = findPathToMostInterestingStep(buildDetails, "root");
-            if (!R.isNil(interestingPath)) {
-                const {path} = interestingPath;
-                const curriedOpenSubstepsFn = R.curry(openSubstepsFn)(buildId);
-                R.forEach(curriedOpenSubstepsFn)(path);
-            }
-            this.initialized = true;
         }
 
     }

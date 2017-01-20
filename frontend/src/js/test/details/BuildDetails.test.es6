@@ -77,21 +77,6 @@ describe("BuildDetails", () => {
 
             expect(component.find("BuildStep").length).toEqual(2);
         });
-
-        it("should call opensubsteps function", () => {
-
-            const openSubstepsFnMock = jest.fn();
-            const openSubstepsFn = (buildId, stepId) => openSubstepsFnMock(buildId, stepId);
-
-            InterestingStepFinderMock.findPathToMostInterestingStep.mockReturnValue({state:"running",path:["1","1-1"]});
-
-            const steps = [{stepId: 1}, {stepId: 2}];
-            const component = shallow(<BuildDetails buildId={1} open={true} stepsToDisplay={steps} noScrollToStepFn={jest.fn()} openSubstepsFn={openSubstepsFn}/>, { lifecycleExperimental: true });
-            component.setProps({});
-
-            expect(openSubstepsFnMock).toHaveBeenCalledWith(1, "1");
-            expect(openSubstepsFnMock).toHaveBeenCalledWith(1, "1-1");
-        });
     });
 
     describe("View Build details", () => {

@@ -96,9 +96,9 @@ describe("QuickDetails", () => {
         it("map stateToProps return ownProps", () => {
             const oldState = {buildDetails: {1: {steps: [{stepId: "1", some: "step"}]}}};
 
-            const ownProps = subject.mapStateToProps(oldState, {buildId: 1, maxDepth: 1});
+            const stateProps = subject.mapStateToProps(oldState, {buildId: 1, maxDepth: 1});
 
-            expect(ownProps).toEqual({buildId: 1, maxDepth: 1, steps: [{some: "step", stepId: "1"}], stepIds: ["1"], isFollow: true});
+            expect(stateProps).toEqual({buildId: 1, maxDepth: 1, steps: [{some: "step", stepId: "1"}], stepIds: ["1"], isFollow: true});
         });
 
         it("should dispatch openSubstepsAction on all steps", () => {
