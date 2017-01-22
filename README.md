@@ -23,10 +23,6 @@ See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuap
 
 ### Coming up:
 
-#### 0.1.0
-* Support main features (at least) as good as the old UI. This includes an overview of all builds, as well as the ability to see details of builds and build step output.
-
-#### 0.2.0
 * Websockets! Get your build information asap. Instead of polling the results of a build, the server will push new events to the clients.  
 * Support all types of build step results (currently only the output)
 * Support of browser history within the app.
