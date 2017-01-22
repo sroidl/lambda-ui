@@ -316,3 +316,16 @@ body{
 	padding: 8px;
 	background-color: #FFF;
 }
+
+.draggable {
+	cursor: move; /* fallback if grab cursor is unsupported */
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+}
+
+.draggable:active {
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}

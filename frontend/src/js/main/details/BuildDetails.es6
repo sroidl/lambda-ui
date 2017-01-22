@@ -52,7 +52,7 @@ export class BuildDetails extends React.Component {
 
         return <div className="BuildDetails" id={"draggable" + buildId}>
             {quickDetails}
-            <div className="BuildDetailSteps">
+            <div className="BuildDetailSteps draggable">
                 {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
             </div>
         </div>;
