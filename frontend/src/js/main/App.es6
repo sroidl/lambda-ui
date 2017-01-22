@@ -9,6 +9,7 @@ import {Backend} from "./Backend.es6";
 import {addConfiguration} from "./actions/ConfigActions.es6";
 import TriggerDialog from "./steps/TriggerDialog.es6";
 import {pollBuildDetails, pollSummaries} from "./Polling.es6";
+import Footer from "./Footer.es6";
 
 let backend;
 let appStore;
@@ -43,6 +44,12 @@ export class LambdaUI {
                 <TriggerDialog />
             </div>
         </Provider>, rootElement);
+
+        const footer = document.getElementById("footer");
+        ReactDOM.render(<Provider store={this.appStore()}>
+            <Footer/>
+            </Provider>, footer);
+
     }
 }
 

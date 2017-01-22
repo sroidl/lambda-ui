@@ -24,7 +24,14 @@ window.lambdaui.config = {
                 text: "Got any Feedback?"
             }
         ]
+    },
+
+    versions: {
+        lambdauiVersion: "lui-devConfig-SNAPSHOT",
+        lambdacdVersion: "lcd-devConfig-SNAPSHOT"
     }
+
+
 };
 
 console.log("", window.lambdaui.config);
