@@ -7,6 +7,33 @@ import DevToggles from "../DevToggles.es6";
 import * as Actions from "../actions/BuildStepActions.es6";
 import * as Utils from "../Utils.es6";
 
+
+const ScrollInfo = ({showScrollInfo}) => {
+    if (!showScrollInfo) {
+        return null;
+    }
+
+    return <div className="quickDetails__scrollInfo">
+            <div className="quickDetails__scrollInfo__icon fa-stack fa">
+                        <i className="fa fa-arrows-h fa-stack-2x"></i>
+                        <i className="fa fa-hand-grab-o fa-stack-1x"></i>
+            </div>
+            <span className="quickDetails__scrollInfo__text">Grab & Scroll</span>
+        </div>;
+};
+
+ScrollInfo.propTypes = {
+    showScrollInfo: PropTypes.bool
+};
+
+const scrollInfo_mapStateToProps = (state, initialProps) => {
+    return {
+        showScrollInfo: R.path([initialProps.buildId, "showScrollInfo"], state.showSubsteps)
+    };
+};
+
+const ScrollInfoRedux = connect(scrollInfo_mapStateToProps)(ScrollInfo);
+
 export class QuickDetails extends React.Component {
 
     constructor(props) {
@@ -32,10 +59,7 @@ export class QuickDetails extends React.Component {
     }
 
     followLink(){
-        //
-        //fa-square-o
         if (DevToggles.followBuild){
-
             const followIcon = this.props.isFollow ? "fa-check-square-o" : "fa-square-o";
 
             return <span className="quickDetails__follow link" onClick={this.props.followFn} title="Follow active steps">
@@ -52,6 +76,7 @@ export class QuickDetails extends React.Component {
             <div className="quickTitle">Quick Access {this.expandAllLink()} {this.collapseAllLink()} {this.followLink()} </div>
             {R.map(step => <QuickStep key={step.stepId} curDepth={1} maxDepth={maxDepth} buildId={buildId}
                                       step={step}/>)(steps)}
+            <ScrollInfoRedux buildId={this.props.buildId}/>
         </div>;
     }
 }
