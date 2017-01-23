@@ -3,6 +3,7 @@ import * as StepActions from "../actions/BuildStepActions.es6";
 import * as BuildDetailAction from "../actions/BuildDetailActions.es6";
 import {findPathToMostInterestingStep} from "../steps/InterestingStepFinder.es6";
 import devToggles from "../DevToggles.es6";
+import * as OutputActions from "../actions/OutputActions.es6";
 
 export const toggleState = (oldState, buildId, stepId) => {
     const stepLens = R.lensPath([buildId, stepId]);
@@ -57,14 +58,20 @@ export const showSubstepReducer = (oldState = {}, action) => {
                     const mostInsterstingStepList = R.map(stepId => ({[stepId]: true}))(mostInterestingStep.path);
                     const newInnerState = R.merge(R.view(builIdLens, oldState), R.mergeAll(mostInsterstingStepList));
                     return R.set(builIdLens, newInnerState)(oldState);
+                /* eslint-disable no-else-return */
                 } else {
                     return oldState;
                 }
-                /* eslint-disable no-else-return */
             } else {
                 return oldState;
             }
         }
+
+        case OutputActions.SHOW_BUILD_OUTPUT: {
+           return disableFollow(action)(oldState);
+
+        }
+
         default:
             return oldState;
     }

@@ -5,6 +5,7 @@ import {toggleState, showSubstepReducer, buildStepsReducer} from "../../main/red
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {findPathToMostInterestingStep} from "../../main/steps/InterestingStepFinder.es6";
 import devToggles from "../../main/DevToggles.es6";
+import * as OutputActions from "../../main/actions/OutputActions.es6";
 
 devToggles.followBuild = true;
 
@@ -184,6 +185,15 @@ describe("BuildStep", () => {
             });
 
             expect(newState).toEqual({42: {"1": false, follow: false}, 1: {"1": true}});
+        });
+
+        it("should disable follow on showOutput", () => {
+            const oldState = {1: {follow: true}};
+
+            const newState = showSubstepReducer(oldState,OutputActions.showBuildOutput(1, "1"));
+
+            expect(newState).toEqual({1: {follow: false}});
+            expect(newState).not.toBe(oldState);
         });
     });
 });

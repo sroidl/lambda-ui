@@ -20,7 +20,7 @@ const initialState = {
         showConnectionState: false,
         showPipelineTour: false,
         quickDetails_expandCollapse: true,
-        followBuild: false
+        followBuild: true
     },
     showStepToolbox: {},
     triggerDialog: {},
