@@ -33,6 +33,8 @@ const setStep = (action, value) => {
     return R.set(stepLens, value);
 };
 
+const scrollToLens = action => R.lensPath([action.buildId, "scrollToStep"]);
+
 export const showSubstepReducer = (oldState = {}, action) => {
     switch (action.type) {
         case StepActions.TOGGLE_SUBSTEPS: {
@@ -69,11 +71,18 @@ export const showSubstepReducer = (oldState = {}, action) => {
 
         case OutputActions.SHOW_BUILD_OUTPUT: {
            return disableFollow(action)(oldState);
-
         }
 
+        case BuildDetailAction.SCROLL_TO_STEP: {
+            return R.set(scrollToLens(action), action.stepId, oldState);
+        }
+        case BuildDetailAction.NO_SCROLL_TO_STEP: {
+            return R.set(scrollToLens(action), null, oldState);
+        }
         default:
             return oldState;
+
+
     }
 };
 

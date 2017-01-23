@@ -15,6 +15,6 @@ export const scrollToStep = (buildId, stepId) => {
     return {type: SCROLL_TO_STEP, buildId: buildId, stepId: stepId};
 };
 
-export const noScrollToStep = () => {
-    return {type: NO_SCROLL_TO_STEP};
+export const noScrollToStep = (buildId) => {
+    return {type: NO_SCROLL_TO_STEP, buildId: buildId};
 };

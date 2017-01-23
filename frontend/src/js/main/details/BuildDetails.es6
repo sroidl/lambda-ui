@@ -31,7 +31,7 @@ export class BuildDetails extends React.Component {
 
         if (stepToScroll) {
             scrollToStep(buildId, stepToScroll);
-            noScrollToStepFn();
+            noScrollToStepFn(buildId);
         }
 
     }
@@ -92,7 +92,7 @@ export const mapStateToProps = (state, ownProps) => {
 export const mapDispatchToProps = (dispatch) => {
 
     return {
-        noScrollToStepFn: () => dispatch(noScrollToStep()),
+        noScrollToStepFn: (buildId) => dispatch(noScrollToStep(buildId)),
         openSubstepsFn: (buildId, stepId) => dispatch(openSubsteps(buildId, stepId))
     };
 };
