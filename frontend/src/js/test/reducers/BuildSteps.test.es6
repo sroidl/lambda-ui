@@ -6,6 +6,7 @@ import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {findPathToMostInterestingStep} from "../../main/steps/InterestingStepFinder.es6";
 import devToggles from "../../main/DevToggles.es6";
 import * as OutputActions from "../../main/actions/OutputActions.es6";
+import * as BuildDetailActions from "../../main/actions/BuildDetailActions.es6";
 
 devToggles.followBuild = true;
 
@@ -195,5 +196,22 @@ describe("BuildStep", () => {
             expect(newState).toEqual({1: {follow: false}});
             expect(newState).not.toBe(oldState);
         });
+    });
+
+    describe("show scroll info", () => {
+
+        it("should set scrollInfo to false", () => {
+            const oldState = {
+                12: {
+                    showScrollInfo: false,
+                    other: "values"
+                }
+            };
+
+            const newState = showSubstepReducer(oldState, BuildDetailActions.showScrollInfo(12, true));
+
+            expect(newState).toEqual({12: {showScrollInfo: true, other: "values"}});
+        });
+
     });
 });

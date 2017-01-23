@@ -2,6 +2,7 @@ export const TOGGLE_BUILD_DETAILS = "toggleBuildDetails";
 export const ADD_BUILD_DETAILS = "addBuildDetails";
 export const SCROLL_TO_STEP = "scrollToStep";
 export const NO_SCROLL_TO_STEP = "noScrollToStep";
+export const SHOW_SCROLL_INFO = "showScrollInfo";
 
 export const toggleBuildDetails = (id) => {
     return {type: TOGGLE_BUILD_DETAILS, buildId: id};
@@ -17,4 +18,8 @@ export const scrollToStep = (buildId, stepId) => {
 
 export const noScrollToStep = (buildId) => {
     return {type: NO_SCROLL_TO_STEP, buildId: buildId};
+};
+
+export const showScrollInfo = (buildId, value) => {
+    return {type: SHOW_SCROLL_INFO, buildId: buildId, value: value};
 };

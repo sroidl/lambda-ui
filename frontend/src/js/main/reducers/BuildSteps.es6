@@ -79,9 +79,13 @@ export const showSubstepReducer = (oldState = {}, action) => {
         case BuildDetailAction.NO_SCROLL_TO_STEP: {
             return R.set(scrollToLens(action), null, oldState);
         }
+        case BuildDetailAction.SHOW_SCROLL_INFO: {
+            const scrollInfo = R.lensPath([action.buildId, "showScrollInfo"]);
+            return R.set(scrollInfo, action.value, oldState);
+        }
+
         default:
             return oldState;
-
 
     }
 };

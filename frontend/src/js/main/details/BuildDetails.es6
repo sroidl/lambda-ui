@@ -1,20 +1,28 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import {noScrollToStep} from "../actions/BuildDetailActions.es6";
 import R from "ramda";
 import BuildStep from "../steps/BuildStep.es6";
 import {makeDraggable, scrollToStep} from "../steps/HorizontalScroll.es6";
 import QuickDetails from "../details/QuickDetails.es6";
-import {openSubsteps} from "../actions/BuildStepActions.es6";
+import * as BuildStepActions from "../actions/BuildStepActions.es6";
+import * as BuildDetailsActions from "../actions/BuildDetailActions.es6";
 import "../../../sass/buildDetails.sass";
+
+const updateScrollInfo = (component) => {
+    const {showScrollInfoFn, showScrollInfo, buildId} = component.props;
+    const dom = component.detailsDom;
+
+    const shouldShowScrollInfo = dom.scrollWidth > dom.clientWidth;
+    if (shouldShowScrollInfo !== showScrollInfo) {
+        showScrollInfoFn(buildId, shouldShowScrollInfo);
+    }
+};
+
 export class BuildDetails extends React.Component {
-
-
 
     constructor(props) {
         super(props);
         this.registeredEventHandler = false;
-        this.initialized = false;
     }
 
     componentDidUpdate() {
@@ -34,6 +42,9 @@ export class BuildDetails extends React.Component {
             noScrollToStepFn(buildId);
         }
 
+        updateScrollInfo(this);
+
+
     }
 
     render() {
@@ -50,9 +61,10 @@ export class BuildDetails extends React.Component {
 
         const quickDetails = <QuickDetails buildId={buildId}/>;
 
+        /* eslint-disable no-return-assign */
         return <div className="BuildDetails" id={"draggable" + buildId}>
             {quickDetails}
-            <div className="BuildDetailSteps">
+            <div ref={(detailsDom) => this.detailsDom = detailsDom} className="BuildDetailSteps">
                 {R.map(step => <BuildStep key={step.stepId} step={step} buildId={buildId}/>)(stepsToDisplay)}
             </div>
         </div>;
@@ -66,7 +78,8 @@ BuildDetails.propTypes = {
     stepToScroll: PropTypes.string,
     noScrollToStepFn: PropTypes.func.isRequired,
     openSubstepsFn: PropTypes.func.isRequired,
-    buildDetails: PropTypes.object
+    buildDetails: PropTypes.object,
+    showScrollInfoFn: PropTypes.func
 };
 export const mapStateToProps = (state, ownProps) => {
     const details = state.buildDetails[ownProps.buildId] || {};
@@ -85,15 +98,17 @@ export const mapStateToProps = (state, ownProps) => {
         stepsToDisplay: stepsToDisplay,
         open: state.openedBuilds[ownProps.buildId] || false,
         stepToScroll: stepToScroll,
-        buildDetails: state.buildDetails[ownProps.buildId]
+        buildDetails: state.buildDetails[ownProps.buildId],
+        showScrollInfo: R.path([ownProps.buildId, "showScrollInfo"], state.showSubsteps)
     };
 };
 
 export const mapDispatchToProps = (dispatch) => {
 
     return {
-        noScrollToStepFn: (buildId) => dispatch(noScrollToStep(buildId)),
-        openSubstepsFn: (buildId, stepId) => dispatch(openSubsteps(buildId, stepId))
+        noScrollToStepFn: (buildId) => dispatch(BuildDetailsActions.noScrollToStep(buildId)),
+        openSubstepsFn: (buildId, stepId) => dispatch(BuildStepActions.openSubsteps(buildId, stepId)),
+        showScrollInfoFn: (buildId, value) => dispatch(BuildDetailsActions.showScrollInfo(buildId, value))
     };
 };
 
