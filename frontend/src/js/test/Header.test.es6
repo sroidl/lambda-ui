@@ -39,14 +39,14 @@ describe("Header", () => {
     describe("Navbar Links", () => {
         it("should return one html link", () => {
             const component = HeaderLinks({links: [{url: "http://", text: "Link"}]});
-            expect(component).toEqualJSX(<div className="linksHeader"><a target="_blank" key="headerlink-0"
+            expect(component).toEqualJSX(<div className="linksHeader"><a className="link" target="_blank" key="headerlink-0"
                                                                       href="http://">Link</a></div>);
         });
 
         it("should return two html links", () => {
             const component = HeaderLinks({links: [{url: "http://", text: "Link1"}, {url: "https://", text: "Link2"}]});
-            expect(component).toEqualJSX(<div className="linksHeader"><a target="_blank" key="headerlink-430"
-                                                                      href="http://">Link1</a><a target="_blank"
+            expect(component).toEqualJSX(<div className="linksHeader"><a className="link" target="_blank" key="headerlink-430"
+                                                                      href="http://">Link1</a><a className="link" target="_blank"
                                                                                                  key="headerlink-1"
                                                                                                  href="https://">Link2</a>
             </div>);
@@ -66,7 +66,7 @@ describe("Header", () => {
         it("should set link target correct", () => {
             const component = HeaderLinks({links: [{url: "http://", text: "Link", target: "someTarget"}]});
             expect(component).toEqualJSX(<div className="linksHeader">
-                {<a target="someTarget" key="http://"
+                {<a className="link" target="someTarget" key="http://"
                    href="http://">Link</a>}
 
             </div>);
@@ -74,7 +74,7 @@ describe("Header", () => {
 
         it("should set link target to _blank if key does not exist", () => {
             const component = HeaderLinks({links: [{url: "http://", text: "Link"}]});
-            expect(component).toEqualJSX(<div className="linksHeader"><a target="_blank" key="headerlink-0"
+            expect(component).toEqualJSX(<div className="linksHeader"><a className="link" target="_blank" key="headerlink-0"
                                                                       href="http://">Link</a></div>);
         });
 
