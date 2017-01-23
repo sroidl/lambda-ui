@@ -15,18 +15,18 @@ export class QuickDetails extends React.Component {
 
     expandAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <a href="#" className="quickDetails__expand-all" onClick={this.props.expandAllFn} title="Open all steps">
+            return <span className="quickDetails__expand-all link" onClick={this.props.expandAllFn} title="Open all steps">
                 <i className="fa fa-plus-square-o" ></i>
-            </a>;
+            </span>;
         }
         return null;
     }
 
     collapseAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <a href="#" className="quickDetails__collapse-all" onClick={this.props.collapseAllFn} title="Close all steps">
+            return <span className="quickDetails__collapse-all link" onClick={this.props.collapseAllFn} title="Close all steps">
                 <i className="fa fa-minus-square-o" ></i>
-            </a>;
+            </span>;
         }
         return null;
     }
@@ -38,9 +38,9 @@ export class QuickDetails extends React.Component {
 
             const followIcon = this.props.isFollow ? "fa-check-square-o" : "fa-square-o";
 
-            return <a href="#" className="quickDetails__follow" onClick={this.props.followFn} title="Follow active steps">
+            return <span className="quickDetails__follow link" onClick={this.props.followFn} title="Follow active steps">
                 <i className={`fa ${followIcon}`} ></i> follow
-            </a>;
+            </span>;
         }
         return null;
     }

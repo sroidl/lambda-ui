@@ -19,7 +19,7 @@ export const HeaderLinks = (props) => {
     const defaultTarget = R.defaultTo("_blank");
 
     const linkComponent = (link, key) => {
-        return <a target={defaultTarget(link.target)} key={key} href={link.url}>{link.text}</a>;
+        return <a className="link" target={defaultTarget(link.target)} key={key} href={link.url}>{link.text}</a>;
     };
 
     const mapIndexed = R.addIndex(R.map);
@@ -58,10 +58,8 @@ export const Header = ({pipelineName, links, showStartBuildButton}) => {
 
     return <div className="appHeader">
         <div className="logo">
-            <a href="http://www.lambda.cd/">
                 <img src={logo} className="logoImage" alt="logo"/>
-            </a>
-            <span className="logoText">{pipelineName}</span>
+                <span className="logoText">{pipelineName}</span>
         </div>
         {headerLinks}
         {startBuildButton(showStartBuildButton, triggerNewFn)}

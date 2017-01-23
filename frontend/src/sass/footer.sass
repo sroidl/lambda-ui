@@ -17,6 +17,12 @@
   & .version-info
     font-size: 0.8em
 
-.version-info__link > a
-  padding: 0
-  color: $dark-light-grey
+.version-info__link
+
+  & > a
+    padding: 0
+    color: $dark-light-grey
+    text-decoration: none
+
+  & > a:hover, a:active, a:focus
+    color: darken($blue, 20%)
