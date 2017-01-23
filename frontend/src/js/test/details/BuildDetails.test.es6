@@ -93,8 +93,6 @@ describe("BuildDetails", () => {
         });
     });
 
-
-
     describe("Redux wiring", () => {
         it("should dispatch open substep action", () => {
 
