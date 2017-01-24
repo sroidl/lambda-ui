@@ -18,14 +18,10 @@ const initialState = {
     developmentToggles: {
         usePolling: true,
         showConnectionState: false,
-        showPipelineTour: false,
-        quickDetails_expandCollapse: true,
-        followBuild: true
     },
     showStepToolbox: {},
     triggerDialog: {},
     showSubsteps: {},
-    scrollToStep: {},
 };
 
 const rootReducer = combineReducers({

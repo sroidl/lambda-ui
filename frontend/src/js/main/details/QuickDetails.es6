@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import "../../../sass/quickDetails.sass";
 import R from "ramda";
 import QuickStep from "../details/QuickStep.es6";
-import DevToggles from "../DevToggles.es6";
 import * as Actions from "../actions/BuildStepActions.es6";
 import * as Utils from "../Utils.es6";
 import TransitionGroup from "react-addons-css-transition-group";
@@ -27,35 +26,26 @@ export class QuickDetails extends React.Component {
     }
 
     expandAllLink() {
-        if (DevToggles.quickDetails_expandCollapse) {
             return <span className="quickDetails__expand-all link" onClick={this.props.expandAllFn}
                          title="Open all steps">
                 <i className="fa fa-plus-square-o"></i>
             </span>;
-        }
-        return null;
     }
 
     collapseAllLink() {
-        if (DevToggles.quickDetails_expandCollapse) {
             return <span className="quickDetails__collapse-all link" onClick={this.props.collapseAllFn}
                          title="Close all steps">
                 <i className="fa fa-minus-square-o"></i>
             </span>;
-        }
-        return null;
     }
 
     followLink() {
-        if (DevToggles.followBuild) {
             const followIcon = this.props.isFollow ? "fa-check-square-o" : "fa-square-o";
 
             return <span className="quickDetails__follow link" onClick={this.props.followFn}
                          title="Follow active steps">
                 <i className={`fa ${followIcon}`}></i> follow
             </span>;
-        }
-        return null;
     }
 
     render() {

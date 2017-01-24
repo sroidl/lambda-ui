@@ -1,14 +1,11 @@
 /* globals describe it expect afterEach beforeEach jest */
 jest.mock("../../main/steps/InterestingStepFinder.es6");
-jest.mock("../../main/DevToggles.es6");
 import {toggleState, showSubstepReducer, buildStepsReducer} from "../../main/reducers/BuildSteps.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {findPathToMostInterestingStep} from "../../main/steps/InterestingStepFinder.es6";
-import devToggles from "../../main/DevToggles.es6";
 import * as OutputActions from "../../main/actions/OutputActions.es6";
 import * as BuildDetailActions from "../../main/actions/BuildDetailActions.es6";
 
-devToggles.followBuild = true;
 
 describe("BuildStep", () => {
 

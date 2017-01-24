@@ -1,14 +1,11 @@
-/* globals describe it expect afterEach beforeEach jest */
-jest.mock("../main/DevToggles.es6");
+/* globals describe it expect afterEach beforeEach */
 import React from "react";
 import {Header, HeaderLinks, mapStateToProps} from "../main/Header.es6";
 import * as TestUtils from "../test/testsupport/TestUtils.es6";
 import {shallow} from "enzyme";
 import R from "ramda";
-import DevToggleMock from "../main/DevToggles.es6";
 import "jasmine-expect-jsx";
 
-DevToggleMock.showPipelineTour = false;
 
 describe("Header", () => {
 

@@ -13,18 +13,6 @@ class DevToggles {
     get showConnectionState() {
         return isActive("showConnectionState");
     }
-
-    get showPipelineTour() {
-        return isActive("showPipelineTour");
-    }
-
-    get quickDetails_expandCollapse() {
-        return isActive("quickDetails_expandCollapse");
-    }
-
-    get followBuild(){
-        return isActive("followBuild");
-    }
 }
 
 export default new DevToggles();

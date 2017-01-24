@@ -2,7 +2,6 @@
 /* globals jest describe it expect beforeEach afterEach */
 jest.mock("../../main/Backend.es6");
 jest.mock("../../main/actions/BackendActions.es6");
-jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/Utils.es6");
 jest.mock("../../main/steps/InterestingStepFinder.es6");
 jest.mock("../../main/steps/HorizontalScroll.es6");

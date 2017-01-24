@@ -2,7 +2,6 @@ import LambdaUI from "./App.es6";
 import "../../sass/main.sass";
 import "../../thirdparty/skeleton.css";
 import "../../thirdparty/normalize.css";
-import Toggles from "./DevToggles.es6";
 
 const updateTitle = (pipelineName) => {
     document.title = pipelineName;
@@ -16,6 +15,4 @@ updateTitle(config.name);
 console.log("Using configuration", config);
 LambdaUI.startUp(config);
 
-console.log("UsePolling ", Toggles.usePolling);
-console.log("ShowPipelineTour ", Toggles.showPipelineTour);
-console.log("ShowConnectionState ", Toggles.showConnectionState);
+

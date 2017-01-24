@@ -2,17 +2,12 @@
 /* eslint-disable no-duplicate-imports */
 jest.mock("../../main/DevToggles.es6");
 jest.mock("../../main/actions/BuildDetailActions.es6");
-jest.mock("../../main/DevToggles.es6");
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 import {QuickDetails} from "../../main/details/QuickDetails.es6";
 import * as subject from "../../main/details/QuickDetails.es6";
 import {shallow} from "enzyme";
 import React from "react";
-import DevToggles from "../../main/DevToggles.es6";
 import {openSubsteps, closeSubsteps} from "../../main/actions/BuildStepActions.es6";
-
-DevToggles.quickDetails_expandCollapse = true;
-DevToggles.followBuild = true;
 
 describe("QuickDetails", () => {
 

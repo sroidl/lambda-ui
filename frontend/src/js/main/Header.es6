@@ -4,8 +4,6 @@ import App from "./App.es6";
 import logo from "../../img/logo.png";
 import "../../sass/header.sass";
 import R from "ramda";
-import {startTutorial} from "./tutorial/Tutorial.es6";
-import DevToggles from "./DevToggles.es6";
 
 export const HeaderLinks = (props) => {
     if(!props) {
@@ -51,11 +49,6 @@ export const Header = ({pipelineName, links, showStartBuildButton}) => {
         headerLinks = "";
     }
 
-    let pipelineTour = "";
-    if(DevToggles.showPipelineTour){
-        pipelineTour = <a href="#" onClick={startTutorial}>Take a tour through your pipeline</a>;
-    }
-
     return <div className="appHeader">
         <div className="logo">
                 <img src={logo} className="logoImage" alt="logo"/>
@@ -63,7 +56,6 @@ export const Header = ({pipelineName, links, showStartBuildButton}) => {
         </div>
         {headerLinks}
         {startBuildButton(showStartBuildButton, triggerNewFn)}
-        {pipelineTour}
     </div>;
 };
 

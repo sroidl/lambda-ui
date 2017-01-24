@@ -2,7 +2,6 @@ import R from "ramda";
 import * as StepActions from "../actions/BuildStepActions.es6";
 import * as BuildDetailAction from "../actions/BuildDetailActions.es6";
 import {findPathToMostInterestingStep} from "../steps/InterestingStepFinder.es6";
-import devToggles from "../DevToggles.es6";
 import * as OutputActions from "../actions/OutputActions.es6";
 
 export const toggleState = (oldState, buildId, stepId) => {
@@ -60,24 +59,22 @@ export const showSubstepReducer = (oldState = {}, action) => {
         }
 
         case BuildDetailAction.ADD_BUILD_DETAILS: {
-            if (devToggles.followBuild) {
-                const isFollow = R.pathOr(true, [action.buildId, "follow"], oldState);
-                if (isFollow) {
-                    const defaultToEmpty = R.defaultTo({path:[]});
-                    const pathToMostInterestingStep = defaultToEmpty(findPathToMostInterestingStep(action.buildDetails, "root"));
-                    const buildIdLens = R.lensProp([action.buildId]);
-                    const pathToMerge = R.map(stepId => ({[stepId]: true}))(pathToMostInterestingStep.path);
-                    const newInnerState = R.merge(R.view(buildIdLens, oldState), R.mergeAll(pathToMerge));
+            const isFollow = R.pathOr(true, [action.buildId, "follow"], oldState);
+            if (isFollow) {
+                const defaultToEmpty = R.defaultTo({path: []});
+                const pathToMostInterestingStep = defaultToEmpty(findPathToMostInterestingStep(action.buildDetails, "root"));
+                const buildIdLens = R.lensProp([action.buildId]);
+                const pathToMerge = R.map(stepId => ({[stepId]: true}))(pathToMostInterestingStep.path);
+                const newInnerState = R.merge(R.view(buildIdLens, oldState), R.mergeAll(pathToMerge));
 
-                    const mostInterestingStep = R.last(pathToMostInterestingStep.path);
-                    return R.pipe(R.set(buildIdLens, newInnerState), R.set(scrollToLens(action), updateScrollTo(mostInterestingStep, oldState, action)))(oldState);
-                }
+                const mostInterestingStep = R.last(pathToMostInterestingStep.path);
+                return R.pipe(R.set(buildIdLens, newInnerState), R.set(scrollToLens(action), updateScrollTo(mostInterestingStep, oldState, action)))(oldState);
             }
             return oldState;
         }
 
         case OutputActions.SHOW_BUILD_OUTPUT: {
-           return disableFollow(action)(oldState);
+            return disableFollow(action)(oldState);
         }
 
         case BuildDetailAction.SCROLL_TO_STEP: {
