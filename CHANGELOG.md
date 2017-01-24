@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - follow active step in build details
 - add footer with version numbers (can be opted out, see README)
+- add grab&scroll info on build details that exceed the monitor width
 
 ## [0.2.0]
 
