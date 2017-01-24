@@ -18,7 +18,7 @@ const ConnectionState_stateMapping = state => {
 };
 const ConnectionStateRedux = connect(ConnectionState_stateMapping)(ConnectionState);
 
-export class BuildStepOutput extends React.Component {
+export class BuildStepDetailsLayer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -91,6 +91,7 @@ export class BuildStepOutput extends React.Component {
                 <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span><i
                     className="fa fa-times" aria-hidden="true"></i>
                 </div>
+
                 <div ref={(div) => {
                     this.layerText = div;
                 }} className="layerText">{this.outputLines()}</div>
@@ -99,7 +100,7 @@ export class BuildStepOutput extends React.Component {
     }
 }
 
-BuildStepOutput.propTypes = {
+BuildStepDetailsLayer.propTypes = {
     buildId: PropTypes.any,
     stepName: PropTypes.string,
     stepState: PropTypes.string,
@@ -149,4 +150,4 @@ export const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BuildStepOutput);
+export default connect(mapStateToProps, mapDispatchToProps)(BuildStepDetailsLayer);

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import React from "react";
 import BuildSummaryList from "./BuildSummaryList.es6";
 import Header from "./Header.es6";
-import BuildStepOutput from "./steps/BuildStepOutput.es6";
+import BuildStepDetailLayer from "./steps/BuildStepDetailLayer.es6";
 import {Backend} from "./Backend.es6";
 import {addConfiguration} from "./actions/ConfigActions.es6";
 import TriggerDialog from "./steps/TriggerDialog.es6";
@@ -40,7 +40,7 @@ export class LambdaUI {
             <div>
                 <Header />
                 <BuildSummaryList/>
-                <BuildStepOutput/>
+                <BuildStepDetailLayer/>
                 <TriggerDialog />
             </div>
         </Provider>, rootElement);
