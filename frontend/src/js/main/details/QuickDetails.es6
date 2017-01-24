@@ -6,33 +6,19 @@ import QuickStep from "../details/QuickStep.es6";
 import DevToggles from "../DevToggles.es6";
 import * as Actions from "../actions/BuildStepActions.es6";
 import * as Utils from "../Utils.es6";
+import TransitionGroup from "react-addons-css-transition-group";
 
-
-const ScrollInfo = ({showScrollInfo}) => {
-    if (!showScrollInfo) {
-        return null;
-    }
+const ScrollInfo = () => {
 
     return <div className="quickDetails__scrollInfo">
-            <div className="quickDetails__scrollInfo__icon fa-stack fa">
-                        <i className="fa fa-arrows-h fa-stack-2x"></i>
-                        <i className="fa fa-hand-grab-o fa-stack-1x"></i>
-            </div>
-            <span className="quickDetails__scrollInfo__text">Grab & Scroll</span>
-        </div>;
+        <div className="quickDetails__scrollInfo__icon fa-stack fa">
+            <i className="fa fa-arrows-h fa-stack-2x"></i>
+            <i className="fa fa-hand-grab-o fa-stack-1x"></i>
+        </div>
+        <span className="quickDetails__scrollInfo__text">Grab & Scroll</span>
+    </div>;
 };
 
-ScrollInfo.propTypes = {
-    showScrollInfo: PropTypes.bool
-};
-
-const scrollInfo_mapStateToProps = (state, initialProps) => {
-    return {
-        showScrollInfo: R.path([initialProps.buildId, "showScrollInfo"], state.showSubsteps)
-    };
-};
-
-const ScrollInfoRedux = connect(scrollInfo_mapStateToProps)(ScrollInfo);
 
 export class QuickDetails extends React.Component {
 
@@ -42,8 +28,9 @@ export class QuickDetails extends React.Component {
 
     expandAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <span className="quickDetails__expand-all link" onClick={this.props.expandAllFn} title="Open all steps">
-                <i className="fa fa-plus-square-o" ></i>
+            return <span className="quickDetails__expand-all link" onClick={this.props.expandAllFn}
+                         title="Open all steps">
+                <i className="fa fa-plus-square-o"></i>
             </span>;
         }
         return null;
@@ -51,32 +38,44 @@ export class QuickDetails extends React.Component {
 
     collapseAllLink() {
         if (DevToggles.quickDetails_expandCollapse) {
-            return <span className="quickDetails__collapse-all link" onClick={this.props.collapseAllFn} title="Close all steps">
-                <i className="fa fa-minus-square-o" ></i>
+            return <span className="quickDetails__collapse-all link" onClick={this.props.collapseAllFn}
+                         title="Close all steps">
+                <i className="fa fa-minus-square-o"></i>
             </span>;
         }
         return null;
     }
 
-    followLink(){
-        if (DevToggles.followBuild){
+    followLink() {
+        if (DevToggles.followBuild) {
             const followIcon = this.props.isFollow ? "fa-check-square-o" : "fa-square-o";
 
-            return <span className="quickDetails__follow link" onClick={this.props.followFn} title="Follow active steps">
-                <i className={`fa ${followIcon}`} ></i> follow
+            return <span className="quickDetails__follow link" onClick={this.props.followFn}
+                         title="Follow active steps">
+                <i className={`fa ${followIcon}`}></i> follow
             </span>;
         }
         return null;
     }
 
     render() {
-        const {steps, buildId, maxDepth} = this.props;
+        const {steps, buildId, maxDepth, showScrollInfo} = this.props;
 
         return <div className="quickDetails">
-            <div className="quickTitle">Quick Access {this.expandAllLink()} {this.collapseAllLink()} {this.followLink()} </div>
+            <div className="quickTitle">Quick
+                Access {this.expandAllLink()} {this.collapseAllLink()} {this.followLink()} </div>
             {R.map(step => <QuickStep key={step.stepId} curDepth={1} maxDepth={maxDepth} buildId={buildId}
                                       step={step}/>)(steps)}
-            <ScrollInfoRedux buildId={this.props.buildId}/>
+
+            <TransitionGroup
+                transitionName="quickDetails__scrollInfo--fade"
+                transitionEnterTimeout={200}
+                transitionAppear={true}
+                transitionAppearTimeout={200}
+                transitionLeaveTimeout={200}>
+                { showScrollInfo && <ScrollInfo/> }
+            </TransitionGroup>
+
         </div>;
     }
 }
@@ -88,7 +87,8 @@ QuickDetails.propTypes = {
     expandAllFn: PropTypes.func.isRequired,
     collapseAllFn: PropTypes.func.isRequired,
     followFn: PropTypes.func.isRequired,
-    isFollow: PropTypes.bool
+    isFollow: PropTypes.bool,
+    showScrollInfo: PropTypes.bool
 };
 
 export const mapStateToProps = (state, ownProps) => {
@@ -100,7 +100,8 @@ export const mapStateToProps = (state, ownProps) => {
     const stateProps = {
         steps: steps,
         stepIds: stepIds,
-        isFollow: isFollow
+        isFollow: isFollow,
+        showScrollInfo: R.path([ownProps.buildId, "showScrollInfo"], state.showSubsteps)
     };
 
     return R.mergeAll([ownProps, stateProps]);

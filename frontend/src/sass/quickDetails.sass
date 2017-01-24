@@ -98,7 +98,6 @@
   padding-right: 8px
   text-align: center
   color: $dark-light-grey
-  animation: fadeIn 1s
 
   &__text
     display: block
@@ -109,9 +108,24 @@
     margin-bottom: -10px
 
 
-@keyframes fadeIn
-  0%
-    opacity: 0
 
-  100%
+.quickDetails__scrollInfo--fade-appear
+  opacity: 0.01
+
+  &.quickDetails__scrollInfo--fade-appear-active
     opacity: 1
+    transition: opacity 200ms ease-in
+
+.quickDetails__scrollInfo--fade-enter
+  opacity: 0.01
+
+  &.quickDetails__scrollInfo--fade-enter-active
+    opacity: 1
+    transition: opacity 200ms ease-in
+
+.quickDetails__scrollInfo--fade-leave
+  opacity: 1
+
+  &.quickDetails__scrollInfo--fade-leave-active
+    opacity: 0.01
+    transition: opacity 200ms ease-in

@@ -10,7 +10,7 @@ import "../../../sass/buildDetails.sass";
 
 const updateScrollInfo = (component) => {
     const {showScrollInfoFn, showScrollInfo, buildId} = component.props;
-    const dom = component.detailsDom;
+    const dom = R.defaultTo({}, component.detailsDom);
 
     const shouldShowScrollInfo = dom.scrollWidth > dom.clientWidth;
     if (shouldShowScrollInfo !== showScrollInfo) {
@@ -37,12 +37,12 @@ export class BuildDetails extends React.Component {
             this.registeredEventHandler = false;
         }
 
+        updateScrollInfo(this);
+
         if (stepToScroll) {
             scrollToStep(buildId, stepToScroll);
             noScrollToStepFn(buildId);
         }
-
-        updateScrollInfo(this);
 
 
     }
