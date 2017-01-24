@@ -40,14 +40,14 @@
         long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})
         artifact-pipeline (lambdacd/assemble-pipeline artifact-pipeline/pipeline-structure {:home-dir "/tmp/moinsen" :artifacts-path-context artifacts-path-context :name "ARTIFACT PIPELINE"})]
 
-    (reset! current-pipeline artifact-pipeline)
+    (reset! current-pipeline simple-pipeline)
 
     (reset! server
 
             (let [routes
 
                   (routes
-                    (ui/ui-for artifact-pipeline :showStartBuildButton true)
+                    (ui/ui-for simple-pipeline :showStartBuildButton true)
                     (context artifacts-path-context [] (artifacts/artifact-handler-for artifact-pipeline))
 
                     (context "/long-running" []

@@ -39,11 +39,10 @@ export class BuildDetails extends React.Component {
 
         updateScrollInfo(this);
 
-        if (stepToScroll) {
-            scrollToStep(buildId, stepToScroll);
+        if (stepToScroll.updated) {
+            scrollToStep(buildId, stepToScroll.step);
             noScrollToStepFn(buildId);
         }
-
 
     }
 
@@ -75,22 +74,18 @@ BuildDetails.propTypes = {
     buildId: PropTypes.number.isRequired,
     open: PropTypes.bool.isRequired,
     stepsToDisplay: PropTypes.array,
-    stepToScroll: PropTypes.string,
+    stepToScroll: PropTypes.object,
     noScrollToStepFn: PropTypes.func.isRequired,
     openSubstepsFn: PropTypes.func.isRequired,
     buildDetails: PropTypes.object,
     showScrollInfoFn: PropTypes.func
 };
 export const mapStateToProps = (state, ownProps) => {
+    const buildId = ownProps.buildId;
     const details = state.buildDetails[ownProps.buildId] || {};
 
     const stepsToDisplay = details.steps || null;
-    const stateScroll = state.scrollToStep;
-
-    let stepToScroll = null;
-    if (stateScroll && stateScroll.scrollToStep && stateScroll.buildId === ownProps.buildId) {
-        stepToScroll = stateScroll.stepId;
-    }
+    const stepToScroll = R.pathOr({updated: false}, [buildId, "scrollToStep"])(state.showSubsteps);
 
     return {
         buildId: parseInt(ownProps.buildId),

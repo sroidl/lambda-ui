@@ -136,7 +136,7 @@ describe("BuildStep", () => {
             expect(newState).toBe(oldState);
         });
 
-        it("should open most interesting step", () => {
+        it("should open and scroll to most interesting step", () => {
             const oldState = {42: {"1": false, "follow": true}, 1: {"1": true}};
             findPathToMostInterestingStep.mockReturnValue({state: "running", path: ["1", "1-1", "1-1-1"]});
 
@@ -147,7 +147,7 @@ describe("BuildStep", () => {
             });
 
             expect(findPathToMostInterestingStep).toBeCalledWith({foo: "bar"}, "root");
-            expect(newState).toEqual({42: {"1": true, "1-1": true, "1-1-1": true, "follow": true}, 1: {"1": true}});
+            expect(newState).toEqual({42: {"1": true, "1-1": true, "1-1-1": true, "follow": true, "scrollToStep" : { "step": "1-1-1", "updated": true}}, 1: {"1": true}});
         });
 
         it("should not open most interesting step if follow is false", () => {
@@ -213,5 +213,31 @@ describe("BuildStep", () => {
             expect(newState).toEqual({12: {showScrollInfo: true, other: "values"}});
         });
 
+    });
+
+    describe("ScrollToStepReducer", () => {
+        it("should return oldState if no action was emitted", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: "nonsense"});
+
+            expect(newState).toBe(oldState);
+        });
+
+        it("should add new scrollToStep entry", () => {
+            const oldState = {};
+
+            const newState = showSubstepReducer(oldState, {type: BuildDetailActions.SCROLL_TO_STEP, buildId: 1, stepId: "1"});
+
+            expect(newState).toEqual({"1": {follow: false, scrollToStep: {step: "1", updated: true}}});
+        });
+
+        it("should change scrollToStep entry to false", () => {
+            const oldState = {"1" : {scrollToStep: {step: "1", updated: true}}};
+
+            const newState = showSubstepReducer(oldState, {type: BuildDetailActions.NO_SCROLL_TO_STEP, buildId: 1});
+
+            expect(newState).toEqual({"1": {scrollToStep: {step: "1", updated: false}}});
+        });
     });
 });

@@ -2,7 +2,7 @@ import {createStore, combineReducers, compose, applyMiddleware} from "redux";
 import ReduxThunk from "redux-thunk";
 import {ToggleBuildDetailsReducer} from "./reducers/ToggleBuildDetails.es6";
 import {BuildSummariesReducer} from "./reducers/BuildSummaries.es6";
-import {BuildDetailsReducer, ScrollToStepReducer} from "./reducers/BuildDetails.es6";
+import {BuildDetailsReducer} from "./reducers/BuildDetails.es6";
 import {PipelineConfigurationReducer} from "./reducers/PipelineConfiguration.es6";
 import {OutputReducer} from "./reducers/Output.es6";
 import {DevelopmentTogglesReducer} from "./reducers/DevelopmentToggles.es6";
@@ -20,7 +20,7 @@ const initialState = {
         showConnectionState: false,
         showPipelineTour: false,
         quickDetails_expandCollapse: true,
-        followBuild: false
+        followBuild: true
     },
     showStepToolbox: {},
     triggerDialog: {},
@@ -38,7 +38,6 @@ const rootReducer = combineReducers({
     showStepToolbox: buildStepsReducer,
     triggerDialog: BuildStepTriggerReducer,
     showSubsteps: showSubstepReducer,
-    scrollToStep: ScrollToStepReducer,
 });
 
 const middleware = compose(
