@@ -13,6 +13,10 @@ class DevToggles {
     get showConnectionState() {
         return isActive("showConnectionState");
     }
+
+    get showBuildArtifacts() {
+        return isActive("showBuildArtifacts");
+    }
 }
 
 export default new DevToggles();
