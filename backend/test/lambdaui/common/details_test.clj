@@ -60,6 +60,23 @@
                                   :endTime   nil
                                   :details   []}]}
                       (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId nil)))))))
+
+  (testing "that it returns build details with details of a running step"
+    (let [buildId 1]
+      (is (= {:buildId 1
+              :steps   [{:stepId    "1"
+                         :state     :success
+                         :name      "do-stuff"
+                         :startTime joda-date-12-str
+                         :type      :step
+                         :steps     []
+                         :endTime   joda-date-14-str
+                         :details   [{:label   "Artifacts"
+                                      :href    "some-href"
+                                      :details [:label "file.txt"
+                                                :href "link-to-file"]}]}]}
+             (subject/build-details-from-pipeline foo-pipeline (artifacts-pipeline-build-state) buildId nil)))))
+
   (testing "that it returns build details of a finished step"
     (doall (for [finished-status [:success :failure :killed]]
              (let [buildId 1]
