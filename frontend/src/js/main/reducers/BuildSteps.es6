@@ -54,12 +54,12 @@ export const showSubstepReducer = (oldState = {}, action) => {
             if (devToggles.followBuild) {
                 const isFollow = R.pathOr(true, [action.buildId, "follow"], oldState);
                 if (isFollow) {
-                    const mostInterestingStep = findPathToMostInterestingStep(action.buildDetails, "root");
-
-                    const builIdLens = R.lensProp([action.buildId]);
-                    const mostInsterstingStepList = R.map(stepId => ({[stepId]: true}))(mostInterestingStep.path);
-                    const newInnerState = R.merge(R.view(builIdLens, oldState), R.mergeAll(mostInsterstingStepList));
-                    return R.set(builIdLens, newInnerState)(oldState);
+                    const defaultToEmpty = R.defaultTo({});
+                    const mostInterestingStep = defaultToEmpty(findPathToMostInterestingStep(action.buildDetails, "root"));
+                    const buildIdLens = R.lensProp([action.buildId]);
+                    const mostInterestingStepList = R.map(stepId => ({[stepId]: true}))(defaultToEmpty(mostInterestingStep.path));
+                    const newInnerState = R.merge(R.view(buildIdLens, oldState), R.mergeAll(mostInterestingStepList));
+                    return R.set(buildIdLens, newInnerState)(oldState);
                 /* eslint-disable no-else-return */
                 } else {
                     return oldState;
