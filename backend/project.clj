@@ -21,6 +21,7 @@
   :lein-release {:scm :git}
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
-                                  [ring-cors "0.1.8"]]
+                                  [ring-cors "0.1.8"]
+                                  [lambdacd-artifacts "0.2.1"]]
                    :aot          [lambdaui.testpipeline.core]
                    :main         lambdaui.testpipeline.core}})

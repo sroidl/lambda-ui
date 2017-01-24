@@ -37,78 +37,94 @@
          :first-updated-at      joda-date-12
          :most-recent-update-at joda-date-14}})
 
+(defn artifacts-pipeline-build-state []
+  {'(1) {:status                :success
+         :first-updated-at      joda-date-12
+         :most-recent-update-at joda-date-14
+         :details               [{:label   "Artifacts"
+                                  :href    "some-href"
+                                  :details [:label "file.txt"
+                                            :href "link-to-file"]}]}})
 
 (deftest build-details-from-pipeline-test
-         (testing "that it returns build details of a running step"
-                  (doall (for [running-status [:waiting :running :foo]]
-                           (let [buildId 1]
-                             (is (= {:buildId 1
-                                     :steps   [{:stepId    "1"
-                                                :state     running-status
-                                                :name      "do-stuff"
-                                                :startTime joda-date-12-str
-                                                :type      :step
-                                                :steps     []
-                                                :endTime   nil}]}
-                                    (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId nil)))))))
-         (testing "that it returns build details of a finished step"
-                  (doall (for [finished-status [:success :failure :killed]]
-                           (let [buildId 1]
-                             (is (= {:buildId 1
-                                     :steps   [{:stepId    "1"
-                                                :state     finished-status
-                                                :name      "do-stuff"
-                                                :type      :step
-                                                :steps     []
-                                                :startTime joda-date-12-str
-                                                :endTime   joda-date-14-str}]}
-                                    (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId nil)))))))
-         (testing "that it returns build details of nested steps"
-                  (let [buildId 1]
-                    (is (= {:buildId 1
-                            :steps   [{:stepId    "1"
-                                       :state     :running
-                                       :name      "run"
-                                       :startTime joda-date-12-str
-                                       :endTime   nil
-                                       :type      :container
-                                       :steps     [{:stepId    "1-1"
-                                                    :state     :running
-                                                    :type      :step
-                                                    :steps     []
-                                                    :name      "do-stuff"
-                                                    :startTime joda-date-12-str
-                                                    :endTime   nil}
+  (testing "that it returns build details of a running step"
+    (doall (for [running-status [:waiting :running :foo]]
+             (let [buildId 1]
+               (is (= {:buildId 1
+                       :steps   [{:stepId    "1"
+                                  :state     running-status
+                                  :name      "do-stuff"
+                                  :startTime joda-date-12-str
+                                  :type      :step
+                                  :steps     []
+                                  :endTime   nil
+                                  :details   []}]}
+                      (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state running-status) buildId nil)))))))
+  (testing "that it returns build details of a finished step"
+    (doall (for [finished-status [:success :failure :killed]]
+             (let [buildId 1]
+               (is (= {:buildId 1
+                       :steps   [{:stepId    "1"
+                                  :state     finished-status
+                                  :name      "do-stuff"
+                                  :type      :step
+                                  :steps     []
+                                  :startTime joda-date-12-str
+                                  :endTime   joda-date-14-str
+                                  :details   []}]}
+                      (subject/build-details-from-pipeline foo-pipeline (foo-pipeline-build-state finished-status) buildId nil)))))))
+  (testing "that it returns build details of nested steps"
+    (let [buildId 1]
+      (is (= {:buildId 1
+              :steps   [{:stepId    "1"
+                         :state     :running
+                         :name      "run"
+                         :startTime joda-date-12-str
+                         :endTime   nil
+                         :type      :container
+                         :details   []
+                         :steps     [{:stepId    "1-1"
+                                      :state     :running
+                                      :type      :step
+                                      :steps     []
+                                      :name      "do-stuff"
+                                      :startTime joda-date-12-str
+                                      :endTime   nil
+                                      :details   []}
 
-                                                   {:stepId    "2-1"
-                                                    :state     :pending
-                                                    :name      "do-stuff"
-                                                    :type      :step
-                                                    :steps     []
-                                                    :startTime nil
-                                                    :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId nil)))))
+                                     {:stepId    "2-1"
+                                      :state     :pending
+                                      :name      "do-stuff"
+                                      :type      :step
+                                      :steps     []
+                                      :startTime nil
+                                      :endTime   nil
+                                      :details   []}]}]} (subject/build-details-from-pipeline pipeline-with-substeps pipeline-with-substeps-state buildId nil)))))
 
-         (testing "that it returns build details of nested parallel step"
-                  (let [buildId 1]
-                    (is (= {:buildId 1
-                            :steps   [{:stepId    "1"
-                                       :state     :running
-                                       :name      "in-parallel"
-                                       :type      :parallel
-                                       :startTime joda-date-12-str
-                                       :endTime   nil
-                                       :steps     [{:stepId    "1-1"
-                                                    :state     :running
-                                                    :type      :step
-                                                    :steps     []
-                                                    :name      "do-stuff"
-                                                    :startTime joda-date-12-str
-                                                    :endTime   nil}
+  (testing "that it returns build details of nested parallel step"
+    (let [buildId 1]
+      (is (= {:buildId 1
+              :steps   [{:stepId    "1"
+                         :state     :running
+                         :name      "in-parallel"
+                         :type      :parallel
+                         :startTime joda-date-12-str
+                         :endTime   nil
+                         :details   []
+                         :steps     [{:stepId    "1-1"
+                                      :state     :running
+                                      :type      :step
+                                      :steps     []
+                                      :name      "do-stuff"
+                                      :startTime joda-date-12-str
+                                      :endTime   nil
+                                      :details   []}
 
-                                                   {:stepId    "2-1"
-                                                    :state     :pending
-                                                    :name      "do-stuff"
-                                                    :type      :step
-                                                    :steps     []
-                                                    :startTime nil
-                                                    :endTime   nil}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId nil))))))
+                                     {:stepId    "2-1"
+                                      :state     :pending
+                                      :name      "do-stuff"
+                                      :type      :step
+                                      :steps     []
+                                      :startTime nil
+                                      :endTime   nil
+                                      :details   []}]}]} (subject/build-details-from-pipeline pipeline-with-substeps-parallel pipeline-with-substeps-state buildId nil))))))

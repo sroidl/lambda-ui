@@ -32,7 +32,8 @@
               :name      (:name step)
               :state     (or status :pending)
               :startTime (to-iso-string (:first-updated-at (:result step)))
-              :endTime   (when (common/finished? status) (to-iso-string (:most-recent-update-at (:result step))))}
+              :endTime   (when (common/finished? status) (to-iso-string (:most-recent-update-at (:result step))))
+              :details   (get-in step [:result :details] [])}
         type (if (empty? trigger) {:type (get-type step)} {:type :trigger})
         children (if-let [children (:children step)] {:steps (map (partial to-output-format trigger-path-prefix) children)} {})]
     (merge base type children trigger)))

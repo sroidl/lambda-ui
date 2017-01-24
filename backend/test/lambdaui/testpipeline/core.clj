@@ -7,6 +7,7 @@
             [lambdaui.testpipeline.simple-pipeline :as pipe]
             [lambdaui.testpipeline.trigger-pipeline :as pipe-with-trigger]
             [lambdaui.testpipeline.long-running :as long-running-pipe]
+            [lambdaui.testpipeline.artifact-pipeline :as artifact-pipeline]
             [lambdaui.core :as ui]
             [lambdacd.internal.execution :as exec]
             [clojure.core.async :as async :refer [go <! <!! >! >!!]]
@@ -15,7 +16,8 @@
             [lambdaui.fixtures.pipelines :as fixture]
             [compojure.core :refer [routes GET context POST]]
             [ring.middleware.cors :refer [wrap-cors]]
-            [lambdacd.presentation.unified :as presentation])
+            [lambdacd.presentation.unified :as presentation]
+            [lambdacd-artifacts.core :as artifacts])
 
   (:use [lambdacd.runners]))
 
@@ -29,20 +31,25 @@
 
 (def ui-config {:navbar {:links [{:url "http://localhost:8080/" :text "Link without target" :target ""}]}})
 
+(def artifacts-path-context "/artifacts")
+
 (defn start-server [port]
   (let [small-pipeline (lambdacd/assemble-pipeline pipe/small-pipeline {:home-dir (util/create-temp-dir) :name "SMALL_PIPELINE"})
         simple-pipeline (lambdacd/assemble-pipeline pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "SIMPLE PIPELINE" :ui-config ui-config})
         trigger-pipeline (lambdacd/assemble-pipeline pipe-with-trigger/pipeline-structure {:home-dir (util/create-temp-dir) :name "TRIGGER PIPELINE"})
-        long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})]
+        long-running-pipeline (lambdacd/assemble-pipeline long-running-pipe/pipeline-structure {:home-dir (util/create-temp-dir) :name "LONG-RUNNING PIPELINE"})
+        artifact-pipeline (lambdacd/assemble-pipeline artifact-pipeline/pipeline-structure {:home-dir "/tmp/moinsen" :artifacts-path-context artifacts-path-context :name "ARTIFACT PIPELINE"})]
 
-    (reset! current-pipeline trigger-pipeline)
+    (reset! current-pipeline artifact-pipeline)
 
     (reset! server
 
             (let [routes
 
                   (routes
-                    (ui/ui-for trigger-pipeline :showStartBuildButton true)
+                    (ui/ui-for artifact-pipeline :showStartBuildButton true)
+                    (context artifacts-path-context [] (artifacts/artifact-handler-for artifact-pipeline))
+
                     (context "/long-running" []
                       (ui/ui-for long-running-pipeline :showStartBuildButton true :contextPath "/long-running"))
 

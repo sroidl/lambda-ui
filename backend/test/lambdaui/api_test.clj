@@ -92,13 +92,15 @@
                            :startTime nil
                            :endTime   nil
                            :type      "container"
+                           :details   []
                            :steps     [{:stepId    "1-1"
                                         :state     "pending"
                                         :name      "do-stuff"
                                         :type      "step"
                                         :steps     []
                                         :startTime nil
-                                        :endTime   nil}
+                                        :endTime   nil
+                                        :details   []}
 
                                        {:stepId    "2-1"
                                         :state     "pending"
@@ -106,8 +108,9 @@
                                         :type      "step"
                                         :steps     []
                                         :startTime nil
-                                        :endTime   nil}]}]}
-
+                                        :endTime   nil
+                                        :details   []}
+                                       ]}]}
 
                (debug (json/read-json (async/<!! ws-ch)))))))))
 

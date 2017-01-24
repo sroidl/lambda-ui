@@ -25,7 +25,7 @@
                            (let [build-details (request-build-details)
                                  steps (:steps build-details)]
                              (is (= 1 (count steps)))
-                             (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger] (keys (first steps))))))))
+                             (is (every? #{:stepId :name :state :startTime :endTime :type :steps :trigger :details} (keys (first steps))))))))
 
     (testing "should merge trigger id with state information for top level trigger"
       (let [test-pipeline `((in-parallel wait-for-manual-trigger))]
@@ -40,8 +40,8 @@
                              (clojure.pprint/pprint (first-substep (first-substep build-details)))
 
                              (is (= 1 (count steps)))
-                             (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
-                                    (keys (first-substep (first-substep build-details)))))))))))
+                             (is (every? #{:stepId :name :state :startTime :endTime :type :steps :trigger :details}
+                                         (keys (first-substep (first-substep build-details)))))))))))
 
 (deftest parameterized-trigger-test
   (testing "should contain revision parameter"
@@ -53,8 +53,8 @@
                              parameters (:parameter (:trigger (first-substep build-details)))]
 
                          (is (= 1 (count steps)))
-                         (is (= [:stepId :name :state :startTime :endTime :type :steps :trigger]
-                                (keys (first-substep build-details))))
+                         (is (every? #{:stepId :name :state :startTime :endTime :type :steps :trigger :details}
+                                     (keys (first-substep build-details))))
 
                          (is (= [{:key  "revision"
                                   :name "Please enter git revision to build"}
