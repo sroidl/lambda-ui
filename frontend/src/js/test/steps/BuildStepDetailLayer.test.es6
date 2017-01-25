@@ -1,6 +1,12 @@
 /* globals describe it expect jest beforeEach afterEach */
 jest.mock("../../main/DevToggles.es6");
-import {BuildStepDetailsLayer, mapStateToProps, mapDispatchToProps, Output, output_mapStateToProps} from "../../main/steps/BuildStepDetailLayer.es6";
+import {
+    BuildStepDetailsLayer,
+    mapStateToProps,
+    mapDispatchToProps,
+    Output,
+    output_mapStateToProps
+} from "../../main/steps/BuildStepDetailLayer.es6";
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "../../main/actions/OutputActions.es6";
 import React from "react";
@@ -22,7 +28,7 @@ describe("BuildStepDetailsLayer", () => {
     describe("Output presentation", () => {
 
         it("should be hidden when output is false", () => {
-            const component = shallow(<BuildStepDetailsLayer showOutput={false}/>);
+            const component = shallow(<BuildStepDetailsLayer showLayer={false}/>);
 
             expect(component.type()).toBe(null);
         });
@@ -49,9 +55,9 @@ describe("BuildStepDetailsLayer", () => {
                 wasClicked = true;
             };
 
-            const component = shallow(<BuildStepDetailsLayer showOutput={true} buildId={ 1 } stepName={ "2"}
+            const component = shallow(<BuildStepDetailsLayer showLayer={true} buildId={ 1 } stepName={ "2"}
                                                              requestFn={() => {
-                                                       }} closeLayerFn={closeLayerFunctionFake}/>);
+                                                             }} closeLayerFn={closeLayerFunctionFake}/>);
             component.find(".buildStepLayer__close-button").simulate("click");
 
             expect(wasClicked).toEqual(true);
@@ -61,7 +67,7 @@ describe("BuildStepDetailsLayer", () => {
 
     describe("Output redux", () => {
         it("should not output render props if hidden", () => {
-            expect(mapStateToProps({output: {showOutput: false}}, {})).toEqual({showOutput: false});
+            expect(mapStateToProps({output: {showLayer: false}}, {})).toEqual({showLayer: false});
         });
 
         it("should get output from buildstep", () => {
@@ -75,10 +81,10 @@ describe("BuildStepDetailsLayer", () => {
 
         it("should get undefined from buildstep if no output exists", () => {
             const state = {
-                buildDetails: {1: {buildId: 1, steps: [{stepId: "1", name: "myStep"} ]}} ,
+                buildDetails: {1: {buildId: 1, steps: [{stepId: "1", name: "myStep"}]}},
                 output: {showOutput: true, buildId: 1, stepId: "1", content: {}}
             };
-            const expected = {buildId: 1, stepId: "1", stepName: "myStep", showOutput: true, stepState: "unknown"};
+            const expected = {buildId: 1, stepId: "1", stepName: "myStep", showLayer: true, stepState: "unknown"};
 
             expect(mapStateToProps(state)).toEqual(expected);
         });

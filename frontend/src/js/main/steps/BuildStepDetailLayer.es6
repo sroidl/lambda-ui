@@ -107,9 +107,9 @@ export class BuildStepDetailsLayer extends React.Component {
     }
 
     render() {
-        const {buildId, stepName, showOutput, closeLayerFn, stepState, stepId} = this.props;
+        const {buildId, stepName, showLayer, closeLayerFn, stepState, stepId} = this.props;
 
-        if (!showOutput) {
+        if (!showLayer) {
             document.body.style.overflowY = "auto";
             return null;
         }
@@ -119,7 +119,7 @@ export class BuildStepDetailsLayer extends React.Component {
 
         const connectionState = DevToggles.showConnectionState ? <ConnectionStateRedux/> : "";
 
-        return <div className="buildStepOutput ">
+        return <div className="buildStepOutput">
             <div onClick={closeLayerFn} className="buildStepLayer__shadow"/>
             <div className="buildStepLayer buildStepLayer--open">
                 <div id="buildStepLayer" className="buildStepLayer__title">
@@ -147,15 +147,16 @@ BuildStepDetailsLayer.propTypes = {
     stepName: PropTypes.string,
     stepState: PropTypes.string,
     output: PropTypes.array,
-    showOutput: PropTypes.bool,
+    showLayer: PropTypes.bool,
     requestFn: PropTypes.func,
     stepId: PropTypes.any,
     closeLayerFn: PropTypes.func,
     fontColor: PropTypes.any,
+    activeTab: PropTypes.string
 };
 
 
-const outputHiddenProps = {showOutput: false};
+const outputHiddenProps = {showLayer: false};
 
 const outputVisibleProps = (state) => {
     const buildId = state.output.buildId;
@@ -168,7 +169,7 @@ const outputVisibleProps = (state) => {
     return {
         buildId: buildId,
         stepId: stepId,
-        showOutput: true,
+        showLayer: true,
         stepName: stepName,
         stepState: stepState
     };
