@@ -8,6 +8,62 @@ import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
 import StateIcon from "../StateIcon.es6";
 
+//TODO externalize output class into own module
+export class Output extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidUpdate() {
+        const element = this.layerText;
+        if (element) {
+            element.scrollTop = element.scrollHeight;
+        }
+    }
+
+    render() {
+        const {requestFn} = this.props;
+        let {output} = this.props;
+        if (!output) {
+            requestFn();
+            output = ["No output."];
+        }
+
+        const formattingLine = line => line.replace(/ /g, "\u00a0");
+        const lineKey = index => "line-" + index;
+        const mapIndexed = R.addIndex(R.map);
+
+
+        return <div ref={(div) => {
+            this.layerText = div;
+        }} className="layerText">
+
+            {mapIndexed((line, index) =>
+                <div key={lineKey(index)} className="outputLine">
+                    {formattingLine(line)}
+                </div>, output) }
+        </div>;
+    }
+}
+Output.propTypes = {
+    requestFn: PropTypes.func.isRequired,
+    output: PropTypes.array
+};
+export const output_mapStateToProps = (state, initialProps) => {
+    const output = R.path(["content", initialProps.buildId, initialProps.stepId])(state.output);
+
+    return {output: output};
+};
+const output_mapDispatchToProps = (dispatch, initialProps) => {
+    return {
+        requestFn: () => dispatch(requestOutput(initialProps.buildId, initialProps.stepId))
+    };
+};
+
+const OutputRedux = connect(output_mapStateToProps, output_mapDispatchToProps)(Output);
+
+
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
 
@@ -23,31 +79,6 @@ export class BuildStepDetailsLayer extends React.Component {
     constructor(props) {
         super(props);
     }
-
-    componentDidUpdate() {
-        const element = this.layerText;
-        if (element) {
-            element.scrollTop = element.scrollHeight;
-        }
-    }
-
-    outputLines() {
-        const {buildId, requestFn, stepId} = this.props;
-        let {output} = this.props;
-        if (!output) {
-            requestFn(buildId, stepId);
-            output = ["No output."];
-        }
-
-        const formattingLine = line => line.replace(/ /g, "\u00a0");
-        const lineKey = index => "line-" + index;
-        const mapIndexed = R.addIndex(R.map);
-
-
-        return (mapIndexed((line, index) => <div key={lineKey(index)} className="outputLine">
-            {formattingLine(line)}</div>)(output));
-    }
-
 
     closeOnEscClick() {
         document.onkeydown = (evt) => {
@@ -65,7 +96,7 @@ export class BuildStepDetailsLayer extends React.Component {
     }
 
     render() {
-        const {buildId, stepName, showOutput, closeLayerFn, stepState} = this.props;
+        const {buildId, stepName, showOutput, closeLayerFn, stepState, stepId} = this.props;
 
         if (!showOutput) {
             document.body.style.overflowY = "auto";
@@ -88,13 +119,10 @@ export class BuildStepDetailsLayer extends React.Component {
                     {connectionState}
                     <span className="outputHeader__stepState">Step State:<StateIcon state={stepState}/></span>
                 </div>
-                <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span><i
-                    className="fa fa-times" aria-hidden="true"></i>
+                <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span>
+                    <i className="fa fa-times" aria-hidden="true"></i>
                 </div>
-
-                <div ref={(div) => {
-                    this.layerText = div;
-                }} className="layerText">{this.outputLines()}</div>
+                <OutputRedux buildId={buildId} stepId={stepId}/>
             </div>
         </div>;
     }
@@ -120,17 +148,14 @@ const outputVisibleProps = (state) => {
     const stepId = state.output.stepId;
     const flatSteps = Utils.flatSteps(R.path(["buildDetails", buildId], state));
     const step = R.find(step => step.stepId === stepId)(flatSteps);
-    const stepName = R.propOr("", "name") (step);
+    const stepName = R.propOr("", "name")(step);
     const stepState = R.propOr("unknown", "state")(step);
-    const output = R.path(["content", buildId, stepId])(state.output);
-
 
     return {
         buildId: buildId,
         stepId: stepId,
         showOutput: true,
         stepName: stepName,
-        output: output,
         stepState: stepState
     };
 };
@@ -145,7 +170,6 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
     return {
-        requestFn: (buildId, stepId) => dispatch(requestOutput(buildId, stepId)),
         closeLayerFn: () => dispatch(hideBuildOutput())
     };
 };

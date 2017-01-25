@@ -1,14 +1,15 @@
 /* globals describe it expect jest beforeEach afterEach */
 jest.mock("../../main/DevToggles.es6");
-import {BuildStepDetailsLayer, mapStateToProps, mapDispatchToProps} from "../../main/steps/BuildStepDetailLayer.es6";
+import {BuildStepDetailsLayer, mapStateToProps, mapDispatchToProps, Output, output_mapStateToProps} from "../../main/steps/BuildStepDetailLayer.es6";
 import {shallow} from "enzyme";
 import {HIDE_BUILD_OUTPUT} from "../../main/actions/OutputActions.es6";
 import React from "react";
 import * as TestUtils from "../testsupport/TestUtils.es6";
 
+
 describe("BuildStepDetailsLayer", () => {
 
-    let realConsole;
+    let realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);
@@ -27,19 +28,16 @@ describe("BuildStepDetailsLayer", () => {
         });
 
         it("should display output of step if not hidden", () => {
-            const component = shallow(<BuildStepDetailsLayer showOutput={true} buildId={ 1 } stepName={ "meinStep"}
-                                                             stepId={ "stepId"} output={ ["hierTestOutput"]}/>);
+            const component =
+                shallow(<Output output={ ["hierTestOutput"]} requestFn={jest.fn()}/>);
 
-            expect(component.find("#outputHeader__buildId").text()).toBe("1");
-            expect(component.find("#outputHeader__stepName").text()).toBe("meinStep");
             expect(component.find(".layerText").text()).toBe("hierTestOutput");
 
         });
 
         it("should request output if no output exists in build step", () => {
             const requestFnMock = jest.fn();
-            shallow(<BuildStepDetailsLayer showOutput={true} buildId={ 1 } stepName={ "meinStep"}
-                                           requestFn={requestFnMock}/>);
+            shallow(<Output requestFn={requestFnMock}/>);
 
             expect(requestFnMock).toBeCalled();
         });
@@ -68,12 +66,11 @@ describe("BuildStepDetailsLayer", () => {
 
         it("should get output from buildstep", () => {
             const state = {
-                buildDetails: {1: {buildId: 1, steps: [{stepId: "1",  state: "success", name: "myStep"} ]}} ,
                 output: {showOutput: true, buildId: 1, stepId: "1", content: {1: {"1": ["line1"]}}}
             };
-            const expected = {buildId: 1, stepId: "1", stepName: "myStep", output: ["line1"], showOutput: true, stepState: "success"};
+            const expected = {output: ["line1"]};
 
-            expect(mapStateToProps(state)).toEqual(expected);
+            expect(output_mapStateToProps(state, {buildId: 1, stepId: "1"})).toEqual(expected);
         });
 
         it("should get undefined from buildstep if no output exists", () => {
@@ -96,3 +93,5 @@ describe("BuildStepDetailsLayer", () => {
         });
     });
 });
+
+//TODO test to display output at all
