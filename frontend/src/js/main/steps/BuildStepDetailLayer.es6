@@ -16,7 +16,7 @@ export class Output extends React.Component {
     }
 
     componentDidUpdate() {
-        const element = this.layerText;
+        const element = this.buildStepLayer__text;
         if (element) {
             element.scrollTop = element.scrollHeight;
         }
@@ -36,8 +36,8 @@ export class Output extends React.Component {
 
 
         return <div ref={(div) => {
-            this.layerText = div;
-        }} className="layerText">
+            this.buildStepLayer__text = div;
+        }} className="buildStepLayer__text">
 
             {mapIndexed((line, index) =>
                 <div key={lineKey(index)} className="outputLine">
@@ -95,6 +95,17 @@ export class BuildStepDetailsLayer extends React.Component {
         };
     }
 
+    TabNavigation() {
+        if (DevToggles.showBuildArtifacts) {
+
+            return <div className="buildStepLayer__tab-group">
+                <span className="buildStepLayer__tab buildStepLayer__tab--active">Output</span>
+                <span className="buildStepLayer__tab">Artifacts</span>
+            </div>;
+        }
+        return null;
+    }
+
     render() {
         const {buildId, stepName, showOutput, closeLayerFn, stepState, stepId} = this.props;
 
@@ -109,19 +120,22 @@ export class BuildStepDetailsLayer extends React.Component {
         const connectionState = DevToggles.showConnectionState ? <ConnectionStateRedux/> : "";
 
         return <div className="buildStepOutput ">
-            <div onClick={closeLayerFn} className="layerShadow"/>
-            <div id="outputContent" className="layer open">
-                <div id="outputHeader" className="layerTitle">
+            <div onClick={closeLayerFn} className="buildStepLayer__shadow"/>
+            <div className="buildStepLayer buildStepLayer--open">
+                <div id="buildStepLayer" className="buildStepLayer__title">
                     <span>Build: </span>
-                    <span id="outputHeader__buildId">{buildId}</span>
+                    <span id="buildStepLayer__buildId">{buildId}</span>
                     <span> - Step: </span>
-                    <span id="outputHeader__stepName">{stepName}</span>
+                    <span id="buildStepLayer__stepName">{stepName}</span>
                     {connectionState}
-                    <span className="outputHeader__stepState">Step State:<StateIcon state={stepState}/></span>
+                    <span className="buildStepLayer__stepState">Step State:<StateIcon state={stepState}/></span>
                 </div>
-                <div className="layerClose" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span>
+                <div className="buildStepLayer__close-button" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span>
                     <i className="fa fa-times" aria-hidden="true"></i>
                 </div>
+
+                <this.TabNavigation/>
+
                 <OutputRedux buildId={buildId} stepId={stepId}/>
             </div>
         </div>;

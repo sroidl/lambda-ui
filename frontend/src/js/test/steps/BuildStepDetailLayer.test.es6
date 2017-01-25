@@ -31,7 +31,7 @@ describe("BuildStepDetailsLayer", () => {
             const component =
                 shallow(<Output output={ ["hierTestOutput"]} requestFn={jest.fn()}/>);
 
-            expect(component.find(".layerText").text()).toBe("hierTestOutput");
+            expect(component.find(".buildStepLayer__text").text()).toBe("hierTestOutput");
 
         });
 
@@ -52,7 +52,7 @@ describe("BuildStepDetailsLayer", () => {
             const component = shallow(<BuildStepDetailsLayer showOutput={true} buildId={ 1 } stepName={ "2"}
                                                              requestFn={() => {
                                                        }} closeLayerFn={closeLayerFunctionFake}/>);
-            component.find(".layerClose").simulate("click");
+            component.find(".buildStepLayer__close-button").simulate("click");
 
             expect(wasClicked).toEqual(true);
         });
