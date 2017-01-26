@@ -15,7 +15,7 @@ import * as TestUtils from "../testsupport/TestUtils.es6";
 
 describe("BuildStepDetailsLayer", () => {
 
-    let realConsole = window.console;
+    const realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);

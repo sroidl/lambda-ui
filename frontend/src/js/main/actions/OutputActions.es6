@@ -2,7 +2,7 @@ export const HIDE_BUILD_OUTPUT = "hideBuildOutput";
 export const ADD_BUILDSTEP_OUTPUT = "addBuildstepOutput";
 export const OUTPUT_CONNECTION_STATE = "outputConnectionState";
 export const SHOW_BUILD_OUTPUT = "showOutput";
-export const CHANGE_TAB = "openTab";
+export const CHANGE_TAB = "changeTab";
 
 export const hideBuildOutput = () => {
     return {type: HIDE_BUILD_OUTPUT};
@@ -21,5 +21,5 @@ export const showBuildOutput = (buildId, stepId) => {
 };
 
 export const changeTab = (tabName) => {
-    return {type: CHANGE_TAB, tabName: tabName};
+    return {type: CHANGE_TAB, activeTab: tabName};
 };

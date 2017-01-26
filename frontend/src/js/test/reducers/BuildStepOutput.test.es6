@@ -1,6 +1,6 @@
 /* globals describe it expect beforeEach afterEach */
 import {OutputReducer as subject} from "../../main/reducers/Output.es6";
-import {hideBuildOutput, showBuildOutput, ADD_BUILDSTEP_OUTPUT} from "../../main/actions/OutputActions.es6";
+import {hideBuildOutput, showBuildOutput, changeTab, ADD_BUILDSTEP_OUTPUT} from "../../main/actions/OutputActions.es6";
 import * as TestUtils from "../../test/testsupport/TestUtils.es6";
 
 describe("Output", () => {
@@ -82,6 +82,19 @@ describe("Output", () => {
             //then
             expect(result).not.toBe(oldState);
             expect(result).toEqual({showOutput: false, some: "otherStuff"});
+        });
+    });
+
+    describe("OutputReducer: changeTab", () => {
+
+
+        it("should change active tab", () => {
+            const oldState = {activeTab: "oldTab"};
+
+            const result = subject(oldState, changeTab("newTab"));
+
+            expect(result).not.toBe(oldState);
+            expect(result).toEqual({activeTab: "newTab"});
         });
     });
 });

@@ -46,5 +46,13 @@ describe("OutputActions", () => {
             stepId: 2
         });
     });
+
+    it("should return changeTab action object", () => {
+       const newAction = subject.changeTab("hallo");
+       expect(newAction).toEqual({
+           type: "changeTab",
+           activeTab: "hallo"
+       });
+    });
 });
 
