@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import * as R from "ramda";
 import {requestOutput} from "../actions/BackendActions.es6";
 import "../../../sass/buildStepOutput.sass";
-import {hideBuildOutput} from "../actions/OutputActions.es6";
+import {hideBuildOutput, changeTab} from "../actions/OutputActions.es6";
 import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
 import StateIcon from "../StateIcon.es6";
@@ -63,6 +63,7 @@ const output_mapDispatchToProps = (dispatch, initialProps) => {
 
 const OutputRedux = connect(output_mapStateToProps, output_mapDispatchToProps)(Output);
 
+/************/
 
 const ConnectionState = ({connection}) => <span><span> Connection State: </span><span>{connection}</span></span>;
 ConnectionState.propTypes = {connection: PropTypes.string};
@@ -73,6 +74,8 @@ const ConnectionState_stateMapping = state => {
     };
 };
 const ConnectionStateRedux = connect(ConnectionState_stateMapping)(ConnectionState);
+
+/************/
 
 export class BuildStepDetailsLayer extends React.Component {
 
@@ -95,19 +98,36 @@ export class BuildStepDetailsLayer extends React.Component {
         };
     }
 
-    TabNavigation() {
+    /* eslint-disable */
+    TabNavigation(props) {
+        const {changeTabFn, activeTab} = props;
         if (DevToggles.showBuildArtifacts) {
-
+            const showArtifactsFn = () => changeTabFn("artifacts");
+            const showOutputFn = () => changeTabFn("output");
             return <div className="buildStepLayer__tab-group">
-                <span className="buildStepLayer__tab buildStepLayer__tab--active">Output</span>
-                <span className="buildStepLayer__tab">Artifacts</span>
+                <span className="buildStepLayer__tab buildStepLayer__tab--active" onClick={showOutputFn}>Output</span>
+                <span className="buildStepLayer__tab" onClick={showArtifactsFn}>Artifacts</span>
             </div>;
         }
         return null;
     }
 
+    Tab({buildId, stepId, activeTab}) {
+        if (!DevToggles.showBuildArtifacts) {
+            return <OutputRedux buildId={buildId} stepId={stepId}/>;
+        }
+        switch (activeTab) {
+            case "output":
+                return <OutputRedux buildId={buildId} stepId={stepId}/>;
+            default:
+                return <div>Wurst</div>;
+
+        }
+    }
+
+
     render() {
-        const {buildId, stepName, showLayer, closeLayerFn, stepState, stepId} = this.props;
+        const {buildId, stepName, showLayer, closeLayerFn, stepState, stepId, activeTab, changeTabFn} = this.props;
 
         if (!showLayer) {
             document.body.style.overflowY = "auto";
@@ -130,13 +150,14 @@ export class BuildStepDetailsLayer extends React.Component {
                     {connectionState}
                     <span className="buildStepLayer__stepState">Step State:<StateIcon state={stepState}/></span>
                 </div>
-                <div className="buildStepLayer__close-button" onClick={closeLayerFn}><span className="buildStepOutput__exit-info">(Press [ESC] to exit) </span>
+                <div className="buildStepLayer__close-button" onClick={closeLayerFn}><span
+                    className="buildStepOutput__exit-info">(Press [ESC] to exit) </span>
                     <i className="fa fa-times" aria-hidden="true"></i>
                 </div>
 
-                <this.TabNavigation/>
+                <this.TabNavigation changeTabFn={changeTabFn} activeTab={activeTab}/>
+                <this.Tab buildId={buildId} stepId={stepId} activeTab={activeTab}/>
 
-                <OutputRedux buildId={buildId} stepId={stepId}/>
             </div>
         </div>;
     }
@@ -151,6 +172,7 @@ BuildStepDetailsLayer.propTypes = {
     requestFn: PropTypes.func,
     stepId: PropTypes.any,
     closeLayerFn: PropTypes.func,
+    changeTabFn: PropTypes.func,
     fontColor: PropTypes.any,
     activeTab: PropTypes.string
 };
@@ -165,13 +187,15 @@ const outputVisibleProps = (state) => {
     const step = R.find(step => step.stepId === stepId)(flatSteps);
     const stepName = R.propOr("", "name")(step);
     const stepState = R.propOr("unknown", "state")(step);
+    const activeTab = state.output.activeTab;
 
     return {
         buildId: buildId,
         stepId: stepId,
         showLayer: true,
         stepName: stepName,
-        stepState: stepState
+        stepState: stepState,
+        activeTab: activeTab
     };
 };
 
@@ -185,6 +209,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
     return {
+        changeTabFn: (activeTab) => dispatch(changeTab(activeTab)),
         closeLayerFn: () => dispatch(hideBuildOutput())
     };
 };

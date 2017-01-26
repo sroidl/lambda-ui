@@ -82,9 +82,16 @@ describe("BuildStepDetailsLayer", () => {
         it("should get undefined from buildstep if no output exists", () => {
             const state = {
                 buildDetails: {1: {buildId: 1, steps: [{stepId: "1", name: "myStep"}]}},
-                output: {showOutput: true, buildId: 1, stepId: "1", content: {}}
+                output: {showOutput: true, activeTab: "output", buildId: 1, stepId: "1", content: {}}
             };
-            const expected = {buildId: 1, stepId: "1", stepName: "myStep", showLayer: true, stepState: "unknown"};
+            const expected = {
+                buildId: 1,
+                stepId: "1",
+                stepName: "myStep",
+                showLayer: true,
+                activeTab: "output",
+                stepState: "unknown"
+            };
 
             expect(mapStateToProps(state)).toEqual(expected);
         });

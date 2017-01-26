@@ -14,7 +14,7 @@ const initialState = {
     openedBuilds: {},
     buildDetails: {},
     config: {name: "PIPELINE_NAME"},
-    output: {showOutput: false},
+    output: {},
     developmentToggles: {
         usePolling: true,
         showConnectionState: false,
