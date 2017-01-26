@@ -43,7 +43,8 @@ describe("OutputActions", () => {
         expect(newAction).toEqual({
             type: "showOutput",
             buildId: 1,
-            stepId: 2
+            stepId: 2,
+            activeTab: "output"
         });
     });
 

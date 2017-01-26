@@ -26,7 +26,7 @@ describe("Output", () => {
             const oldState = {buildId: 1, stepId: 12};
 
             expect(subject(oldState, showBuildOutput(2, 1))).not.toBe(oldState);
-            expect(subject(oldState, showBuildOutput(2, 1))).toEqual({showOutput: true, buildId: 2, stepId: 1});
+            expect(subject(oldState, showBuildOutput(2, 1))).toEqual({showOutput: true, buildId: 2, stepId: 1, activeTab: "output"});
         });
     });
 

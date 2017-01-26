@@ -17,7 +17,7 @@ export const outputConnectionState = (connectionState) => {
 };
 
 export const showBuildOutput = (buildId, stepId) => {
-    return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId};
+    return {type: SHOW_BUILD_OUTPUT, buildId: buildId, stepId: stepId, activeTab: "output"};
 };
 
 export const changeTab = (tabName) => {
