@@ -18,7 +18,7 @@ const initialState = {
     developmentToggles: {
         usePolling: true,
         showConnectionState: false,
-        showBuildArtifacts: false
+        showBuildArtifacts: true
     },
     showStepToolbox: {},
     triggerDialog: {},
