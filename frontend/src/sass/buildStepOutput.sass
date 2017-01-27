@@ -60,15 +60,15 @@
     color: $blue
     border: 1px solid $blue
 
-    &--active, &:active
-      background: $blue
-      color: $white
-      border: 1px solid $blue
-
     &:hover, &:focus
       background: $light-blue
       color: $white
-      border: 1px solid $black
+      border: 1px solid $blue
+
+    &--active, &--active:focus, &:active
+      background: $blue
+      color: $white
+      border: 1px solid $blue
 
   &__stepState
     margin-left: 30px
