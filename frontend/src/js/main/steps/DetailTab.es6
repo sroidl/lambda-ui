@@ -7,7 +7,7 @@ const createLink = (detail, index) => {
     const subDetails = R.defaultTo(null, detail.details);
     const content = R.isNil(detail.href) ?
         <span className="buildStepLayer__detail-tab-label">{detail.label}</span> :
-        <a className="buildStepLayer__detail-tab-link" href={detail.href}>{detail.label}</a>;
+        <a className="buildStepLayer__detail-tab-link" href={detail.href} target="_blank">{detail.label}</a>;
 
     return <li key={index}>
         {content}
