@@ -101,13 +101,25 @@ export class BuildStepDetailsLayer extends React.Component {
 
     /* eslint-disable */
     TabNavigation(props) {
-        const {changeTabFn, activeTab} = props;
+        const {changeTabFn, activeTab, stepDetailLabels} = props;
         if (DevToggles.showBuildArtifacts) {
-            const showArtifactsFn = () => changeTabFn("Artifacts");
+            const showLabelFn = (label) => () => changeTabFn(label);
             const showOutputFn = () => changeTabFn("output");
+
+            const addActiveFlag = (tabName, cssClassList) => {
+                if (activeTab === tabName) {
+                    return R.append("buildStepLayer__tab--active", cssClassList);
+                }
+                return cssClassList;
+            }
+
+            const outputButton = <button className={R.join(" ", addActiveFlag("output", ["buildStepLayer__tab"]))} onClick={showOutputFn}>Output</button>;
+
             return <div className="buildStepLayer__tab-group">
-                <button className="buildStepLayer__tab buildStepLayer__tab--active" onClick={showOutputFn}>Output</button>
-                <button className="buildStepLayer__tab" onClick={showArtifactsFn}>Artifacts</button>
+                {outputButton}
+
+                {R.map(label => <button key={label} className="buildStepLayer__tab" onClick={showLabelFn(label)}>{label}</button>)(stepDetailLabels)}
+
             </div>;
         }
         return null;
@@ -128,7 +140,7 @@ export class BuildStepDetailsLayer extends React.Component {
 
 
     render() {
-        const {buildId, stepName, showLayer, closeLayerFn, stepState, stepId, activeTab, changeTabFn} = this.props;
+        const {buildId, stepName, showLayer, closeLayerFn, stepState, stepId, activeTab, changeTabFn, stepDetailLabels} = this.props;
 
         if (!showLayer) {
             document.body.style.overflowY = "auto";
@@ -156,7 +168,7 @@ export class BuildStepDetailsLayer extends React.Component {
                     <i className="fa fa-times" aria-hidden="true"></i>
                 </div>
 
-                <this.TabNavigation changeTabFn={changeTabFn} activeTab={activeTab}/>
+                <this.TabNavigation changeTabFn={changeTabFn} activeTab={activeTab} stepDetailLabels={stepDetailLabels}/>
                 <this.Tab buildId={buildId} stepId={stepId} activeTab={activeTab}/>
 
             </div>
@@ -175,7 +187,8 @@ BuildStepDetailsLayer.propTypes = {
     closeLayerFn: PropTypes.func,
     changeTabFn: PropTypes.func,
     fontColor: PropTypes.any,
-    activeTab: PropTypes.string
+    activeTab: PropTypes.string,
+    stepDetailLabels: PropTypes.array
 };
 
 
@@ -190,13 +203,16 @@ const outputVisibleProps = (state) => {
     const stepState = R.propOr("unknown", "state")(step);
     const activeTab = state.output.activeTab;
 
+    const stepDetailLabels = R.map(detail => detail.label)(R.propOr([], "details", step));
+
     return {
         buildId: buildId,
         stepId: stepId,
         showLayer: true,
         stepName: stepName,
         stepState: stepState,
-        activeTab: activeTab
+        activeTab: activeTab,
+        stepDetailLabels: stepDetailLabels
     };
 };
 

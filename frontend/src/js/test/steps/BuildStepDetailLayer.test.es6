@@ -90,7 +90,27 @@ describe("BuildStepDetailsLayer", () => {
                 stepName: "myStep",
                 showLayer: true,
                 activeTab: "output",
-                stepState: "unknown"
+                stepState: "unknown",
+                stepDetailLabels: []
+            };
+
+            expect(mapStateToProps(state)).toEqual(expected);
+        });
+
+
+        it("should map build step detail labels", () => {
+            const state = {
+                buildDetails: {1: {buildId: 1, steps: [{stepId: "1", name: "myStep", details: [{label: "l1"}, {label: "l2"}]}]}},
+                output: {showOutput: true, activeTab: "output", buildId: 1, stepId: "1", content: {}}
+            };
+            const expected = {
+                buildId: 1,
+                stepId: "1",
+                stepName: "myStep",
+                showLayer: true,
+                activeTab: "output",
+                stepState: "unknown",
+                stepDetailLabels: ["l1", "l2"]
             };
 
             expect(mapStateToProps(state)).toEqual(expected);
