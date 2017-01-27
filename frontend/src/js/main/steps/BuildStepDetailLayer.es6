@@ -7,6 +7,7 @@ import {hideBuildOutput, changeTab} from "../actions/OutputActions.es6";
 import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
 import StateIcon from "../StateIcon.es6";
+import DetailTab from "./DetailTab.es6";
 
 //TODO externalize output class into own module
 export class Output extends React.Component {
@@ -120,8 +121,7 @@ export class BuildStepDetailsLayer extends React.Component {
             case "output":
                 return <OutputRedux buildId={buildId} stepId={stepId}/>;
             default:
-                return <div>Wurst</div>;
-
+                return <DetailTab buildId={buildId} stepId={stepId} rootLabel={activeTab}/>;
         }
     }
 

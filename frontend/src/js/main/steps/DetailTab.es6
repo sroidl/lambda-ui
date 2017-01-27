@@ -37,3 +37,14 @@ export const DetailTab = ({details}) => {
 DetailTab.propTypes = {
     details: PropTypes.array.isRequired
 };
+
+
+const mapStateToProps = (state, initialProps) => {
+    const {buildId, stepId, rootLabel} = initialProps;
+
+
+    return {details: []};
+};
+
+export default connect(mapStateToProps)(DetailTab)
+
