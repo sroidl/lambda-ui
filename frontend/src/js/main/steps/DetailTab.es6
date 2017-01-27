@@ -1,7 +1,7 @@
-/* eslint-disable */
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
-import * as R from "ramda";
+import R from "ramda";
+import * as Utils from "../Utils.es6";
 
 const createLink = (detail, index) => {
     const subDetails = R.defaultTo(null, detail.details);
@@ -39,12 +39,16 @@ DetailTab.propTypes = {
 };
 
 
-const mapStateToProps = (state, initialProps) => {
+export const mapStateToProps = (state, initialProps) => {
     const {buildId, stepId, rootLabel} = initialProps;
+    const buildDetails = R.propOr({}, buildId)(state.buildDetails);
+    const flatSteps = Utils.flatSteps(buildDetails);
+    const step = R.find((step) => step.stepId === stepId)(flatSteps);
+    const allDetails = R.propOr([], "details")(step);
+    const detailsForRootLabel = R.find((detail) => detail.label === rootLabel)(allDetails);
 
-
-    return {details: []};
+    return {details: R.propOr([], "details")(detailsForRootLabel)};
 };
 
-export default connect(mapStateToProps)(DetailTab)
+export default connect(mapStateToProps)(DetailTab);
 

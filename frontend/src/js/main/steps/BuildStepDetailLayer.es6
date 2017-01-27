@@ -103,11 +103,11 @@ export class BuildStepDetailsLayer extends React.Component {
     TabNavigation(props) {
         const {changeTabFn, activeTab} = props;
         if (DevToggles.showBuildArtifacts) {
-            const showArtifactsFn = () => changeTabFn("artifacts");
+            const showArtifactsFn = () => changeTabFn("Artifacts");
             const showOutputFn = () => changeTabFn("output");
             return <div className="buildStepLayer__tab-group">
-                <span className="buildStepLayer__tab buildStepLayer__tab--active" onClick={showOutputFn}>Output</span>
-                <span className="buildStepLayer__tab" onClick={showArtifactsFn}>Artifacts</span>
+                <button className="buildStepLayer__tab buildStepLayer__tab--active" onClick={showOutputFn}>Output</button>
+                <button className="buildStepLayer__tab" onClick={showArtifactsFn}>Artifacts</button>
             </div>;
         }
         return null;
@@ -123,6 +123,7 @@ export class BuildStepDetailsLayer extends React.Component {
             default:
                 return <DetailTab buildId={buildId} stepId={stepId} rootLabel={activeTab}/>;
         }
+        return null;
     }
 
 
