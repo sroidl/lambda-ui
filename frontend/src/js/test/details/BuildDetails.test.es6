@@ -69,8 +69,6 @@ describe("BuildDetails", () => {
                 showParentStepBreadcrumb: {},
                 showSubsteps: {}
             });
-
-
             const component = mount(<Provider store={storeMock}><BuildDetailsRedux buildId={1}/></Provider>);
 
             expect(component.find("BuildStep").length).toEqual(2);
