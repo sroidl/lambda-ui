@@ -26,7 +26,7 @@ describe("Artifacts tab", () => {
 
     it("should render detail tab", () => {
         const component = shallow(<DetailTab details={[]}/>);
-        expect((component.find(".detailTab")).length).toBe(1);
+        expect((component.find(".buildStepLayer__detail-tab")).length).toBe(1);
     });
 
     it("should render two links", () => {

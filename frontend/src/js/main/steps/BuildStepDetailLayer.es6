@@ -203,7 +203,9 @@ const outputVisibleProps = (state) => {
     const stepState = R.propOr("unknown", "state")(step);
     const activeTab = state.output.activeTab;
 
-    const stepDetailLabels = R.map(detail => detail.label)(R.propOr([], "details", step));
+    const stepDetails = R.defaultTo([], R.propOr([], "details", step));
+
+    const stepDetailLabels = R.pipe(R.map(detail => R.defaultTo(null, detail.label)), R.filter(x => !R.isNil(x)))(stepDetails);
 
     return {
         buildId: buildId,

@@ -29,7 +29,7 @@ DetailList.propTypes = {
 
 
 export const DetailTab = ({details}) => {
-    return <div className="detailTab">
+    return <div className="buildStepLayer__detail-tab">
       <DetailList details={details} />
     </div>;
 };

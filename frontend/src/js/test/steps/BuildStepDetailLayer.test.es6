@@ -12,7 +12,6 @@ import {HIDE_BUILD_OUTPUT} from "../../main/actions/OutputActions.es6";
 import React from "react";
 import * as TestUtils from "../testsupport/TestUtils.es6";
 
-
 describe("BuildStepDetailsLayer", () => {
 
     const realConsole = window.console;
