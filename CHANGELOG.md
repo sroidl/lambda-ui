@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.0]
+
 #### Added
 - show build artifacts in build output layer
 - follow active step in build details
@@ -39,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.1.0
 First release.
 
-[Unreleased]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.2.0...HEAD
+[Unreleased]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.0...HEAD
+[0.3.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.2.0...lambdaui-0.3.0
 [0.2.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.1.1...lambdaui-0.2.0
 [0.1.1]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.1.0...lambdaui-0.1.1
