@@ -106,19 +106,19 @@ export class BuildStepDetailsLayer extends React.Component {
             const showLabelFn = (label) => () => changeTabFn(label);
             const showOutputFn = () => changeTabFn("output");
 
-            const addActiveFlag = (tabName, cssClassList) => {
+            const cssClasses = (tabName) => {
                 if (activeTab === tabName) {
-                    return R.append("buildStepLayer__tab--active", cssClassList);
+                    return "buildStepLayer__tab buildStepLayer__tab--active";
                 }
-                return cssClassList;
+                return "buildStepLayer__tab";
             }
 
-            const outputButton = <button className={R.join(" ", addActiveFlag("output", ["buildStepLayer__tab"]))} onClick={showOutputFn}>Output</button>;
+            const outputButton = <button className={cssClasses("output")} onClick={showOutputFn}>Output</button>;
 
             return <div className="buildStepLayer__tab-group">
                 {outputButton}
 
-                {R.map(label => <button key={label} className="buildStepLayer__tab" onClick={showLabelFn(label)}>{label}</button>)(stepDetailLabels)}
+                {R.map(label => <button key={label} className={cssClasses(label)} onClick={showLabelFn(label)}>{label}</button>)(stepDetailLabels)}
 
             </div>;
         }
