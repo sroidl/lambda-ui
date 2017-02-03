@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.1]
+
+- show root level detail link if existing
+
 ## [0.3.0]
 
 #### Added
