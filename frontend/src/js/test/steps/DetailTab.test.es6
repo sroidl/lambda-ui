@@ -25,7 +25,7 @@ describe("Artifacts tab", () => {
     });
 
     it("should render detail tab", () => {
-        const component = shallow(<DetailTab details={[]}/>);
+        const component = shallow(<DetailTab details={[]} href={"someHref"} label="label"/>);
         expect((component.find(".buildStepLayer__detail-tab")).length).toBe(1);
     });
 
@@ -42,7 +42,7 @@ describe("Artifacts tab", () => {
                 }
             ];
 
-        const component = mount(<DetailTab details={artifactDetailsWithTwoLinks}/>);
+        const component = mount(<DetailTab details={artifactDetailsWithTwoLinks} label={"someLabel"} href={null}/>);
 
 
         const links = component.find(".buildStepLayer__detail-tab-link");
@@ -64,7 +64,7 @@ describe("Artifacts tab", () => {
                     label: "first.txt"
                 }
             ];
-        const component = mount(<DetailTab details={artifactDetail}/>);
+        const component = mount(<DetailTab details={artifactDetail} label={"someLabel"} href={"someHref"}/>);
 
         expect(component.find(".buildStepLayer__detail-tab-label").text()).toEqual("first.txt");
     });
@@ -82,8 +82,7 @@ describe("Artifacts tab", () => {
                     ]
                 }
             ];
-        const component = mount(<DetailTab details={artifactDetail}/>);
-
+        const component = mount(<DetailTab details={artifactDetail} label={"someLabel"}/>);
 
         expect(component.find(".buildStepLayer__detail-tab-label").text()).toEqual("megalabel");
         expect(component.find(".buildStepLayer__detail-tab-link").text()).toEqual("inner.txt");
@@ -102,6 +101,7 @@ describe("Redux mapping", () => {
                             details: [
                                 {
                                     label: "megalabel",
+                                    href: "someHref",
                                     details: [
                                         {
                                             label: "inner.txt",
@@ -119,7 +119,7 @@ describe("Redux mapping", () => {
 
         const mappedProps = subject.mapStateToProps(state, initialProps);
 
-        expect(mappedProps).toEqual({details: [{label: "inner.txt", href: "/artifacts/6/2-1/inner.txt"}]});
+        expect(mappedProps).toEqual({details: [{label: "inner.txt", href: "/artifacts/6/2-1/inner.txt"}], href: "someHref", label: "megalabel"});
     });
 
     it("should return empty list for non-existing root label", () => {
@@ -149,7 +149,6 @@ describe("Redux mapping", () => {
 
         const mappedProps = subject.mapStateToProps(state, initialProps);
 
-        expect(mappedProps).toEqual({details: []});
-
+        expect(mappedProps).toEqual({details: [], href: null, label: "otherlabel"});
     });
 });

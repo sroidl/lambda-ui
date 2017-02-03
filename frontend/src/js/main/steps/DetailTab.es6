@@ -27,15 +27,29 @@ DetailList.propTypes = {
     details: PropTypes.array.isRequired
 };
 
+const DetailTabMainLink = ({href,label}) => {
+    if (!R.isNil(href)) {
+        return <a className="buildStepLayer__detail-tab-link" href={href} target="_blank">{label}</a>;
+    }
+    return <div/>;
+};
 
-export const DetailTab = ({details}) => {
+DetailTabMainLink.propTypes = {
+    href: PropTypes.string,
+    label: PropTypes.string.isRequired
+};
+
+export const DetailTab = ({details,href,label}) => {
     return <div className="buildStepLayer__detail-tab">
-      <DetailList details={details} />
+        <DetailTabMainLink label={label} href={href} />
+        <DetailList details={details} />
     </div>;
 };
 
 DetailTab.propTypes = {
-    details: PropTypes.array.isRequired
+    details: PropTypes.array.isRequired,
+    href: PropTypes.string,
+    label: PropTypes.string.isRequired
 };
 
 
@@ -47,7 +61,11 @@ export const mapStateToProps = (state, initialProps) => {
     const allDetails = R.propOr([], "details")(step);
     const detailsForRootLabel = R.find((detail) => detail.label === rootLabel)(allDetails);
 
-    return {details: R.propOr([], "details")(detailsForRootLabel)};
+    return {
+        details: R.propOr([], "details")(detailsForRootLabel),
+        href: R.propOr(null, "href")(detailsForRootLabel),
+        label: rootLabel
+    };
 };
 
 export default connect(mapStateToProps)(DetailTab);
