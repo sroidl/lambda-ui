@@ -30,7 +30,7 @@ describe("Backend", () => {
     it("kill step", () => {
         subject.killStep(dispatchMock, 1, "3");
 
-        expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/kill", {method: "POST", credentials: "include"});
+        expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/kill", {method: "POST", credentials: "same-origin"});
     });
 
     it("kill step should dispatch killedStep action on success", () => {
@@ -44,7 +44,7 @@ describe("Backend", () => {
     it("retrigger step", () => {
         subject.retriggerStep(dispatchMock, 1, "3");
 
-        expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/retrigger", {method: "POST", credentials: "include"});
+        expect(fetchMock).toHaveBeenCalledWith("http://baseUrl/lambdaui/api/builds/1/3/retrigger", {method: "POST", credentials: "same-origin"});
     });
 
     describe("outputConnection", () => {

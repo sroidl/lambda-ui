@@ -91,7 +91,7 @@ export class Backend {
     triggerNewBuild() {
         const fetchOptions = {
             method: "POST",
-            credentials: "include"
+            credentials: "same-origin"
         };
 
         fetch(triggerNewUrl(this.baseUrl), fetchOptions);
@@ -120,7 +120,7 @@ export class Backend {
     killStep(dispatch, buildId, stepId) {
         const fetchOptions = {
             method: "POST",
-            credentials: "include"
+            credentials: "same-origin"
         };
 
         fetch(killStepUrl(this.baseUrl, buildId, stepId), fetchOptions)
@@ -132,7 +132,7 @@ export class Backend {
     retriggerStep(dispatch, buildId, stepId) {
         const fetchOptions = {
             method: "POST",
-            credentials: "include"
+            credentials: "same-origin"
         };
 
         fetch(retriggerStepUrl(this.baseUrl, buildId, stepId), fetchOptions);
