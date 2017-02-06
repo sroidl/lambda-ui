@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.3.2]
 
+#### Added
+
 - send credentials on calls to backend so pipelines can use basic-auth
 
 ## [0.3.1]
+
+#### Added
 
 - show root level detail link if existing
 
