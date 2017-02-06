@@ -104,6 +104,7 @@ export class Backend {
 
 
         const fetchOptions = {
+            credentials: "same-origin",
             method: "POST",
             headers: new Headers({
                 "Content-Type": "application/json"
