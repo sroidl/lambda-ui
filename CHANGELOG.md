@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.3]
+
+#### Fixed
+
+- Use httpkit 2.2.0 to fix memory leak with websockets (https://github.com/http-kit/http-kit/issues/165)
+
 ## [0.3.2]
 
 #### Added
