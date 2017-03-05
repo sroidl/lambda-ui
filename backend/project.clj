@@ -12,12 +12,12 @@
                  [trptcolin/versioneer "0.2.0"]]
 
   :test-paths ["test"]
-  :repositories [["snapshots" { :url "https://clojars.org/repo"
-                                :username [:gpg :env]
-                                :password [:gpg :env]}]
-                 ["releases" { :url "https://clojars.org/repo"
-                                               :username [:gpg :env]
-                                               :password [:gpg :env]}]]
+  :deploy-repositories [["snapshots" {:url "https://clojars.org/repo"
+                                      :username [:gpg :env]
+                                      :password [:gpg :env]}]
+                        ["releases" {:url "https://clojars.org/repo"
+                                     :username [:gpg :env]
+                                     :password [:gpg :env]}]]
   :lein-release {:scm :git}
   :profiles {:dev {:dependencies [[lambdacd-git "0.1.2"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
