@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+#### Fixed
+
+- Compatibility with LambdaCD 0.13.0
+
+#### Changed
+
+- Lambda UI now requires at least LambdaCD 0.10.0
+
 ## [0.3.3]
 
 #### Fixed

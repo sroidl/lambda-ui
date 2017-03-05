@@ -9,7 +9,6 @@
             [lambdaui.testpipeline.long-running :as long-running-pipe]
             [lambdaui.testpipeline.artifact-pipeline :as artifact-pipeline]
             [lambdaui.core :as ui]
-            [lambdacd.internal.execution :as exec]
             [clojure.core.async :as async :refer [go <! <!! >! >!!]]
             [lambdacd.event-bus :as events]
             [lambdacd.event-bus :as event-bus]
