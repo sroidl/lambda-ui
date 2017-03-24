@@ -82,7 +82,7 @@ const ConnectionStateRedux = connect(ConnectionState_stateMapping)(ConnectionSta
 /************/
 
 export class BuildStepDetailsLayer extends React.Component {
-    
+
     constructor(props) {
         super(props);
     }
@@ -102,7 +102,6 @@ export class BuildStepDetailsLayer extends React.Component {
         };
     }
 
-    /* eslint-disable */
     TabNavigation(props) {
         const {changeTabFn, activeTab, stepDetailLabels} = props;
         if (DevToggles.showBuildArtifacts) {
@@ -114,7 +113,7 @@ export class BuildStepDetailsLayer extends React.Component {
                     return "buildStepLayer__tab buildStepLayer__tab--active";
                 }
                 return "buildStepLayer__tab";
-            }
+            };
 
             const outputButton = <button className={cssClasses("output")} onClick={showOutputFn}>Output</button>;
 
@@ -138,7 +137,6 @@ export class BuildStepDetailsLayer extends React.Component {
             default:
                 return <DetailTab buildId={buildId} stepId={stepId} rootLabel={activeTab}/>;
         }
-        return null;
     }
 
 
