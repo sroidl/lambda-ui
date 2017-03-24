@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.4]
+
+##### Added
+
+- convert ANSI color codes in shell output to HTML
+
 ## [0.3.3]
 
 #### Fixed
