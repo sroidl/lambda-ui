@@ -82,8 +82,7 @@ const ConnectionStateRedux = connect(ConnectionState_stateMapping)(ConnectionSta
 /************/
 
 export class BuildStepDetailsLayer extends React.Component {
-
-    /* eslint-disable */
+    
     constructor(props) {
         super(props);
     }
