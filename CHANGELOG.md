@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.3.6]
 
-## [0.3.4]
+#### Added
+
+- Show absolute step times when hovering build step duration
+
+## [0.3.5]
 
 ##### Added
 

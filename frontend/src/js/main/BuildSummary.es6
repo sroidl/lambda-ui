@@ -5,7 +5,7 @@ import BuildDetails from "./details/BuildDetails.es6";
 import {toggleBuildDetails as toggleAction} from "./actions/BuildDetailActions.es6";
 import Moment, {now} from "moment";
 import {StateIcon} from "./StateIcon.es6";
-import {FormattedDuration} from "./DateAndTime.es6";
+import {FormattedDuration, FormattedTime} from "./DateAndTime.es6";
 
 export const renderSummary = (properties) => {
     const {buildId, buildNumber, startTime, state, toggleBuildDetails, open, duration} = properties;
@@ -17,7 +17,7 @@ export const renderSummary = (properties) => {
     const timeToNow = Moment(startTime).diff(Moment(now()));
     const startMoment = Moment.duration(timeToNow);
     const startText = R.isNil(startTime) ? "not yet started" : startMoment.humanize("minutes");
-    const startTextTooltip = R.isNil(startTime) ? "not yet started" : Moment(startTime).format("dddd, MMMM Do YYYY, h:mm:ss a");
+    const startTextTooltip = R.isNil(startTime) ? "not yet started" : FormattedTime(startTime);
 
     return <div className={classesForState}>
         <div className="buildInfo" onClick={toggleBuildDetails}>
