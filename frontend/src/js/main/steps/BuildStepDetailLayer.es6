@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
@@ -8,6 +9,9 @@ import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
 import StateIcon from "../StateIcon.es6";
 import DetailTab from "./DetailTab.es6";
+
+import * as jscss from 'js-managed-css';
+import reactAnsiStyle from 'react-ansi-style';
 
 //TODO externalize output class into own module
 export class Output extends React.Component {
@@ -31,19 +35,20 @@ export class Output extends React.Component {
             output = ["No output."];
         }
 
-        const formattingLine = line => line.replace(/ /g, "\u00a0");
+        const formatLine = line => {
+            return line.replace(/ /g, "\u00a0");
+        };
+
         const lineKey = index => "line-" + index;
         const mapIndexed = R.addIndex(R.map);
-
 
         return <div ref={(div) => {
             this.buildStepLayer__text = div;
         }} className="buildStepLayer__text">
 
             {mapIndexed((line, index) =>
-                <div key={lineKey(index)} className="outputLine">
-                    {formattingLine(line)}
-                </div>, output) }
+                    <div key={lineKey(index)} className="outputLine">{reactAnsiStyle(React, formatLine(line))}</div>
+                , output) }
         </div>;
     }
 }
@@ -82,6 +87,7 @@ export class BuildStepDetailsLayer extends React.Component {
 
     constructor(props) {
         super(props);
+        require('react-ansi-style/inject-css');
     }
 
     closeOnEscClick() {
