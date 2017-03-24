@@ -1,7 +1,7 @@
-/* eslint-disable */
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
+import reactAnsiStyle from "react-ansi-style";
 import {requestOutput} from "../actions/BackendActions.es6";
 import "../../../sass/buildStepOutput.sass";
 import {hideBuildOutput, changeTab} from "../actions/OutputActions.es6";
@@ -9,9 +9,6 @@ import DevToggles from "../DevToggles.es6";
 import * as Utils from "../Utils.es6";
 import StateIcon from "../StateIcon.es6";
 import DetailTab from "./DetailTab.es6";
-
-import * as jscss from 'js-managed-css';
-import reactAnsiStyle from 'react-ansi-style';
 
 //TODO externalize output class into own module
 export class Output extends React.Component {
@@ -85,9 +82,10 @@ const ConnectionStateRedux = connect(ConnectionState_stateMapping)(ConnectionSta
 
 export class BuildStepDetailsLayer extends React.Component {
 
+    /* eslint-disable */
     constructor(props) {
         super(props);
-        require('react-ansi-style/inject-css');
+        require("react-ansi-style/inject-css");
     }
 
     closeOnEscClick() {
