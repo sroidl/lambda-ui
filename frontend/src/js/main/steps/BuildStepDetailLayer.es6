@@ -2,6 +2,7 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
 import reactAnsiStyle from "react-ansi-style";
+import "react-ansi-style/inject-css";
 import {requestOutput} from "../actions/BackendActions.es6";
 import "../../../sass/buildStepOutput.sass";
 import {hideBuildOutput, changeTab} from "../actions/OutputActions.es6";
@@ -85,7 +86,6 @@ export class BuildStepDetailsLayer extends React.Component {
     /* eslint-disable */
     constructor(props) {
         super(props);
-        require("react-ansi-style/inject-css");
     }
 
     closeOnEscClick() {

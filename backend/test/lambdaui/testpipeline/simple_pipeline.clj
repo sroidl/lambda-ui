@@ -27,7 +27,7 @@
   {:status :success :out "Wohoo!"})
 
 (defn a-lot-output [args context]
-  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Outputline ${i}\"; done"))
+  (shell/bash context (:cwd args) "for i in {1..200}; do echo \"Ansi \u001B[45m\u001B[1mcolored\u001B[0m output \u001B[31mline \u001B[1m\u001B[32m${i}\"; done"))
 
 
 (defn long-running [_ ctx]
