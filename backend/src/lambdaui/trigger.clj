@@ -1,6 +1,6 @@
 (ns lambdaui.trigger
   (:require [clojure.core.async :as async]
-            [lambdacd.internal.execution :as execution]
+            [lambdacd.execution :as execution]
             [clojure.walk :refer [keywordize-keys]]))
 
 
