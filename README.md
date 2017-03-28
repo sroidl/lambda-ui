@@ -6,7 +6,7 @@ __Status:__
 
 [![Clojars Project](http://clojars.org/lambdaui/latest-version.svg)](http://clojars.org/lambdaui)
 
-LambdaUI is a new User Interface for the build tool [LambdaCD](https://github.com/flosell/lambdacd). It's a SPA based on React/Redux.
+LambdaUI is a new User Interface for the build tool [LambdaCD](https://github.com/flosell/lambdacd). It's a single-page application (SPA) based on React/Redux.
 
 See and play with the latest build on [Heroku](http://lambdaui-snapshot.herokuapp.com/lambdaui). Just use the the `Start Build` button and explore all the features.
 
@@ -31,7 +31,7 @@ Do you have more ideas or feedback?
 Open a [feature request](https://github.com/sroidl/lambda-ui/issues/new)!
 
 ## Usage
-As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.10.0`. To use LambdaUI, you'll also need to use the [http-kit](http://www.http-kit.org/) (we tested it with v2.1.18) webserver to serve the backend of the UI.
+As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.10.0`. To use LambdaUI, you'll also need to use the [http-kit](http://www.http-kit.org/) (we tested it with v2.2.0) webserver to serve the backend of the UI.
 
 ### Step-by-Step setup
 We'll suppose you've setup your pipeline as in the [example by LambdaCD](http://www.lambda.cd/getting-started/)
@@ -42,7 +42,7 @@ We'll suppose you've setup your pipeline as in the [example by LambdaCD](http://
 ; ...
 :dependencies [ ;...
               [lambdaui "0.1.0-SNAPSHOT"]
-              [http-kit "2.1.18"]]
+              [http-kit "2.2.0"]]
 ; ...
 ```
 

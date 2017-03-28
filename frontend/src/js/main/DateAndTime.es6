@@ -66,6 +66,10 @@ export const FormattedDuration = ({seconds, longTime}) => {
     return <span className="formattedDuration">{formatShortDuration(duration)}</span>;
 };
 
+export const FormattedTime = time => {
+    return Moment(time).format("dddd, MMMM Do YYYY, h:mm:ss a");
+};
+
 FormattedDuration.propTypes = {
     seconds: PropTypes.number.isRequired,
     longTime: PropTypes.bool

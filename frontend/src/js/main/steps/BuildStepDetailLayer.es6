@@ -1,6 +1,8 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import * as R from "ramda";
+import reactAnsiStyle from "react-ansi-style";
+import "react-ansi-style/inject-css";
 import {requestOutput} from "../actions/BackendActions.es6";
 import "../../../sass/buildStepOutput.sass";
 import {hideBuildOutput, changeTab} from "../actions/OutputActions.es6";
@@ -31,19 +33,20 @@ export class Output extends React.Component {
             output = ["No output."];
         }
 
-        const formattingLine = line => line.replace(/ /g, "\u00a0");
+        const formatLine = line => {
+            return line.replace(/ /g, "\u00a0");
+        };
+
         const lineKey = index => "line-" + index;
         const mapIndexed = R.addIndex(R.map);
-
 
         return <div ref={(div) => {
             this.buildStepLayer__text = div;
         }} className="buildStepLayer__text">
 
             {mapIndexed((line, index) =>
-                <div key={lineKey(index)} className="outputLine">
-                    {formattingLine(line)}
-                </div>, output) }
+                    <div key={lineKey(index)} className="outputLine">{reactAnsiStyle(React, formatLine(line))}</div>
+                , output) }
         </div>;
     }
 }
@@ -99,7 +102,6 @@ export class BuildStepDetailsLayer extends React.Component {
         };
     }
 
-    /* eslint-disable */
     TabNavigation(props) {
         const {changeTabFn, activeTab, stepDetailLabels} = props;
         if (DevToggles.showBuildArtifacts) {
@@ -111,7 +113,7 @@ export class BuildStepDetailsLayer extends React.Component {
                     return "buildStepLayer__tab buildStepLayer__tab--active";
                 }
                 return "buildStepLayer__tab";
-            }
+            };
 
             const outputButton = <button className={cssClasses("output")} onClick={showOutputFn}>Output</button>;
 
@@ -135,7 +137,6 @@ export class BuildStepDetailsLayer extends React.Component {
             default:
                 return <DetailTab buildId={buildId} stepId={stepId} rootLabel={activeTab}/>;
         }
-        return null;
     }
 
 

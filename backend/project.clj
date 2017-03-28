@@ -1,4 +1,4 @@
-(defproject lambdaui "0.3.4-SNAPSHOT"
+(defproject lambdaui "0.3.7-SNAPSHOT"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
   :license {:name "Apache License 2.0"
@@ -12,12 +12,12 @@
                  [trptcolin/versioneer "0.2.0"]]
 
   :test-paths ["test"]
-  :repositories [["snapshots" { :url "https://clojars.org/repo"
-                                :username [:gpg :env]
-                                :password [:gpg :env]}]
-                 ["releases" { :url "https://clojars.org/repo"
-                                               :username [:gpg :env]
-                                               :password [:gpg :env]}]]
+  :deploy-repositories [["snapshots" {:url "https://clojars.org/repo"
+                                      :username [:gpg :env]
+                                      :password [:gpg :env]}]
+                        ["releases" {:url "https://clojars.org/repo"
+                                     :username [:gpg :env]
+                                     :password [:gpg :env]}]]
   :lein-release {:scm :git}
   :profiles {:dev {:dependencies [[lambdacd-git "0.2.0"]
                                   [com.gearswithingears/shrubbery "0.4.1"]

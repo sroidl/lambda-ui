@@ -42,7 +42,7 @@ goal_compile-ui() {
 
 goal_run() {
   NAMESPACE="lambdaui.example.simple-pipeline"
-  pushd ${SCRIPT_DIR}/backend > /dev/null
+  pushd ${SCRIPT_DIR}/example-pipeline > /dev/null
   ./lein run -m ${NAMESPACE}
   popd > /dev/null
 }
@@ -131,7 +131,7 @@ goal:
     serve-ui  -- Serves UI on port 8080. Watches frontend and recompiles with webpack if necessary.
     serve-backend -- Serves the backend-for-frontend on port 4444
 
-    Backend:
+    Example Pipeline:
     run       -- run example pipeline"
   exit 1
 fi
