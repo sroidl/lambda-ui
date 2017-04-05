@@ -62,7 +62,7 @@ goal_setup() {
 goal_clean() {
   pushd ${SCRIPT_DIR}/backend > /dev/null
   ./lein clean
-  rm -rf resources/public
+  rm -rf resources/public-lambdaui
   popd > /dev/null
   pushd ${SCRIPT_DIR}/frontend > /dev/null
     npm run clean
@@ -74,14 +74,14 @@ goal_jar() {
   pushd ${SCRIPT_DIR}/frontend > /dev/null
    npm run compile
   popd > /dev/null
-  if [ ! -e ${SCRIPT_DIR}/backend/resources/public ]; then
-    mkdir -p ${SCRIPT_DIR}/backend/resources/public
-    mkdir -p ${SCRIPT_DIR}/backend/resources/public/thirdparty/fontawesome
+  if [ ! -e ${SCRIPT_DIR}/backend/resources/public-lambdaui ]; then
+    mkdir -p ${SCRIPT_DIR}/backend/resources/public-lambdaui
+    mkdir -p ${SCRIPT_DIR}/backend/resources/public-lambdaui/thirdparty/fontawesome
   fi
 
   echo 'Copying frontend assets to backend'
-  cp frontend/target/* backend/resources/public
-  cp -R frontend/src/thirdparty/fontawesome backend/resources/public/thirdparty
+  cp frontend/target/* backend/resources/public-lambdaui
+  cp -R frontend/src/thirdparty/fontawesome backend/resources/public-lambdaui/thirdparty
   echo 'Compiling backend'
   pushd ${SCRIPT_DIR}/backend > /dev/null
    ./lein jar
@@ -127,7 +127,7 @@ goal:
     test      -- run tests for backend and frontend
 
     Frontend:
-    compile-ui -- Compiles UI into resources/ui/public
+    compile-ui -- Compiles UI into resources/ui/public-lambdaui
     serve-ui  -- Serves UI on port 8080. Watches frontend and recompiles with webpack if necessary.
     serve-backend -- Serves the backend-for-frontend on port 4444
 
