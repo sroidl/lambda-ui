@@ -9,7 +9,7 @@ import * as Actions from "../../main/actions/BuildStepActions.es6";
 
 describe("BuildStep", () => {
 
-    let realConsole;
+    let realConsole = window.console;
 
     beforeEach(() => {
         TestUtils.consoleThrowingBefore(realConsole);
