@@ -50,10 +50,12 @@ export const Header = ({pipelineName, links, showStartBuildButton}) => {
     }
 
     return <div className="appHeader">
-        <div className="logo">
+        <a href="/">
+            <div className="logo">
                 <img src={logo} className="logoImage" alt="logo"/>
                 <span className="logoText">{pipelineName}</span>
-        </div>
+            </div>
+        </a>
         {headerLinks}
         {startBuildButton(showStartBuildButton, triggerNewFn)}
     </div>;
