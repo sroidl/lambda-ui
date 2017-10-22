@@ -24,7 +24,7 @@
      (ring-json/wrap-json-response
        (wrap-params
          (routes
-           (route/resources "/lambdaui" {:root "public"})
+           (route/resources "/lambdaui" {:root "public-lambdaui"})
            (route/resources "/" {:root "public"})
            (GET "/lambdaui" [] (ring.util.response/redirect "lambdaui/index.html"))
            (GET "/lambdaui/config.js" [] (config/config_edn->config_js configuration))

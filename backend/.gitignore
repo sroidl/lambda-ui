@@ -2,4 +2,5 @@
 .nrepl-port
 target
 resources/public
+resources/public-lambdaui
 tmp
