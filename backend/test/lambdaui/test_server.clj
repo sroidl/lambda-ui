@@ -1,6 +1,7 @@
 (ns lambdaui.test-server
   (:require [lambdacd.core :as lambdacd]
-            [lambdacd.internal.execution :refer [run kill-all-pipelines]]
+            [lambdacd.execution.core :refer [run-pipeline]]
+            [lambdacd.execution.internal.kill :refer [kill-all-pipelines]]
             [lambdacd.util :refer [create-temp-dir]]
             [lambdaui.core :as ui]
             [org.httpkit.server :refer [run-server]]
@@ -21,7 +22,7 @@
     pipeline))
 
 (defn execute-pipeline [{def :pipeline-def ctx :context}]
-  (run def ctx))
+  (run-pipeline def ctx))
 
 (defn- test-with-server [pipeline-definition test-fn]
   `(let [server-atom# (atom nil)]
