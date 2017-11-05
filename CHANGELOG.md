@@ -4,11 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased] 
+## [Unreleased]
+
+## [1.0.0]
+(Following semantic versioning this release raises the major version as it contains possible breaking changes).
+
+#### Changes
+This release changes the minimum required version of LambdaCD to 0.13.3.
+
+#### Fixed
+- Updated all backend dependencies.
+
+#### Acknowledgment
+This release contains contribution of [flosell](https://github.com/flosell) and [hackbert](https://github.com/hackbert).
+Thank you!
+
 
 ## [0.4.0]
 
-#### Added 
+#### Added
 
 - Minimum lambdacd version raised to 0.10.0
 - Compatibility with lambdacd 0.13.0
@@ -64,15 +78,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - `:show-version` config item.
 - Tooltip showing the absolute start time in build summaries
-- `:target` option in navbar links of config. 
+- `:target` option in navbar links of config.
 - opens most interesting step (waiting / running / failure) when opening a build for the first time
 - expand all steps / collapse all steps
 - include build step state in output layer
 
-#### Fixed 
+#### Fixed
 - trigger time is now excluded from the build started calculation
 - interaction with backend (trigger steps, etc.) now also work in safari (and probably IE too)
-- horizontal drag & scroll also works in the whole build details area 
+- horizontal drag & scroll also works in the whole build details area
 - horizontal drag & scroll does not close/open build steps anymore
 
 
@@ -86,7 +100,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.1.0
 First release.
 
-[Unreleased]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.6...HEAD
+[Unreleased]: https://github.com/sroidl/lambda-ui/compare/lambdaui-1.0.0...master
+[1.0.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.4.0...lambdaui-1.0.0
+[0.4.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.6...lambdaui-0.4.0
 [0.3.6]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.5...lambdaui-0.3.6
 [0.3.5]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.4...lambdaui-0.3.5
 [0.3.4]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.3...lambdaui-0.3.4
