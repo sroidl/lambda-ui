@@ -31,7 +31,7 @@ Do you have more ideas or feedback?
 Open a [feature request](https://github.com/sroidl/lambda-ui/issues/new)!
 
 ## Usage
-As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.10.0`. To use LambdaUI, you'll also need to use the [http-kit](http://www.http-kit.org/) (we tested it with v2.2.0) webserver to serve the backend of the UI.
+As this project is only the User Interface, you'll need running [LambdaCD](https://github.com/flosell/lambdacd) pipeline. The minimum required version of LambdaCD is currently `0.13.3`. To use LambdaUI, you'll also need to use the [http-kit](http://www.http-kit.org/) (we tested it with v2.2.0) webserver to serve the backend of the UI.
 
 ### Step-by-Step setup
 We'll suppose you've setup your pipeline as in the [example by LambdaCD](http://www.lambda.cd/getting-started/)
@@ -79,7 +79,7 @@ We'll suppose you've setup your pipeline as in the [example by LambdaCD](http://
 That's it! Now start the pipeline as usual and have a look the new UI:
 `http://localhost:8080/lambdaui`
 
-__Note:__ As there is no feature complete version of the UI right now (Dec 12 2016), the old UI is served as a fallback for your convenience as the default UI at `http://localhost:8080`. This will change with the first stable release.
+__Note:__ The old UI is served as a fallback for your convenience as the default UI at `http://localhost:8080`. 
 
 
 Also, have a look at the [example-pipeline](https://github.com/sroidl/lambda-ui/tree/master/example-pipeline) for a complete code example.

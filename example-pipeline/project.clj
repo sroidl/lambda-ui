@@ -4,9 +4,9 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [lambdaui "0.3.7-SNAPSHOT"]
-                 [lambdacd "0.9.0"]
-                 [lambdacd-git "0.1.6"]
+                 [lambdaui "1.0.1-SNAPSHOT"]
+                 [lambdacd "0.13.3"]
+                 [lambdacd-git "0.2.0"]
                  [http-kit "2.1.18"]]
   :main ^:skip-aot lambdaui.example.simple-pipeline
   :min-lein-version "2.0.0"
