@@ -1,7 +1,8 @@
 (ns lambdaui.common.summaries-test
   (:use [clojure.test]
         [lambdaui.fixtures.pipelines])
-  (:require [lambdaui.common.summaries :as testee])
+  (:require [lambdaui.common.summaries :as testee]
+            [lambdacd.state.protocols :as protocols])
   (:import (org.joda.time DateTime DateTimeZone)))
 
 (defn- iso-string [joda-date]
@@ -23,6 +24,23 @@
          (map step)
          (reduce merge {}))))
 
+(defrecord MockPipelineState [state]
+  protocols/QueryAllBuildNumbersSource
+  (all-build-numbers [self] (keys state))
+  protocols/QueryStepResultsSource
+  (get-step-results [self build-number] (get state build-number)))
+
+(defn- started-steps-in-state [state]
+  (set (for [build-number (keys state)
+             step-id      (keys (get state build-number))]
+         {:step-id      step-id
+          :build-number build-number})))
+
+(defn context-with-state [state]
+  (let [pipeline-state (->MockPipelineState state)]
+    {:pipeline-state-component pipeline-state
+     :started-steps (atom (started-steps-in-state state))}))
+
 (deftest summaries-test-duration
   (testing "should calculate correct duration"
     (let [step-1-start (DateTime/parse "2016-12-05T15:00:00Z")
@@ -37,7 +55,7 @@
                           :status                :success}}}
 
 
-          actual (testee/summaries state)]
+          actual (testee/summaries (context-with-state state))]
       (is (= (str step-1-start) (:startTime (first (:summaries actual)))))
       (is (= (str step-2-stop) (:endTime (first (:summaries actual))))))))
 
@@ -53,14 +71,14 @@
                            :startTime   nil
                            :endTime     nil}]}
 
-             (testee/summaries simple-waiting-pipeline-state)))
+             (testee/summaries (context-with-state simple-waiting-pipeline-state))))
       (is (= {:summaries [{:buildNumber 1
                            :buildId     1
                            :state       :running
                            :duration    0
                            :startTime   nil
                            :endTime     nil}]}
-             (testee/summaries simple-running-pipeline-state)))))
+             (testee/summaries (context-with-state simple-running-pipeline-state))))))
   (testing "should extract pipeline summaries for more than one pipeline"
     (let [waiting-and-running-pipeline-state {1 {'(1) {:status :waiting}}
                                               2 {'(1) {:status :running}}}]
@@ -76,7 +94,7 @@
                            :duration    0
                            :startTime   nil
                            :endTime     nil}]}
-             (testee/summaries waiting-and-running-pipeline-state))))))
+             (testee/summaries (context-with-state waiting-and-running-pipeline-state)))))))
 
 
 
@@ -92,7 +110,7 @@
                                     :most-recent-update-at pm-4}}]
       (is (= "2016-01-01T12:00:00.000Z" (testee/extract-start-time multi-step-build)))
 
-      (is (= 10800 (-> (testee/summaries {1 multi-step-build})
+      (is (= 10800 (-> (testee/summaries (context-with-state {1 multi-step-build}))
                        :summaries
                        first
                        :duration)))))

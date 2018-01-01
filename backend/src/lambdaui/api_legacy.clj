@@ -10,9 +10,10 @@
             [clojure.string :as s]
             [lambdacd.util :as util]
             [lambdacd.core :as core]
-            [lambdaui.common.common :refer [state-from-pipeline finished? step-id->str str->step-id]]
+            [lambdaui.common.common :refer [finished? step-id->str str->step-id]]
             [lambdaui.common.details :as details]
-            [lambdaui.common.collections :refer [deep-merge]]))
+            [lambdaui.common.collections :refer [deep-merge]]
+            [lambdacd.state.core :as lambdacd-state]))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
   (let [result (async/chan)
@@ -32,12 +33,7 @@
 
 
 (defn finished-step? [pipeline build-id step-id]
-  (finished? (:status
-               (-> (state-from-pipeline pipeline)
-                   (get build-id)
-                   (get (to-step-id step-id))))))
-
-
+  (finished? (:status (lambdacd-state/get-step-result (:context pipeline) build-id (to-step-id step-id)))))
 
 (defn output-events [pipeline ws-ch build-id step-id]
   (let [ctx (:context pipeline)
@@ -47,9 +43,7 @@
         sliding-window (async/pipe filtered (async/chan (async/sliding-buffer 1)))]
 
     (on-close ws-ch (fn [_] (do (event-bus/unsubscribe ctx :step-result-updated subscription) (println "closed channel!"))))
-    (send! ws-ch (lambdacd.util/to-json {:stepResult (-> (state-from-pipeline pipeline)
-                                                         (get build-id)
-                                                         (get (to-step-id step-id)))
+    (send! ws-ch (lambdacd.util/to-json {:stepResult (lambdacd-state/get-step-result (:context pipeline) build-id (to-step-id step-id))
                                          :buildId    build-id
                                          :stepId     step-id}))
 
@@ -76,7 +70,7 @@
                       ;payloads     (event-bus/only-payload subscription)
 
 
-                  (send! websocket-channel (lambdacd.util/to-json (summaries (state-from-pipeline pipeline))))
+                  (send! websocket-channel (lambdacd.util/to-json (summaries (:context pipeline))))
                   (close websocket-channel))))
 
                   ;(async/go-loop []

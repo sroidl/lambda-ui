@@ -1,6 +1,7 @@
 (ns lambdaui.common.details
   (:require [lambdaui.common.common :as common]
-            [lambdacd.presentation.unified :as presentation]))
+            [lambdacd.presentation.unified :as presentation]
+            [lambdacd.state.core :as state]))
 
 (defn- to-iso-string [timestamp]
   (when timestamp
@@ -49,6 +50,6 @@
      :steps   steps}))
 
 (defn build-details-response [pipeline build-id]
-  (let [build-state (get (common/state-from-pipeline pipeline) (Integer/parseInt build-id))
+  (let [build-state (state/get-step-results (:context pipeline) (Integer/parseInt build-id))
         pipeline-def (:pipeline-def pipeline)]
     (build-details-from-pipeline pipeline-def build-state build-id (get-in pipeline [:context :config :ui-config]))))

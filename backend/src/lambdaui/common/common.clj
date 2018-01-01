@@ -1,10 +1,6 @@
 (ns lambdaui.common.common
-  (:require [lambdacd.internal.pipeline-state :as state]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [lambdacd.util :as util]))
-
-(defn state-from-pipeline [pipeline]
-  (state/get-all (:pipeline-state-component (:context pipeline))))
 
 (defn finished? [status]
   (contains? #{:success :failure :killed} status))

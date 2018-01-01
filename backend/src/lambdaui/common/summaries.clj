@@ -1,6 +1,7 @@
 (ns lambdaui.common.summaries
   (:require [lambdacd.presentation.pipeline-state :as presentation]
-            [lambdaui.common.step-state :as steps]))
+            [lambdaui.common.step-state :as steps]
+            [lambdacd.state.core :as state]))
 
 
 
@@ -34,11 +35,9 @@
    :endTime     (extract-end-time build-steps)
    :duration    (presentation/build-duration build-steps)})
 
-
-
-
-(defn summaries [pipeline-state]
+(defn summaries [ctx]
   {:summaries
-   (map #(pipeline-state-entry->summaries-entry (first %) (last %)) pipeline-state)})
+   (for [build-number (state/all-build-numbers ctx)]
+     (pipeline-state-entry->summaries-entry build-number (state/get-step-results ctx build-number)))})
 
 
