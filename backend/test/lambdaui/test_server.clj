@@ -2,12 +2,11 @@
   (:require [lambdacd.core :as lambdacd]
             [lambdacd.execution.core :refer [run-pipeline]]
             [lambdacd.execution.internal.kill :refer [kill-all-pipelines]]
-            [lambdacd.util :refer [create-temp-dir]]
+            [lambdaui.test-utils :refer [create-temp-dir]]
             [lambdaui.core :as ui]
             [org.httpkit.server :refer [run-server]]
             [clojure.core.async :as async]
-            [clojure.tools.logging :as log])
-  )
+            [clojure.tools.logging :as log]))
 
 (defn stop-server! [server-atom]
   (log/info "Stopping server")

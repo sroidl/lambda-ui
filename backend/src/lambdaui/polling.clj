@@ -1,15 +1,15 @@
 (ns lambdaui.polling
   (:use [lambdaui.common.summaries])
-  (:require [compojure.core :as comp :refer [routes GET]]
+  (:require [compojure.core :refer [routes GET]]
             [ring.util.response :refer [header response]]
-            [ring.middleware.json :refer [wrap-json-response]]))
+            [ring.middleware.json :refer [wrap-json-response]]
+            [lambdaui.json-util :as json-util]))
 
 (defn- cross-origin-response [data]
   (header (response data) "Access-Control-Allow-Origin" "*"))
 
-
 (defn summary-response [pipeline]
-  (lambdacd.util/to-json (summaries (:context pipeline))))
+  (json-util/to-json (summaries (:context pipeline))))
 
 (defn polling-routes [pipeline]
   (routes

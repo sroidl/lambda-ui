@@ -6,11 +6,12 @@
             [lambdacd.core :as lambdacd]
             [org.httpkit.server :as server]
             [lambdacd.ui.api]
-            [lambdacd.util :as file-util]
             [lambdaui.core :as ui]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger parameterized-trigger]]
             [lambdacd.runners :as pipeline-runners]
-            [lambdacd.steps.support :as support]))
+            [lambdacd.steps.support :as support])
+  (:import (java.nio.file.attribute FileAttribute)
+           (java.nio.file Files)))
 
 (defonce lastStatus (atom nil))
 
@@ -91,8 +92,11 @@
 
 (defonce server (atom nil))
 
+(defn- create-temp-dir []
+  (str (Files/createTempDirectory "lambdacd" (into-array FileAttribute []))))
+
 (defn -main [& args]
-  (let [home-dir (file-util/create-temp-dir)
+  (let [home-dir (create-temp-dir)
         config {:home-dir  home-dir
                 :name      "Example Pipeline"
                 :ui-config {

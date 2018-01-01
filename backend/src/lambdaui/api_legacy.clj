@@ -8,12 +8,12 @@
             [clojure.core.async :as async]
             [clojure.data.json :as json]
             [clojure.string :as s]
-            [lambdacd.util :as util]
             [lambdacd.core :as core]
             [lambdaui.common.common :refer [finished? step-id->str str->step-id]]
             [lambdaui.common.details :as details]
             [lambdaui.common.collections :refer [deep-merge]]
-            [lambdacd.state.core :as lambdacd-state]))
+            [lambdacd.state.core :as lambdacd-state]
+            [lambdaui.json-util :as json-util]))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
   (let [result (async/chan)
@@ -43,7 +43,7 @@
         sliding-window (async/pipe filtered (async/chan (async/sliding-buffer 1)))]
 
     (on-close ws-ch (fn [_] (do (event-bus/unsubscribe ctx :step-result-updated subscription) (println "closed channel!"))))
-    (send! ws-ch (lambdacd.util/to-json {:stepResult (lambdacd-state/get-step-result (:context pipeline) build-id (to-step-id step-id))
+    (send! ws-ch (json-util/to-json {:stepResult (lambdacd-state/get-step-result (:context pipeline) build-id (to-step-id step-id))
                                          :buildId    build-id
                                          :stepId     step-id}))
 
@@ -70,14 +70,14 @@
                       ;payloads     (event-bus/only-payload subscription)
 
 
-                  (send! websocket-channel (lambdacd.util/to-json (summaries (:context pipeline))))
+                  (send! websocket-channel (json-util/to-json (summaries (:context pipeline))))
                   (close websocket-channel))))
 
                   ;(async/go-loop []
                   ;  (if-let [event (async/<! payloads)]
                   ;    (do
                   ;      (println @current-count " -- " event)
-                  ;      (send! websocket-channel (lambdacd.util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
+                  ;      (send! websocket-channel (json-util/to-json (merge {:updateNo @current-count} (summaries (state-from-pipeline pipeline)))))
                   ;      (swap! current-count inc)
                   ;      (recur))))
 
@@ -98,11 +98,9 @@
       (do
         (println "Kill Step " build-id " - " step-id)
         (swap! killed-steps (fn [old-value] (conj old-value identifier)))
-        (core/kill-step ctx (util/parse-int build-id) (str->step-id step-id))
+        (core/kill-step ctx (Integer/parseInt build-id) (str->step-id step-id))
         {:status 200})
       (do (println "Already killed step " identifier) {:status 403} ))))
-
-
 
 (defn api-routes [pipeline]
   (let [{pipeline-def :pipeline-def ctx :context} pipeline]
@@ -111,8 +109,8 @@
       (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
       (GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id))
       (POST "/builds/:buildnumber/:step-id/retrigger" [buildnumber step-id]
-        (let [new-buildnumber (core/retrigger pipeline-def ctx (util/parse-int buildnumber) (str->step-id step-id))]
-          (util/json {:build-number new-buildnumber})))
+        (let [new-buildnumber (core/retrigger pipeline-def ctx (Integer/parseInt buildnumber) (str->step-id step-id))]
+          (json-util/json-response {:build-number new-buildnumber})))
       (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id] (kill-step buildnumber step-id ctx)))))
 
 
