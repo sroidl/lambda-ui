@@ -1,6 +1,6 @@
 {
   "testPathDirs": ["src/js/test", "src/js/main"],
-  "testRegex" : ".*.test.es6$",
+  "testRegex" : ".+\\.(?:test|it)\\.es6",
   "moduleFileExtensions" : ["js", "json", "es6"],
 
   "moduleNameMapper": {
