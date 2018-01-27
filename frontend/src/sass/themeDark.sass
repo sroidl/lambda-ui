@@ -58,6 +58,8 @@ $fuckin-dark-grey: #090909
                 background-color: $brighter-blue
             &.waiting .buildIcon
                 background-color: $orange
+            &.killed .buildIcon
+                background-color: $brighter-grey
             &.pending .buildIcon
                 display: none
 
@@ -109,6 +111,8 @@ $fuckin-dark-grey: #090909
             background-color: $orange
         &.running:before
             background-color: $brighter-blue
+        &.killed:before
+            background-color: $brighter-grey
         &.unknown:before
             background-color: $dark-grey
 
@@ -175,34 +179,28 @@ $fuckin-dark-grey: #090909
                 top: 20px
                 left: 25px
 
-    // quick details
     .quickStep
+        border: 1px solid $dark-light-grey
         &:before
             background-color: $dark-light-grey
 
         &.success
             background-color: $brighter-green
-            border: 1px solid $dark-light-grey
 
         &.failure
             background-color: $brighter-red
-            border: 1px solid $dark-light-grey
 
         &.waiting
             background-color: $orange
-            border: 1px solid $dark-light-grey
 
         &.pending
-            background-color: darken($dark-light-grey, 20%)
-            border: 1px solid $dark-light-grey
+            background-color: $dark-light-grey
 
         &.killed
-            background-color: $darker-grey
-            border: 1px solid $dark-light-grey
+            background-color: $brighter-grey
 
         &.running
             background-color: $brighter-blue
-            border: 1px solid $dark-light-grey
 
     .quickSubsteps
         >.quickStep:last-of-type:after
