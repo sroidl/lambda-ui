@@ -9,7 +9,7 @@
             [lambdaui.core :as ui]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger parameterized-trigger]]
             [lambdacd.runners :as pipeline-runners]
-            [lambdacd.steps.support :as support])
+            [lambdacd.stepsupport.output :as output])
   (:import (java.nio.file.attribute FileAttribute)
            (java.nio.file Files)))
 
@@ -36,8 +36,8 @@
   {:status (swap! lastStatus swapStatus)})
 
 (defn output-parameters [args ctx]
-  (let [p (support/new-printer)
-        out #(support/print-to-output ctx p %)
+  (let [p (output/new-printer)
+        out #(output/print-to-output ctx p %)
         revision (get args :revision)
 
         ]
