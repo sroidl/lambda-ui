@@ -8,7 +8,6 @@
             [clojure.core.async :as async]
             [clojure.data.json :as json]
             [clojure.string :as s]
-            [lambdacd.core :as core]
             [lambdaui.common.common :refer [finished? step-id->str str->step-id]]
             [lambdaui.common.details :as details]
             [lambdaui.common.collections :refer [deep-merge]]
@@ -99,7 +98,7 @@
       (do
         (println "Kill Step " build-id " - " step-id)
         (swap! killed-steps (fn [old-value] (conj old-value identifier)))
-        (core/kill-step ctx (Integer/parseInt build-id) (str->step-id step-id))
+        (execution-core/kill-step ctx (Integer/parseInt build-id) (str->step-id step-id))
         {:status 200})
       (do (println "Already killed step " identifier) {:status 403} ))))
 

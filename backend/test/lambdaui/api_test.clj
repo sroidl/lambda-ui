@@ -123,7 +123,7 @@
     (clear-killed-atom)
 
     (let [kill-counter (atom 0)]
-      (with-redefs [lambdacd.core/kill-step (fn [& _] (swap! kill-counter inc))]
+      (with-redefs [lambdacd.execution.core/kill-step (fn [& _] (swap! kill-counter inc))]
         (subject/kill-step "1" "1" nil)
         (subject/kill-step "1" "1" nil)
 
