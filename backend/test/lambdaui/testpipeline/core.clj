@@ -10,7 +10,9 @@
             [ring.middleware.cors :refer [wrap-cors]]
             [lambdacd.presentation.unified :as presentation]
             [lambdacd-artifacts.core :as artifacts]
-            [lambdaui.test-utils :as test-utils])
+            [lambdaui.test-utils :as test-utils]
+            [lambdacd.presentation.pipeline-structure :as pipeline-structure]
+            [lambdacd.presentation.unified :as unified])
 
   (:use [lambdacd.runners]))
 
@@ -70,5 +72,6 @@
   (-main))
 
 (let [pipeline-def (:pipeline-def @current-pipeline)
-      pipeline-state (:pipeline-state-component (:context @current-pipeline))]
-  (presentation/unified-presentation pipeline-def pipeline-state))
+      pipeline-state (:pipeline-state-component (:context @current-pipeline))
+      structure (pipeline-structure/pipeline-display-representation pipeline-def)]
+  (unified/pipeline-structure-with-step-results structure pipeline-state))
