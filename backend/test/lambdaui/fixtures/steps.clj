@@ -1,5 +1,5 @@
 (ns lambdaui.fixtures.steps
-  (:require [lambdacd.steps.support :refer [capture-output]])
+  (:require [lambdacd.stepsupport.output :refer [capture-output]])
   )
 
 (defn success [_ _]

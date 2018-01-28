@@ -3,7 +3,7 @@
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger] :as triggers]
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run] :as step]
-            [lambdacd.steps.support :refer [capture-output]]
+            [lambdacd.stepsupport.output :refer [capture-output]]
 
             ))
 

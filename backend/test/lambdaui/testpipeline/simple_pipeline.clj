@@ -3,7 +3,8 @@
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
             [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run] :as step]
-            [lambdacd.steps.support :refer [capture-output]]))
+            [lambdacd.stepsupport.output :refer [capture-output]]
+            [lambdacd.stepsupport.output :as output]))
 
 
 
@@ -31,8 +32,8 @@
 
 
 (defn long-running [_ ctx]
-  (let [p  (lambdacd.steps.support/new-printer)]
-    (lambdacd.steps.support/print-to-output ctx p "Waiting for 20 seconds before step finishes..."))
+  (let [p  (output/new-printer)]
+    (output/print-to-output ctx p "Waiting for 20 seconds before step finishes..."))
 
   (Thread/sleep (* 20 1000))
   {:status :success})

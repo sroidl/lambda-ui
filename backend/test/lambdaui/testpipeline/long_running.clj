@@ -1,17 +1,16 @@
 (ns lambdaui.testpipeline.long-running
   (:use [compojure.core])
-  (:require [lambdacd.steps.shell :as shell]
-            [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
-            [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run] :as step]
-            [lambdacd.steps.support :as support]))
+  (:require [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
+            [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
+            [lambdacd.stepsupport.output :as output]))
 
 
 
 
 (defn long-running-step [seconds]
   (fn [_ ctx]
-    (let [printer (support/new-printer)
-          append #(support/print-to-output ctx printer %)]
+    (let [printer (output/new-printer)
+          append #(output/print-to-output ctx printer %)]
       (doseq [remaining (reverse (range 1 seconds))]
         (append (str remaining " seconds remaining.. "))
         (Thread/sleep 1000)))
