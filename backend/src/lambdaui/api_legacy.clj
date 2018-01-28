@@ -13,7 +13,8 @@
             [lambdaui.common.details :as details]
             [lambdaui.common.collections :refer [deep-merge]]
             [lambdacd.state.core :as lambdacd-state]
-            [lambdaui.json-util :as json-util]))
+            [lambdaui.json-util :as json-util]
+            [lambdacd.execution.core :as execution-core]))
 
 (defn only-matching-step [event-updates-ch build-id step-id]
   (let [result (async/chan)
@@ -109,7 +110,7 @@
       (GET "/builds/:build-id" [build-id :as request] (wrap-websocket request (partial websocket-connection-for-details pipeline build-id)))
       (GET "/builds/:build-id/:step-id" [build-id step-id :as request] (output-buildstep-websocket pipeline request build-id step-id))
       (POST "/builds/:buildnumber/:step-id/retrigger" [buildnumber step-id]
-        (let [new-buildnumber (core/retrigger pipeline-def ctx (Integer/parseInt buildnumber) (str->step-id step-id))]
+        (let [new-buildnumber (execution-core/retrigger-pipeline-async pipeline-def ctx (Integer/parseInt buildnumber) (str->step-id step-id))]
           (json-util/json-response {:build-number new-buildnumber})))
       (POST "/builds/:buildnumber/:step-id/kill" [buildnumber step-id] (kill-step buildnumber step-id ctx)))))
 
