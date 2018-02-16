@@ -132,6 +132,9 @@ __NOTE:__ This feature is experimental and can disappear in any future version.
 ##### __:show-version__ - default: `false`
 If set to `true`  serves another endpoint at `[prefix]/lambdaui/version` and reports the current version of LambdaUI that is used.
 
+##### __:theme__ - optional
+If set to `dark`, it will override some CSS classes of the LambdaUI to display a dark theme experience.
+
 
 
 ## Contribute

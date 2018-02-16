@@ -1,0 +1,252 @@
+@import 'colors'
+
+$brighter-blue: #136FDB
+$brighter-red: #d71318
+$brighter-green: #37BF2D
+$orange: #FF8608
+$brighter-grey: #808080
+$darker-grey: #454545
+$even-darker-grey: #2d2d2d
+$really-dark-grey: #191919
+$extreme-dark-grey: #151515
+$fuckin-dark-grey: #090909
+
+.main--dark
+    background-color: $really-dark-grey
+
+    .loadingMessage
+        color: $dark-light-grey
+
+    .link
+        color: $dark-light-grey
+        border-right-color: darken($dark-grey, 10%)
+        &:hover, &:active, &:focus
+            color: $lightGrey
+
+    .appHeader
+        background-color: $even-darker-grey
+        border-bottom-color: $dark-light-grey
+
+    .runButton,
+    button.buildStepLayer__tab
+        background: lighten($even-darker-grey, 10%)
+        color: lighten($dark-grey, 10%)
+        border-color: lighten($dark-grey, 10%)
+        &:hover, &:active, &:focus
+            background: darken($dark-grey, 10%)
+            color: $dark-light-grey
+            border: 1px solid $dark-light-grey
+
+    .BuildDetails
+        color: #c4c4c4
+        background-color: $even-darker-grey
+        &:nth-child(even)
+            background-color: lighten($even-darker-grey, 3%)
+
+        .tools
+            & .toolbar
+                border-top: 1px solid darken(#707070, 10%)
+                border-bottom: none
+                background-color: #707070
+
+        .BuildStep
+            &.success .buildIcon
+                background-color: $brighter-green
+            &.failure .buildIcon
+                background-color: $brighter-red
+            &.running .buildIcon
+                background-color: $brighter-blue
+            &.waiting .buildIcon
+                background-color: $orange
+            &.killed .buildIcon
+                background-color: $brighter-grey
+            &.pending .buildIcon
+                display: none
+
+            &.LowermostStep
+                background-color: #707070
+                color: #000
+                border: 1px solid #707070
+                margin: 0 10px
+
+            &.WithSubsteps
+                border-width: 0 2px
+                border-color: $dark-light-grey
+                border-style: solid
+
+            &:before , &:after
+                background-color: $dark-light-grey
+
+            &WithSubsteps
+                background-color: transparentize($dark-light-grey, 0.9)
+                border-color: $very-dark-grey
+
+            &Parallel
+                background-color: transparentize($dark-light-grey, 0.9)
+                border: 1px solid $very-dark-grey
+
+        .ParallelLine
+            border-color: $dark-light-grey
+            &:last-of-type
+                border-color: transparent
+
+    .buildSummary
+        border-bottom: 1px solid $really-dark-grey
+        background-color: $even-darker-grey
+
+        &:before
+            width: 65px
+
+        &:nth-child(even)
+            background-color: lighten($even-darker-grey, 3%)
+
+        .buildNumber
+            color: $dark-light-grey
+
+        &.success:before
+            background-color: $brighter-green
+        &.failed:before
+            background-color: $brighter-red
+        &.waiting:before
+            background-color: $orange
+        &.running:before
+            background-color: $brighter-blue
+        &.killed:before
+            background-color: $brighter-grey
+        &.unknown:before
+            background-color: $dark-grey
+
+        &.open
+            .buildInfo
+                color: $darker-grey
+                border-bottom: none
+                .buildIcon
+                    top: 9px
+                    left: 20px
+                    font-size: 30px
+                    color: $white
+                    animation-name: rubberBand
+                    animation-duration: 0.5s
+                    animation-fill-mode: both
+
+            &.success
+                color: $brighter-green
+                .buildInfo
+                    & .buildNumber
+                        color: $brighter-green
+                    & .buildIcon
+                        color: $brighter-green
+            &.waiting
+                color: $orange
+                .buildInfo
+                    & .buildNumber
+                        color: $orange
+                    & .buildIcon
+                        color: $orange
+            &.failed
+                color: $brighter-red
+                .buildInfo
+                    & .buildNumber
+                        color: $brighter-red
+                    & .buildIcon
+                        color: $brighter-red
+            &.running
+                color: $brighter-blue
+                .buildInfo
+                    & .buildNumber
+                        color: $brighter-blue
+                    & .buildIcon
+                        color: $brighter-blue
+            &.killed
+                color: $brighter-grey
+                .buildInfo
+                    & .buildNumber
+                        color: $brighter-grey
+                    & .buildIcon
+                        color: $brighter-grey
+
+        .buildInfo
+            .buildInfoRow
+                display: inline-block
+                vertical-align: middle
+                text-align: center
+                padding: 8px
+                font-size: 1em
+                color: $dark-light-grey
+                &.time
+                    text-align: left
+            .buildIcon
+                top: 20px
+                left: 25px
+
+    .quickStep
+        border: 1px solid $dark-light-grey
+        &:before
+            background-color: $dark-light-grey
+
+        &.success
+            background-color: $brighter-green
+
+        &.failure
+            background-color: $brighter-red
+
+        &.waiting
+            background-color: $orange
+
+        &.pending
+            background-color: $dark-light-grey
+
+        &.killed
+            background-color: $brighter-grey
+
+        &.running
+            background-color: $brighter-blue
+
+    .quickSubsteps
+        >.quickStep:last-of-type:after
+            background-color: $dark-light-grey
+
+    .quickStepContainer
+        background-color: transparentize($dark-light-grey, 0.8)
+
+    .buildStepLayer
+        background-color: $darker-grey
+        color: $dark-light-grey
+        &__text
+            border: 3px solid $even-darker-grey
+            border-radius: 5px
+
+.main--dark + .footer
+    .version-info__link
+        & > a
+            color: $darker-grey
+
+        & > a:hover, a:active, a:focus
+            color: lighten($darker-grey, 20%)
+
+=keyframes($name)
+    @-webkit-keyframes #{$name}
+        @content
+    @-moz-keyframes #{$name}
+        @content
+    @-ms-keyframes #{$name}
+        @content
+    @keyframes #{$name}
+        @content
+
++keyframes(rubberBand)
+    0%
+        transform: scale3d(1, 1, 1)
+        color: $white
+    30%
+        transform: scale3d(1.25, 0.75, 1)
+    40%
+        transform: scale3d(0.75, 1.25, 1)
+    50%
+        transform: scale3d(1.15, 0.85, 1)
+    65%
+        transform: scale3d(.95, 1.05, 1)
+    75%
+        transform: scale3d(1.05, .95, 1)
+    100%
+        transform: scale3d(1, 1, 1)

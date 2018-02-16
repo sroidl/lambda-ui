@@ -1,26 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>LambdaCD</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <title>LambdaCD</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">-->
-  <link rel="stylesheet" href="thirdparty/fontawesome/css/font-awesome.min.css">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="thirdparty/fontawesome/css/font-awesome.min.css">
 
-  <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <style>
+        .center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            -webkit-animation: rotateplane 3s infinite ease-in-out;
+            animation: rotateplane 3s infinite ease-in-out;
+        }
+
+        @keyframes rotateplane {
+            0% {
+                transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+                -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+            }
+            25% {
+                transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+                -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(0deg)
+            }
+            50% {
+                transform: perspective(120px) rotateX(-180deg) rotateY(179.9deg);
+                -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(179.9deg);
+            }
+            75% {
+                transform: perspective(120px) rotateX(0deg) rotateY(180.1deg);
+                -webkit-transform: perspective(120px) rotateX(0deg) rotateY(180.1deg)
+            }
+            100% {
+                transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+                -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+            }
+        }
+    </style>
 
 </head>
 <body>
 
-  <div id='entryPoint' class='main'>Loading LambdaUI App.</div>
-  <div id='footer' class='footer'></div>
+<div id='entryPoint' class='main'><img src="http://www.lambda.cd/img/lambdacd-logo.png" class="center spinner"
+        title="Loading LambdaUI App."/></div>
+<div id='footer' class='footer'></div>
 
-  <script type="text/javascript" src="config.js"></script>
-  <script type="text/javascript" src="bundle.js"></script>
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="bundle.js"></script>
 </body>
 </html>

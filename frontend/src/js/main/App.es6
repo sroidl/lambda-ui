@@ -36,6 +36,13 @@ export class LambdaUI {
         pollBuildDetails(backend, appStore);
 
         const rootElement = document.getElementById("entryPoint");
+        const theme = window.lambdaui.config.theme;
+
+        const knownThemes = ["dark"];
+
+        if (knownThemes.includes(theme)) {
+            rootElement.setAttribute("class", rootElement.getAttribute("class") + "--" + theme);
+        }
         ReactDOM.render(<Provider store={this.appStore()}>
             <div>
                 <Header />
