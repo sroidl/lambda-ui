@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+#### Added
+
+- Dark theme!
+
+#### Acknowlegment
+
+Thanks to @christian-draeger for contributing theme support and the dark theme.
+
 ## [1.0.0]
 (Following semantic versioning this release raises the major version as it contains possible breaking changes).
 
