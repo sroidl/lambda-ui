@@ -2,8 +2,7 @@
   (:use [compojure.core])
   (:require [lambdacd.steps.shell :as shell]
             [lambdacd.steps.manualtrigger :refer [wait-for-manual-trigger]]
-            [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run] :as step]
-            [lambdacd.steps.support :as support]
+            [lambdacd.steps.control-flow :refer [either with-workspace in-parallel run]]
             [lambdacd-artifacts.core :as artifacts]))
 
 (defn write-a-file [{cwd :cwd} ctx]

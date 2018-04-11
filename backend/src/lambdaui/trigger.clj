@@ -1,7 +1,7 @@
 (ns lambdaui.trigger
   (:require [clojure.core.async :as async]
-            [lambdacd.execution :as execution]
-            [clojure.walk :refer [keywordize-keys]]))
+            [clojure.walk :refer [keywordize-keys]]
+            [lambdacd.execution.core :as execution-core]))
 
 
 ;{:post [(v/is-not-nil-or-empty? (:branch (:global %)))
@@ -13,5 +13,5 @@
 
     ;(println "Starting new build " )
     ;(when-let [git-commit (:git (keywordize-keys query-param))] (println "requested commit was" git-commit))
-    (execution/run pipeline-def context)
+    (execution-core/run-pipeline pipeline-def context)
     ))

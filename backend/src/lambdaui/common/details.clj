@@ -1,6 +1,9 @@
 (ns lambdaui.common.details
   (:require [lambdaui.common.common :as common]
-            [lambdacd.presentation.unified :as presentation]))
+            [lambdacd.presentation.unified :as presentation]
+            [lambdacd.state.core :as state]
+            [lambdacd.presentation.pipeline-structure :as pipeline-structure]
+            [lambdacd.presentation.unified :as unified]))
 
 (defn- to-iso-string [timestamp]
   (when timestamp
@@ -38,8 +41,12 @@
         children (if-let [children (:children step)] {:steps (map (partial to-output-format trigger-path-prefix) children)} {})]
     (merge base type children trigger)))
 
+(defn- unified-presentation [pipeline-def step-results]
+  (let [structure (pipeline-structure/pipeline-display-representation pipeline-def)]
+    (unified/pipeline-structure-with-step-results structure step-results)))
+
 (defn build-details-from-pipeline [pipeline-def pipeline-state build-id ui-config]
-  (let [unified-steps-map (->> (presentation/unified-presentation pipeline-def pipeline-state)
+  (let [unified-steps-map (->> (unified-presentation pipeline-def pipeline-state)
                                (map (partial to-output-format (:path-prefix ui-config "")))
                                (map (fn [step] [(:stepId step) step]))
                                (into {}))
@@ -49,6 +56,6 @@
      :steps   steps}))
 
 (defn build-details-response [pipeline build-id]
-  (let [build-state (get (common/state-from-pipeline pipeline) (Integer/parseInt build-id))
+  (let [build-state (state/get-step-results (:context pipeline) (Integer/parseInt build-id))
         pipeline-def (:pipeline-def pipeline)]
     (build-details-from-pipeline pipeline-def build-state build-id (get-in pipeline [:context :config :ui-config]))))

@@ -3,7 +3,7 @@
             [lambdaui.api-legacy :as subject]
             [lambdacd.steps.control-flow :as ctrl-flow]
             [lambdacd.event-bus :as event-bus]
-            [lambdacd.internal.pipeline-state :as state]
+            [lambdacd.state.core :as state]
             [org.httpkit.server :as httpkit-server]
             [shrubbery.core :refer :all]
             [clojure.core.async :as async]
@@ -25,7 +25,7 @@
                   (send! [ws-ch data] (async/>!! sent-channel data)))]
       (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
                     event-bus/only-payload (fn [subscription] event-channel)
-                    state/get-all (fn [_] {})]
+                    state/get-step-results (fn [_ _] {})]
         (subject/output-events nil ws-ch 1 "2-1")
         (async/>!! event-channel {:build-number 1 :step-id [2 1] :step-result {:foo :bar}})
         (async/<!! sent-channel)                            ;ignore first msg. not part of test
@@ -43,7 +43,7 @@
                   (send! [ws-ch data] (async/>!! sent-channel data)))]
       (with-redefs [event-bus/subscribe (fn [ctx topic] nil)
                     event-bus/only-payload (fn [subscription] event-channel)
-                    state/get-all (fn [_] {})]
+                    state/get-step-results (fn [_ _] {})]
         (subject/output-events nil ws-ch 1 "2-1")
         (async/>!! event-channel {:build-number 1 :step-id [2 1] :stepResult {:status :running}})
         (async/>!! event-channel {:build-number 1 :step-id [2 1] :stepResult {:status :success}})
@@ -78,7 +78,7 @@
 (deftest details-websocket
   (testing "that a json payload is sent through the ws channel"
 
-    (with-redefs [lambdacd.internal.pipeline-state/get-all (fn [_] {})]
+    (with-redefs [state/get-step-results (fn [_ _] {})]
       (let [pipeline {:pipeline-def pipeline-with-substeps}
             build-id "1"
             ws-ch (async/chan 1)]
@@ -123,7 +123,7 @@
     (clear-killed-atom)
 
     (let [kill-counter (atom 0)]
-      (with-redefs [lambdacd.core/kill-step (fn [& _] (swap! kill-counter inc))]
+      (with-redefs [lambdacd.execution.core/kill-step (fn [& _] (swap! kill-counter inc))]
         (subject/kill-step "1" "1" nil)
         (subject/kill-step "1" "1" nil)
 

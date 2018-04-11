@@ -1,10 +1,6 @@
 (ns lambdaui.common.common
-  (:require [lambdacd.internal.pipeline-state :as state]
-            [clojure.string :as string]
-            [lambdacd.util :as util]))
-
-(defn state-from-pipeline [pipeline]
-  (state/get-all (:pipeline-state-component (:context pipeline))))
+  (:require [clojure.string :as string])
+  (:import java.lang.Integer))
 
 (defn finished? [status]
   (contains? #{:success :failure :killed} status))
@@ -13,5 +9,5 @@
   (clojure.string/join "-" step-id))
 
 (defn str->step-id [dash-seperated-step-id]
-  (map util/parse-int (string/split dash-seperated-step-id #"-")))
+  (map #(Integer/parseInt %) (string/split dash-seperated-step-id #"-")))
 
