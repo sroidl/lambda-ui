@@ -7,6 +7,7 @@
             [clojure.core.async :as async]
             [org.httpkit.client :as http]
             [clojure.data.json :as json]
+            [lambdaui.test-utils :refer [wait-for]]
             [lambdaui.testpipeline.trigger-pipeline :refer [git-revision-trigger]])
   (:import (org.joda.time DateTime DateTimeZone)))
 
@@ -43,10 +44,14 @@
                              (is (every? #{:stepId :name :state :startTime :endTime :type :steps :trigger :details}
                                          (keys (first-substep (first-substep build-details)))))))))))
 
+(defn- first-build-waiting [build-details]
+  (let [first-substep (comp first :steps)]
+    (= (:state (first-substep build-details)) "waiting")))
+
 (deftest parameterized-trigger-test
   (testing "should contain revision parameter"
     (with-server-async `(git-revision-trigger)
-                       (let [build-details (request-build-details)
+                       (let [build-details (wait-for request-build-details first-build-waiting)
                              steps (:steps build-details)
                              first-substep (comp first :steps)
 
