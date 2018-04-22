@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [lambdaui "1.0.1-SNAPSHOT"]
-                 [lambdacd "0.13.3"]
+                 [lambdacd "0.14.0"]
                  [lambdacd-git "0.2.0"]
                  [http-kit "2.1.18"]]
   :main ^:skip-aot lambdaui.example.simple-pipeline
