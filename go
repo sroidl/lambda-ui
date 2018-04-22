@@ -109,7 +109,7 @@ goal_release() {
   goal_test
   goal_jar
   pushd ${SCRIPT_DIR}/backend > /dev/null
-  ./lein release
+  ./lein release clojars
   popd > /dev/null
   git push
   git push --tags
