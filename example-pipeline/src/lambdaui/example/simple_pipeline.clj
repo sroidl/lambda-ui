@@ -101,7 +101,8 @@
                 :name      "Example Pipeline"
                 :ui-config {
                             :navbar               {:links [{:text "Configure Link to github" :url "https://github.com/sroidl/lambda-ui"}]}
-                            :showStartBuildButton false}
+                            :showStartBuildButton false
+                            :theme "light"}
 
                 }
         port (try-parse (System/getenv "PORT") 8082)
