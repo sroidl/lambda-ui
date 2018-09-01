@@ -19,9 +19,9 @@
                                      :username [:gpg :env]
                                      :password [:gpg :env]}]]
   :lein-release {:scm :git}
-  :profiles {:dev {:dependencies [[lambdacd-git "0.3.0"]
+  :profiles {:dev {:dependencies [[lambdacd-git "0.4.1"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
                                   [ring-cors "0.1.11"]
-                                  [lambdacd-artifacts "0.2.1"]]
+                                  [lambdacd-artifacts "0.2.2"]]
                    :aot          [lambdaui.testpipeline.core]
                    :main         lambdaui.testpipeline.core}})
