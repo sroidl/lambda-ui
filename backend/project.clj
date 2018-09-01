@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [lambdacd "0.13.3"]
                  [compojure "1.6.0"]
-                 [http-kit "2.2.0"]
+                 [http-kit "2.3.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.slf4j/slf4j-simple "1.7.25"]
                  [trptcolin/versioneer "0.2.0"]]
