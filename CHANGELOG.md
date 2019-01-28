@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [Unrelease]
 
+## [1.2.0]
+#### Fixes
+- Raised dependencies to work with newer Java versions
 
 ## [1.1.0]
 #### Added
@@ -110,7 +113,8 @@ Thank you!
 ## 0.1.0
 First release.
 
-[Unreleased]: https://github.com/sroidl/lambda-ui/compare/lambdaui-1.1.0...master
+[Unreleased]: https://github.com/sroidl/lambda-ui/compare/lambdaui-1.2.0...master
+[1.1.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-1.1.0...lambdaui-1.2.0
 [1.1.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-1.0.0...lambdaui-1.1.0
 [1.0.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.4.0...lambdaui-1.0.0
 [0.4.0]: https://github.com/sroidl/lambda-ui/compare/lambdaui-0.3.6...lambdaui-0.4.0
