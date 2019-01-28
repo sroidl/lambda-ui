@@ -1,4 +1,4 @@
-(defproject lambdaui "1.2.0-SNAPSHOT"
+(defproject lambdaui "1.2.0"
   :description "LambdaCD-Plugin that provides a modern UI for your pipeline."
   :url "https://github.com/sroidl/lambda-ui"
   :license {:name "Apache License 2.0"
