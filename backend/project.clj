@@ -12,6 +12,7 @@
                  [trptcolin/versioneer "0.2.0"]]
 
   :test-paths ["test"]
+  :scm {:dir ".."}
   :deploy-repositories [["snapshots" {:url "https://clojars.org/repo"
                                       :username [:gpg :env]
                                       :password [:gpg :env]}]
